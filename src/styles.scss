@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import '@fortawesome/fontawesome-free/css/all.css';
+
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 body {
-  font-family: "OpenSans", "arial", sans-serif;
+  position: relative;
+  font-family: 'Roboto',"OpenSans", "arial", sans-serif;
 }
