@@ -42,7 +42,7 @@ export class SidenavComponent implements OnInit {
 
 
   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
-  collapsed = true;
+  collapsed = false;
   screenwidth = 0;
   navData = navbarData;
   
