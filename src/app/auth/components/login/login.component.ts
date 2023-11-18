@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,11 @@ export class LoginComponent {
   loginForm: FormGroup;
   loginStatusMessage: string = '';
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
@@ -31,28 +36,25 @@ export class LoginComponent {
       return;
     }
 
-    // Si le formulaire est valide
-    const loginFormData = this.loginForm.value;
-    const jsonLoginFormData = JSON.stringify(loginFormData);
+    const { username, password } = this.loginForm.value;
 
-    this.http.post<LoginResponse>('https://run.mocky.io/v3/e4cf7bce-c8ab-42ea-ab67-8348f622fedb', jsonLoginFormData, { headers: { 'Content-Type': 'application/json' } })
-      .subscribe({
-        next: (response) => {
-          if (response && response.success === "true") {
-            this.loginStatusMessage = 'Connexion réussie';
-          } else {
-            this.loginStatusMessage = 'Identifiant ou mot de passe incorrect.';
-          }
-        },
-        error: (error) => {
-          this.loginStatusMessage = 'Erreur interne du serveur.';
+    this.authService.login(username, password).subscribe({
+      next: (response) => {
+        if (response.token) {
+          localStorage.setItem('authToken', response.token); // Stocker le token
+          this.router.navigateByUrl('/dashboard'); // Rediriger l'utilisateur vers le tableau de bord
         }
-      });
-
+      },
+      error: (error) => {
+        if (error.status === 400) {
+          // Ici, on utilise error.error.error car la structure de l'erreur est { error: { error: "message" } }
+          this.loginStatusMessage = error.error.error;
+        } else {
+          this.loginStatusMessage = 'Une erreur est survenue lors de la connexion.';
+        }
+      }
+    });
   }
-}
 
-interface LoginResponse {
-  success: string;
-  message: string;
+
 }
