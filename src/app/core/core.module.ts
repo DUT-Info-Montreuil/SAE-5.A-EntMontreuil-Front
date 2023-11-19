@@ -4,10 +4,15 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import * as fr from '@angular/common/locales/fr';
 import { httpInterceptorProviders } from './interceptors';
+import { MainLayoutComponent } from './components/main-layout/main-layout.component';
+import { SidenavComponent } from './components/sidenav/sidenav.component';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    MainLayoutComponent,
+    SidenavComponent
+  ],
   imports: [
     CommonModule,
     RouterModule,
