@@ -24,6 +24,10 @@ const routes: Routes = [
         path: 'absences',
         loadChildren: () => import('./absences/absences.module').then(m => m.AbsencesModule)
       },
+      {
+        path: 'settings',
+        loadChildren: () => import('./settings/settings.module').then(m => m.SettingsModule),
+      },
     ]
   },
 ];
