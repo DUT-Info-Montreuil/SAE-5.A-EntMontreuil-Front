@@ -3,7 +3,7 @@
   
     <div *ngIf="absences | async as absencesData">
 
-        <h2>Vous avez {{ absencesData.length }} absences</h2>
+        <h2>Vous avez {{ absencesData.length }} absences pour un total de {{ this.calculateTotalHours(absencesData) }}h d'absence</h2>
 
         <app-single-absence *ngFor="let absence of absencesData" [absence]="absence">
              
