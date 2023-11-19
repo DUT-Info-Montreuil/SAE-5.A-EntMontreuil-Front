@@ -41,7 +41,13 @@ export class LoginComponent {
     this.authService.login(username, password).subscribe({
       next: (response) => {
         if (response.token) {
-          localStorage.setItem('authToken', response.token); // Stocker le token
+
+          // Stocker les informations de l'utilisateur et le token dans le localStorage
+          localStorage.setItem('id_user', response.id_user);
+          localStorage.setItem('first_name', response.first_name);
+          localStorage.setItem('last_name', response.last_name);
+          localStorage.setItem('authToken', response.token);
+
           this.router.navigateByUrl('/dashboard'); // Rediriger l'utilisateur vers le tableau de bord
         }
       },

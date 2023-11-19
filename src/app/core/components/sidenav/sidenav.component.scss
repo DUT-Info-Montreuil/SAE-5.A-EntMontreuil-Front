@@ -44,7 +44,7 @@
 }
 
 #dropdownMenu.active {
-  transform: translateY(-6%); /* Déplacer le menu vers le haut */
+  transform: translateY(-5%); /* Déplacer le menu vers le haut */
   visibility: visible; /* Rendre le menu visible lorsqu'il est actif */
   opacity: 1;
 }

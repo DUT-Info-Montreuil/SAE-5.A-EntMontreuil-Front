@@ -9,6 +9,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class SidenavComponent {
   menuActive: boolean = false;
+  first_name: string = this.auth.getFirstname();
+  last_name: string = this.auth.getLastname();
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
 
@@ -16,7 +18,7 @@ export class SidenavComponent {
     private eRef: ElementRef,
     private router: Router,
     private auth: AuthService
-  ) {}
+  ) { }
 
   toggleMenu() {
     this.menuActive = !this.menuActive;

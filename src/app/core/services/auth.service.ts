@@ -37,7 +37,19 @@ export class AuthService {
         return localStorage.getItem('authToken') || '';
     }
 
+    getFirstname(): string {
+        return localStorage.getItem('first_name') || '';
+    }
+
+    getLastname(): string {
+        return localStorage.getItem('last_name') || '';
+    }
+
+    getUserId(): string {
+        return localStorage.getItem('id_user') || '';
+    }
+
     logout(): void {
-        localStorage.removeItem('authToken');
+        localStorage.clear();
     }
 }

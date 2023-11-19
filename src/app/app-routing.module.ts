@@ -24,12 +24,8 @@ const routes: Routes = [
         path: 'absences',
         loadChildren: () => import('./absences/absences.module').then(m => m.AbsencesModule)
       },
-
-      // ... autres routes qui doivent inclure la sidenav
     ]
   },
-
-  // ... autres routes
 ];
 
 @NgModule({
