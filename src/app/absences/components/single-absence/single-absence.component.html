@@ -1,12 +1,21 @@
+<div class="single-absence" [ngClass]="{ 'non-justifiee': !absence.justify }">
+  <p class="absence-status">
+    Absence {{ this.absence.justify ? "justifiée" : "non justifiée" }}
+  </p>
 
-<div class="single-absence" [ngClass]="{'non-justifiee': !absence.justify}">
+  <p class="course-date">
+    Le {{ this.absence.course_date | date : "dd/MM/yyyy" }}
+  </p>
 
-  <p>Absence {{ this.absence.justify ? 'justifiée' : 'non justifiée' }}</p> 
-      
-  <p>Le {{ this.absence.course_date | date:"dd/MM/yyyy"}}</p>
-  <p>De {{ this.dateStart | date:"hh:mm" }} à {{ this.dateEnd | date:"hh:mm" }}</p>
-  <p>Soit {{this.calculateHourDifference(this.dateStart,this.dateEnd)}}h d'absence</p>
-      
+  <p class="course-time">
+    De {{ this.dateStart | date : "hh:mm" }} à
+    {{ this.dateEnd | date : "hh:mm" }}
+  </p>
 
+  <p class="course-name">Cours: {{ this.absence.resource_name }}</p>
+
+  <p class="absence-duration">
+    Soit {{ this.calculateHourDifference(this.dateStart, this.dateEnd) }}h
+    d'absence
+  </p>
 </div>
-

@@ -1,12 +1,33 @@
-
-
-h1 {
-    font-size: xx-large;
-    font-weight: bold;
-    margin-bottom: 20px;
+.absences-layout {
+  max-width: 1500px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Helvetica Neue", sans-serif;
 }
 
-h2 {
-    font-size: x-large;
-    margin-bottom: 20px;
+.absences-layout h1 {
+  color: #2a3f5f;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 28px;
+  font-weight: 600;
 }
+
+.absences-layout h2 {
+  color: #4b6584;
+  font-size: 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+
+.absences-layout h2.unjustified-hours {
+  color: #e74c3c;
+  font-weight: bold;
+  border-bottom: 2px solid #e74c3c;
+}
+
+/* Style pour les autres éléments et composants */

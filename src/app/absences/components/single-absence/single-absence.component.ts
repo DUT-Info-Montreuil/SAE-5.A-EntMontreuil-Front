@@ -6,21 +6,22 @@ import { AbsencesService } from 'src/app/core/services/absences.service';
 @Component({
   selector: 'app-single-absence',
   templateUrl: './single-absence.component.html',
-  styleUrls: ['./single-absence.component.scss']
+  styleUrls: ['./single-absence.component.scss'],
 })
-export class SingleAbsenceComponent implements OnInit{
-
+export class SingleAbsenceComponent implements OnInit {
   @Input() absence!: Absence;
   dateStart!: Date;
   dateEnd!: Date;
 
-  constructor(private absencesService: AbsencesService){
-  }
+  constructor(private absencesService: AbsencesService) {}
 
   ngOnInit(): void {
-    
-    this.dateStart = new Date(this.absence.course_date + 'T' + this.absence.course_start_time);
-    this.dateEnd = new Date(this.absence.course_date + 'T' + this.absence.course_end_time);
+    this.dateStart = new Date(
+      this.absence.course_date + 'T' + this.absence.course_start_time
+    );
+    this.dateEnd = new Date(
+      this.absence.course_date + 'T' + this.absence.course_end_time
+    );
   }
 
   calculateHourDifference(dateDebut: Date, dateFin: Date): number {
@@ -30,5 +31,4 @@ export class SingleAbsenceComponent implements OnInit{
 
     return differenceEnHeures;
   }
-
 }

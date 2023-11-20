@@ -1,17 +1,45 @@
 .single-absence {
-
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    width: 300px;
-  
-    p {
-      margin: 5px 0;
-    }
-  
-
+  border: 1px solid #ced6e0;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
 }
 
-.non-justifiee {
-    color: red; // Style pour une absence non justifiée
+.single-absence:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+}
+
+.single-absence p {
+  margin: 10px 0;
+  color: #2f3542;
+  font-size: 16px;
+}
+
+.single-absence.non-justifiee {
+  border-color: #eb3b5a;
+  background-color: #fed4d6;
+}
+
+.single-absence.non-justifiee p {
+  color: #eb3b5a;
+}
+
+.absence-status {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.course-date,
+.course-time,
+.course-name,
+.absence-duration {
+  color: #535c68;
+}
+
+.course-name {
+  font-style: italic;
+  font-weight: bold;
 }

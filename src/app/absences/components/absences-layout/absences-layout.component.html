@@ -1,14 +1,27 @@
 <div class="absences-layout">
-    <h1>Absences</h1>
-  
-    <div *ngIf="absences | async as absencesData">
+  <h1>Absences</h1>
 
-        <h2>Vous avez {{ absencesData.length }} absences pour un total de {{ this.calculateTotalHours(absencesData) }}h d'absence</h2>
+  <div *ngIf="absences | async as absencesData">
+    <h2>Total d'heures d'absences : {{ calculateTotalHours(absencesData) }}</h2>
+    <h2>
+      Total d'heures d'absences non justifiées :
+      {{ calculateTotalUnjustifiedHours(absencesData) }}
+    </h2>
+  </div>
 
-        <app-single-absence *ngFor="let absence of absencesData" [absence]="absence">
-             
-        </app-single-absence>
-    </div>
+  <div *ngIf="justifiedAbsences.length > 0">
+    <h2>Absences justifiées</h2>
+    <app-single-absence
+      *ngFor="let absence of justifiedAbsences"
+      [absence]="absence"
+    ></app-single-absence>
+  </div>
 
+  <div *ngIf="unjustifiedAbsences.length > 0">
+    <h2>Absences non justifiées</h2>
+    <app-single-absence
+      *ngFor="let absence of unjustifiedAbsences"
+      [absence]="absence"
+    ></app-single-absence>
+  </div>
 </div>
-  
