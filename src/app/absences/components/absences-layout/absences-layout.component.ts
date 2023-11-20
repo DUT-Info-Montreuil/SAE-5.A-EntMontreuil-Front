@@ -13,7 +13,7 @@ export class AbsencesLayoutComponent implements OnInit {
 
   absences!: Observable<Absence[]>;
 
-  constructor(private absencesService: AbsencesService) {}
+  constructor(private absencesService: AbsencesService) { }
 
   ngOnInit(): void {
     this.absences = this.absencesService.getStudentAbsences();
@@ -23,9 +23,9 @@ export class AbsencesLayoutComponent implements OnInit {
     let totalHours = 0;
 
     absences.forEach(absence => {
-        const dateStart = new Date(absence.course_date + 'T' + absence.course_start_time);
-        const dateEnd = new Date(absence.course_date + 'T' + absence.course_end_time);
-        totalHours += this.calculateHourDifference(dateStart, dateEnd);
+      const dateStart = new Date(absence.course_date + 'T' + absence.course_start_time);
+      const dateEnd = new Date(absence.course_date + 'T' + absence.course_end_time);
+      totalHours += this.calculateHourDifference(dateStart, dateEnd);
     });
 
     return totalHours;

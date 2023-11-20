@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
 
 @Injectable({
     providedIn: "root"
@@ -29,12 +29,34 @@ export class AuthService {
             );
     }
 
+    // Méthode pour rafraîchir le token d'accès
+    refreshToken(): Observable<string> {
+        const refreshToken = this.getRefreshToken();
+
+        return this.http.get<any>(this.apiURL + '/refresh_token', {
+            headers: new HttpHeaders({ 'Authorization': `Bearer ${refreshToken}` }),
+        }).pipe(
+            map(response => response.new_access_token),
+            catchError(error => {
+                return throwError(error);
+            })
+        );
+    }
+
     errorHandler(error: any) {
         return throwError(error);
     }
 
     getToken(): string {
         return localStorage.getItem('authToken') || '';
+    }
+
+    getRefreshToken(): string {
+        return localStorage.getItem('refreshToken') || '';
+    }
+
+    setToken(authToken: string): void {
+        localStorage.setItem('authToken', authToken);
     }
 
     getFirstname(): string {

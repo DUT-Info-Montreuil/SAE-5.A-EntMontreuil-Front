@@ -47,6 +47,7 @@ export class LoginComponent {
           localStorage.setItem('first_name', response.first_name);
           localStorage.setItem('last_name', response.last_name);
           localStorage.setItem('authToken', response.token);
+          localStorage.setItem('refreshToken', response.refresh_token);
 
           this.router.navigateByUrl('/dashboard'); // Rediriger l'utilisateur vers le tableau de bord
         }
