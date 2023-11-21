@@ -10,8 +10,10 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 
 export class LoginComponent {
+
   loginForm: FormGroup;
   loginStatusMessage: string = '';
+  isLoading = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -26,6 +28,8 @@ export class LoginComponent {
 
   onSubmit() {
 
+    this.isLoading = true;
+
     // Marquer tous les champs comme touchés
     Object.keys(this.loginForm.controls).forEach(field => {
       const control = this.loginForm.get(field);
@@ -33,30 +37,48 @@ export class LoginComponent {
     });
 
     if (this.loginForm.invalid) {
+      this.isLoading = false;
       return;
     }
 
     const { username, password } = this.loginForm.value;
 
     this.authService.login(username, password).subscribe({
-      next: (response) => {
-        if (response.token) {
 
-          // Stocker les informations de l'utilisateur et le token dans le localStorage
-          localStorage.setItem('id_user', response.id_user);
-          localStorage.setItem('first_name', response.first_name);
-          localStorage.setItem('last_name', response.last_name);
-          localStorage.setItem('authToken', response.token);
-          localStorage.setItem('refreshToken', response.refresh_token);
+      next: (loginResponse) => {
+        if (loginResponse.token) {
+          // Set the authToken temporarily to make the subsequent getUserInfo call
+          localStorage.setItem('authToken', loginResponse.token);
 
-          this.router.navigateByUrl('/dashboard'); // Rediriger l'utilisateur vers le tableau de bord
+          this.authService.getUserInfo().subscribe({
+            next: (userInfoResponse) => {
+              // Store user information and tokens in localStorage
+              localStorage.setItem('id_user', userInfoResponse.personal_info.id);
+              localStorage.setItem('username', userInfoResponse.username);
+              localStorage.setItem('refreshToken', loginResponse.refresh_token);
+
+              this.isLoading = false;
+              this.router.navigateByUrl('/dashboard'); // Redirect to the dashboard
+              console.log(this.authService.getRole());
+            },
+            error: (userInfoError) => {
+              // Handle error from getUserInfo
+              this.authService.logout();
+              this.isLoading = false;
+              this.loginStatusMessage = "Une erreur est survenue lors de la récupération des détails de l'utilisateur.";
+              console.error(userInfoError);
+            }
+          });
         }
       },
-      error: (error) => {
-        if (error.status === 400) {
-          // Ici, on utilise error.error.error car la structure de l'erreur est { error: { error: "message" } }
-          this.loginStatusMessage = error.error.error;
+      error: (loginError) => {
+
+        this.isLoading = false;
+
+        if (loginError.status === 400) {
+          this.loginStatusMessage = loginError.error.error;
         } else {
+          this.authService.logout();
           this.loginStatusMessage = 'Une erreur est survenue lors de la connexion.';
         }
       }

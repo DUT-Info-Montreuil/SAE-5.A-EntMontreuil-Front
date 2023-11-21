@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
     providedIn: "root"
@@ -43,6 +44,14 @@ export class AuthService {
         );
     }
 
+    // Récupérer les informations de l'utilisateur
+    getUserInfo(): Observable<any> {
+        return this.http.get<any>(this.apiURL + '/user/info', this.httpOptions)
+            .pipe(
+                catchError(this.errorHandler)
+            );
+    }
+
     errorHandler(error: any) {
         return throwError(error);
     }
@@ -55,16 +64,53 @@ export class AuthService {
         return localStorage.getItem('refreshToken') || '';
     }
 
+    getIsAdmin(): string {
+        return localStorage.getItem('isadmin') || '';
+    }
+
+    getRole(): string {
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        // Liste des rôles autorisés
+        const validRoles = ['admin', 'user', 'teacher', 'student'];
+
+        // Vérifier si le rôle extrait du jeton est l'un des rôles valides
+        const role = validRoles.includes(decodedToken.sub.role) ? decodedToken.sub.role : '';
+
+        return role;
+    }
+
+
     setToken(authToken: string): void {
         localStorage.setItem('authToken', authToken);
     }
 
     getFirstname(): string {
-        return localStorage.getItem('first_name') || '';
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const role = decodedToken.sub.first_name;
+
+        return role;
     }
 
     getLastname(): string {
-        return localStorage.getItem('last_name') || '';
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const lastname = decodedToken.sub.last_name;
+
+        return lastname;
     }
 
     getUserId(): string {
@@ -74,4 +120,15 @@ export class AuthService {
     logout(): void {
         localStorage.clear();
     }
+}
+
+
+interface JwtPayload {
+    sub: {
+        id: number;
+        first_name: string;
+        last_name: string;
+        username: string;
+        role: string;
+    };
 }

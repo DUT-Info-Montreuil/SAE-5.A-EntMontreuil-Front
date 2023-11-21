@@ -11,6 +11,7 @@ export class SidenavComponent {
   menuActive: boolean = false;
   first_name: string = this.auth.getFirstname();
   last_name: string = this.auth.getLastname();
+  role: string = this.auth.getRole();
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
 
