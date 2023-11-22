@@ -1,0 +1,17 @@
+<!-- modal.component.html -->
+<div *ngIf="visible" class="modal-backdrop" [ngClass]="{'show': visible}" (click)="close()">
+    <div class="modal-wrapper">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal">
+                <div class="modal-header">
+                    <!-- Bouton fermer ou tout autre contenu de l'en-tête -->
+                    <button class="close" (click)="close()">×</button>
+                </div>
+                <div class="modal-body">
+                    <ng-content></ng-content>
+                </div>
+                <!-- Vous pouvez ajouter un footer si nécessaire -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ModalsComponent } from './components/modals/modals.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 
 
 @NgModule({
   declarations: [
-    ModalsComponent
+    ModalComponent
   ],
   exports: [
-    ModalsComponent
+    ModalComponent
   ],
   imports: [
     CommonModule

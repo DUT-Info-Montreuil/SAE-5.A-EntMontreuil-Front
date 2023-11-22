@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ModalService } from 'src/app/core/services/modal.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard-home.component.scss']
 })
 export class DashboardHomeComponent {
-  constructor() { }
+  constructor(private modalService: ModalService) { }
+
+  openModal(id: string) {
+    this.modalService.open(id);
+  }
 }
