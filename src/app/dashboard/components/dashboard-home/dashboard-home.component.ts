@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./dashboard-home.component.scss']
 })
 export class DashboardHomeComponent {
+  constructor() { }
 
+  onModalClose() {
+    console.log('Modal closed');
+  }
 }
