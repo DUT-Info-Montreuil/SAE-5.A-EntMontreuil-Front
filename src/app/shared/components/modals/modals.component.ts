@@ -1,5 +1,5 @@
 // modals.component.ts
-import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-modals',
@@ -10,6 +10,7 @@ export class ModalsComponent {
   @Input() modalType: 'danger' | 'info' | 'success' | 'warning' = 'info';
   @Output() closeEvent = new EventEmitter<void>();
   display = false;
+
   @ViewChild('modalContainer') modalContainer?: ElementRef;
   @ViewChild('modalBackdrop') modalBackdrop?: ElementRef;
 
