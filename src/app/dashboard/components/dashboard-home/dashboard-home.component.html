@@ -6,11 +6,9 @@
     <button (click)="openModal('successModal')">Open Success Modal</button>
     <button (click)="openModal('dangerModal')">Open Danger Modal</button>
 
-    <app-modal id="successModal">
-        Bonjour
+    <app-modal id="successModal" modalType="success">
     </app-modal>
 
-    <app-modal id="dangerModal">
-        <!-- Contenu du modal de danger -->
+    <app-modal id="dangerModal" modalType="danger">
     </app-modal>
 </div>
