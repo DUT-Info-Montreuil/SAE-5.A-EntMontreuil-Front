@@ -1,6 +1,6 @@
-// modal.component.ts
-import { Component, ElementRef, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { ModalService } from 'src/app/core/services/modal.service';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ModalService, ModalData } from 'src/app/core/services/modal.service';
 
 @Component({
   selector: 'app-modal',
@@ -9,22 +9,26 @@ import { ModalService } from 'src/app/core/services/modal.service';
 })
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() id!: string;
-  @Input() modalType: 'danger' | 'success' | 'info' | 'warning' = 'info';
-  @Input() modalTitle?: string;
-  @Input() modalDesc?: string;
   public visible = false;
+  private modalSubscription!: Subscription;
+  public modalData: ModalData | null = null;
 
   constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
-    this.modalService.add(this);
+    // S'abonner au service pour écouter les changements
+    this.modalSubscription = this.modalService.getModalData().subscribe(data => {
+      if (data && data.id === this.id) {
+        this.modalData = data;
+        this.open();
+      }
+    });
   }
 
   ngOnDestroy(): void {
-    this.modalService.remove(this.id);
+    this.modalSubscription.unsubscribe();
   }
 
-  // modal.component.ts
   open(): void {
     this.visible = true;
     // Ajouter des classes ou des styles supplémentaires si nécessaire pour l'animation
@@ -36,6 +40,4 @@ export class ModalComponent implements OnInit, OnDestroy {
       this.visible = false;
     }, 200); // Assurez-vous que cela correspond à la durée de votre animation
   }
-
-
 }
