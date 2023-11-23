@@ -15,6 +15,12 @@ export class ModalService {
         return this.modalData.asObservable();
     }
 
+    getModalById(id: string): ModalComponent | undefined {
+        const foundModal = this.modals.find(modal => modal.id === id);
+        console.log('Found modal:', foundModal);
+        return foundModal;
+    }
+
     closeModal() {
         this.modalData.next(null);
     }
@@ -32,7 +38,7 @@ export class ModalService {
 
 export interface ModalData {
     id: string;
-    type: 'success' | 'danger';
+    type: 'success' | 'danger' | 'warning' | 'info';
     title: string;
     description: string;
     buttons: ModalButton[];

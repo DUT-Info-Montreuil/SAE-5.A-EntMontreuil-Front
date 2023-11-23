@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, ElementRef } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ModalService, ModalData } from 'src/app/core/services/modal.service';
 
@@ -9,13 +9,17 @@ import { ModalService, ModalData } from 'src/app/core/services/modal.service';
 })
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() id!: string;
-  public visible = false;
   private modalSubscription!: Subscription;
   public modalData: ModalData | null = null;
+
+  public visible = false;
+  @ViewChild('modalBackdrop') modalBackdrop!: ElementRef;
+  @ViewChild('modalContainer') modalContainer!: ElementRef;
 
   constructor(private modalService: ModalService) { }
 
   ngOnInit(): void {
+    this.modalService.add(this); // Ajouter ce modal à la liste des modals
     // S'abonner au service pour écouter les changements
     this.modalSubscription = this.modalService.getModalData().subscribe(data => {
       if (data && data.id === this.id) {
@@ -26,6 +30,7 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.modalService.remove(this.id); // Supprimer ce modal de la liste des modals
     this.modalSubscription.unsubscribe();
   }
 
@@ -35,9 +40,14 @@ export class ModalComponent implements OnInit, OnDestroy {
   }
 
   close(): void {
-    // Gérer l'animation de fermeture
+    this.modalBackdrop.nativeElement.classList.add('fade-out');
+    this.modalContainer.nativeElement.classList.add('zoom-out');
+
     setTimeout(() => {
       this.visible = false;
-    }, 200); // Assurez-vous que cela correspond à la durée de votre animation
+      this.modalService.closeModal(); // Réinitialiser les données du modal
+      this.modalBackdrop.nativeElement.classList.remove('fade-out');
+      this.modalContainer.nativeElement.classList.remove('zoom-out');
+    }, 200);
   }
 }
