@@ -10,6 +10,8 @@ import { ModalService } from 'src/app/core/services/modal.service';
 export class ModalComponent implements OnInit, OnDestroy {
   @Input() id!: string;
   @Input() modalType: 'danger' | 'success' | 'info' | 'warning' = 'info';
+  @Input() modalTitle?: string;
+  @Input() modalDesc?: string;
   public visible = false;
 
   constructor(private modalService: ModalService) { }
