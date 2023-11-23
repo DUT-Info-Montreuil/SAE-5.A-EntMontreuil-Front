@@ -17,7 +17,6 @@ export class ModalService {
 
     getModalById(id: string): ModalComponent | undefined {
         const foundModal = this.modals.find(modal => modal.id === id);
-        console.log('Found modal:', foundModal);
         return foundModal;
     }
 

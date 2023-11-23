@@ -14,15 +14,18 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
+        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
+        data: { title: 'Tableau de bord' }
       },
       {
         path: 'timetable',
-        loadChildren: () => import('./timetable/timetable.module').then(m => m.TimetableModule)
+        loadChildren: () => import('./timetable/timetable.module').then(m => m.TimetableModule),
+        data: { title: 'Emploi du temps' }
       },
       {
         path: 'absences',
-        loadChildren: () => import('./absences/absences.module').then(m => m.AbsencesModule)
+        loadChildren: () => import('./absences/absences.module').then(m => m.AbsencesModule),
+        data: { title: 'Absences' }
       },
     ]
   },

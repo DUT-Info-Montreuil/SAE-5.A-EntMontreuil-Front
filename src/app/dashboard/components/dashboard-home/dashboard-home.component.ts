@@ -25,7 +25,6 @@ export class DashboardHomeComponent {
 
   closeModal(modalId: string) {
     // Obtenez la référence du modal spécifique et appelez sa méthode `close`
-    console.log('close');
     let modal = this.modalService.getModalById(modalId);
     if (modal) {
       modal.close();

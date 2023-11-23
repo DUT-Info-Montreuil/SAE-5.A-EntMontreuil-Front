@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { filter, map } from 'rxjs';
 
 @Component({
   selector: 'app-sidenav',
@@ -12,14 +13,29 @@ export class SidenavComponent {
   first_name: string = this.auth.getFirstname();
   last_name: string = this.auth.getLastname();
   role: string = this.auth.getRole();
+  currentPageName: string = '';
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
 
   constructor(
     private eRef: ElementRef,
     private router: Router,
-    private auth: AuthService
-  ) { }
+    private auth: AuthService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(() => {
+        let child = this.activatedRoute.firstChild;
+        while (child?.firstChild) {
+          child = child.firstChild;
+        }
+        return child?.snapshot.data['title'] ?? 'Page sans titre';
+      })
+    ).subscribe((title: string) => {
+      this.currentPageName = title;
+    });
+  }
 
   toggleMenu() {
     this.menuActive = !this.menuActive;
