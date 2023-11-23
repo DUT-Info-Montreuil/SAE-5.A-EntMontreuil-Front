@@ -41,6 +41,6 @@ export interface ModalData {
 export interface ModalButton {
     text: string;
     action: () => void;
-    type: 'cancel' | 'danger' | 'success' | 'default';  // Type de bouton
+    type: 'cancel' | 'danger' | 'ok' | 'default';  // Type de bouton
     // autres propriétés comme le style, la classe, etc.
 }
