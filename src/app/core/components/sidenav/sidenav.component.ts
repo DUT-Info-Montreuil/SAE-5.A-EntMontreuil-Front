@@ -2,6 +2,7 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { filter, map } from 'rxjs';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-sidenav',
@@ -54,5 +55,14 @@ export class SidenavComponent {
     ) {
       this.menuActive = false;
     }
+  }
+
+  items?: MenuItem[];
+
+  ngOnInit() {
+    this.items = [
+      { label: 'Add New', icon: 'pi pi-fw pi-plus' },
+      { label: 'Remove', icon: 'pi pi-fw pi-minus' }
+    ];
   }
 }

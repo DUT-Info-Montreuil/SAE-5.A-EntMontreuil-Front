@@ -1,33 +1,29 @@
 import { Component } from '@angular/core';
-import { ModalService } from 'src/app/core/services/modal.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
-  styleUrls: ['./dashboard-home.component.scss']
+  styleUrls: ['./dashboard-home.component.scss'],
+  providers: [ConfirmationService, MessageService]
 })
+
 export class DashboardHomeComponent {
-  constructor(private modalService: ModalService) { }
+  date: Date | undefined;
 
-  // Voici un exemple d'utilisation du service ModalService
-  openAccountDeactivationModal() {
-    this.modalService.openModal({
-      id: 'accountDeactivateModal',
-      type: 'danger',
-      title: 'Désactiver votre compte',
-      description: 'Êtes-vous sûr de vouloir désactiver votre compte ?',
-      buttons: [
-        { text: 'Désactiver', action: () => this.closeModal('accountDeactivateModal'), type: 'danger' },
-        { text: 'Annuler', action: () => this.closeModal('accountDeactivateModal'), type: 'cancel' },
-      ]
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) { }
+
+  confirm(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted' });
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+      }
     });
-  }
-
-  closeModal(modalId: string) {
-    // Obtenez la référence du modal spécifique et appelez sa méthode `close`
-    let modal = this.modalService.getModalById(modalId);
-    if (modal) {
-      modal.close();
-    }
   }
 }

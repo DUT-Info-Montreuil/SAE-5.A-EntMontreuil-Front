@@ -6,7 +6,13 @@ import * as fr from '@angular/common/locales/fr';
 import { httpInterceptorProviders } from './interceptors';
 import { MainLayoutComponent } from './components/main-layout/main-layout.component';
 import { SidenavComponent } from './components/sidenav/sidenav.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import { StyleClassModule } from 'primeng/styleclass';
+import { MenuModule } from 'primeng/menu';
+import { RippleModule } from 'primeng/ripple';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -16,7 +22,13 @@ import { SidenavComponent } from './components/sidenav/sidenav.component';
   imports: [
     CommonModule,
     RouterModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    StyleClassModule,
+    MenuModule,
+    RippleModule,
+    ButtonModule,
+    InputTextModule
   ],
   exports: [
 
