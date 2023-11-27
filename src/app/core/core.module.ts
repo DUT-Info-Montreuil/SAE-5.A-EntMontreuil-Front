@@ -13,6 +13,7 @@ import { MenuModule } from 'primeng/menu';
 import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { InputTextModule } from 'primeng/inputtext';
     MenuModule,
     RippleModule,
     ButtonModule,
-    InputTextModule
+    InputTextModule,
+    CheckboxModule
   ],
   exports: [
 

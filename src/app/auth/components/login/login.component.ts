@@ -6,38 +6,64 @@ import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-password {
+            display: block;
+        }
+
+        :host ::ng-deep .p-password-input {
+          width: 100%;
+          padding: 1rem;
+          margin-bottom: 16px;
+        }
+
+        :host ::ng-deep .p-password .p-icon-wrapper {
+          margin-top: -15px !important;
+          cursor: pointer;
+        }
+    `
+  ],
 })
 
 export class LoginComponent {
 
+  greeting?: string;
   loginForm: FormGroup;
   loginStatusMessage: string = '';
-  isLoading = false;
+  loading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router
   ) {
+    this.setGreeting();
+
     this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
+  setGreeting() {
+    const hour = new Date().getHours();
+    this.greeting = hour < 18 ? 'Bonjour' : 'Bonsoir';
+  }
+
   onSubmit() {
 
-    this.isLoading = true;
-
-    // Marquer tous les champs comme touchés
-    Object.keys(this.loginForm.controls).forEach(field => {
-      const control = this.loginForm.get(field);
-      control?.markAsTouched({ onlySelf: true });
-    });
+    this.loading = true;
 
     if (this.loginForm.invalid) {
-      this.isLoading = false;
+      // Formulaire invalide, marquer tous les champs comme touchés pour afficher les messages d'erreur
+      Object.keys(this.loginForm.controls).forEach(field => {
+        const control = this.loginForm.get(field);
+        control?.markAsTouched({ onlySelf: true });
+      });
+
+      this.loading = false;
       return;
     }
 
@@ -57,14 +83,14 @@ export class LoginComponent {
               localStorage.setItem('username', userInfoResponse.username);
               localStorage.setItem('refreshToken', loginResponse.refresh_token);
 
-              this.isLoading = false;
+              this.loading = false;
               this.router.navigateByUrl('/dashboard'); // Redirect to the dashboard
               console.log(this.authService.getRole());
             },
             error: (userInfoError) => {
               // Handle error from getUserInfo
               this.authService.logout();
-              this.isLoading = false;
+              this.loading = false;
               this.loginStatusMessage = "Une erreur est survenue lors de la récupération des détails de l'utilisateur.";
               console.error(userInfoError);
             }
@@ -73,7 +99,7 @@ export class LoginComponent {
       },
       error: (loginError) => {
 
-        this.isLoading = false;
+        this.loading = false;
 
         if (loginError.status === 400) {
           this.loginStatusMessage = loginError.error.error;
