@@ -81,7 +81,12 @@ export class LoginComponent {
               // Store user information and tokens in localStorage
               localStorage.setItem('id_user', userInfoResponse.personal_info.id);
               localStorage.setItem('username', userInfoResponse.username);
+              localStorage.setItem('firstname', userInfoResponse.user.first_name);
+              localStorage.setItem('lastname', userInfoResponse.user.last_name);
+              localStorage.setItem('username', userInfoResponse.username);
+              localStorage.setItem('isadmin', userInfoResponse.user.isAdmin.toString());
               localStorage.setItem('refreshToken', loginResponse.refresh_token);
+              console.log(localStorage.getItem('isadmin'));
 
               this.loading = false;
               this.router.navigateByUrl('/dashboard'); // Redirect to the dashboard

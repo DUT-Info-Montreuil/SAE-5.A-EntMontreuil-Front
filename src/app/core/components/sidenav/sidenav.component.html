@@ -90,39 +90,55 @@
             </ul>
           </li>
         </ul>
-        <ul class="list-none p-3 m-0">
-          <li>
-            <div pRipple class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer"
-              pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden"
-              leaveActiveClass="slideup">
-              <span class="font-medium">APPLICATION</span>
-              <i class="pi pi-chevron-down"></i>
-            </div>
-            <ul class="list-none p-0 m-0 overflow-hidden">
-              <li>
-                <a pRipple
-                  class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
-                  <i class="pi pi-folder mr-2"></i>
-                  <span class="font-medium">Projects</span>
-                </a>
-              </li>
-              <li>
-                <a pRipple
-                  class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
-                  <i class="pi pi-chart-bar mr-2"></i>
-                  <span class="font-medium">Performance</span>
-                </a>
-              </li>
-              <li>
-                <a pRipple
-                  class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
-                  <i class="pi pi-cog mr-2"></i>
-                  <span class="font-medium">Settings</span>
-                </a>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <div *ngIf="isadmin === 'true'">
+          <ul class="list-none p-3 m-0">
+            <li>
+              <div pRipple class="p-3 flex align-items-center justify-content-between text-600 cursor-pointer"
+                pStyleClass="@next" enterClass="hidden" enterActiveClass="slidedown" leaveToClass="hidden"
+                leaveActiveClass="slideup">
+                <span class="font-medium">ADMINISTRATION</span>
+                <i class="pi pi-chevron-down"></i>
+              </div>
+              <ul class="list-none p-0 m-0 overflow-hidden">
+                <li>
+                  <a pRipple
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
+                    <i class="pi pi-folder mr-2"></i>
+                    <span class="font-medium">Utilisateurs</span>
+                  </a>
+                </li>
+                <li>
+                  <a pRipple
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
+                    <i class="pi pi-folder mr-2"></i>
+                    <span class="font-medium">Formations</span>
+                  </a>
+                </li>
+                <li>
+                  <a pRipple
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
+                    <i class="pi pi-folder mr-2"></i>
+                    <span class="font-medium">Parcours</span>
+                  </a>
+                </li>
+                <li>
+                  <a pRipple
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
+                    <i class="pi pi-folder mr-2"></i>
+                    <span class="font-medium">Salles de classe</span>
+                  </a>
+                </li>
+                <li>
+                  <a pRipple
+                    class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors mb-2">
+                    <i class="pi pi-folder mr-2"></i>
+                    <span class="font-medium">Équipements</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="mt-auto">
         <hr class="mb-3 mx-3 border-top-1 border-none surface-border" />
@@ -146,7 +162,7 @@
                     transition-duration-150 transition-colors gap-2" pStyleClass="@prev" enterClass="hidden"
           enterActiveClass="slidedown" leaveToClass="hidden" leaveActiveClass="slideup">
           <img src="assets/images/sching.gif" class="mr-2" style="width: 28px; height: 28px" />
-          <span class="font-medium">Steven Ching</span>
+          <span class="font-medium">{{ first_name }} {{ last_name }}</span>
           <i class="pi pi-chevron-up ml-auto"></i>
         </a>
       </div>
@@ -164,7 +180,7 @@
         </a>
         <span class="p-input-icon-left">
           <i class="pi pi-search"></i>
-          <input type="text" pInputText class="border-none w-10rem sm:w-20rem" placeholder="Search">
+          <input type="text" pInputText class="border-none w-10rem sm:w-20rem" placeholder="Rechercher">
         </span>
       </div>
       <a pRipple class="cursor-pointer block lg:hidden text-700" pStyleClass="@next" enterClass="hidden"
@@ -193,7 +209,7 @@
                       transition-duration-150 transition-colors">
             <img src="assets/images/sching.gif" class="mr-3 lg:mr-0" style="width: 32px; height: 32px" />
             <div class="block lg:hidden">
-              <div class="text-900 font-medium">Steven Ching</div>
+              <div class="text-900 font-medium">{{ first_name }} {{ last_name }}</div>
               <span class="text-600 font-medium text-sm">Étudiant</span>
             </div>
           </a>
