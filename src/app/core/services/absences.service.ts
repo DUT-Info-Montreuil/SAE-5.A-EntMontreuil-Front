@@ -24,7 +24,6 @@ export class AbsencesService implements OnInit {
     }
 
     getStudentAbsences(): Observable<Absence[]> {
-        return this.http.get<Absence[]>(this.apiURL + '/student/absences', this.httpOptions )
+        return this.http.get<Absence[]>(this.apiURL + '/student/absences', this.httpOptions)
     }
-
 }
