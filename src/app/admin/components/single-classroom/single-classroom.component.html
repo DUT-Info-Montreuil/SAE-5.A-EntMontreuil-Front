@@ -1,2 +1,40 @@
+
+
 <h1 *ngIf="classroomData">Salle de classe: {{ classroomData.name }}</h1>
-<p *ngIf="classroomData">{{ classroomData.capacity }}</p>
+<p *ngIf="classroomData">Capacité: {{ classroomData.capacity }}</p>
+
+<div *ngIf="classroomData && classroomData.materials">
+    <div class="card">
+        <p-table
+            [value]="classroomData.materials"
+            [paginator]="true"
+            [rows]="5"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+            [rowsPerPageOptions]="[10, 25, 50]"
+        >
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width:30%">Id</th>
+                    <th style="width:30%">Équipement</th>
+                    <th style="width:30%">Quantité</th>
+                    <th style="width:10%">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-material>
+                <tr>
+                    <td>{{ material.id }}</td>
+                    <td>{{ material.equipment }}</td>
+                    <td>{{ material.quantity }}</td>
+                    <td> <button class="w3-button w3-blue w3-round-large"><i class="pi pi-pencil"></i> Modifier</button> </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (onClick)="openEquipmentDialog()"></p-button>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+

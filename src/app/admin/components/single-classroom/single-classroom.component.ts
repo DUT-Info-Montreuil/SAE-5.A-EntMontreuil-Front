@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Dialog } from 'primeng/dialog';
 import { Classroom } from 'src/app/core/models/classroom.model';
+import { Equipment } from 'src/app/core/models/equipment.model';
 import { ClassroomService } from 'src/app/core/services/classroom.service';
+import { ClassroomEquipmentDialogComponent } from '../classroom-equipment-dialog/classroom-equipment-dialog.component';
+import { DialogService } from 'primeng/dynamicdialog';
+
 
 @Component({
   selector: 'app-single-classroom',
@@ -11,10 +16,12 @@ import { ClassroomService } from 'src/app/core/services/classroom.service';
 export class SingleClassroomComponent implements OnInit {
   classroomId!: number;
   classroomData!: Classroom;
+  equipmentData!: Equipment[];
 
   constructor(
     private route: ActivatedRoute,
-    private classroomService: ClassroomService
+    private classroomService: ClassroomService,
+    private dialogService: DialogService,
   ) {}
 
   ngOnInit(): void {
@@ -26,7 +33,6 @@ export class SingleClassroomComponent implements OnInit {
       this.classroomService.getClassroomById(this.classroomId).subscribe(
         (classroom: Classroom) => {
           this.classroomData = classroom;
-          console.log(this.classroomData.name);
         },
         (error) => {
           console.error(
@@ -35,6 +41,25 @@ export class SingleClassroomComponent implements OnInit {
           );
         }
       );
+
     }
   }
+
+  openEquipmentDialog(): void {
+    const ref = this.dialogService.open(ClassroomEquipmentDialogComponent, {
+      header: 'Choisir un équipement',
+      width: '500px',
+      data: {
+        classroomId: this.classroomId
+      }
+    });
+  
+    ref.onClose.subscribe((result: any) => {
+      console.log('Dialog closed with result:', result);
+      // Traitez le résultat ici, par exemple, en ajoutant l'équipement avec la quantité à votre liste.
+    });
+  }
+
 }
+
+
