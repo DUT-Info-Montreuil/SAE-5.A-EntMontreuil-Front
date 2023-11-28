@@ -41,13 +41,23 @@
     <ng-template pTemplate="body" let-material>
       <tr>
         <td>{{ material.id }}</td>
-        <td>{{ material.equipment }}</td>
+        <td *ngIf="!material.isEditing" (click)="startEditing(material)">
+          {{ material.equipment }}
+        </td>
+        <td *ngIf="material.isEditing">
+          <input
+            type="text"
+            [(ngModel)]="material.updatedEquipment"
+            (blur)="stopEditing(material)"
+          />
+        </td>
         <td>
           <!-- Boutons avec icônes et tooltips -->
           <p-button
             icon="pi pi-pencil"
             class="p-button-rounded p-button-success p-mr-2"
             tooltip="Modifier"
+            (click)="startEditing(material)"
           ></p-button>
           <p-button
             icon="pi pi-trash"

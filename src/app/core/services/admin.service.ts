@@ -40,4 +40,15 @@ export class AdminService implements OnInit {
       this.httpOptions
     );
   }
+
+  updateMaterial(
+    id: number,
+    material: { datas: { equipment: string } }
+  ): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiURL}/materials/${id}`,
+      material,
+      this.httpOptions
+    );
+  }
 }

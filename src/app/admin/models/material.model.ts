@@ -1,4 +1,7 @@
-export interface Material {
-  equipment: string;
-  id: number;
+export class Material {
+  id!: number;
+  equipment!: string;
+
+  isEditing: boolean = false;
+  updatedEquipment!: string;
 }

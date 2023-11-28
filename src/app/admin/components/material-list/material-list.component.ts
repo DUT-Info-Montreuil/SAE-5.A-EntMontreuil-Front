@@ -80,4 +80,39 @@ export class MaterialListComponent implements OnInit {
     console.log('Handle equipment created event'); // Vérifiez si ce message est affiché dans la console
     this.refreshMaterials(); // Rafraîchir la liste après la création de l'équipement
   }
+
+  // ...
+
+  startEditing(material: Material): void {
+    material.isEditing = true;
+    material.updatedEquipment = material.equipment; // Sauvegardez la valeur d'origine pour la restauration
+  }
+
+  stopEditing(material: Material): void {
+    material.isEditing = false;
+
+    // Vérifiez s'il y a eu des modifications
+    if (material.updatedEquipment !== material.equipment) {
+      // Envoyez la mise à jour au service
+      const materialUpdate = {
+        datas: {
+          equipment: material.updatedEquipment,
+        },
+      };
+      this.adminService
+        .updateMaterial(material.id, materialUpdate)
+        .subscribe(() => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Modification réussie',
+            detail: `L'équipement a été modifié avec succès.`,
+          });
+
+          // Mettez à jour la valeur d'équipement avec la nouvelle valeur
+          material.equipment = material.updatedEquipment;
+        });
+    }
+  }
+
+  // ...
 }
