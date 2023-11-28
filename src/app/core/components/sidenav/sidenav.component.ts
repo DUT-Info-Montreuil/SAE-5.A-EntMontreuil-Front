@@ -14,6 +14,7 @@ export class SidenavComponent {
   first_name: string = this.auth.getFirstname();
   last_name: string = this.auth.getLastname();
   role: string = this.auth.getRole();
+  isadmin: string = this.auth.getIsAdmin();
   currentPageName: string = '';
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
