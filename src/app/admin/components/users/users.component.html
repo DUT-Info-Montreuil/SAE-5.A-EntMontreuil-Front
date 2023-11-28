@@ -1,1 +1,27 @@
-<p>users works!</p>
+<!-- users.component.html -->
+<p-table [value]="users" [paginator]="true" [rows]="13">
+    <!-- Votre en-tête de tableau -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Pseudo</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Admin</th>
+        </tr>
+    </ng-template>
+    <!-- Corps du tableau -->
+    <ng-template pTemplate="body" let-user>
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.first_name }}</td>
+            <td>{{ user.last_name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.role.name }}</td>
+            <td>{{ user.isAdmin }}</td>
+        </tr>
+    </ng-template>
+</p-table>

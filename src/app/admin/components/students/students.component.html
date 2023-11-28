@@ -1,0 +1,39 @@
+<p>students works!</p>
+<!-- users.component.html -->
+<p-table [value]="students" [paginator]="true" [rows]="13">
+    <!-- Votre en-tête de tableau -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Pseudo</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+
+            <th>NIP</th>
+            <th>INE</th>
+            <th>Apprentie</th>
+            <th>Degree</th>
+            <th>Promotion</th>
+            <th>TD</th>
+            <th>TP</th>
+        </tr>
+    </ng-template>
+    <!-- Corps du tableau -->
+    <ng-template pTemplate="body" let-student>
+        <tr>
+            <td>{{ student.personal_info.id }}</td>
+            <td>{{ student.user.username }}</td>
+            <td>{{ student.user.first_name }}</td>
+            <td>{{ student.user.last_name }}</td>
+            <td>{{ student.user.email }}</td>
+            <td>{{ student.personal_info.nip }}</td>
+            <td>{{ student.personal_info.ine  }}</td>
+            <td>{{ student.personal_info.apprentice  }}</td>
+            <td>{{ student.academic_info.degree.name }}</td>
+            <td>BUT{{ student.academic_info.promotion.level }}</td>
+            <td>{{ student.academic_info.td.name }}</td>
+            <td>{{ student.academic_info.tp.name }}</td>
+        </tr>
+    </ng-template>
+</p-table>

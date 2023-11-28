@@ -1,0 +1,30 @@
+<p>students works!</p>
+<!-- users.component.html -->
+<p-table [value]="teachers" [paginator]="true" [rows]="13">
+    <!-- Votre en-tête de tableau -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Pseudo</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Initial</th>
+            <th>Bureau</th>
+            <th>Admin</th>
+        </tr>
+    </ng-template>
+    <!-- Corps du tableau -->
+    <ng-template pTemplate="body" let-teacher>
+        <tr>
+            <td>{{ teacher.personal_info.id }}</td>
+            <td>{{ teacher.user.username }}</td>
+            <td>{{ teacher.user.first_name }}</td>
+            <td>{{ teacher.user.last_name }}</td>
+            <td>{{ teacher.user.email }}</td>
+            <td>{{ teacher.personal_info.initial }}</td>
+            <td>{{ teacher.personal_info.desktop  }}</td>
+            <td>{{ teacher.user.isAdmin }}</td>
+        </tr>
+    </ng-template>
+</p-table>
