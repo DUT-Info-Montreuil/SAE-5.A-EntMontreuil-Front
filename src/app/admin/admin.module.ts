@@ -9,8 +9,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { CreateMaterialComponent } from './components/create-material/create-material.component';
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
-  declarations: [MaterialListComponent],
+  declarations: [MaterialListComponent, CreateMaterialComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -20,6 +22,7 @@ import { ToastModule } from 'primeng/toast';
     InputTextModule,
     ConfirmDialogModule,
     ToastModule,
+    DialogModule,
   ],
   providers: [ConfirmationService, MessageService],
 })

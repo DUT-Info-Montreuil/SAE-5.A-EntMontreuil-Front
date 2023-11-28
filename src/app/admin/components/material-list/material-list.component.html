@@ -6,6 +6,7 @@
       icon="pi pi-plus"
       label="Créer un équipement"
       class="custom-button"
+      (click)="showCreateMaterialDialog()"
     ></p-button>
   </div>
 
@@ -66,3 +67,7 @@
 
 <p-confirmDialog></p-confirmDialog>
 <p-toast></p-toast>
+<app-create-material
+  [display]="displayCreateMaterialDialog"
+  (equipmentCreated)="handleEquipmentCreated()"
+></app-create-material>

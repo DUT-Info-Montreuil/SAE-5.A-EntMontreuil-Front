@@ -33,4 +33,11 @@ export class AdminService implements OnInit {
       this.httpOptions
     );
   }
+  createMaterial(material: { datas: { equipment: string } }): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiURL}/materials`,
+      material,
+      this.httpOptions
+    );
+  }
 }
