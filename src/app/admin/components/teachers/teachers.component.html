@@ -1,5 +1,10 @@
 <!-- users.component.html -->
-<p-table [value]="teachers" [paginator]="true" [rows]="13">
+<p-table #dt2
+[value]="teachers"
+dataKey="id"
+[rows]="10"
+[paginator]="true"
+>
     <!-- Votre en-tête de tableau -->
     <ng-template pTemplate="header">
         <tr>
@@ -11,6 +16,32 @@
             <th>Initial</th>
             <th>Bureau</th>
             <th>Admin</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th>
+                <p-columnFilter type="text" field="user.username"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.first_name"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.last_name"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.email"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="personal_info.initial"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="personal_info.desktop"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="boolean" field="user.isAdmin"></p-columnFilter>
+            </th>
+            
         </tr>
     </ng-template>
     <!-- Corps du tableau -->
@@ -24,12 +55,9 @@
             <td>{{ teacher.personal_info.initial }}</td>
             <td>{{ teacher.personal_info.desktop  }}</td>
             <td>
-                <span *ngIf="teacher.user.isAdmin; else notIsAdmin">
-                    <i class="pi pi-check" style="color: green;"></i>
-                </span>
-                <ng-template #notIsAdmin>
-                    <i class="pi pi-times" style="color: red;"></i>
-                </ng-template>
+                <i class="pi"
+                    [ngClass]="{ 'pi-check-circle': teacher.user.isAdmin, 'pi-times-circle': !teacher.user.isAdmin }"
+                    [ngStyle]="{ 'color': teacher.user.isAdmin ? 'green' : 'red' }"></i>
             </td>
         </tr>
     </ng-template>
