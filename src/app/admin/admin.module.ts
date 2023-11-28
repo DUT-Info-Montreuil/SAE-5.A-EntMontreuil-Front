@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 @NgModule({
   declarations: [MaterialListComponent],
   imports: [
@@ -15,6 +18,9 @@ import { InputTextModule } from 'primeng/inputtext';
     TableModule,
     ButtonModule,
     InputTextModule,
+    ConfirmDialogModule,
+    ToastModule,
   ],
+  providers: [ConfirmationService, MessageService],
 })
 export class AdminModule {}

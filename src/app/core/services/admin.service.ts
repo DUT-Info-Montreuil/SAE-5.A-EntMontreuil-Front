@@ -26,4 +26,11 @@ export class AdminService implements OnInit {
       this.httpOptions
     );
   }
+
+  deleteMaterial(id: number): Observable<any> {
+    return this.http.delete<any>(
+      `${this.apiURL}/materials/${id}`,
+      this.httpOptions
+    );
+  }
 }
