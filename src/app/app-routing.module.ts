@@ -31,14 +31,12 @@ const routes: Routes = [
         data: { title: 'Absences' },
       },
       {
-
-        path: 'admin/materials',
+        path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
         data: { title: 'Équipements' },
       },
     ],
-
   },
 ];
 
