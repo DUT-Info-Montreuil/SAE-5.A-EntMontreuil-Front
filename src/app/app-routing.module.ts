@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: '/dashboard',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: '',
@@ -14,25 +14,31 @@ const routes: Routes = [
     children: [
       {
         path: 'dashboard',
-        loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
-        data: { title: 'Tableau de bord' }
+        loadChildren: () =>
+          import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+        data: { title: 'Tableau de bord' },
       },
       {
         path: 'timetable',
-        loadChildren: () => import('./timetable/timetable.module').then(m => m.TimetableModule),
-        data: { title: 'Emploi du temps' }
+        loadChildren: () =>
+          import('./timetable/timetable.module').then((m) => m.TimetableModule),
+        data: { title: 'Emploi du temps' },
       },
       {
         path: 'absences',
-        loadChildren: () => import('./absences/absences.module').then(m => m.AbsencesModule),
-        data: { title: 'Absences' }
+        loadChildren: () =>
+          import('./absences/absences.module').then((m) => m.AbsencesModule),
+        data: { title: 'Absences' },
       },
       {
-        path: 'admin',
-        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
-        data: { title: 'Admin' }
+
+        path: 'admin/materials',
+        loadChildren: () =>
+          import('./admin/admin.module').then((m) => m.AdminModule),
+        data: { title: 'Équipements' },
       },
-    ]
+    ],
+
   },
 ];
 
@@ -40,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

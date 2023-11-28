@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="header">
+    <h1 class="h1-title">Gestion des équipements</h1>
+    <p-button
+      severity="success"
+      icon="pi pi-plus"
+      label="Créer un équipement"
+      class="custom-button"
+      (click)="showCreateMaterialDialog()"
+    ></p-button>
+  </div>
+
+  <!-- Barre de recherche PrimeNG -->
+  <div class="search-bar">
+    <span class="p-input-icon-left">
+      <i class="pi pi-search"></i>
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        placeholder="Rechercher un matériel..."
+      />
+    </span>
+  </div>
+
+  <!-- Tableau PrimeNG avec pagination et responsive layout -->
+  <p-table
+    [value]="filteredMaterials"
+    [paginator]="true"
+    [rows]="9"
+    [responsiveLayout]="scroll"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>ID</th>
+        <th>Nom de l'équipement</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-material>
+      <tr>
+        <td>{{ material.id }}</td>
+        <td *ngIf="!material.isEditing" (click)="startEditing(material)">
+          {{ material.equipment }}
+        </td>
+        <td *ngIf="material.isEditing">
+          <input
+            type="text"
+            [(ngModel)]="material.updatedEquipment"
+            (blur)="stopEditing(material)"
+          />
+        </td>
+        <td>
+          <!-- Boutons avec icônes et tooltips -->
+          <p-button
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-success p-mr-2"
+            tooltip="Modifier"
+            (click)="startEditing(material)"
+          ></p-button>
+          <p-button
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger"
+            (onClick)="confirmDelete(material)"
+          ></p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3">Aucun matériel trouvé.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>
+<app-create-material
+  [display]="displayCreateMaterialDialog"
+  (equipmentCreated)="handleEquipmentCreated()"
+></app-create-material>
