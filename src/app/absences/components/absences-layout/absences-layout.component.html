@@ -1,6 +1,12 @@
 <div class="absences-layout">
-    <h1>Absences</h1>
-    <!-- Vous pouvez ajouter des composants de carte de statistiques ici -->
+    <div *ngIf="absences | async as absencesData">
 
-    <!-- Ajoutez d'autres composants ou éléments de tableau de bord ici -->
+        <h2>Vous avez {{ absencesData.length }} absences pour un total de {{ this.calculateTotalHours(absencesData) }}h
+            d'absence</h2>
+
+        <app-single-absence *ngFor="let absence of absencesData" [absence]="absence">
+
+        </app-single-absence>
+    </div>
+
 </div>

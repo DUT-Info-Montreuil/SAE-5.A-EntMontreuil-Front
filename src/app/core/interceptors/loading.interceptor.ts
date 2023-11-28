@@ -19,7 +19,7 @@ export class LoadingInterceptor implements HttpInterceptor {
     // Définir un délai pour afficher la topbar
     timeout = window.setTimeout(() => {
       topbar.show();
-    }, 500);
+    }, 1000);
 
     return next.handle(req).pipe(
       tap(

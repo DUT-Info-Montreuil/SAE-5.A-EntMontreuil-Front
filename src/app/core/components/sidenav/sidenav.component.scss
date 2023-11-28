@@ -1,60 +1,9 @@
-.main-layout {
-  display: flex; /* Utilisez flexbox pour aligner les éléments horizontalement */
-  height: 100vh; /* Assurez-vous que le layout prend toute la hauteur de la fenêtre */
-}
-
-.active {
+.active-navlink {
   color: rgb(37 99 235);
   background-color: rgb(239, 244, 255);
 }
 
-#application-sidebar {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.user-profile-container {
-  position: relative;
-}
-
-.user-profile {
-  // border-top: 1px solid #eaeaea; /* Ajoute une ligne séparatrice */
-  margin-top: auto;
-}
-
-.user-profile img {
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-#dropdownMenu {
-  position: absolute;
-  bottom: 100%; /* Positionner au bas de l'élément User Profile */
-  background-color: rgb(243 244 246);
-  opacity: 0; /* Commencer avec une opacité de 0 pour un effet de fade in */
-  transition: transform 0.3s ease, visibility 0.3s ease, opacity 0.3s ease;
-  transform: translateY(0); /* Commencer à la position normale */
-  visibility: hidden; /* Rendre le menu invisible par défaut */
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  width: 214px;
-  border: 1px solid rgb(229 231 235);
-}
-
-#dropdownMenu.active {
-  transform: translateY(-5%); /* Déplacer le menu vers le haut */
-  visibility: visible; /* Rendre le menu visible lorsqu'il est actif */
-  opacity: 1;
-}
-
-.active-menu {
-  background-color: rgb(243 244 246);
-}
-
-.prevent-select {
-  -webkit-user-select: none; /* Safari */
-  -ms-user-select: none; /* IE 10 and IE 11 */
-  user-select: none; /* Standard syntax */
+.active-navlink:hover {
+  color: rgb(37 99 235) !important;
+  background-color: rgb(239, 244, 255) !important;
 }

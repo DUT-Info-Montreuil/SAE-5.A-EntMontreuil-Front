@@ -5,8 +5,13 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 import { AuthRoutingModule } from './auth-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { Ripple, RippleModule } from 'primeng/ripple';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
+import { MessagesModule } from 'primeng/messages'
+import { MessageModule } from 'primeng/message'
 
 @NgModule({
   declarations: [
@@ -18,7 +23,14 @@ import { RouterModule } from '@angular/router';
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    ButtonModule,
+    RippleModule,
+    CheckboxModule,
+    InputTextModule,
+    PasswordModule,
+    MessagesModule,
+    MessageModule
   ]
 })
 export class AuthModule { }

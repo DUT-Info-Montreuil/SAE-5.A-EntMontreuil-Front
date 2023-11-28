@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
+import { catchError, map } from "rxjs/operators";
+import { jwtDecode } from "jwt-decode";
 
 @Injectable({
     providedIn: "root"
@@ -29,6 +30,28 @@ export class AuthService {
             );
     }
 
+    // Méthode pour rafraîchir le token d'accès
+    refreshToken(): Observable<string> {
+        const refreshToken = this.getRefreshToken();
+
+        return this.http.get<any>(this.apiURL + '/refresh_token', {
+            headers: new HttpHeaders({ 'Authorization': `Bearer ${refreshToken}` }),
+        }).pipe(
+            map(response => response.new_access_token),
+            catchError(error => {
+                return throwError(error);
+            })
+        );
+    }
+
+    // Récupérer les informations de l'utilisateur
+    getUserInfo(): Observable<any> {
+        return this.http.get<any>(this.apiURL + '/user/info', this.httpOptions)
+            .pipe(
+                catchError(this.errorHandler)
+            );
+    }
+
     errorHandler(error: any) {
         return throwError(error);
     }
@@ -37,12 +60,57 @@ export class AuthService {
         return localStorage.getItem('authToken') || '';
     }
 
+    getRefreshToken(): string {
+        return localStorage.getItem('refreshToken') || '';
+    }
+
+    getIsAdmin(): string {
+        return localStorage.getItem('isadmin') || '';
+    }
+
+    getRole(): string {
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        // Liste des rôles autorisés
+        const validRoles = ['admin', 'user', 'teacher', 'student'];
+
+        // Vérifier si le rôle extrait du jeton est l'un des rôles valides
+        const role = validRoles.includes(decodedToken.sub.role) ? decodedToken.sub.role : '';
+
+        return role;
+    }
+
+
+    setToken(authToken: string): void {
+        localStorage.setItem('authToken', authToken);
+    }
+
     getFirstname(): string {
-        return localStorage.getItem('first_name') || '';
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const role = decodedToken.sub.first_name;
+
+        return role;
     }
 
     getLastname(): string {
-        return localStorage.getItem('last_name') || '';
+        const token = this.getToken();
+        if (!token) {
+            return ''; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const lastname = decodedToken.sub.last_name;
+
+        return lastname;
     }
 
     getUserId(): string {
@@ -52,4 +120,15 @@ export class AuthService {
     logout(): void {
         localStorage.clear();
     }
+}
+
+
+interface JwtPayload {
+    sub: {
+        id: number;
+        first_name: string;
+        last_name: string;
+        username: string;
+        role: string;
+    };
 }

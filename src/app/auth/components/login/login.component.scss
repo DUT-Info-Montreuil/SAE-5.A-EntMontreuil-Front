@@ -4,6 +4,11 @@
     }
 }
 
+.bg-image-login {
+    background-image: url("/assets/images/fluid.svg");
+    background-position: center;
+}
+
 .dangerField {
     @apply border-red-500 focus:border-red-500 focus:ring-red-500;
 }

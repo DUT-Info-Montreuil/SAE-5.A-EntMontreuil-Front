@@ -1,175 +1,41 @@
-<main class="dark:bg-slate-900" style="height: 100vh">
-  <div class="relative bg-gradient-to-bl from-blue-100 via-transparent dark:from-blue-950 dark:via-transparent"
-    style="height: 100vh; display: flex; justify-content: center; align-items: center">
-    <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
-      <div class="grid items-center md:grid-cols-1 gap-8 lg:gap-12">
+<main>
+  <div class="flex h-screen">
+    <div class="surface-section w-full md:w-5 p-6 md:p-7">
+      <div class="mb-5">
+        <img class="logo" src="assets/images/logo-iut-black.png" alt="Image" width="130" class="mb-3">
+        <div class="text-900 text-3xl font-medium mb-3 mt-3">{{ greeting }},</div>
+        <span class="text-600 font-medium mr-2">Connectez-vous pour accéder à ce service.</span>
+      </div>
 
-        <!-- Annonce personnalisée (à venir?) -->
-        <!-- <div>
-          <p
-            class="inline-block text-sm font-medium bg-clip-text bg-gradient-to-l from-blue-600 to-violet-500 text-transparent dark:from-blue-400 dark:to-violet-400">
-            Espace numérique de travail de
-          </p>
+      <div *ngIf="loginStatusMessage" class="login-status mb-5 w-full">
+        <p class="text-sm text-red-500 font-semibold">{{ loginStatusMessage }}</p>
+      </div>
+
+      <div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <label for="username" class="block text-900 font-medium mb-2">Identifiant</label>
+          <input id="username" type="text" pInputText class="w-full mb-3 p-3" formControlName="username"
+            [ngClass]="{'ng-invalid ng-dirty': loginStatusMessage }">
+
+          <label for="password" class="block text-900 font-medium mb-2">Mot de passe</label>
+          <p-password id="password" [toggleMask]="true" [feedback]="false" class="w-full" formControlName="password"
+            [ngClass]="{'ng-invalid ng-dirty': loginStatusMessage }"></p-password>
 
 
-          <div class="mt-4 md:mb-12 max-w-2xl">
-            <h1 class="mb-4 font-semibold text-gray-800 text-4xl lg:text-5xl dark:text-gray-300">
-              IUT de Montreuil
-            </h1>
+          <div class="flex align-items-center justify-content-between mb-6">
+            <div class="flex align-items-center">
+              <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+              <label for="rememberme2">Rester connecté</label>
+            </div>
+            <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+              routerLink="/auth/reset-password">Mot de passe oublié ?</a>
           </div>
 
-        </div> -->
-
-        <div class="m-auto">
-          <img class="logo" src="./assets/images/logo-iut-black.png" width="200px">
-        </div>
-
-        <div>
-          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="lg:max-w-lg lg:mx-auto lg:me-0 ms-auto">
-              <div class="p-4 sm:p-7 flex flex-col bg-white rounded-2xl shadow-lg dark:bg-slate-900">
-
-                <div class="text-center">
-                  <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
-                    Connexion
-                  </h1>
-
-                  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                    Vous devez être connecté pour accéder à ce service.
-                  </p>
-
-                  <div *ngIf="loginStatusMessage" class="mt-4 login-status">
-                    <p class="text-sm text-red-500 font-semibold">{{ loginStatusMessage }}</p>
-                  </div>
-                </div>
-
-                <div class="mt-5">
-                  <div class="grid grid-cols-1 gap-4">
-
-                    <div>
-                      <div class="relative">
-                        <input
-                          [class.dangerField]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-                          type="text" id="username" class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent
-                        focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none
-                        dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 focus:pt-6
-                        focus:pb-2 [&:not(:placeholder-shown)]:pt-6 [&:not(:placeholder-shown)]:pb-2 autofill:pt-6
-                        autofill:pb-2" placeholder="" formControlName="username" />
-                        <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
-                          <svg class="flex-shrink-0 h-4 w-4 text-red-500" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <line x1="12" x2="12" y1="8" y2="12" />
-                            <line x1="12" x2="12.01" y1="16" y2="16" />
-                          </svg>
-                        </div>
-                        <label for="username"
-                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:text-xs peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500">Identifiant</label>
-                      </div>
-                      <p *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
-                        class="text-sm text-red-600 mt-2" id="hs-validation-name-error-helper">Ce champs est requis.</p>
-                    </div>
-
-                    <div class="relative col-span-full">
-                      <div class="relative">
-                        <input
-                          [class.dangerField]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                          type="password" id="password"
-                          class="peer p-4 block w-full border-gray-200 rounded-lg text-sm placeholder:text-transparent focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600 focus:pt-6 focus:pb-2 [&:not(:placeholder-shown)]:pt-6 [&:not(:placeholder-shown)]:pb-2 autofill:pt-6 autofill:pb-2"
-                          placeholder="" formControlName="password" />
-
-                        <button type="button" data-hs-toggle-password='{
-                            "target": "#password"
-                          }'
-                          class="absolute mt-1.5 top-0 end-0 p-3.5 rounded-e-md dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                          <svg class="flex-shrink-0 w-3.5 h-3.5 text-gray-400 dark:text-neutral-600" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <path class="hs-password-active:hidden" d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
-                            <path class="hs-password-active:hidden"
-                              d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68" />
-                            <path class="hs-password-active:hidden"
-                              d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61" />
-                            <line class="hs-password-active:hidden" x1="2" x2="22" y1="2" y2="22" />
-                            <path class="hidden hs-password-active:block"
-                              d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                            <circle class="hidden hs-password-active:block" cx="12" cy="12" r="3" />
-                          </svg>
-                        </button>
-
-                        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                          class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
-                          <svg class="flex-shrink-0 h-4 w-4 text-red-500 mr-7" xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <line x1="12" x2="12" y1="8" y2="12" />
-                            <line x1="12" x2="12.01" y1="16" y2="16" />
-                          </svg>
-                        </div>
-                        <label for="password"
-                          class="absolute top-0 start-0 p-4 h-full text-sm truncate pointer-events-none transition ease-in-out duration-100 border border-transparent dark:text-white peer-disabled:opacity-50 peer-disabled:pointer-events-none peer-focus:text-xs peer-focus:-translate-y-1.5 peer-focus:text-gray-500 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:-translate-y-1.5 peer-[:not(:placeholder-shown)]:text-gray-500">
-                          Mot de passe</label>
-                      </div>
-                      <p *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                        class="text-sm text-red-600 mt-2" id="hs-validation-name-error-helper">Ce champs est requis.</p>
-                    </div>
-
-                    <div class="relative col-span-full">
-                      <a class="cursor-pointer text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 float-right"
-                        routerLink="/auth/reset-password">Mot
-                        de
-                        passe oublié ?</a>
-                    </div>
-                  </div>
-
-                  <div class="mt-5">
-                    <button type="submit"
-                      class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                      Se connecter
-                    </button>
-                  </div>
-
-                  <div class="mt-5">
-                    <div
-                      class="bg-blue-100 border border-blue-200 text-gray-800 rounded-lg p-4 dark:bg-blue-800/10 dark:border-blue-900 dark:text-white"
-                      role="alert">
-                      <div class="flex">
-                        <div class="flex-shrink-0">
-                          <svg class="flex-shrink-0 h-4 w-4 mt-1" xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M12 16v-4" />
-                            <path d="M12 8h.01" />
-                          </svg>
-                        </div>
-                        <div class="ms-3">
-                          <h3 class="font-semibold">
-                            N'oubliez pas de vous déconnecter
-                          </h3>
-                          <div class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                            Pour des raisons de sécurité, veuillez vous déconnecter et fermer votre navigateur lorsque
-                            vous avez fini d'accéder aux services authentifiés.
-                          </div>
-                          <div class="mt-4">
-                            <button type="button"
-                              class="inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent text-blue-600 hover:text-blue-800 disabled:opacity-50 disabled:pointer-events-none dark:text-blue-500 dark:hover:text-blue-400 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600">
-                              En savoir plus
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
+          <button type="submit" [loading]="loading" pButton pRipple label="Se connecter" class="w-full p-3"></button>
+        </form>
       </div>
+    </div>
+    <div class="hidden md:block w-6 bg-no-repeat bg-cover bg-image-login w-8">
     </div>
   </div>
 </main>
