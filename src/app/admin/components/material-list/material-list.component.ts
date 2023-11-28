@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Material } from '../../models/material.model';
 import { AdminService } from '../../../core/services/admin.service';
-
 @Component({
   selector: 'app-material-list',
   templateUrl: './material-list.component.html',
@@ -11,7 +10,7 @@ export class MaterialListComponent implements OnInit {
   materials: Material[] = [];
   filteredMaterials: Material[] = [];
   searchQuery: string = '';
-
+  scroll = 'scroll';
   constructor(private adminService: AdminService) {}
 
   ngOnInit(): void {
