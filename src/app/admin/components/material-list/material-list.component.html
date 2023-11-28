@@ -1,6 +1,17 @@
+<div class="search-bar">
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    (input)="onSearch()"
+    placeholder="Rechercher un matériel..."
+  />
+</div>
+
 <div class="materials-container">
-  <div *ngIf="materials && materials.length > 0; else noMaterials">
-    <div class="material-item" *ngFor="let material of materials">
+  <div
+    *ngIf="filteredMaterials && filteredMaterials.length > 0; else noMaterials"
+  >
+    <div class="material-item" *ngFor="let material of filteredMaterials">
       <p>{{ material.equipment }}</p>
     </div>
   </div>
