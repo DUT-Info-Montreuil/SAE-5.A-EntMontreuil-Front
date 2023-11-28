@@ -1,3 +1,10 @@
-<div>
-  <p>works</p>
+<div class="materials-container">
+  <div *ngIf="materials && materials.length > 0; else noMaterials">
+    <div class="material-item" *ngFor="let material of materials">
+      <p>{{ material.equipment }}</p>
+    </div>
+  </div>
+  <ng-template #noMaterials>
+    <p>Aucun matériel trouvé.</p>
+  </ng-template>
 </div>

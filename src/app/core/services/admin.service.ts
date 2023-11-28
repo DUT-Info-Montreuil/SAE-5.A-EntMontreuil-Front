@@ -22,7 +22,7 @@ export class AdminService implements OnInit {
 
   getMaterials(): Observable<Material[]> {
     return this.http.get<Material[]>(
-      this.apiURL + '/material',
+      this.apiURL + '/materials',
       this.httpOptions
     );
   }

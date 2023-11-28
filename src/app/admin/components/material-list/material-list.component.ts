@@ -12,5 +12,9 @@ export class MaterialListComponent implements OnInit {
 
   constructor(private adminService: AdminService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.adminService.getMaterials().subscribe((materials) => {
+      this.materials = materials;
+    });
+  }
 }

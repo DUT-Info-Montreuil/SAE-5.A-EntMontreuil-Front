@@ -5,7 +5,7 @@ import { MaterialListComponent } from './components/material-list/material-list.
 
 const routes: Routes = [
   {
-    path: 'materials',
+    path: '',
     component: MaterialListComponent,
     canActivate: [AuthGuard],
   },
