@@ -1,30 +1,20 @@
-import { Injectable, OnInit } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError } from "rxjs/operators";
-import { Classroom } from "../models/classroom.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Classroom } from '../models/classroom.model';
 
 @Injectable({
-    providedIn: "root"
+  providedIn: 'root',
 })
-export class ClassroomService implements OnInit {
+export class ClassroomService {
+  private apiUrl = 'https://localhost:5050'; // Remplacez par l'URL de base de votre API
 
-    private apiURL = 'https://localhost:5050';
+  constructor(private http: HttpClient) {}
 
-    httpOptions = {
-        headers: new HttpHeaders({
-            'Content-Type': 'application/json'
-        })
-    }
-
-    constructor(private http: HttpClient) { }
-
-    ngOnInit(): void {
-
-    }
-
-    getClassroomById(id:number): Observable<Classroom> {
-        return this.http.get<Classroom>(`${this.apiURL}/classrooms/${id}`, this.httpOptions);
-    }
-    
+  getClassroomById(id: number): Observable<Classroom> {
+    return this.http
+      .get<Classroom[]>(`${this.apiUrl}/classrooms/${id}`)
+      .pipe(map((classrooms) => classrooms[0]));
+  }
 }

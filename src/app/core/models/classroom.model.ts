@@ -1,6 +1,8 @@
+import { ClassroomMaterial } from './classroom_material.model';
+
 export interface Classroom {
-    capacity: number;
-    id: number;
-    materials: string;
-    name: string;
+  capacity: number;
+  id: number;
+  materials: ClassroomMaterial[];
+  name: string;
 }
