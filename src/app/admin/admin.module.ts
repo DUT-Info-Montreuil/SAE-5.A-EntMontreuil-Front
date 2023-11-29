@@ -17,6 +17,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { DialogModule } from 'primeng/dialog';
+import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
 
 
 
@@ -28,7 +29,8 @@ import { DialogModule } from 'primeng/dialog';
     StudentsComponent,
     TeachersComponent,
     AddUsersComponent,
-    AddStudentsComponent
+    AddStudentsComponent,
+    AddTeachersComponent
   ],
   imports: [
     CommonModule,

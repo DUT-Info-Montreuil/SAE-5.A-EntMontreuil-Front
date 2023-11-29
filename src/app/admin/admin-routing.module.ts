@@ -6,6 +6,7 @@ import { StudentsComponent } from "./components/students/students.component";
 import { TeachersComponent } from "./components/teachers/teachers.component";
 import { AddUsersComponent } from "./components/form/add-users/add-users.component";
 import { AddStudentsComponent } from "./components/form/add-students/add-students.component";
+import { AddTeachersComponent } from "./components/form/add-teachers/add-teachers.component";
 
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
     { path: 'teachers', component: TeachersComponent, canActivate: [AuthGuard] },
     { path: 'users/add', component: AddUsersComponent, canActivate: [AuthGuard] },
     { path: 'students/add', component: AddStudentsComponent, canActivate: [AuthGuard] },
+    { path: 'teachers/add', component: AddTeachersComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({
