@@ -15,6 +15,8 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AddStudentsComponent } from './components/form/add-students/add-students.component';
+import { DialogModule } from 'primeng/dialog';
 
 
 
@@ -25,7 +27,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     UsersComponent,
     StudentsComponent,
     TeachersComponent,
-    AddUsersComponent
+    AddUsersComponent,
+    AddStudentsComponent
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,8 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     RadioButtonModule,
     AutoCompleteModule,
     ReactiveFormsModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    DialogModule
   ]
 })
 export class AdminModule { }

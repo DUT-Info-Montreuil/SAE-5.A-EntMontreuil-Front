@@ -27,7 +27,7 @@ export class AddUsersComponent {
       first_name: ['', Validators.required],
       last_name: ['', Validators.required],
       email: ['', Validators.required],
-      admin: ['', Validators.required],
+      admin: [''],
       role: ['', Validators.required]
     });
   }
@@ -41,17 +41,12 @@ export class AddUsersComponent {
 
   filterRoles(event: any) {
     const query = event.query;
-    console.log('Query:', query); // Vérifiez si la requête est correctement capturée
-    // Filtrez les rôles en fonction de 'query' et mettez à jour filteredRoles
     this.filteredRoles = this.allRoles.filter((role) => {
       return role.name.toLowerCase().includes(query.toLowerCase());
     });
-    console.log('Filtered Roles:', this.filteredRoles); // Vérifiez les rôles filtrés
   }
 
   onSubmit() {
-    // To get form values, you can access them using the form controls
-    console.log('Form values:', this.userForm.value);
     const { username, password,first_name, last_name, role, email, admin  } = this.userForm.value;
     if (admin[0] == 'true') {
       this.isAdmin = true;
@@ -74,7 +69,6 @@ export class AddUsersComponent {
       error: (loginError) => {
   
         if (loginError.status === 400) {
-          console.log(loginError.error.error);
           this.ErrorMessage = loginError.error.error;
           this.UserAddedMessage = '';
         

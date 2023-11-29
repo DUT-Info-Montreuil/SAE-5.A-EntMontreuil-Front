@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable, catchError, throwError } from "rxjs";
 import { Student } from "../models/students.model";
 
 @Injectable({
@@ -24,5 +24,17 @@ export class StudentsService implements OnInit {
 
     getAllStudents(): Observable<Student[]> {
         return this.http.get<Student[]>(this.apiURL + '/students?output_format=model', this.httpOptions)
+    }
+
+    errorHandler(error: any) {
+        return throwError(error);
+    }
+
+    addStudent(username: string,  first_name: string,last_name: string, email: string, ine: string,apprentice: boolean,nip: string) : Observable<any>{
+        
+        return this.http.post<any>(this.apiURL + '/students', JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email}, apprentice , ine, nip}}), this.httpOptions)
+        .pipe(
+            catchError(this.errorHandler)
+        );
     }
 }
