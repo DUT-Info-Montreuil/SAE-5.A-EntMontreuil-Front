@@ -1,54 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { DialogService, DynamicDialogRef, DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { ClassroomService } from 'src/app/core/services/classroom.service'; // Remplacez par le bon chemin
-import { Equipment } from 'src/app/core/models/equipment.model'; // Remplacez par le bon chemin
-import { ActivatedRoute } from '@angular/router';
-
+import { Component, OnInit, Input } from '@angular/core';
+import { ClassroomService } from 'src/app/core/services/classroom.service';
+import { Equipment } from 'src/app/core/models/equipment.model';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 @Component({
   selector: 'app-classroom-equipment-dialog',
   templateUrl: './classroom-equipment-dialog.component.html',
-  styleUrls: ['./classroom-equipment-dialog.component.scss'], // Assurez-vous que le chemin est correct
+  styleUrls: ['./classroom-equipment-dialog.component.scss']
 })
-
 export class ClassroomEquipmentDialogComponent implements OnInit {
   availableEquipments: Equipment[] = [];
-  selectedEquipment!: Equipment;
-  selectedQuantity!: number;
-  dialogRef!: DynamicDialogRef;
-  display = false;
+  selectedEquipment: Equipment | null = null;
+  selectedQuantity: number = 1;
   classroomId!: number;
 
-  constructor(private dialogService: DialogService, private config: DynamicDialogConfig , private classroomService: ClassroomService,private route: ActivatedRoute,) {}
+  constructor(private classroomService: ClassroomService,private config: DynamicDialogConfig) {}
 
   ngOnInit(): void {
-    // Chargez la liste des équipements disponibles depuis le service EquipmentsService
-    // Remplacez 'getAvailableEquipments' par la méthode réelle de récupération des équipements.
-
-    this.classroomId = this.config.data.classroomId;
-
-    this.classroomService.getEquipments().subscribe ((equipments) => {
-      this.availableEquipments = equipments;
-      console.log(this.availableEquipments);
-    });
-  
-  }
-
-
-  chooseEquipment(idClassroom:number): void {
-    // Vérifiez si un équipement est sélectionné et si une quantité est spécifiée
-    if (this.selectedEquipment && this.selectedQuantity) {
-      // Utilisez le service ClassroomService pour ajouter l'équipement avec la quantité
-      this.classroomService.addEquipmentToClassroom(this.selectedEquipment, this.selectedQuantity, idClassroom);
-
-      // Fermez le dialogue en utilisant la référence du dialogue
-      this.dialogRef.close();
-    } else {
-      // Affichez un message d'erreur ou faites quelque chose en conséquence
-      console.error('Veuillez sélectionner un équipement et spécifier une quantité.');
+    if (this.config && this.config.data) {
+      this.classroomId = this.config.data.classroomId;
     }
+    this.classroomService.getEquipments().subscribe((equipments) => {
+      this.availableEquipments = equipments;
+    });
   }
 
-  closeDialog(): void {
-    this.display = false;
+  chooseEquipment(): void {
+    if (this.selectedEquipment && this.selectedQuantity > 0) {
+      // Logique pour ajouter l'équipement à la salle de classe
+      console.log(`Ajout de ${this.selectedQuantity} de ${this.selectedEquipment.equipment} à la salle de classe ${this.classroomId}`);
+      this.classroomService.addEquipmentToClassroom(this.selectedEquipment, this.selectedQuantity, this.classroomId);
+
+    } else {
+      console.error('Veuillez sélectionner un équipement et spécifier une quantité valide.');
+    }
   }
 }
