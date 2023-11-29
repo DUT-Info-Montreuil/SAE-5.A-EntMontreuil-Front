@@ -28,8 +28,16 @@ export class ClassroomEquipmentDialogComponent implements OnInit {
     if (this.selectedEquipment && this.selectedQuantity > 0) {
       // Logique pour ajouter l'équipement à la salle de classe
       console.log(`Ajout de ${this.selectedQuantity} de ${this.selectedEquipment.equipment} à la salle de classe ${this.classroomId}`);
-      this.classroomService.addEquipmentToClassroom(this.selectedEquipment, this.selectedQuantity, this.classroomId);
-
+      this.classroomService.addEquipmentToClassroom(this.selectedEquipment.id, this.classroomId).subscribe((response) => {
+        
+        console.log(response);
+          
+      });
+      this.classroomService.addQuantityToEquipment(this.selectedEquipment.id, this.selectedQuantity,this.classroomId).subscribe((response) => {
+        
+        console.log(response);
+          
+      });
     } else {
       console.error('Veuillez sélectionner un équipement et spécifier une quantité valide.');
     }

@@ -31,16 +31,25 @@ export class ClassroomService {
     return this.http.get<Equipment[]>(this.apiUrl + '/materials',this.httpOptions);
   }
 
-  addEquipmentToClassroom(equipment: Equipment, quantity: number, idClassroom: number): Observable<any> {
+  addEquipmentToClassroom(equipmentId:number, idClassroom: number): Observable<any> {
     // Convertissez l'équipement en ClassroomMaterial avant l'ajout
-    const classroomMaterial: ClassroomMaterial = {
-      id: equipment.id,
-      equipment: equipment.equipment,
-      quantity,
-    };
+
+    console.log("Salut");
+    const equipmentsId: number[] = []; 
+    equipmentsId[0] = equipmentId;
+    const data = {"datas": {"equipment_ids" :equipmentsId}};
 
     // Appel à votre API pour ajouter l'équipement à la salle de classe avec la quantité
-    return this.http.post<any>(`${this.apiUrl}/classrooms/${idClassroom}/add-equipment`, classroomMaterial,this.httpOptions);
+    return this.http.post<any>(this.apiUrl + `/classrooms/${idClassroom}/equipments`, data,this.httpOptions);
+  }
+
+  addQuantityToEquipment(equipmentId:number, quantity:number, idClassroom: number): Observable<any> {
+    console.log("Salut c moi");
+
+    
+    const data = {"datas" : {"new_quantity" : quantity} };
+
+    return this.http.post<any>(this.apiUrl + `/classrooms/${idClassroom}/equipments/${equipmentId}`, data,this.httpOptions);
   }
 
 

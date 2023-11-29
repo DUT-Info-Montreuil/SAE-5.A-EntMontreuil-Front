@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Dialog } from 'primeng/dialog';
 import { Classroom } from 'src/app/core/models/classroom.model';
 import { Equipment } from 'src/app/core/models/equipment.model';
@@ -22,6 +22,7 @@ export class SingleClassroomComponent implements OnInit {
     private route: ActivatedRoute,
     private classroomService: ClassroomService,
     private dialogService: DialogService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +60,10 @@ export class SingleClassroomComponent implements OnInit {
       // Traitez le résultat ici, par exemple, en ajoutant l'équipement avec la quantité à votre liste.
     });
   }
+
+  goBack() {
+    this.router.navigate(['admin/classrooms']); // Remplacez '/' par le chemin de la page précédente si nécessaire
+}
 
 }
 
