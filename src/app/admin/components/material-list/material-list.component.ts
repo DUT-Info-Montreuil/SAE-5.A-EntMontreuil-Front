@@ -2,12 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { Material } from '../../models/material.model';
 import { AdminService } from '../../../core/services/admin.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CreateMaterialComponent } from '../create-material/create-material.component';
-import { DialogService } from 'primeng/dynamicdialog';
+
 @Component({
   selector: 'app-material-list',
   templateUrl: './material-list.component.html',
   styleUrls: ['./material-list.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class MaterialListComponent implements OnInit {
   materials: Material[] = [];
@@ -20,7 +26,7 @@ export class MaterialListComponent implements OnInit {
     private adminService: AdminService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService // Injectez MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.adminService.getMaterials().subscribe((materials) => {
@@ -56,7 +62,7 @@ export class MaterialListComponent implements OnInit {
 
   confirmDelete(material: Material): void {
     this.confirmationService.confirm({
-      message: `Êtes-vous sûr de vouloir supprimer cet équipement ? ID : ${material.id}, Nom : ${material.equipment}`,
+      message: `Voulez-vous supprimer l'équipement « ${material.equipment} » ?`,
       accept: () => {
         this.deleteMaterial(material.id);
       },

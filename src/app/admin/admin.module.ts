@@ -12,8 +12,10 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CreateMaterialComponent } from './components/create-material/create-material.component';
 import { DialogModule } from 'primeng/dialog';
+import { Ripple, RippleModule } from 'primeng/ripple';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
-  declarations: [MaterialListComponent, CreateMaterialComponent,UsersComponent],
+  declarations: [MaterialListComponent, CreateMaterialComponent, UsersComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -24,7 +26,9 @@ import { DialogModule } from 'primeng/dialog';
     ConfirmDialogModule,
     ToastModule,
     DialogModule,
+    RippleModule,
+    TooltipModule
   ],
   providers: [ConfirmationService, MessageService],
 })
-export class AdminModule {}
+export class AdminModule { }
