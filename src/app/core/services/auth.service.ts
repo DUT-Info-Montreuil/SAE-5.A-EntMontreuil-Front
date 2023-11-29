@@ -64,8 +64,16 @@ export class AuthService {
         return localStorage.getItem('refreshToken') || '';
     }
 
-    getIsAdmin(): string {
-        return localStorage.getItem('isadmin') || '';
+    getIsAdmin(): boolean {
+        const token = this.getToken();
+        if (!token) {
+            return false; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const isAdmin = decodedToken.sub.isAdmin;
+
+        return isAdmin;
     }
 
     getRole(): string {
@@ -130,5 +138,6 @@ interface JwtPayload {
         last_name: string;
         username: string;
         role: string;
+        isAdmin: boolean;
     };
 }
