@@ -28,16 +28,39 @@ export class CreateMaterialComponent {
         equipment: this.newEquipmentName,
       },
     };
-
-    this.adminService.createMaterial(material).subscribe(() => {
-      this.hideDialog();
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Création réussie',
-        detail: "L'équipement a été créé avec succès.",
-      });
-      console.log('Equipment created event emitted'); // Vérifiez si ce message est affiché dans la console
-      this.equipmentCreated.emit(); // Émettre l'événement pour signaler la création d'équipement
-    });
+    this.adminService.createMaterial(material).subscribe(
+      (response) => {
+        this.hideDialog();
+        console.log('Response status:', response.message[1]); 
+        let code= response.message[1]; 
+        let msg= response.message[0];
+        console.log('Response msg:', msg);
+        // Vérifiez si le code de réponse est inclus dans le JSON et traitez en conséquence
+        if ( code !=200 && code !=201) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur serveur',
+            detail:msg.message, // Utilisez le message d'erreur du JSON
+          });
+        } else {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Création réussie',
+            detail: "L'équipement a été créé avec succès.",
+          });
+          this.equipmentCreated.emit(); // Émettre l'événement pour mettre à jour la liste des équipements
+        }
+      },
+      (httpErrorResponse) => {
+        // Gérer les erreurs HTTP ici
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Une erreur est survenue lors de l'ajout de l'équipement."
+        });
+      }
+    );
+    
+    
   }
 }

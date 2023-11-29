@@ -96,7 +96,7 @@ export class MaterialListComponent implements OnInit {
       // Envoyez la mise à jour au service
       const materialUpdate = {
         datas: {
-          equipment: material.updatedEquipment,
+          equipment: material.updatedEquipment.trim(),
         },
       };
       this.adminService
