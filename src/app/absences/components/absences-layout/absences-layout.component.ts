@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Absence } from 'src/app/core/models/absence.model';
 import { AbsencesService } from 'src/app/core/services/absences.service';
@@ -17,13 +18,28 @@ import { AbsencesService } from 'src/app/core/services/absences.service';
 export class AbsencesLayoutComponent implements OnInit {
   public chartOptions: any;
   public absencesData: Absence[] = []; // Variable pour stocker les données
+  public filteredAbsences: Absence[] = []; // Pour les absences filtrées
+  public searchText: string = ''; // Pour stocker la chaîne de recherche
 
   constructor(private absencesService: AbsencesService) { }
 
   ngOnInit(): void {
     this.absencesService.getStudentAbsences().subscribe(absences => {
       this.absencesData = absences; // Stockage des données récupérées
+      this.filteredAbsences = [...this.absencesData]; // Initialisation avec toutes les données
     });
+  }
+
+  filterAbsences(): void {
+    if (!this.searchText) {
+      this.filteredAbsences = [...this.absencesData];
+    } else {
+      this.filteredAbsences = this.absencesData.filter(absence => {
+        // Ici, ajustez les conditions de filtrage selon vos besoins
+        return absence.resource_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          absence.reason.toLowerCase().includes(this.searchText.toLowerCase())
+      });
+    }
   }
 
   calculateTotalHours(absences: Absence[]): number {

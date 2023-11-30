@@ -105,11 +105,12 @@
         <h3 class="mt-7">Récapitulatif des absences</h3>
         <div class="shadow-1 border-round p-4 pt-2">
             <div class="flex justify-content-between mt-5 mb-4">
-                <input class="w-full sm:w-full lg:w-3 md:w-3" type="text" pInputText placeholder="Rechercher" />
+                <input class="w-full sm:w-full lg:w-3 md:w-3" type="text" pInputText placeholder="Rechercher"
+                    [(ngModel)]="searchText" (ngModelChange)="filterAbsences()" />
             </div>
 
             <!-- Tableau PrimeNG avec pagination et responsive layout -->
-            <p-table [value]="absencesData" [paginator]="true" [rows]="10">
+            <p-table [value]="filteredAbsences" [paginator]="true" [rows]="10">
                 <ng-template pTemplate="header">
                     <tr>
                         <th></th>
@@ -151,7 +152,7 @@
                                 {{ absence.resource_name }}
                             </div>
                             <div class="text-900 text-sm">
-                                le {{ absence.course_date | date:'E d MMM yyyy' }} de {{
+                                Le {{ absence.course_date | date:'E d MMM yyyy' }} de {{
                                 convertirEtFormaterHeure(absence.course_start_time) }} à {{
                                 convertirEtFormaterHeure(absence.course_end_time) }}
                             </div>
@@ -183,7 +184,7 @@
                         </td>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate=" emptymessage">
+                <ng-template pTemplate="emptymessage">
                     <tr>
                         <td colspan="7">Aucune absence enregistrée.</td>
                     </tr>
