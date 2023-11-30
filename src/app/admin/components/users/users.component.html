@@ -16,6 +16,8 @@
         <th >Email</th>
         <th >Role</th>
         <th >Admin</th>
+        <th >Modifier</th>
+        <th >Supprimer</th>
     </tr>
     <tr>
         <th></th>
@@ -37,8 +39,11 @@
         <th>
             <p-columnFilter type="boolean" field="isAdmin"></p-columnFilter>
         </th>
+        <th></th>
+        <th></th>
     </tr>
 </ng-template>
+
 <ng-template pTemplate="body" let-user>
     <tr>
         <td>{{ user.id }}</td>
@@ -51,10 +56,17 @@
             <i class="pi"
             [ngClass]="{ 'pi-check-circle': user.isAdmin, 'pi-times-circle': !user.isAdmin }"
             [ngStyle]="{ 'color': user.isAdmin ? 'green' : 'red' }">
-        </i>
+            </i>
         </td>
+        <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info " (click)="openModal(user)" ></p-button></td>
+        
+        <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger "></p-button></td>
     </tr>
+   
+
 </ng-template>
+
+
 <ng-template pTemplate="emptymessage">
     <tr>
         <td colspan="6">Aucun utilisateur trouvé.</td>
@@ -63,7 +75,76 @@
 </ng-template>
 
 </p-table>
+
 <p-button routerLink="add" label="Ajouter un utilisateur" [rounded]="true" ></p-button>
+
+
+<div *ngIf="userModal" >
+    <p-dialog header="Modifier cette utilisateur" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+
+
+        <!--------------------------------->
+        <form  [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
+            <div >
+                <div class="card p-fluid">
+                    <div class="field">
+                        <label htmlfor="username">Pseudo</label>
+                        <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
+                    </div>
+
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="nom">Nom</label>
+                            <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="prenom">Prénom</label>
+                            <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label htmlfor="email">Email</label>
+                        <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+                    </div>
+                    <div class="field"><label htmlfor="role">Role</label>
+                        <p-autoComplete  [dropdown]="true" id="role" [suggestions]="filteredRoles" (completeMethod)="filterRoles($event)" field="name" formControlName="role"></p-autoComplete>
+                    </div>  
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="userUpdateForm && userUpdateForm.get('admin')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="admin" 
+                        formControlName="admin" 
+                        (onChange)="onAdminCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="admin">Attribuer les droits administrateur</label>
+                    </div>
+                    <div class="field">
+                    </div>
+                </div>
+                <button type="submit" pButton pRipple label="Modifier cette utilisateur" class="w-full p-3"></button>
+
+                <div class="card p-fluid">
+                    <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+                    </div>
+        
+                    <div *ngIf="UserModifiedMessage" class="login-status mb-5 w-full">
+                        <p class="text-sm text-green-500 font-semibold">{{ UserModifiedMessage }}</p>
+                    </div>
+                </div>
+        
+            </div>
+        </form>
+
+
+
+    </p-dialog>
+</div>
+
+
+
 
 
 

@@ -36,6 +36,15 @@ export class UsersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+
+    updateUser(username: string,  first_name: string,last_name: string, email: string, role: string,isAdmin: boolean, id:number, oldUsername:string) : Observable<any>{
+        
+        return this.http.patch<any>(this.apiURL + `/users/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,role,isAdmin,oldUsername }}}), this.httpOptions)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
         
     
 }
