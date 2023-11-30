@@ -1,0 +1,37 @@
+@media only screen and (max-width: 600px) {
+  .p-datatable .p-datatable-thead > tr > th,
+  .p-datatable .p-datatable-tbody > tr > td {
+    text-align: left;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+    padding-top: 0.8rem;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--surface-d);
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td:last-child {
+    border-bottom: 0 none;
+  }
+
+  .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td {
+    border-bottom: 1px solid var(--surface-d);
+  }
+
+  .p-datatable.p-datatable-gridlines .p-datatable-tbody > tr > td:last-child {
+    border-bottom: 0 none;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    color: var(--text-color-secondary);
+  }
+}

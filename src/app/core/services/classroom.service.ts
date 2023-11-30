@@ -18,40 +18,50 @@ export class ClassroomService {
     }),
   };
 
-
   constructor(private http: HttpClient) {}
 
   getClassroomById(id: number): Observable<Classroom> {
     return this.http
-      .get<Classroom[]>(`${this.apiUrl}/classrooms/${id}`,this.httpOptions)
+      .get<Classroom[]>(`${this.apiUrl}/classrooms/${id}`, this.httpOptions)
       .pipe(map((classrooms) => classrooms[0]));
   }
 
   getEquipments(): Observable<Equipment[]> {
-    return this.http.get<Equipment[]>(this.apiUrl + '/materials',this.httpOptions);
+    return this.http.get<Equipment[]>(
+      this.apiUrl + '/materials',
+      this.httpOptions
+    );
   }
 
-  addEquipmentToClassroom(equipmentId:number, idClassroom: number): Observable<any> {
-    // Convertissez l'équipement en ClassroomMaterial avant l'ajout
-
-    console.log("Salut");
-    const equipmentsId: number[] = []; 
-    equipmentsId[0] = equipmentId;
-    const data = {"datas": {"equipment_ids" :equipmentsId}};
-
-    // Appel à votre API pour ajouter l'équipement à la salle de classe avec la quantité
-    return this.http.post<any>(this.apiUrl + `/classrooms/${idClassroom}/equipments`, data,this.httpOptions);
+  updateClassroomEquipmentQuantity(
+    idClassroom: number,
+    idEquipment: number,
+    newQuantity: number
+  ): Observable<any> {
+    return this.http.put<any>(
+      `${this.apiUrl}/classrooms/${idClassroom}/equipments/${idEquipment}`,
+      { datas: { new_quantity: newQuantity } },
+      this.httpOptions
+    );
   }
 
-  addQuantityToEquipment(equipmentId:number, quantity:number, idClassroom: number): Observable<any> {
-    console.log("Salut c moi");
-
-    
-    const data = {"datas" : {"new_quantity" : quantity} };
-
-    return this.http.post<any>(this.apiUrl + `/classrooms/${idClassroom}/equipments/${equipmentId}`, data,this.httpOptions);
+  addEquipmentsToClassroom(
+    idClassroom: number,
+    equipmentIds: number[]
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/classrooms/${idClassroom}/equipments`,
+      { datas: { equipment_ids: equipmentIds } },
+      this.httpOptions
+    );
   }
-
-
-
+  removeEquipmentFromClassroom(
+    idClassroom: number,
+    idEquipment: number
+  ): Observable<any> {
+    return this.http.delete<any>(
+      `${this.apiUrl}/classrooms/${idClassroom}/equipments/${idEquipment}`,
+      this.httpOptions
+    );
+  }
 }

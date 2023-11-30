@@ -1,13 +1,35 @@
-<div *ngIf="availableEquipments.length > 0">
+<div *ngIf="availableEquipments.length > 0" class="equipment-selection">
   <h3>Sélectionnez l'équipement à ajouter</h3>
-  <ul>
-    <li *ngFor="let equipment of availableEquipments">
-      <input type="radio" name="equipment" (click)="selectedEquipment = equipment">{{ equipment.equipment }}
+
+  <!-- Champ de recherche -->
+  <input
+    type="text"
+    placeholder="Rechercher un équipement..."
+    [(ngModel)]="searchTerm"
+    (input)="filterEquipments()"
+    class="search-bar"
+  />
+
+  <ul class="equipment-list">
+    <li *ngFor="let equipment of filteredEquipments">
+      <label>
+        <input
+          type="radio"
+          name="equipment"
+          (click)="selectedEquipment = equipment"
+        />
+        {{ equipment.equipment }}
+      </label>
     </li>
   </ul>
-  <div>
+  <div class="quantity-input">
     <label for="quantity">Quantité :</label>
-    <input id="quantity" type="number" [(ngModel)]="selectedQuantity" min="1">
+    <input id="quantity" type="number" [(ngModel)]="selectedQuantity" min="1" />
   </div>
-  <button class="w3-btn w3-blue w3-block w3-round-xlarge" (click)="chooseEquipment()">Ajouter à la salle de classe</button>
+  <button
+    class="w3-btn w3-blue w3-block w3-round-xlarge"
+    (click)="chooseEquipment()"
+  >
+    Ajouter à la salle de classe
+  </button>
 </div>

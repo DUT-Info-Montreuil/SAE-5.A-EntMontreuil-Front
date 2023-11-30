@@ -12,13 +12,17 @@ import { ClassroomEquipmentDialogComponent } from './components/classroom-equipm
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
     UsersComponent,
     ClassroomsComponent,
     SingleClassroomComponent,
-    ClassroomEquipmentDialogComponent
+    ClassroomEquipmentDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -29,12 +33,10 @@ import { DialogService } from 'primeng/dynamicdialog';
     ButtonModule,
     InputTextModule,
     DialogModule,
-    FormsModule
+    FormsModule,
+    ToastModule,
+    ConfirmDialogModule,
   ],
-  providers: [
-    DialogService
-  ], 
-
+  providers: [DialogService, MessageService, ConfirmationService],
 })
-export class AdminModule { }
-
+export class AdminModule {}

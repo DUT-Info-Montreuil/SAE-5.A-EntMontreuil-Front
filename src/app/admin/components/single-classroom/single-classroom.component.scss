@@ -1,0 +1,14 @@
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 1.5em; /* Taille plus petite pour les petits écrans */
+  }
+  p {
+    font-size: 1em; /* Taille adaptée pour la lisibilité */
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .p-datatable .p-datatable-wrapper {
+    overflow-x: auto;
+  }
+}
