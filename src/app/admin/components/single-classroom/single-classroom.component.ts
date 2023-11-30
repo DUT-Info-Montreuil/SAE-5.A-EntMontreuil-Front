@@ -42,6 +42,7 @@ export class SingleClassroomComponent implements OnInit {
       this.classroomService.getClassroomById(this.classroomId).subscribe(
         (classroom: Classroom) => {
           this.classroomData = classroom;
+          console.log(this.classroomData);
         },
         (error) => {
           console.error(
@@ -67,15 +68,21 @@ export class SingleClassroomComponent implements OnInit {
 
     ref.onClose.subscribe((result: any) => {
       if (result && result.added) {
+        // Ajoutez le nouvel équipement localement
+        const newEquipment = {
+          id: result.equipmentId,
+          equipment: result.equipmentName,
+          quantity: result.quantity,
+        };
+
+        this.classroomData.materials.push(newEquipment);
+
         const detailMessage = `${result.equipmentName} (quantité : ${result.quantity}) a été ajouté avec succès à la salle de classe.`;
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',
           detail: detailMessage,
         });
-        setTimeout(() => {
-          this.loadClassroomData();
-        }, 1000); // 500 millisecondes de délai// Rafraîchir les données de la salle de classe
       }
     });
   }
@@ -84,20 +91,27 @@ export class SingleClassroomComponent implements OnInit {
     this.editingIndex = index;
     this.editingQuantity = material.quantity;
   }
-
   updateQuantity(materialId: number): void {
     if (this.editingIndex !== null) {
-      // Appeler la méthode de mise à jour du service
-      this.classroomService
-        .updateClassroomEquipmentQuantity(
-          this.classroomId,
-          materialId,
-          this.editingQuantity
-        )
-        .subscribe(() => {
-          this.loadClassroomData();
-          this.cancelEdit();
-        });
+      const materialToUpdate = this.classroomData.materials.find(
+        (material) => material.id === materialId
+      );
+
+      if (materialToUpdate) {
+        // Mettez à jour la quantité localement
+        materialToUpdate.quantity = this.editingQuantity;
+
+        // Appeler la méthode de mise à jour du service
+        this.classroomService
+          .updateClassroomEquipmentQuantity(
+            this.classroomId,
+            materialId,
+            this.editingQuantity
+          )
+          .subscribe(() => {
+            this.cancelEdit();
+          });
+      }
     }
   }
 
@@ -119,14 +133,20 @@ export class SingleClassroomComponent implements OnInit {
       .removeEquipmentFromClassroom(this.classroomId, equipmentId)
       .subscribe({
         next: () => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Suppression réussie',
-            detail: "L'équipement a été supprimé avec succès.",
-          });
-          // Ajouter un délai avant de recharger les données
-          this.loadClassroomData();
-          // 500 millisecondes de délai
+          const indexToDelete = this.classroomData.materials.findIndex(
+            (material) => material.id === equipmentId
+          );
+
+          if (indexToDelete !== -1) {
+            // Supprimez l'équipement localement
+            this.classroomData.materials.splice(indexToDelete, 1);
+
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Suppression réussie',
+              detail: "L'équipement a été supprimé avec succès.",
+            });
+          }
         },
         error: (error) => {
           console.error(

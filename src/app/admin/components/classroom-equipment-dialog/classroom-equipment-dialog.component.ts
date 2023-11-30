@@ -69,6 +69,7 @@ export class ClassroomEquipmentDialogComponent implements OnInit {
             // Ferme le dialogue avec des détails personnalisés
             this.dialogRef.close({
               added: true,
+              equipmentId: selectedEquipmentId,
               equipmentName: selectedEquipmentName, // Utilisez le nom ici
               quantity: this.selectedQuantity,
             });
