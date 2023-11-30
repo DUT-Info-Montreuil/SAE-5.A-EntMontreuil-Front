@@ -26,4 +26,23 @@ export class ClassroomsService implements OnInit {
       this.httpOptions
     );
   }
+
+  updateClassroom(
+    id: number,
+    updatedClassroom: Classroom
+  ): Observable<Classroom> {
+    const url = `${this.apiURL}/classrooms/${id}`;
+    return this.http
+      .put<Classroom>(url, { datas: updatedClassroom }, this.httpOptions)
+      .pipe(
+        catchError((error: any) => {
+          // Gérer les erreurs ici, par exemple, les erreurs de validation
+          console.error(
+            'Erreur lors de la mise à jour de la salle de classe:',
+            error
+          );
+          return throwError(error);
+        })
+      );
+  }
 }

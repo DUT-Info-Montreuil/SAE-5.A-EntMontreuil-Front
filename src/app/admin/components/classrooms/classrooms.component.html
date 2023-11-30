@@ -1,67 +1,84 @@
 <h1>Salles de classes</h1>
+<button class="p-button p-button-success">Créer une classe</button>
+
 <p-table
-    #dt2
-    [value]="classrooms"
-    dataKey="id"
-    [rows]="10"
-    [showCurrentPageReport]="true"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [loading]="loading"
-    [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-    [tableStyle]="{ 'min-width': '75rem' }"
-    >
-    <ng-template pTemplate="caption">
-        <div class="flex">
-            <span class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" #searchInput placeholder="Search keyword" (input)="dt2.filterGlobal(searchInput.value, 'contains')" />
-            </span>
-        </div>
-    </ng-template>
-    
-    
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="width:30%">Id</th>
-            <th style="width:30%">Salle</th>
-            <th style="width:30%">Capacité</th>
-            <th style="width:10%">Matériel</th>
-        </tr>
-        <tr>
-            <th>
-                <p-columnFilter type="text" field="id"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="name"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="capacity"></p-columnFilter>
-            </th>
-            <th>
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-classroom>
-        <tr>
-            <td>
-                {{ classroom.id }}
-            </td>
-            <td>
-                {{ classroom.name }}
-            </td>
-            <td>
-                {{ classroom.capacity }}
-            </td>
-            <td>
-                <button class="w3-button w3-blue w3-round-large" [routerLink]="['/admin/classrooms', classroom.id]"><i class="pi pi-desktop"></i> Matériel</button>
-            </td>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="5">Pas de salles de classes.</td>
-        </tr>
-    </ng-template>
+  #dt2
+  [value]="classrooms"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [globalFilterFields]="[
+    'name',
+    'country.name',
+    'representative.name',
+    'status'
+  ]"
+  [tableStyle]="{ 'min-width': '75rem' }"
+  class="shadow-1 border-round mt-7 p-4 pt-2"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <span class="p-input-icon-left ml-auto">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          #searchInput
+          placeholder="Search keyword"
+          (input)="dt2.filterGlobal(searchInput.value, 'contains')"
+        />
+      </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 30%">Id</th>
+      <th style="width: 30%">Salle</th>
+      <th style="width: 30%">Capacité</th>
+      <th style="width: 10%">Matériel</th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter type="text" field="id"></p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="name"></p-columnFilter>
+      </th>
+      <th>
+        <p-columnFilter type="text" field="capacity"></p-columnFilter>
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-classroom>
+    <tr>
+      <td>
+        {{ classroom.id }}
+      </td>
+      <td>
+        {{ classroom.name }}
+      </td>
+      <td>
+        {{ classroom.capacity }}
+      </td>
+      <td>
+        <button
+          class="w3-button w3-blue w3-round-large"
+          [routerLink]="['/admin/classrooms', classroom.id]"
+        >
+          <i class="pi pi-desktop"></i> Matériel
+        </button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">Pas de salles de classes.</td>
+    </tr>
+  </ng-template>
 </p-table>
