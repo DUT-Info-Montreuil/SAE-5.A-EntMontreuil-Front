@@ -5,6 +5,9 @@ import { AbsencesRoutingModule } from './absences-routing.module';
 import { SingleAbsenceComponent } from './components/single-absence/single-absence.component';
 import { ButtonModule } from 'primeng/button';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { TableModule } from 'primeng/table';
+import { Tooltip, TooltipModule } from 'primeng/tooltip';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 
@@ -17,7 +20,11 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     CommonModule,
     AbsencesRoutingModule,
     NgApexchartsModule,
-    ButtonModule
+    ButtonModule,
+    TableModule,
+    ButtonModule,
+    TooltipModule,
+    InputTextModule
   ]
 })
 export class AbsencesModule { }
