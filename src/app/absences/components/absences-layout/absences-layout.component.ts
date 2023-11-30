@@ -20,6 +20,7 @@ export class AbsencesLayoutComponent implements OnInit {
   public absencesData: Absence[] = []; // Variable pour stocker les données
   public filteredAbsences: Absence[] = []; // Pour les absences filtrées
   public searchText: string = ''; // Pour stocker la chaîne de recherche
+  public onlyUnjustified = false; // Suivre l'état du switch
 
   constructor(private absencesService: AbsencesService) { }
 
@@ -31,15 +32,44 @@ export class AbsencesLayoutComponent implements OnInit {
   }
 
   filterAbsences(): void {
+    if (this.onlyUnjustified) {
+      this.applyUnjustifiedFilter();
+    } else {
+      this.applyRegularFilter();
+    }
+  }
+
+  applyUnjustifiedFilter(): void {
+    this.filteredAbsences = this.getUnjustifiedAbsences();
+  }
+
+  applyRegularFilter(): void {
     if (!this.searchText) {
       this.filteredAbsences = [...this.absencesData];
     } else {
       this.filteredAbsences = this.absencesData.filter(absence => {
-        // Ici, ajustez les conditions de filtrage selon vos besoins
         return absence.resource_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          absence.reason.toLowerCase().includes(this.searchText.toLowerCase())
+          absence.reason.toLowerCase().includes(this.searchText.toLowerCase());
       });
     }
+  }
+
+  toggleOnlyUnjustified(): void {
+    this.onlyUnjustified = !this.onlyUnjustified;
+    this.filterAbsences();
+  }
+
+  getJustifiedAbsences(): Absence[] {
+    return this.absencesData.filter(absence => absence.justify);
+  }
+
+  getUnjustifiedAbsences(): Absence[] {
+    return this.absencesData.filter(absence => !absence.justify);
+  }
+
+  calculateTotalJustifiedHours(): string {
+    const justifiedAbsences = this.getJustifiedAbsences();
+    return this.calculateTotalHoursString(justifiedAbsences);
   }
 
   calculateTotalHours(absences: Absence[]): number {
@@ -52,6 +82,23 @@ export class AbsencesLayoutComponent implements OnInit {
     });
 
     return totalHours;
+  }
+
+  calculateTotalHoursString(absences: Absence[]): string {
+    let totalHours = 0;
+
+    absences.forEach(absence => {
+      const dateStart = new Date(absence.course_date + 'T' + absence.course_start_time);
+      const dateEnd = new Date(absence.course_date + 'T' + absence.course_end_time);
+      totalHours += this.calculateHourDifference(dateStart, dateEnd);
+    });
+
+    // Séparation des heures entières et des minutes
+    const hours = Math.floor(totalHours);
+    const minutes = Math.round((totalHours - hours) * 60);
+
+    // Formatage du résultat en "4h30"
+    return `${hours}h${minutes.toString().padStart(2, '0')}`;
   }
 
   calculateHourDifference(dateDebut: Date, dateFin: Date): number {

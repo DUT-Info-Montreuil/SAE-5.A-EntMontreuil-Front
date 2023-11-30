@@ -9,6 +9,7 @@ import { TableModule } from 'primeng/table';
 import { Tooltip, TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 
 
@@ -27,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     TooltipModule,
     InputTextModule,
     FormsModule,
-    DatePipe
+    DatePipe,
+    InputSwitchModule
   ]
 })
 export class AbsencesModule { }
