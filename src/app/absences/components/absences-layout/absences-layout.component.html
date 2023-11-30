@@ -188,7 +188,7 @@
                             </div>
                         </td>
                         <td>
-                            <div class="flex align-items-center justify-content-center">
+                            <div *ngIf="!absence.justify" class="flex align-items-center justify-content-center">
                                 <button pButton pRipple tooltipPosition="top" icon="pi pi-plus"
                                     class="p-button-rounded p-button-text"><span
                                         class="ml-2 font-medium hidden sm:hidden lg:block md:block">Transmettre un

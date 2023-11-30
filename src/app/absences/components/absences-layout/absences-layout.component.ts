@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Absence } from 'src/app/core/models/absence.model';
 import { AbsencesService } from 'src/app/core/services/absences.service';
@@ -31,6 +30,14 @@ export class AbsencesLayoutComponent implements OnInit {
     });
   }
 
+  // Activation ou désactivation du filtre "Uniquement les absences injustifiées"
+  toggleOnlyUnjustified(): void {
+    this.onlyUnjustified = !this.onlyUnjustified;
+    this.filterAbsences();
+  }
+
+  // Fonctions de filtrage ============================================================================
+
   filterAbsences(): void {
     if (this.onlyUnjustified) {
       this.applyUnjustifiedFilter();
@@ -54,11 +61,6 @@ export class AbsencesLayoutComponent implements OnInit {
     }
   }
 
-  toggleOnlyUnjustified(): void {
-    this.onlyUnjustified = !this.onlyUnjustified;
-    this.filterAbsences();
-  }
-
   getJustifiedAbsences(): Absence[] {
     return this.absencesData.filter(absence => absence.justify);
   }
@@ -66,6 +68,10 @@ export class AbsencesLayoutComponent implements OnInit {
   getUnjustifiedAbsences(): Absence[] {
     return this.absencesData.filter(absence => !absence.justify);
   }
+
+  // Fin fonctions de filtrage ============================================================================
+
+  // Fonctions de conversion des heures ============================================================
 
   calculateTotalJustifiedHours(): string {
     const justifiedAbsences = this.getJustifiedAbsences();
@@ -108,13 +114,11 @@ export class AbsencesLayoutComponent implements OnInit {
   }
 
   convertirEtFormaterHeure(heureChaine: string): string {
-    // Assurez-vous que la chaîne n'est pas vide
     if (!heureChaine) return '';
 
-    // Créez une date fictive, car seule l'heure nous intéresse
+    // Créer une date fictive, car seule l'heure nous intéresse
     const dateFictive = new Date(`1970-01-01T${heureChaine}`);
 
-    // Utilisez DatePipe ou une autre méthode pour formater l'heure
     return dateFictive.getHours().toString().padStart(2, '0') + 'h' + dateFictive.getMinutes().toString().padStart(2, '0');
   }
 
@@ -128,5 +132,7 @@ export class AbsencesLayoutComponent implements OnInit {
 
     return `${hours}h${minutes.toString().padStart(2, '0')}`;
   }
+
+  // Fin fonctions de conversion des heures ============================================================
 
 }
