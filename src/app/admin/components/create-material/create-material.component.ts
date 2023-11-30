@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { AdminService } from 'src/app/core/services/admin.service';
+import { MaterialService} from 'src/app/core/services/materials.service';
 
 @Component({
   selector: 'app-create-material',
@@ -14,7 +14,7 @@ export class CreateMaterialComponent {
   @Output() equipmentCreated = new EventEmitter<void>(); // Événement pour signaler la création d'équipement
 
   constructor(
-    private adminService: AdminService,
+    private materialService: MaterialService,
     private messageService: MessageService
   ) {} // Injectez MessageService) {}
   hideDialog() {
@@ -28,7 +28,7 @@ export class CreateMaterialComponent {
         equipment: this.newEquipmentName,
       },
     };
-    this.adminService.createMaterial(material).subscribe(
+    this.materialService.createMaterial(material).subscribe(
       (response) => {
         this.hideDialog();
         console.log('Response status:', response.message[1]); 

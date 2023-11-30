@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Material } from '../../models/material.model';
-import { AdminService } from '../../../core/services/admin.service';
+import { MaterialService } from '../../../core/services/materials.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
@@ -23,13 +23,13 @@ export class MaterialListComponent implements OnInit {
   displayCreateMaterialDialog: boolean = false;
 
   constructor(
-    private adminService: AdminService,
+    private MaterialService: MaterialService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService // Injectez MessageService
   ) { }
 
   ngOnInit(): void {
-    this.adminService.getMaterials().subscribe((materials) => {
+    this.MaterialService.getMaterials().subscribe((materials) => {
       this.materials = materials;
       this.filteredMaterials = materials;
     });
@@ -46,7 +46,7 @@ export class MaterialListComponent implements OnInit {
     }
   }
   deleteMaterial(id: number): void {
-    this.adminService.deleteMaterial(id).subscribe(() => {
+    this.MaterialService.deleteMaterial(id).subscribe(() => {
       this.materials = this.materials.filter((material) => material.id !== id);
       this.filteredMaterials = this.filteredMaterials.filter(
         (material) => material.id !== id
@@ -77,7 +77,7 @@ export class MaterialListComponent implements OnInit {
   }
 
   refreshMaterials(): void {
-    this.adminService.getMaterials().subscribe((materials) => {
+    this.MaterialService.getMaterials().subscribe((materials) => {
       this.materials = materials;
       this.filteredMaterials = materials;
     });
@@ -105,7 +105,7 @@ export class MaterialListComponent implements OnInit {
           equipment: material.updatedEquipment.trim(),
         },
       };
-      this.adminService
+      this.MaterialService
         .updateMaterial(material.id, materialUpdate)
         .subscribe(() => {
           this.messageService.add({

@@ -14,8 +14,10 @@ import { CreateMaterialComponent } from './components/create-material/create-mat
 import { DialogModule } from 'primeng/dialog';
 import { Ripple, RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
+import {TrainingListComponent } from './components/training-list/training-list.component';
+
 @NgModule({
-  declarations: [MaterialListComponent, CreateMaterialComponent, UsersComponent],
+  declarations: [MaterialListComponent, CreateMaterialComponent, UsersComponent, TrainingListComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
