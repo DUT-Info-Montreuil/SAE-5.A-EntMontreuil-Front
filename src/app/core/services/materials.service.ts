@@ -8,7 +8,7 @@ import { Material } from '../../admin/models/material.model';
   providedIn: 'root',
 })
 export class MaterialService implements OnInit {
-  private apiURL = 'https://127.0.0.1:5050';
+  private apiURL = 'https://localhost:5050';
 
   httpOptions = {
     headers: new HttpHeaders({
