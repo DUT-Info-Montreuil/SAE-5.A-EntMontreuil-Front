@@ -110,7 +110,9 @@
             </div>
 
             <!-- Tableau PrimeNG avec pagination et responsive layout -->
-            <p-table [value]="filteredAbsences" [paginator]="true" [rows]="10">
+            <p-table [value]="filteredAbsences" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage de {first} à {last} de {totalRecords} absences"
+                [rowsPerPageOptions]="[5, 10, 20]">
                 <ng-template pTemplate="header">
                     <tr>
                         <th></th>
