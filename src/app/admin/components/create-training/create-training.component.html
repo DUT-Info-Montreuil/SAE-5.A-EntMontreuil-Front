@@ -1,0 +1,51 @@
+<!-- Dialogue de création de parcours -->
+<p-dialog
+  [(visible)]="displayCreateTrainingDialog"
+  header="Créer un parcours"
+  [modal]="true"
+  [responsive]="true"
+  [style]="{ width: '800px' }"
+  [contentStyle]="{ overflow: 'auto' }"
+  (onHide)="closeCreateTrainingDialog()"
+>
+  <!-- Contenu du dialogue -->
+  <div class="dialog-content">
+    <!-- Formulaire de création de parcours -->
+    <form (submit)="createTraining()">
+      <div class="form-group">
+        <label for="newTrainingName">Nom du parcours</label>
+        <input
+          type="text"
+          id="newTrainingName"
+          [(ngModel)]="newTrainingName"
+          name="newTrainingName"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="selectedDegreeId">Degré</label>
+        <select
+          id="selectedDegreeId"
+          [(ngModel)]="selectedDegreeId"
+          name="selectedDegreeId"
+          required
+        >
+          <option *ngFor="let degree of degrees" [value]="degree.id">
+            {{ degree.name }}
+          </option>
+        </select>
+      </div>
+      <div class="form-actions">
+        <button type="submit" class="btn-create">Créer</button>
+        <button
+          type="button"
+          class="btn-cancel"
+          (click)="closeCreateTrainingDialog()"
+        >
+          Annuler
+        </button>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+<p-toast></p-toast>

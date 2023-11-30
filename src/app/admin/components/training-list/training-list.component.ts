@@ -4,6 +4,8 @@ import { TrainingService } from 'src/app/core/services/trainings.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Degree } from '../../models/degree.model';
 import { DegreeService } from 'src/app/core/services/degrees.service';
+import { DialogService } from 'primeng/dynamicdialog';
+
 @Component({
   selector: 'app-training-list',
   templateUrl: './training-list.component.html',
@@ -20,7 +22,8 @@ export class TrainingListComponent implements OnInit {
     private trainingService: TrainingService,
     private degreeService: DegreeService,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -138,20 +141,19 @@ export class TrainingListComponent implements OnInit {
         );
     }
   }
-
-  // Define the method to control the dialog
   showCreateTrainingDialog(): void {
-    this.displayCreateTrainingDialog = true;
-  }
-
-  // Add a method to handle closing the dialog
-  closeCreateTrainingDialog(): void {
+    // Définir displayCreateTrainingDialog sur false
     this.displayCreateTrainingDialog = false;
-  }
 
-  // Method to handle when a new training is created (optional, depending on your logic)
-  handleTrainingCreated(): void {
-    // Refresh the list of trainings or any other logic after a training is created
-    this.refreshTrainings();
+    // Ajouter un délai de 1 seconde (vous pouvez ajuster la durée)
+    setTimeout(() => {
+      // Définir displayCreateTrainingDialog sur true après le délai
+      this.displayCreateTrainingDialog = true;
+    }, 1);
+  }
+  onTrainingCreated(training: Training): void {
+    // Utilisez les données de la formation pour mettre à jour la liste des formations
+    this.trainings.push(training); // Ajoutez la nouvelle formation à la liste
+    this.filteredTrainings = [...this.trainings]; // Mettez à jour la liste filtrée
   }
 }

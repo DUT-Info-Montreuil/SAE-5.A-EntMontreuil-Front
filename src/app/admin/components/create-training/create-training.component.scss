@@ -1,0 +1,68 @@
+/* Style CSS pour le dialogue de création de parcours */
+.dialog-content {
+  padding: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+input[type="text"],
+select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-actions {
+  text-align: right;
+}
+
+.btn-create {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-create:hover {
+  background-color: #0056b3;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cancel:hover {
+  background-color: #999;
+}
+
+/* Style pour les petites résolutions */
+@media (max-width: 768px) {
+  .p-dialog {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .p-dialog-content {
+    padding: 0 !important;
+  }
+
+  .dialog-content {
+    padding: 8px;
+  }
+}

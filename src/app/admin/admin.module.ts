@@ -14,10 +14,18 @@ import { CreateMaterialComponent } from './components/create-material/create-mat
 import { DialogModule } from 'primeng/dialog';
 import { Ripple, RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
-import {TrainingListComponent } from './components/training-list/training-list.component';
+import { TrainingListComponent } from './components/training-list/training-list.component';
+import { CreateTrainingComponent } from './components/create-training/create-training.component';
+import { DialogService } from 'primeng/dynamicdialog';
 
 @NgModule({
-  declarations: [MaterialListComponent, CreateMaterialComponent, UsersComponent, TrainingListComponent],
+  declarations: [
+    MaterialListComponent,
+    CreateMaterialComponent,
+    UsersComponent,
+    TrainingListComponent,
+    CreateTrainingComponent,
+  ],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -29,8 +37,8 @@ import {TrainingListComponent } from './components/training-list/training-list.c
     ToastModule,
     DialogModule,
     RippleModule,
-    TooltipModule
+    TooltipModule,
   ],
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, DialogService],
 })
-export class AdminModule { }
+export class AdminModule {}

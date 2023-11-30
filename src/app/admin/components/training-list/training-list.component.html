@@ -1,5 +1,10 @@
 <div class="container">
-  <!-- Header Section -->
+  <app-create-training
+    *ngIf="displayCreateTrainingDialog"
+    [degrees]="degrees"
+    (trainingCreated)="onTrainingCreated($event)"
+  ></app-create-training>
+
   <div
     class="flex align-item-center border-round p-4 relative"
     style="background-color: rgb(239, 244, 255)"

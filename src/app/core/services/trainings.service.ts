@@ -37,11 +37,21 @@ export class TrainingService implements OnInit {
     );
   }
 
-  // Add a new training
-  addTraining(training: Training): Observable<Training> {
-    return this.http.post<Training>(
-      this.apiURL + '/trainings',
-      training,
+  // Modifiez la méthode addTraining pour envoyer les données au format attendu
+  addTraining(training: Training): Observable<any> {
+    const requestData = {
+      datas: {
+        id_Degree:
+          typeof training.id_Degree === 'string'
+            ? parseInt(training.id_Degree, 10)
+            : training.id_Degree,
+        name: training.name,
+      },
+    };
+
+    return this.http.post<any>(
+      `${this.apiURL}/trainings`, // Endpoint pour créer un parcours
+      requestData, // Utilisez la structure adaptée
       this.httpOptions
     );
   }
