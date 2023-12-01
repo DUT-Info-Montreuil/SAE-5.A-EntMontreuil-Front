@@ -15,6 +15,7 @@ import { AbsencesService } from 'src/app/core/services/absences.service';
   ],
 })
 export class AbsencesLayoutComponent implements OnInit {
+  isLoading: boolean = true;
   public chartOptions: any;
   public absencesData: Absence[] = []; // Variable pour stocker les données
   public filteredAbsences: Absence[] = []; // Pour les absences filtrées
@@ -27,6 +28,7 @@ export class AbsencesLayoutComponent implements OnInit {
     this.absencesService.getStudentAbsences().subscribe(absences => {
       this.absencesData = absences; // Stockage des données récupérées
       this.filteredAbsences = [...this.absencesData]; // Initialisation avec toutes les données
+      this.isLoading = false;
     });
   }
 

@@ -18,7 +18,9 @@
                     <div class="flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3 z-1 relative">Total semestriel</span>
-                            <div class="text-900 font-medium text-xl relative">{{ absencesData.length }}</div>
+                            <div *ngIf="!isLoading; else singleSkeleton" class="text-900 font-medium text-xl relative">
+                                {{
+                                absencesData.length }}</div>
                         </div>
                         <!-- <div class="flex align-items-center justify-content-center bg-blue-100 border-round"
                             style="width:2.5rem;height:2.5rem">
@@ -26,7 +28,8 @@
                         </div> -->
                     </div>
                     <div *ngIf="this.calculateTotalHours(absencesData) === 0">
-                        <span class="text-green-500 font-medium z-1 relative">Aucun cours manqué</span>
+                        <span *ngIf="!isLoading; else singleSkeleton"
+                            class="text-green-500 font-medium z-1 relative">Aucun cours manqué</span>
                     </div>
                     <div *ngIf="this.calculateTotalHours(absencesData) > 0">
                         <span class="text-500 z-2 relative">Soit </span>
@@ -52,7 +55,8 @@
                     <div class="flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3 relative z-1">Absences non justifiées</span>
-                            <div class="text-900 font-medium text-xl relative z-1">{{ getUnjustifiedAbsences().length }}
+                            <div *ngIf="!isLoading; else singleSkeleton"
+                                class="text-900 font-medium text-xl relative z-1">{{ getUnjustifiedAbsences().length }}
                             </div>
                         </div>
                         <!-- <div class="flex align-items-center justify-content-center bg-red-100 border-round"
@@ -60,9 +64,11 @@
                             <i class="pi pi-times-circle text-red-500 text-xl"></i>
                         </div> -->
                     </div>
-                    <span class="text-500 z-1 relative">Dont </span>
-                    <span class="text-orange-500 font-medium z-1 relative">0</span>
-                    <span class="text-500 z-1 relative"> transmis pour justification</span>
+                    <div *ngIf="!isLoading; else singleSkeleton">
+                        <span class="text-500 z-1 relative">Dont </span>
+                        <span class="text-orange-500 font-medium z-1 relative">0</span>
+                        <span class="text-500 z-1 relative"> transmis pour justification</span>
+                    </div>
 
                     <div class="absolute z-0" style="top: 32px; right: -32px; color: rgb(239, 244, 255);">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-exclamation-circle"
@@ -81,15 +87,18 @@
                     <div class=" flex justify-content-between mb-3">
                         <div>
                             <span class="block text-500 font-medium mb-3 relative">Absences justifiées</span>
-                            <div class="text-900 font-medium text-xl relative">{{ getJustifiedAbsences().length }}</div>
+                            <div *ngIf="!isLoading; else singleSkeleton" class="text-900 font-medium text-xl relative">
+                                {{ getJustifiedAbsences().length }}</div>
                         </div>
                         <!-- <div class="flex align-items-center justify-content-center bg-green-100 border-round"
                             style="width:2.5rem;height:2.5rem">
                             <i class="pi pi-check-circle text-green-500 text-xl"></i>
                         </div> -->
                     </div>
-                    <span class="text-500 relative">= </span>
-                    <span class="text-500 relative">{{ calculateTotalJustifiedHours() }}</span>
+                    <div *ngIf="!isLoading; else singleSkeleton">
+                        <span class="text-500 relative">= </span>
+                        <span class="text-500 relative">{{ calculateTotalJustifiedHours() }}</span>
+                    </div>
 
                     <div class="absolute z-0" style="top: 32px; right: -32px; color: rgb(239, 244, 255);">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-check"
@@ -121,7 +130,8 @@
             </div>
 
             <!-- Tableau PrimeNG avec pagination et responsive layout -->
-            <p-table [value]="filteredAbsences" [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+            <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredAbsences" [paginator]="true" [rows]="10"
+                [showCurrentPageReport]="true"
                 currentPageReportTemplate="Affichage de {first} à {last} de {totalRecords} absences"
                 [rowsPerPageOptions]="[5, 10, 20]">
                 <ng-template pTemplate="header">
@@ -207,3 +217,11 @@
     </div>
 
 </div>
+
+<ng-template #singleSkeleton>
+    <p-skeleton width="50%" height="22px"></p-skeleton>
+</ng-template>
+
+<ng-template #tableSkeleton>
+    <p-skeleton width="100%" height="300px"></p-skeleton>
+</ng-template>

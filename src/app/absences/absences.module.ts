@@ -10,7 +10,7 @@ import { Tooltip, TooltipModule } from 'primeng/tooltip';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
 import { InputSwitchModule } from 'primeng/inputswitch';
-
+import { SkeletonModule } from 'primeng/skeleton';
 
 
 @NgModule({
@@ -29,7 +29,8 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     InputTextModule,
     FormsModule,
     DatePipe,
-    InputSwitchModule
+    InputSwitchModule,
+    SkeletonModule
   ]
 })
 export class AbsencesModule { }
