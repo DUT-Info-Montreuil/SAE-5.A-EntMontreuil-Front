@@ -1,51 +1,30 @@
 <!-- Dialogue de création de parcours -->
-<p-dialog
-  [(visible)]="displayCreateTrainingDialog"
-  header="Créer un parcours"
-  [modal]="true"
-  [responsive]="true"
-  [style]="{ width: '800px' }"
-  [contentStyle]="{ overflow: 'auto' }"
-  (onHide)="closeCreateTrainingDialog()"
->
-  <!-- Contenu du dialogue -->
-  <div class="dialog-content">
-    <!-- Formulaire de création de parcours -->
-    <form (submit)="createTraining()">
-      <div class="form-group">
-        <label for="newTrainingName">Nom du parcours</label>
-        <input
-          type="text"
-          id="newTrainingName"
-          [(ngModel)]="newTrainingName"
-          name="newTrainingName"
-          required
-        />
+<p-dialog [(visible)]="displayCreateTrainingDialog" header="Créer un parcours" [modal]="true" [responsive]="true"
+  (onHide)="closeCreateTrainingDialog()">
+  <ng-template pTemplate="content">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="newTrainingName" class="font-medium text-900">Nom du parcours</label>
+        <input pInputText class="mt-1" type="text" id="newTrainingName" [(ngModel)]="newTrainingName"
+          name="newTrainingName" required />
       </div>
-      <div class="form-group">
-        <label for="selectedDegreeId">Degré</label>
-        <select
-          id="selectedDegreeId"
-          [(ngModel)]="selectedDegreeId"
-          name="selectedDegreeId"
-          required
-        >
-          <option *ngFor="let degree of degrees" [value]="degree.id">
-            {{ degree.name }}
-          </option>
-        </select>
+
+      <div class="p-field mt-3">
+        <label for="selectedDegreeId" class="font-medium text-900">Formation</label>
+        <div class="mt-1">
+          <p-dropdown [options]="degrees" [(ngModel)]="selectedDegreeId" optionLabel="name" optionValue="id"
+            placeholder="Sélectionner une formation" name="selectedDegreeId" appendTo="body">
+          </p-dropdown>
+        </div>
       </div>
-      <div class="form-actions">
-        <button type="submit" class="btn-create">Créer</button>
-        <button
-          type="button"
-          class="btn-cancel"
-          (click)="closeCreateTrainingDialog()"
-        >
-          Annuler
-        </button>
-      </div>
-    </form>
-  </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+      (click)="closeCreateTrainingDialog()"></p-button>
+    <p-button type="button" label="Créer" class="p-button-primary" (click)="createTraining()"
+      [loading]="loading"></p-button>
+  </ng-template>
 </p-dialog>
 <p-toast></p-toast>

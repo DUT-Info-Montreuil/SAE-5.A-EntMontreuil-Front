@@ -54,6 +54,9 @@ export class MaterialListComponent implements OnInit {
   }
 
   deleteMaterial(id: number): void {
+
+    this.isLoading = true;
+
     this.MaterialService.deleteMaterial(id).subscribe(() => {
       this.materials = this.materials.filter((material) => material.id !== id);
       this.filteredMaterials = this.filteredMaterials.filter(
@@ -65,6 +68,8 @@ export class MaterialListComponent implements OnInit {
         summary: 'Suppression réussie',
         detail: "L'équipement a été supprimé avec succès.",
       });
+
+      this.isLoading = false;
     });
   }
 
@@ -85,9 +90,14 @@ export class MaterialListComponent implements OnInit {
   }
 
   refreshMaterials(): void {
+
+    this.isLoading = true;
+
     this.MaterialService.getMaterials().subscribe((materials) => {
       this.materials = materials;
       this.filteredMaterials = materials;
+
+      this.isLoading = false;
     });
   }
   handleEquipmentCreated(): void {
@@ -108,6 +118,8 @@ export class MaterialListComponent implements OnInit {
     // Vérifiez s'il y a eu des modifications
     if (material.updatedEquipment !== material.equipment) {
 
+      material.isLoading = true;
+
       // Envoyez la mise à jour au service
       const materialUpdate = {
         datas: {
@@ -125,6 +137,7 @@ export class MaterialListComponent implements OnInit {
 
           // Mettez à jour la valeur d'équipement avec la nouvelle valeur
           material.equipment = material.updatedEquipment;
+          material.isLoading = false;
         });
     }
   }

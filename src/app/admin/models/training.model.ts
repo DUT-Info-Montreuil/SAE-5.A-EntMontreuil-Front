@@ -5,6 +5,7 @@ export class Training {
   degree_name!: string; // Name of the associated degree
   // Additional fields for UI interactions
   isEditing: boolean = false;
+  isLoading: boolean = false;
   updatedName!: string; // To hold the updated name during editing
   updatedDegreeId!: number; // To hold the updated degree ID during editing
   constructor(

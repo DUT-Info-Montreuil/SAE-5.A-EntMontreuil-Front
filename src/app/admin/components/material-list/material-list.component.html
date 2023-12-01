@@ -27,8 +27,10 @@
     </div>
 
     <!-- Tableau PrimeNG avec pagination et responsive layout -->
-    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredMaterials" [paginator]="true" [rows]="9"
-      [responsiveLayout]="scroll">
+    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredMaterials" [paginator]="true" [rows]="10"
+      [responsiveLayout]="scroll" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} équipements"
+      [rowsPerPageOptions]="[5, 10, 20, 50]">
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
@@ -40,7 +42,9 @@
         <tr>
           <td>#{{ material.id }}</td>
           <td *ngIf="!material.isEditing" (click)="startEditing(material)">
-            {{ material.equipment }}
+            <ng-container *ngIf="!material.isLoading; else singleSkeleton">
+              {{ material.equipment }}
+            </ng-container>
           </td>
           <td *ngIf="material.isEditing">
             <input pInputText type="text" [(ngModel)]="material.updatedEquipment" (blur)="stopEditing(material)" />
@@ -74,7 +78,7 @@
   (equipmentCreated)="handleEquipmentCreated()"></app-create-material>
 
 <ng-template #singleSkeleton>
-  <p-skeleton width="50%" height="22px"></p-skeleton>
+  <p-skeleton width="30%" height="22px"></p-skeleton>
 </ng-template>
 
 <ng-template #tableSkeleton>

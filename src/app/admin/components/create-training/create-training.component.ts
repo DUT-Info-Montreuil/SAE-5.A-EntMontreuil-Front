@@ -20,12 +20,13 @@ export class CreateTrainingComponent implements OnInit {
 
   newTrainingName: string = '';
   selectedDegreeId!: number;
+  loading: boolean = false;
 
   constructor(
     private trainingService: TrainingService,
     private degreeService: DegreeService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Fetch the list of degrees for the dropdow
@@ -45,12 +46,17 @@ export class CreateTrainingComponent implements OnInit {
   }
 
   createTraining(): void {
+
+    this.loading = true;
+
     if (!this.isFormValid()) {
       this.messageService.add({
         severity: 'error',
         summary: 'Erreur',
-        detail: 'Veuillez saisir un nom de parcours et sélectionner un degré.',
+        detail: 'Veuillez saisir un nom de parcours et sélectionner une formation.',
       });
+
+      this.loading = false;
       return; // Sortez de la fonction si le formulaire n'est pas valide
     }
 
@@ -60,6 +66,7 @@ export class CreateTrainingComponent implements OnInit {
       id: 0,
       degree_name: '',
       isEditing: false,
+      isLoading: false,
       updatedName: '',
       updatedDegreeId: 0,
     };
@@ -73,6 +80,8 @@ export class CreateTrainingComponent implements OnInit {
             summary: 'Erreur', // Résumé du toast
             detail: response[0].message, // Détails du toast
           });
+
+          this.loading = false;
         } else {
           this.messageService.add({
             severity: 'success', // Définissez la gravité sur 'success' pour un toast de succès
@@ -97,8 +106,9 @@ export class CreateTrainingComponent implements OnInit {
           training.degree_name = selectedDegreeName;
 
           this.trainingCreated.emit(training);
-          console.log(training);
           this.displayCreateTrainingDialog = false;
+
+          this.loading = false;
         }
       },
       (error) => {

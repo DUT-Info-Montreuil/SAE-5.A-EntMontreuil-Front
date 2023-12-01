@@ -30,7 +30,8 @@
     </div>
 
     <!-- Training Table with PrimeNG -->
-    <p-table [value]="filteredTrainings" [paginator]="true" [rows]="9" [responsiveLayout]="scroll">
+    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredTrainings" [paginator]="true" [rows]="9"
+      [responsiveLayout]="scroll">
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
@@ -41,17 +42,25 @@
               optionLabel="name" optionValue="id" appendTo="body" [showClear]="true">
             </p-dropdown>
           </th>
-          <th>Actions</th>
+          <th></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-training>
         <tr>
           <td>#{{ training.id }}</td>
-          <td *ngIf="!training.isEditing">{{ training.name }}</td>
+          <td *ngIf="!training.isEditing">
+            <ng-container *ngIf="!training.isLoading; else singleSkeleton">
+              {{ training.name }}
+            </ng-container>
+          </td>
           <td *ngIf="training.isEditing">
             <input pInputText type="text" [(ngModel)]="training.updatedName" />
           </td>
-          <td *ngIf="!training.isEditing">{{ training.degree_name }}</td>
+          <td *ngIf="!training.isEditing">
+            <ng-container *ngIf="!training.isLoading; else singleSkeleton">
+              {{ training.degree_name }}
+            </ng-container>
+          </td>
           <td *ngIf="training.isEditing">
             <p-dropdown [options]="degrees" [(ngModel)]="training.updatedDegreeId" optionLabel="name" optionValue="id"
               appendTo="body">
@@ -83,3 +92,11 @@
 <!-- Confirmation Dialog and Toast Messages -->
 <p-confirmDialog header="Supprimer" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast></p-toast>
+
+<ng-template #singleSkeleton>
+  <p-skeleton width="30%" height="22px"></p-skeleton>
+</ng-template>
+
+<ng-template #tableSkeleton>
+  <p-skeleton width="100%" height="600px"></p-skeleton>
+</ng-template>

@@ -10,6 +10,13 @@ import { DialogService } from 'primeng/dynamicdialog';
   selector: 'app-training-list',
   templateUrl: './training-list.component.html',
   styleUrls: ['./training-list.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class TrainingListComponent implements OnInit {
   trainings: Training[] = [];
@@ -18,6 +25,9 @@ export class TrainingListComponent implements OnInit {
   searchQuery: string = '';
   scroll = 'scroll';
   displayCreateTrainingDialog: boolean = false;
+
+  isLoading: boolean = true;
+
   constructor(
     private trainingService: TrainingService,
     private degreeService: DegreeService,
@@ -34,10 +44,15 @@ export class TrainingListComponent implements OnInit {
   }
 
   refreshTrainings(): void {
+
+    this.isLoading = true;
+
     this.trainingService.getAllTrainings().subscribe((trainings) => {
       // Sort trainings by ID in ascending order
       this.trainings = trainings.sort((a, b) => a.id - b.id);
       this.filteredTrainings = [...this.trainings];
+
+      this.isLoading = false;
     });
   }
 
@@ -66,6 +81,9 @@ export class TrainingListComponent implements OnInit {
 
 
   deleteTraining(id: number): void {
+
+    this.isLoading = true;
+
     this.trainingService.deleteTraining(id).subscribe(() => {
       this.trainings = this.trainings.filter((training) => training.id !== id);
       this.filteredTrainings = this.filteredTrainings.filter(
@@ -76,6 +94,8 @@ export class TrainingListComponent implements OnInit {
         summary: 'Suppression réussie',
         detail: 'Le parcours a été supprimée avec succès.',
       });
+
+      this.isLoading = false;
     });
   }
 
@@ -92,9 +112,12 @@ export class TrainingListComponent implements OnInit {
     training.isEditing = true;
     training.updatedName = training.name;
     training.updatedDegreeId = training.id_Degree;
+    training.isLoading = false;
   }
+
   stopEditing(training: Training): void {
     training.isEditing = false;
+    training.isLoading = true;
 
     // Convert id_Degree to an integer if it's a string
     const updatedDegreeId =
@@ -136,11 +159,16 @@ export class TrainingListComponent implements OnInit {
                 detail: response[0].message,
               });
             }
+
+            training.isLoading = false;
           },
           (error) => {
             // Handle error
+            training.isLoading = false;
           }
         );
+    } else {
+      training.isLoading = false;
     }
   }
   showCreateTrainingDialog(): void {
