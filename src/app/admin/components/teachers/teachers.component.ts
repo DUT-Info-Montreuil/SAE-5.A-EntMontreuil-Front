@@ -19,7 +19,6 @@ export class TeachersComponent {
   teacherUpdateForm!: FormGroup;
   oldUsername !: string;
   ErrorMessage: string = '';
-  teacherModifiedMessage: string = '';
   old_initial!:string;
   old_nip!:string;
 
@@ -80,12 +79,10 @@ export class TeachersComponent {
   
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-          this.teacherModifiedMessage = '';
-        
           
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
-          this.teacherModifiedMessage = '';
+
         }
       }
     });

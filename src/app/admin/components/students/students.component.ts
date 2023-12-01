@@ -20,7 +20,6 @@ export class StudentsComponent {
   studentUpdateForm!: FormGroup;
   oldUsername !: string;
   ErrorMessage: string = '';
-  StudentModifiedMessage: string = '';
   old_ine!:string;
   old_nip!:string;
 
@@ -82,12 +81,10 @@ export class StudentsComponent {
   
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-          this.StudentModifiedMessage = '';
         
           
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
-          this.StudentModifiedMessage = '';
         }
       }
     });

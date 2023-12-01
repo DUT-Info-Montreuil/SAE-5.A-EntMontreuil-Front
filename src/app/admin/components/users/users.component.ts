@@ -25,7 +25,6 @@ export class UsersComponent implements OnInit {
   allRoles!: Role[];
   ErrorMessage: string = '';
   roleString !: string;
-  UserModifiedMessage: string = '';
 
   constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder,private router: Router){ 
     
@@ -86,12 +85,12 @@ export class UsersComponent implements OnInit {
   
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-          this.UserModifiedMessage = '';
+
         
           
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
-          this.UserModifiedMessage = '';
+
         }
       }
     });
