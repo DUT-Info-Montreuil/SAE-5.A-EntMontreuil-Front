@@ -45,4 +45,11 @@ export class TeachersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    deleteTeacher(id:number) : Observable<any>{
+        return this.http.delete<any>(this.apiURL + `/teachers/${id}`)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
 }

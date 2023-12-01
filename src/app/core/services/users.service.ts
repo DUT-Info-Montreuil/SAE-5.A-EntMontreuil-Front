@@ -45,6 +45,14 @@ export class UsersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    deleteUser( id:number) : Observable<any>{
+        
+        return this.http.delete<any>(this.apiURL + `/users/${id}`)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
         
     
 }

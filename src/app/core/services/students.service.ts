@@ -46,4 +46,12 @@ export class StudentsService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    deleteStudent(id:number) : Observable<any>{
+        
+        return this.http.delete<any>(this.apiURL + `/students/${id}`)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
 }

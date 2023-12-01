@@ -15,8 +15,11 @@ export class UsersComponent implements OnInit {
 
   users !: User[]
   totalRecords: number = 0;
-  displayModal : boolean = false;
+  displayModalUpdate : boolean = false;
   oldUsername !: string;
+  displayModalDelete : boolean = false;
+  user_id!:number;
+  username!:string;
   
   //update
   userModal!:User ;
@@ -50,9 +53,9 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  openModal(user : any) {
+  openModalUpdate(user : any) {
     this.oldUsername = user.username
-    this.displayModal = true;
+    this.displayModalUpdate = true;
     this.userModal = (user);
     this.userUpdateForm = this.formBuilder.group({
       id : [user.id, Validators.required],
@@ -108,5 +111,33 @@ export class UsersComponent implements OnInit {
     this.userUpdateForm.get('admin')?.setValue(event.checked);
   }
 
+  openModalDelete(user : any) {   
+    this.user_id = user.id; 
+    this.username = user.username;
+    this.displayModalDelete = true;
+    this.ErrorMessage = '';
+  }
+
+  closeModalDelete(){
+    this.displayModalDelete = false;
+  }
+
+  deleteUser(){
+    this.usersServices.deleteUser(this.user_id).subscribe({
+
+      next: (loginResponse) => {
+        if (loginResponse.id) {
+          location.reload();
+        }
+      },
+      error: (loginError) => {
+        if (loginError.status === 400) {
+          this.ErrorMessage = loginError.error.error;
+        } else {
+          this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
+        }
+      }
+    });
+  }
 
 }
