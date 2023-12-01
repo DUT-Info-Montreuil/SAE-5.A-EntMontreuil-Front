@@ -1,38 +1,18 @@
 <!-- create-material.component.html -->
-<p-dialog
-  header="Créer un équipement"
-  [(visible)]="display"
-  [modal]="true"
-  [responsive]="true"
->
+<p-dialog header="Créer un équipement" [(visible)]="display" [modal]="true" [responsive]="true">
   <ng-template pTemplate="content">
     <div class="p-fluid">
       <div class="p-field">
-        <label for="equipmentName">Nom de l'équipement</label>
-        <input
-          type="text"
-          id="equipmentName"
-          pInputText
-          [(ngModel)]="newEquipmentName"
-        />
+        <label for="equipmentName" class="font-medium text-900">Nom de l'équipement</label>
+        <input class="mt-1" type="text" id="equipmentName" pInputText [(ngModel)]="newEquipmentName" />
       </div>
     </div>
   </ng-template>
   <ng-template pTemplate="footer">
-    <button
-      pButton
-      type="button"
-      label="Annuler"
-      (click)="hideDialog()"
-      class="p-button-secondary"
-    ></button>
-    <button
-      pButton
-      type="button"
-      label="Créer"
-      (click)="createEquipment()"
-      class="p-button-primary"
-    ></button>
+    <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+      (click)="hideDialog()"></p-button>
+    <p-button type="button" label="Créer" class="p-button-primary" (click)="createEquipment()"
+      [loading]="loading"></p-button>
   </ng-template>
 </p-dialog>
 <p-toast></p-toast>

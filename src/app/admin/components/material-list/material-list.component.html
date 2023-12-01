@@ -14,8 +14,13 @@
     <h1 class="text-lg font-medium">Équipements</h1>
 
     <div class="flex justify-content-between mt-5 mb-4">
-      <input class="w-4" type="text" pInputText [(ngModel)]="searchQuery" (input)="onSearch()"
-        placeholder="Rechercher un matériel" />
+      <div>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search mb-3"></i>
+          <input type="text" pInputText [(ngModel)]="searchQuery" (input)="onSearch()"
+            placeholder="Rechercher un équipement" />
+        </span>
+      </div>
 
       <p-button icon="pi pi-plus" label="Créer un équipement" class="custom-button"
         (click)="showCreateMaterialDialog()"></p-button>

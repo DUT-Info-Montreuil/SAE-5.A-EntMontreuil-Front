@@ -1,69 +1,45 @@
 <div class="container">
-  <app-create-training
-    *ngIf="displayCreateTrainingDialog"
-    [degrees]="degrees"
-    (trainingCreated)="onTrainingCreated($event)"
-  ></app-create-training>
+  <app-create-training *ngIf="displayCreateTrainingDialog" [degrees]="degrees"
+    (trainingCreated)="onTrainingCreated($event)"></app-create-training>
 
-  <div
-    class="flex align-item-center border-round p-4 relative"
-    style="background-color: rgb(239, 244, 255)"
-  >
+  <div class="flex align-item-center border-round p-4 relative" style="background-color: rgb(239, 244, 255)">
     <div>
-      <h1 class="text-2xl font-semibold">Gestion des parcourss</h1>
-      <p class="text-900 -mt-2">Créer, modifier ou supprimer des parcourss.</p>
+      <h1 class="text-2xl font-semibold">Gestion des parcours</h1>
+      <p class="text-900 -mt-2">Créer, modifier ou supprimer des parcours.</p>
     </div>
-    <div
-      class="absolute hidden sm:hidden md:block"
-      style="top: -14px; right: 50px"
-    >
-      <img src="/assets/images/3dicons/cube.png" alt="cube" width="180px" />
+    <div class="absolute hidden sm:hidden md:block" style="top: -10px; right: 50px">
+      <img src="/assets/images/3dicons/rocket.png" alt="cube" width="180px" />
     </div>
   </div>
 
   <!-- Search and Add Section -->
   <div class="shadow-1 border-round mt-7 p-4 pt-2">
-    <h1 class="text-lg font-medium">parcourss</h1>
+    <h1 class="text-lg font-medium">Parcours</h1>
 
     <div class="flex justify-content-between mt-5 mb-4">
-      <input
-        class="w-4"
-        type="text"
-        pInputText
-        [(ngModel)]="searchQuery"
-        (input)="onSearch()"
-        placeholder="Rechercher une parcours"
-      />
-      <p-button
-        icon="pi pi-plus"
-        label="Créer une parcours"
-        class="custom-button"
-        (click)="showCreateTrainingDialog()"
-      ></p-button>
+      <div>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search mb-3"></i>
+          <input type="text" pInputText [(ngModel)]="searchQuery" (input)="onSearch()"
+            placeholder="Rechercher un parcours" />
+        </span>
+      </div>
+
+      <p-button icon="pi pi-plus" label="Créer une parcours" class="custom-button"
+        (click)="showCreateTrainingDialog()"></p-button>
     </div>
 
     <!-- Training Table with PrimeNG -->
-    <p-table
-      [value]="filteredTrainings"
-      [paginator]="true"
-      [rows]="9"
-      [responsiveLayout]="scroll"
-    >
+    <p-table [value]="filteredTrainings" [paginator]="true" [rows]="9" [responsiveLayout]="scroll">
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
           <th>Nom du parcours</th>
           <th>
             Formation
-            <select
-              (change)="onDegreeFilter($event)"
-              placeholder="Filter by Formation"
-            >
-              <option value="">All</option>
-              <option *ngFor="let degree of degrees" [value]="degree.id">
-                {{ degree.name }}
-              </option>
-            </select>
+            <p-dropdown class="ml-2" [options]="degrees" (onChange)="onDegreeFilter($event)" [placeholder]="'Toutes'"
+              optionLabel="name" optionValue="id" appendTo="body" [showClear]="true">
+            </p-dropdown>
           </th>
           <th>Actions</th>
         </tr>
@@ -77,52 +53,20 @@
           </td>
           <td *ngIf="!training.isEditing">{{ training.degree_name }}</td>
           <td *ngIf="training.isEditing">
-            <select [(ngModel)]="training.updatedDegreeId">
-              <option
-                *ngFor="let degree of degrees"
-                [value]="degree.id"
-                [selected]="degree.id === training.id_Degree"
-              >
-                {{ degree.name }}
-              </option>
-            </select>
+            <p-dropdown [options]="degrees" [(ngModel)]="training.updatedDegreeId" optionLabel="name" optionValue="id"
+              appendTo="body">
+            </p-dropdown>
           </td>
           <td class="flex justify-content-evenly">
-            <div
-              *ngIf="!training.isEditing"
-              class="flex align-items-center justify-content-center"
-            >
-              <button
-                pButton
-                pRipple
-                pTooltip="Modifier"
-                tooltipPosition="top"
-                type="button"
-                icon="pi pi-pencil"
-                class="p-button-rounded p-button-text"
-                (click)="startEditing(training)"
-              ></button>
-              <button
-                pButton
-                pRipple
-                pTooltip="Supprimer"
-                tooltipPosition="top"
-                icon="pi pi-trash"
-                class="p-button-rounded p-button-text p-button-danger"
-                (click)="confirmDelete(training)"
-              ></button>
+            <div *ngIf="!training.isEditing" class="flex align-items-center justify-content-center">
+              <button pButton pRipple pTooltip="Modifier" tooltipPosition="top" type="button" icon="pi pi-pencil"
+                class="p-button-rounded p-button-text" (click)="startEditing(training)"></button>
+              <button pButton pRipple pTooltip="Supprimer" tooltipPosition="top" icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger" (click)="confirmDelete(training)"></button>
             </div>
-            <div
-              *ngIf="training.isEditing"
-              class="flex align-items-center justify-content-center"
-            >
-              <button
-                pButton
-                type="button"
-                label="Sauvegarder"
-                (click)="stopEditing(training)"
-                class="p-button-success"
-              ></button>
+            <div *ngIf="training.isEditing" class="flex align-items-center justify-content-center">
+              <button pButton type="button" label="Sauvegarder" (click)="stopEditing(training)"
+                class="p-button-success"></button>
             </div>
           </td>
         </tr>
@@ -137,8 +81,5 @@
 </div>
 
 <!-- Confirmation Dialog and Toast Messages -->
-<p-confirmDialog
-  header="Supprimer"
-  icon="pi pi-exclamation-triangle"
-></p-confirmDialog>
+<p-confirmDialog header="Supprimer" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast></p-toast>

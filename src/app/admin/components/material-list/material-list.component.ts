@@ -15,6 +15,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     `
   ],
 })
+
 export class MaterialListComponent implements OnInit {
   materials: Material[] = [];
   filteredMaterials: Material[] = [];
@@ -34,6 +35,7 @@ export class MaterialListComponent implements OnInit {
       this.filteredMaterials = materials;
     });
   }
+
   onSearch(): void {
     if (!this.searchQuery) {
       this.filteredMaterials = this.materials;
@@ -45,6 +47,7 @@ export class MaterialListComponent implements OnInit {
       );
     }
   }
+
   deleteMaterial(id: number): void {
     this.MaterialService.deleteMaterial(id).subscribe(() => {
       this.materials = this.materials.filter((material) => material.id !== id);

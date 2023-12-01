@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TrainingListComponent } from './components/training-list/training-list.component';
 import { CreateTrainingComponent } from './components/create-training/create-training.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { DialogService } from 'primeng/dynamicdialog';
     DialogModule,
     RippleModule,
     TooltipModule,
+    DropdownModule
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
-export class AdminModule {}
+export class AdminModule { }

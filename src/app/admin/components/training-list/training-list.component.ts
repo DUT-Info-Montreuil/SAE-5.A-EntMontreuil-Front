@@ -24,7 +24,7 @@ export class TrainingListComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private dialogService: DialogService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refreshTrainings();
@@ -50,18 +50,20 @@ export class TrainingListComponent implements OnInit {
       );
     }
   }
+
   onDegreeFilter(event: any): void {
-    const selectedDegreeId = event.target.value;
+    const selectedDegreeId = event.value; // Modifiez ici pour utiliser event.value
 
     if (selectedDegreeId) {
       this.filteredTrainings = this.trainings.filter(
-        (training) => training.id_Degree.toString() === selectedDegreeId
+        (training) => training.id_Degree.toString() === selectedDegreeId.toString()
       );
     } else {
-      // If no degree is selected, show all trainings
+      // Si aucune formation n'est sélectionnée, afficher tous les parcours
       this.filteredTrainings = [...this.trainings];
     }
   }
+
 
   deleteTraining(id: number): void {
     this.trainingService.deleteTraining(id).subscribe(() => {
