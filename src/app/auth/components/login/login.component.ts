@@ -49,7 +49,11 @@ export class LoginComponent {
 
   setGreeting() {
     const hour = new Date().getHours();
-    this.greeting = hour < 18 ? 'Bonjour' : 'Bonsoir';
+    if (hour >= 0 && hour <= 4) {
+      this.greeting = 'Bonsoir, il est tard !';
+    } else {
+      this.greeting = hour < 18 ? 'Bonjour,' : 'Bonsoir,';
+    }
   }
 
   onSubmit() {

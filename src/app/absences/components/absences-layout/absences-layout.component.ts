@@ -1,95 +1,101 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Absence } from 'src/app/core/models/absence.model';
 import { AbsencesService } from 'src/app/core/services/absences.service';
-import {
-  ApexAxisChartSeries,
-  ApexChart,
-  ApexXAxis,
-  ApexDataLabels,
-  ApexTooltip
-} from 'ng-apexcharts';
-
 
 @Component({
   selector: 'app-absences-layout',
   templateUrl: './absences-layout.component.html',
-  styleUrls: ['./absences-layout.component.scss']
+  styleUrls: ['./absences-layout.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class AbsencesLayoutComponent implements OnInit {
+  isLoading: boolean = true;
   public chartOptions: any;
   public absencesData: Absence[] = []; // Variable pour stocker les données
+  public filteredAbsences: Absence[] = []; // Pour les absences filtrées
+  public searchText: string = ''; // Pour stocker la chaîne de recherche
+  public onlyUnjustified = false; // Suivre l'état du switch
+
+  public displayJustifyModal: boolean = false;
+  public selectedAbsence: Absence | null = null;
+
 
   constructor(private absencesService: AbsencesService) { }
 
   ngOnInit(): void {
     this.absencesService.getStudentAbsences().subscribe(absences => {
       this.absencesData = absences; // Stockage des données récupérées
-
-      const absencesByMonth = this.groupAbsencesByMonth(absences);
-
-      this.chartOptions = {
-        series: [
-          {
-            name: "Absences",
-            data: Object.values(absencesByMonth)
-          }
-        ],
-        chart: {
-          type: "area",
-          height: 300
-        },
-        xaxis: {
-          categories: Object.keys(absencesByMonth)
-        },
-        yaxis: {
-          tickAmount: Math.max(...Object.values(absencesByMonth)), // Pour un nombre de graduations adapté
-          labels: {
-            formatter: function (val: number) {
-              return Math.floor(val); // Arrondir les valeurs à l'entier inférieur
-            }
-          }
-        },
-        dataLabels: {
-          enabled: false // Désactiver les dataLabels
-        },
-        stroke: {
-          curve: 'smooth',
-        },
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.7,
-            opacityTo: 0.9,
-            stops: [0, 90, 100]
-          }
-        },
-      };
-
+      this.filteredAbsences = [...this.absencesData]; // Initialisation avec toutes les données
+      this.isLoading = false;
     });
   }
 
-  groupAbsencesByMonth(absences: Absence[]): { [key: string]: number } {
-    const absencesByMonth: { [key: string]: number } = {};
+  // Activation ou désactivation du filtre "Uniquement les absences injustifiées"
+  toggleOnlyUnjustified(): void {
+    this.onlyUnjustified = !this.onlyUnjustified;
+    this.filterAbsences();
+  }
 
-    // Initialiser tous les mois du semestre avec 0 absences
-    for (let i = 0; i < 12; i++) {
-      absencesByMonth[this.getMonthName(i)] = 0;
+  // Modal de justification ============================================================================
+  openJustifyModal(absence: Absence) {
+    this.selectedAbsence = absence; // Assurez-vous que selectedAbsence est défini dans votre composant
+    this.displayJustifyModal = true; // Ce booléen doit être relié au modal
+  }
+
+  handleModalClose() {
+    this.displayJustifyModal = false;
+    this.selectedAbsence = null;
+    // Rafraîchir les données ici
+  }
+
+  // Fin modal de justification ========================================================================
+
+  // Fonctions de filtrage ============================================================================
+
+  filterAbsences(): void {
+    if (this.onlyUnjustified) {
+      this.applyUnjustifiedFilter();
+    } else {
+      this.applyRegularFilter();
     }
-
-    // Compter les absences pour chaque mois
-    absences.forEach(absence => {
-      const month = new Date(absence.course_date).getMonth();
-      absencesByMonth[this.getMonthName(month)]++;
-    });
-
-    return absencesByMonth;
   }
 
-  getMonthName(monthIndex: number): string {
-    const monthNames = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-    return monthNames[monthIndex];
+  applyUnjustifiedFilter(): void {
+    this.filteredAbsences = this.getUnjustifiedAbsences();
+  }
+
+  applyRegularFilter(): void {
+    if (!this.searchText) {
+      this.filteredAbsences = [...this.absencesData];
+    } else {
+      this.filteredAbsences = this.absencesData.filter(absence => {
+        return absence.resource_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          absence.reason.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    }
+  }
+
+  getJustifiedAbsences(): Absence[] {
+    return this.absencesData.filter(absence => absence.justify);
+  }
+
+  getUnjustifiedAbsences(): Absence[] {
+    return this.absencesData.filter(absence => !absence.justify);
+  }
+
+  // Fin fonctions de filtrage ============================================================================
+
+  // Fonctions de conversion des heures ============================================================
+
+  calculateTotalJustifiedHours(): string {
+    const justifiedAbsences = this.getJustifiedAbsences();
+    return this.calculateTotalHoursString(justifiedAbsences);
   }
 
   calculateTotalHours(absences: Absence[]): number {
@@ -104,11 +110,49 @@ export class AbsencesLayoutComponent implements OnInit {
     return totalHours;
   }
 
+  calculateTotalHoursString(absences: Absence[]): string {
+    let totalHours = 0;
+
+    absences.forEach(absence => {
+      const dateStart = new Date(absence.course_date + 'T' + absence.course_start_time);
+      const dateEnd = new Date(absence.course_date + 'T' + absence.course_end_time);
+      totalHours += this.calculateHourDifference(dateStart, dateEnd);
+    });
+
+    // Séparation des heures entières et des minutes
+    const hours = Math.floor(totalHours);
+    const minutes = Math.round((totalHours - hours) * 60);
+
+    // Formatage du résultat en "4h30"
+    return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  }
+
   calculateHourDifference(dateDebut: Date, dateFin: Date): number {
     const differenceEnMillisecondes = dateFin.getTime() - dateDebut.getTime();
     const differenceEnHeures = differenceEnMillisecondes / (1000 * 60 * 60);
     return differenceEnHeures;
   }
 
+  convertirEtFormaterHeure(heureChaine: string): string {
+    if (!heureChaine) return '';
+
+    // Créer une date fictive, car seule l'heure nous intéresse
+    const dateFictive = new Date(`1970-01-01T${heureChaine}`);
+
+    return dateFictive.getHours().toString().padStart(2, '0') + 'h' + dateFictive.getMinutes().toString().padStart(2, '0');
+  }
+
+  calculateTimeDifference(start: string, end: string): string {
+    const startDate = new Date(`1970-01-01T${start}`);
+    const endDate = new Date(`1970-01-01T${end}`);
+
+    const differenceInMs = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(differenceInMs / (1000 * 60 * 60));
+    const minutes = Math.floor((differenceInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  }
+
+  // Fin fonctions de conversion des heures ============================================================
 
 }
