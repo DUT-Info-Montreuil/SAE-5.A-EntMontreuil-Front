@@ -1,9 +1,9 @@
 <div class="table-container">
 <!-- users.component.html -->
-<p-table #dt2
+<p-table 
 [value]="students"
 dataKey="id"
-[rows]="10"
+[rows]="7"
 [paginator]="true"
 >
     <!-- Votre en-tête de tableau -->
@@ -17,10 +17,8 @@ dataKey="id"
             <th >NIP</th>
             <th >INE</th>
             <th >Apprentie</th>
-            <th >Parcour</th>
-            <th >Promotion</th>
-            <th >TD</th>
-            <th >TP</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
         </tr>
 
         <tr>
@@ -40,53 +38,117 @@ dataKey="id"
             <th>
                 <p-columnFilter type="text" field="personal_info.nip"></p-columnFilter>
             </th>
-            <th>
+            <th >
                 <p-columnFilter type="text" field="personal_info.ine"></p-columnFilter>
             </th>
-            <th>
+            <th >
                 <p-columnFilter type="boolean" field="personal_info.apprentice"></p-columnFilter>
             </th>
-            <th>
-                <p-columnFilter type="text" field="academic_info.degree.name"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="academic_info.td.name"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="academic_info.promotion.level"></p-columnFilter>
-            </th>
-            <th>
-                <p-columnFilter type="text" field="academic_info.tp.name"></p-columnFilter>
-            </th>
+            <th></th>
+            <th></th>
         </tr>
     </ng-template>
     <!-- Corps du tableau -->
     <ng-template pTemplate="body" let-student>
         <tr>
             <td>{{ student.personal_info.id }}</td>
-            <td>{{ student.user.username }}</td>
-            <td>{{ student.user.first_name }}</td>
-            <td>{{ student.user.last_name }}</td>
+            <td>{{ student.user.username  }}</td>
+            <td>{{ student.user.first_name.length > 10 ? (student.user.first_name.slice(0, 10) | titlecase)+ '...' : student.user.first_name | titlecase }}</td>
+            <td>{{ student.user.last_name.length > 10 ?  (student.user.last_name.slice(0, 10)| titlecase) + '...' : student.user.last_name | titlecase }}</td>
             <td>{{ student.user.email }}</td>
-            <td>{{ student.personal_info.nip }}</td>
-            <td>{{ student.personal_info.ine  }}</td>
+            <td>{{ student.personal_info.nip.length > 8 ?  student.personal_info.nip.slice(0, 8) + '...' : student.personal_info.nip   }}</td>
+            <td>{{ student.personal_info.ine.length > 11 ?  student.personal_info.ine.slice(0, 11) + '...' : student.personal_info.ine   }}</td>
             <td>
                 <i class="pi"
                     [ngClass]="{ 'pi-check-circle': student.personal_info.apprentice, 'pi-times-circle': !student.personal_info.apprentice }"
                     [ngStyle]="{ 'color': student.personal_info.apprentice ? 'green' : 'red' }"></i>
             </td>
-            <td>{{ student.academic_info.degree.name }}</td>
-            <td>BUT{{ student.academic_info.promotion.level }}</td>
-            <td>{{ student.academic_info.td.name }}</td>
-            <td>{{ student.academic_info.tp.name }}</td>
+            <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info "  (click)="openModal(student)" ></p-button></td>
+            <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"  ></p-button></td>
+        
             
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
         <tr>
-            <td colspan="6">Aucun étudiant trouvé.</td>
+            <td colspan="10">Aucun étudiant trouvé.</td>
         </tr>
     </ng-template>
 </p-table>
 <p-button routerLink="add" label="Ajouter un étudiant" [rounded]="true" ></p-button>
+
+
+
+<div *ngIf="studentModal" >
+    <p-dialog header="Modifier cette étudiant" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+
+
+        <!--------------------------------->
+        <form  [formGroup]="studentUpdateForm" (ngSubmit)="onSubmit()">
+            <div >
+                <div class="card p-fluid">
+                    <div class="field">
+                        <label htmlfor="username">Pseudo</label>
+                        <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
+                    </div>
+
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="nom">Nom</label>
+                            <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="prenom">Prénom</label>
+                            <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label htmlfor="email">Email</label>
+                        <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="nip">NIP (Numéro Étudiant)</label>
+                            <input pinputtext="" id="nip" type="text" class="p-inputtext p-component p-element" formControlName="nip">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="ine">INE</label>
+                            <input pinputtext="" id="ine" type="text" class="p-inputtext p-component p-element" formControlName="ine">
+                        </div>
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="studentUpdateForm && studentUpdateForm.get('apprentice')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="apprentice" 
+                        formControlName="apprentice" 
+                        (onChange)="onApprenticeCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="apprentice">Est apprentie</label>
+                    </div>
+                    <div class="field">
+                    </div>
+                </div>
+                
+                <button type="submit" pButton pRipple label="Modifier cette étudiant" class="w-full p-3"></button>
+
+                <div class="card p-fluid">
+                    <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+                    </div>
+        
+                    <div *ngIf="StudentModifiedMessage" class="login-status mb-5 w-full" >
+                        
+                        <p class="text-sm text-green-500 font-semibold">{{ StudentModifiedMessage }}</p>
+                    </div>
+                </div>
+        
+            </div>
+        </form>
+
+
+
+    </p-dialog>
+</div>
 </div>

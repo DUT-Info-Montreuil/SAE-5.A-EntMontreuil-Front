@@ -37,4 +37,13 @@ export class StudentsService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+
+    updateStudent(username: string,  first_name: string,last_name: string, email: string, id:number, oldUsername:string, nip : string, ine:string, apprentice:boolean, old_ine:string, old_nip:string) : Observable<any>{
+        
+        return this.http.patch<any>(this.apiURL + `/students/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,oldUsername },apprentice, ine, nip, old_ine, old_nip }}), this.httpOptions)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
 }

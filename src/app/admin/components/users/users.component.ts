@@ -67,8 +67,7 @@ export class UsersComponent implements OnInit {
   }
 
   onSubmit(){
-    const { id, username, password,first_name, last_name, role, email, admin  } = this.userUpdateForm.value;
-    console.log(admin)
+    const { id, username, first_name, last_name, role, email, admin  } = this.userUpdateForm.value;
 
     if (typeof role === 'string') {
       this.roleString = role;

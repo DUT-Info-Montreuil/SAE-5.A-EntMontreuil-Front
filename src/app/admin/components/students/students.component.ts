@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Student } from 'src/app/core/models/students.model';
 import { StudentsService } from 'src/app/core/services/students.service';
 
@@ -9,10 +11,20 @@ import { StudentsService } from 'src/app/core/services/students.service';
 })
 export class StudentsComponent {
 
-  students !: Student[]
+  students !: Student[] 
   totalRecords: number = 0;
 
-  constructor(private studentsServices : StudentsService){
+  //update
+  studentModal !: Student;
+  displayModal : boolean = false;
+  studentUpdateForm!: FormGroup;
+  oldUsername !: string;
+  ErrorMessage: string = '';
+  StudentModifiedMessage: string = '';
+  old_ine!:string;
+  old_nip!:string;
+
+  constructor(private studentsServices : StudentsService,  private formBuilder: FormBuilder,private router: Router, private studentsService : StudentsService ){
 
   }
   ngOnInit(): void {
@@ -30,4 +42,61 @@ export class StudentsComponent {
       }
     );
   }
+
+
+  openModal(student : any) {
+    this.oldUsername = student.user.username
+    this.displayModal = true;
+    this.studentModal = (student);
+    this.old_ine =student.personal_info.ine;
+    this.old_nip = student.personal_info.nip;
+    this.studentUpdateForm = this.formBuilder.group({
+      id : [student.personal_info.id, Validators.required],
+      username: [student.user.username, Validators.required],
+      first_name: [student.user.first_name, Validators.required],
+      last_name: [student.user.last_name, Validators.required],
+      email: [student.user.email, Validators.required],
+      apprentice: [student.personal_info.apprentice],
+      ine: [student.personal_info.ine],
+      nip: [student.personal_info.nip],
+    });
+  }
+
+
+  onSubmit(){
+    const { id, username, first_name, last_name,  email, apprentice, ine, nip  } = this.studentUpdateForm.value;
+
+    console.log(this.studentUpdateForm.value)
+
+    
+    
+    this.studentsService.updateStudent( username,  first_name,last_name, email, id, this.oldUsername, nip , ine, apprentice, this.old_ine, this.old_nip).subscribe({
+
+      next: (loginResponse) => {
+        if (loginResponse.id) {
+          location.reload();
+
+        }
+      },
+      error: (loginError) => {
+  
+        if (loginError.status === 400) {
+          this.ErrorMessage = loginError.error.error;
+          this.StudentModifiedMessage = '';
+        
+          
+        } else {
+          this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
+          this.StudentModifiedMessage = '';
+        }
+      }
+    });
+
+  }
+
+  onApprenticeCheckboxChange(event: any) {
+    this.studentUpdateForm.get('apprentice')?.setValue(event.checked);
+  }
+
+
 }

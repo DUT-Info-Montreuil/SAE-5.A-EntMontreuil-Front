@@ -18,6 +18,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { DialogModule } from 'primeng/dialog';
 import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
+import { ToastModule } from 'primeng/toast';
 
 
 
@@ -46,7 +47,9 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
     AutoCompleteModule,
     ReactiveFormsModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    ToastModule,
+    
   ]
 })
 export class AdminModule { }
