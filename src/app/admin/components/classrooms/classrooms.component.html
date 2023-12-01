@@ -37,48 +37,77 @@
 
   <ng-template pTemplate="header">
     <tr>
-      <th style="width: 30%">Id</th>
-      <th style="width: 30%">Salle</th>
-      <th style="width: 30%">Capacité</th>
-      <th style="width: 10%">Matériel</th>
-    </tr>
-    <tr>
-      <th>
-        <p-columnFilter type="text" field="id"></p-columnFilter>
-      </th>
-      <th>
-        <p-columnFilter type="text" field="name"></p-columnFilter>
-      </th>
-      <th>
-        <p-columnFilter type="text" field="capacity"></p-columnFilter>
-      </th>
-      <th></th>
+      <th style="width: 25%">Id</th>
+      <th style="width: 25%">Salle</th>
+      <th style="width: 25%">Capacité</th>
+      <th style="width: 25%">Actions</th>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="body" let-classroom>
     <tr>
       <td>
         {{ classroom.id }}
       </td>
       <td>
-        {{ classroom.name }}
+        <div *ngIf="!classroom.isEditing">
+          {{ classroom.name }}
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <input type="text" [(ngModel)]="classroom.editedName" />
+        </div>
       </td>
       <td>
-        {{ classroom.capacity }}
+        <div *ngIf="!classroom.isEditing">
+          {{ classroom.capacity }}
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <input type="number" [(ngModel)]="classroom.editedCapacity" />
+        </div>
       </td>
       <td>
-        <button
-          class="w3-button w3-blue w3-round-large"
-          [routerLink]="['/admin/classrooms', classroom.id]"
-        >
-          <i class="pi pi-desktop"></i> Matériel
-        </button>
+        <div *ngIf="!classroom.isEditing">
+          <button
+            class="w3-button w3-blue w3-round"
+            (click)="startEdit(classroom)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            class="w3-button w3-green w3-round"
+            [routerLink]="['/admin/classrooms', classroom.id]"
+          >
+            <i class="pi pi-desktop"></i> Matériel
+          </button>
+          <!-- Autres actions -->
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <button
+            class="w3-button w3-green w3-round"
+            (click)="confirmUpdate(classroom)"
+          >
+            <i class="pi pi-check"></i>
+          </button>
+          <button
+            class="w3-button w3-red w3-round"
+            (click)="cancelEdit(classroom)"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
       </td>
     </tr>
   </ng-template>
+
   <ng-template pTemplate="emptymessage">
     <tr>
-      <td colspan="5">Pas de salles de classes.</td>
+      <td colspan="4">Pas de salles de classes.</td>
     </tr>
   </ng-template>
 </p-table>
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
+
+<p-toast></p-toast>

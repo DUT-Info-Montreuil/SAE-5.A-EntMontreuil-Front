@@ -64,4 +64,11 @@ export class ClassroomService {
       this.httpOptions
     );
   }
+  updateClassroom(
+    id: number,
+    updatedClassroom: Partial<Classroom>
+  ): Observable<any[]> {
+    const url = `${this.apiUrl}/classrooms/${id}`;
+    return this.http.put<any[]>(url, updatedClassroom);
+  }
 }
