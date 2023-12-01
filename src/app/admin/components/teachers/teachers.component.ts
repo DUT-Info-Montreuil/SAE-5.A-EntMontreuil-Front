@@ -13,6 +13,9 @@ export class TeachersComponent {
 
   teachers !: Teacher[]
   totalRecords: number = 0;
+  displayModalDelete:boolean = false;
+  username !: string;
+  teacher_id!:number;
   //update
   teacherModal !: Teacher;
   displayModal : boolean = false;
@@ -94,6 +97,37 @@ export class TeachersComponent {
 
   onAdminCheckboxChange(event: any) {
     this.teacherUpdateForm.get('admin')?.setValue(event.checked);
+  }
+
+
+  openModalDelete(teacher : any) {   
+    this.teacher_id = teacher.personal_info.id; 
+    console.log(this.teacher_id)
+    this.username = teacher.user.username;
+    this.displayModalDelete = true;
+    this.ErrorMessage = '';
+  }
+
+  closeModalDelete(){
+    this.displayModalDelete = false;
+  }
+
+  deleteTeacher(){
+    this.teachersServices.deleteTeacher(this.teacher_id).subscribe({
+
+      next: (loginResponse) => {
+        if (loginResponse.id) {
+          location.reload();
+        }
+      },
+      error: (loginError) => {
+        if (loginError.status === 400) {
+          this.ErrorMessage = loginError.error.error;
+        } else {
+          this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
+        }
+      }
+    });
   }
 
 }
