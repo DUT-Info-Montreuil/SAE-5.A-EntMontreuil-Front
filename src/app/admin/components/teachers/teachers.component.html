@@ -63,7 +63,7 @@ dataKey="id"
                     [ngClass]="{ 'pi-check-circle': teacher.user.isAdmin, 'pi-times-circle': !teacher.user.isAdmin }"
                     [ngStyle]="{ 'color': teacher.user.isAdmin ? 'green' : 'red' }"></i>
             </td>
-            <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info "  ></p-button></td>
+            <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click) ="openModal(teacher)"  ></p-button></td>
             <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"  ></p-button></td>
         </tr>
     </ng-template>
@@ -75,3 +75,72 @@ dataKey="id"
 </p-table>
 
 <p-button routerLink="add" label="Ajouter un enseignant" [rounded]="true" ></p-button>
+
+<div *ngIf="teacherModal" >
+    <p-dialog header="Modifier cette enseignant" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+
+
+        <!--------------------------------->
+        <form  [formGroup]="teacherUpdateForm" (ngSubmit)="onSubmit()">
+            <div >
+                <div class="card p-fluid">
+                    <div class="field">
+                        <label htmlfor="username">Pseudo</label>
+                        <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
+                    </div>
+
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="nom">Nom</label>
+                            <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="prenom">Prénom</label>
+                            <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label htmlfor="email">Email</label>
+                        <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="initial">Initial</label>
+                            <input pinputtext="" id="initial" type="text" class="p-inputtext p-component p-element" formControlName="initial">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="desktop">Bureau</label>
+                            <input pinputtext="" id="desktop" type="text" class="p-inputtext p-component p-element" formControlName="desktop">
+                        </div>
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="teacherUpdateForm && teacherUpdateForm.get('admin')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="admin" 
+                        formControlName="admin" 
+                        (onChange)="onAdminCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="admin">Attribuer les droits administrateur</label>
+                    </div>
+                    <div class="field">
+                    </div>
+                </div>
+                
+                <button type="submit" pButton pRipple label="Modifier cette enseignant" class="w-full p-3"></button>
+
+                <div class="card p-fluid">
+                    <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+                    </div>
+        
+                </div>
+        
+            </div>
+        </form>
+
+
+
+    </p-dialog>
+</div>

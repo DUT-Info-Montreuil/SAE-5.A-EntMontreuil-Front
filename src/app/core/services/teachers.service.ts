@@ -37,4 +37,12 @@ export class TeachersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    updateTeacher(username: string,  first_name: string,last_name: string, email: string, id:number, oldUsername:string, initial : string, old_initial:string, isAdmin:boolean, desktop:string) : Observable<any>{
+        
+        return this.http.patch<any>(this.apiURL + `/teachers/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,oldUsername,isAdmin },initial, desktop, old_initial}}), this.httpOptions)
+        .pipe(
+            catchError(this.errorHandler)
+        );
+    }
 }

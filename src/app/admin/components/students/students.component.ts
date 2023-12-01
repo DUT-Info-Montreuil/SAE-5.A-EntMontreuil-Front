@@ -24,7 +24,7 @@ export class StudentsComponent {
   old_ine!:string;
   old_nip!:string;
 
-  constructor(private studentsServices : StudentsService,  private formBuilder: FormBuilder,private router: Router, private studentsService : StudentsService ){
+  constructor(private studentsServices : StudentsService,  private formBuilder: FormBuilder,private router: Router){
 
   }
   ngOnInit(): void {
@@ -70,7 +70,7 @@ export class StudentsComponent {
 
     
     
-    this.studentsService.updateStudent( username,  first_name,last_name, email, id, this.oldUsername, nip , ine, apprentice, this.old_ine, this.old_nip).subscribe({
+    this.studentsServices.updateStudent( username,  first_name,last_name, email, id, this.oldUsername, nip , ine, apprentice, this.old_ine, this.old_nip).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.id) {
