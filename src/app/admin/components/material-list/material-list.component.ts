@@ -17,6 +17,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 })
 
 export class MaterialListComponent implements OnInit {
+
+  isLoading: boolean = true;
+
   materials: Material[] = [];
   filteredMaterials: Material[] = [];
   searchQuery: string = '';
@@ -33,6 +36,8 @@ export class MaterialListComponent implements OnInit {
     this.MaterialService.getMaterials().subscribe((materials) => {
       this.materials = materials;
       this.filteredMaterials = materials;
+
+      this.isLoading = false;
     });
   }
 
@@ -102,6 +107,7 @@ export class MaterialListComponent implements OnInit {
 
     // Vérifiez s'il y a eu des modifications
     if (material.updatedEquipment !== material.equipment) {
+
       // Envoyez la mise à jour au service
       const materialUpdate = {
         datas: {

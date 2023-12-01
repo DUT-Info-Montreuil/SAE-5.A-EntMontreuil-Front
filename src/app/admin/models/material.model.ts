@@ -3,5 +3,6 @@ export class Material {
   equipment!: string;
 
   isEditing: boolean = false;
+  isLoading = false;
   updatedEquipment!: string;
 }

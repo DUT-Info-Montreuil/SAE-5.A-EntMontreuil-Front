@@ -18,6 +18,7 @@ import { TrainingListComponent } from './components/training-list/training-list.
 import { CreateTrainingComponent } from './components/create-training/create-training.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DropdownModule } from 'primeng/dropdown';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { DropdownModule } from 'primeng/dropdown';
     DialogModule,
     RippleModule,
     TooltipModule,
-    DropdownModule
+    DropdownModule,
+    SkeletonModule
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
