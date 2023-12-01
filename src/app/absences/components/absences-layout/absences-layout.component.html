@@ -200,9 +200,11 @@
                         <td>
                             <div *ngIf="!absence.justify" class="flex align-items-center justify-content-center">
                                 <button pButton pRipple tooltipPosition="top" icon="pi pi-plus"
-                                    class="p-button-rounded p-button-text"><span
-                                        class="ml-2 font-medium hidden sm:hidden lg:block md:block">Transmettre un
-                                        justificatif</span></button>
+                                    class="p-button-rounded p-button-text" (click)="openJustifyModal(absence)">
+                                    <span class="ml-2 font-medium hidden sm:hidden lg:block md:block">
+                                        Transmettre un justificatif
+                                    </span>
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -225,3 +227,7 @@
 <ng-template #tableSkeleton>
     <p-skeleton width="100%" height="300px"></p-skeleton>
 </ng-template>
+
+<app-justify-absence [selectedAbsence]="selectedAbsence" [displayJustifyModal]="displayJustifyModal"
+    (onClose)="handleModalClose()">
+</app-justify-absence>

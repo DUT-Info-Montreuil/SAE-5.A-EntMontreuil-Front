@@ -1,0 +1,37 @@
+<p-dialog header="Transmettre un justificatif" [(visible)]="displayJustifyModal" [modal]="true" [responsive]="true"
+    (onHide)="onCancelButtonClick()">
+    <ng-template pTemplate="content">
+
+        <div class="border-round border-1 p-2 pt-1 mb-4">
+            <h1 class="text-base font-semibold">{{ selectedAbsence?.resource_name }}</h1>
+            <span class=" text-sm text-900">
+                Le {{ selectedAbsence?.course_date | date:'E d MMM yyyy' }} de {{
+                convertirEtFormaterHeure(selectedAbsence!.course_start_time) }} à {{
+                convertirEtFormaterHeure(selectedAbsence!.course_end_time) }}
+            </span>
+            <br />
+            <span class="text-500 text-sm">
+                {{ calculateTimeDifference(selectedAbsence!.course_start_time, selectedAbsence!.course_end_time) }}
+                de cours manquées
+            </span>
+        </div>
+
+        <div class="p-fluid">
+            <div class="p-field mb-4">
+                <label for="reason" class="font-medium text-900">Motif</label>
+                <input class="mt-1" type="text" id="reason" [(ngModel)]="justificationReason" pInputText />
+            </div>
+            <div class="p-field">
+                <label for="equipmentName" class="font-medium text-900">Fichier justificatif</label>
+                <input class="mt-1" type="file" id="file" (change)="onFileSelected($event)" pInputText />
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton type="button" label="Annuler" class="p-button-secondary"
+            (click)="onCancelButtonClick()"></button>
+        <button pButton type="button" label="Créer" class="p-button-primary" (click)="submitJustification()"></button>
+    </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

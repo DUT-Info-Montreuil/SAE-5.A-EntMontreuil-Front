@@ -22,6 +22,10 @@ export class AbsencesLayoutComponent implements OnInit {
   public searchText: string = ''; // Pour stocker la chaîne de recherche
   public onlyUnjustified = false; // Suivre l'état du switch
 
+  public displayJustifyModal: boolean = false;
+  public selectedAbsence: Absence | null = null;
+
+
   constructor(private absencesService: AbsencesService) { }
 
   ngOnInit(): void {
@@ -37,6 +41,20 @@ export class AbsencesLayoutComponent implements OnInit {
     this.onlyUnjustified = !this.onlyUnjustified;
     this.filterAbsences();
   }
+
+  // Modal de justification ============================================================================
+  openJustifyModal(absence: Absence) {
+    this.selectedAbsence = absence; // Assurez-vous que selectedAbsence est défini dans votre composant
+    this.displayJustifyModal = true; // Ce booléen doit être relié au modal
+  }
+
+  handleModalClose() {
+    this.displayJustifyModal = false;
+    this.selectedAbsence = null;
+    // Rafraîchir les données ici
+  }
+
+  // Fin modal de justification ========================================================================
 
   // Fonctions de filtrage ============================================================================
 
