@@ -1,4 +1,5 @@
 <p-dialog header="Transmettre un justificatif" [(visible)]="displayJustifyModal" [modal]="true" [responsive]="true"
+    [maximizable]="true" [breakpoints]="{ '1100px': '90vw', '1250': '70vw', '780px': '90vw'}" [style]="{width: '30vw'}"
     (onHide)="onCancelButtonClick()">
     <ng-template pTemplate="content">
 
@@ -22,15 +23,19 @@
                 <input class="mt-1" type="text" id="reason" [(ngModel)]="justificationReason" pInputText />
             </div>
             <div class="p-field">
-                <label for="equipmentName" class="font-medium text-900">Fichier justificatif</label>
-                <input class="mt-1" type="file" id="file" (change)="onFileSelected($event)" pInputText />
+                <label for="justifyFile" class="font-medium text-900">Fichier justificatif</label>
+                <div class="mt-1">
+                </div>
+                <p-fileUpload class="mt-1 w-full" id="justifyFile" mode="basic" chooseLabel="Sélectionner un fichier"
+                    name="justifyFile[]" url="" accept="image/*" [maxFileSize]="1000000"
+                    (onUpload)="onFileUpload($event)"></p-fileUpload>
             </div>
         </div>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button pButton type="button" label="Annuler" class="p-button-secondary"
-            (click)="onCancelButtonClick()"></button>
-        <button pButton type="button" label="Créer" class="p-button-primary" (click)="submitJustification()"></button>
+        <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+            (click)="onCancelButtonClick()"></p-button>
+        <p-button type="button" label="Envoyer" class="p-button-primary" (click)="submitJustification()"></p-button>
     </ng-template>
 </p-dialog>
 

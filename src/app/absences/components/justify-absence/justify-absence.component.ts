@@ -7,7 +7,21 @@ import { AbsencesService } from 'src/app/core/services/absences.service';
   selector: 'app-justify-absence',
   templateUrl: './justify-absence.component.html',
   styleUrls: ['./justify-absence.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
+  styles: [
+    `
+        :host ::ng-deep .p-fluid .p-fileupload .p-button {
+            width: 100%;
+            color: #495057;
+            border: 1px solid #ced4da;
+            background-color: white;
+        }
+
+        :host ::ng-deep .p-fluid .p-fileupload .p-button:hover {
+            border-color: #3B82F6;
+        }
+    `
+  ],
 })
 export class JustifyAbsenceComponent implements OnInit {
 
@@ -27,10 +41,13 @@ export class JustifyAbsenceComponent implements OnInit {
 
   }
 
-  onFileSelected(event: any) {
-    if (event.target.files.length > 0) {
-      this.justificationFile = event.target.files[0];
-    }
+  onFileUpload(event: any) {
+    // Accédez à l'objet du fichier téléchargé
+    const uploadedFiles = event.files;
+
+    // Vous pouvez maintenant traiter ces fichiers comme vous le souhaitez
+    // Par exemple, stockez le premier fichier dans votre variable justificationFile
+    this.justificationFile = uploadedFiles.length > 0 ? uploadedFiles[0] : null;
   }
 
   onCancelButtonClick() {
