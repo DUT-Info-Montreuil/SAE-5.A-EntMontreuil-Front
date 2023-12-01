@@ -30,8 +30,10 @@
     </div>
 
     <!-- Training Table with PrimeNG -->
-    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredTrainings" [paginator]="true" [rows]="9"
-      [responsiveLayout]="scroll">
+    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredTrainings" [paginator]="true" [rows]="10"
+      [responsiveLayout]="scroll" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} parcours"
+      [rowsPerPageOptions]="[5, 10, 20, 50]">>
       <ng-template pTemplate="header">
         <tr>
           <th>ID</th>
