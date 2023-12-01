@@ -108,8 +108,13 @@ export class SingleClassroomComponent implements OnInit {
             materialId,
             this.editingQuantity
           )
-          .subscribe(() => {
+          .subscribe((response) => {
             this.cancelEdit();
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Mise à jour',
+              detail: 'Mise à jour de la quantité réussie',
+            });
           });
       }
     }
