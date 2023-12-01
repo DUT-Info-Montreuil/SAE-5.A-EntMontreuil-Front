@@ -64,7 +64,7 @@ dataKey="id"
                     [ngStyle]="{ 'color': student.personal_info.apprentice ? 'green' : 'red' }"></i>
             </td>
             <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info "  (click)="openModal(student)" ></p-button></td>
-            <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"  ></p-button></td>
+            <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"  (click)="openModalDelete(student)"></p-button></td>
         
             
         </tr>
@@ -147,4 +147,15 @@ dataKey="id"
 
     </p-dialog>
 </div>
+
+<p-dialog header="Supprimer un étudiant" [(visible)]="displayModalDelete" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+      <p>Supprimer l'étudiant <span [style.fontWeight]="'bold'">{{ username }}</span></p>
+      <div style="margin-top: 2%">
+        <p-button label="Annuler" [rounded]="true" severity="secondary" icon="pi pi-times" [style]="{ 'margin-right.px': 10 } " (click)="closeModalDelete()"></p-button>
+        <p-button label="Supprimer" [rounded]="true" severity="danger" icon="pi pi-trash" (click)="deleteStudent()"></p-button>
+        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+      </div>
+    </div>
+  </p-dialog>
 </div>

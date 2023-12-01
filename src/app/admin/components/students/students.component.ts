@@ -13,6 +13,10 @@ export class StudentsComponent {
 
   students !: Student[] 
   totalRecords: number = 0;
+  student_id!:number;
+  username!:string;
+  displayModalDelete:boolean = false;
+
 
   //update
   studentModal !: Student;
@@ -96,4 +100,33 @@ export class StudentsComponent {
   }
 
 
+  openModalDelete(student : any) {   
+    this.student_id = student.personal_info.id; 
+    console.log(this.student_id)
+    this.username = student.user.username;
+    this.displayModalDelete = true;
+    this.ErrorMessage = '';
+  }
+
+  closeModalDelete(){
+    this.displayModalDelete = false;
+  }
+
+  deleteStudent(){
+    this.studentsServices.deleteStudent(this.student_id).subscribe({
+
+      next: (loginResponse) => {
+        if (loginResponse.id) {
+          location.reload();
+        }
+      },
+      error: (loginError) => {
+        if (loginError.status === 400) {
+          this.ErrorMessage = loginError.error.error;
+        } else {
+          this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
+        }
+      }
+    });
+  }
 }
