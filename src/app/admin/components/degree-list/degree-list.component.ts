@@ -63,12 +63,23 @@ export class DegreeListComponent implements OnInit {
             response
           );
         } else {
-          console.log(response);
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur',
-            detail: response.message,
-          });
+          if (response[1] === 401) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail:
+                'Cette formation ne peut pas être supprimée car elle est référencée dans une promotion.',
+            });
+
+            return;
+          } else {
+            console.error(response.message);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: response.message,
+            });
+          }
         }
       },
       (error) => {}
