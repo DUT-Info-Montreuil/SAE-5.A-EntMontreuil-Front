@@ -67,7 +67,7 @@
                   class="p-button-rounded p-button-text" (click)="startEdit(classroom)"></button>
                 <button pButton pRipple pTooltip="Supprimer" tooltipPosition="top" icon="pi pi-trash"
                   class="p-button-rounded p-button-text p-button-danger" (click)="confirmDelete(classroom)"></button>
-                <button pButton pRipple pTooltip="Gérer le matériel" tooltipPosition="top" icon="pi pi-desktop"
+                <button pButton pRipple pTooltip="Gérer les équipements" tooltipPosition="top" icon="pi pi-desktop"
                   class="p-button-rounded p-button-text p-button-secondary"
                   [routerLink]="['/admin/classrooms', classroom.id]"></button>
 
@@ -106,7 +106,10 @@
         <!-- Champ pour la capacité -->
         <div class="p-field mt-3">
           <label for="capacity" class="font-medium text-900">Capacité</label>
-          <input id="capacity" type="number" pInputText formControlName="capacity" class="mt-1 form-control" />
+          <p-inputNumber id="capacity" type="number" formControlName="capacity" class="mt-1" [showButtons]="true"
+            buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1"
+            decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary"
+            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
         </div>
       </div>
     </form>

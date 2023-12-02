@@ -12,6 +12,13 @@ import { ConfirmationService } from 'primeng/api';
   selector: 'app-single-classroom',
   templateUrl: './single-classroom.component.html',
   styleUrls: ['./single-classroom.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class SingleClassroomComponent implements OnInit {
   classroomId!: number;
@@ -27,7 +34,7 @@ export class SingleClassroomComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private confirmationService: ConfirmationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadClassroomData();

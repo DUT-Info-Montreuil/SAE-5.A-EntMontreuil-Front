@@ -35,6 +35,7 @@ import { SingleClassroomComponent } from './components/single-classroom/single-c
 import { ClassroomEquipmentDialogComponent } from './components/classroom-equipment-dialog/classroom-equipment-dialog.component';
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
 import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { CreateDegreeComponent } from './components/create-degree/create-degree.
     AutoCompleteModule,
     RadioButtonModule,
     TagModule,
+    InputNumberModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
-export class AdminModule {}
+export class AdminModule { }
