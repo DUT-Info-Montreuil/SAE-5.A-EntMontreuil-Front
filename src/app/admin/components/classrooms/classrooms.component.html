@@ -1,0 +1,138 @@
+<h1>Salles de classes</h1>
+<div>
+  <button class="w3-button w3-green w3-round" (click)="openModal()">
+    <i class="pi pi-plus"></i> Créer une classe
+  </button>
+</div>
+
+<!-- Fenêtre modale -->
+
+<p-dialog header="Créer une classe" [(visible)]="displayModal" [modal]="true" class="custom-dialog">
+  <form [formGroup]="classroomForm" class="custom-form">
+    <div class="form-group">
+      <label for="name" class="form-label">Nom de la classe</label>
+      <input id="name" type="text" pInputText formControlName="name" class="form-control" />
+    </div>
+    <div class="form-group">
+      <label for="capacity" class="form-label">Capacité</label>
+      <input id="capacity" type="number" pInputText formControlName="capacity" class="form-control" />
+    </div>
+    <div class="p-dialog-footer">
+      <button type="button" pButton (click)="closeModal()" label="Annuler" class="w3-button w3-grey w3-round"></button>
+      <button type="button" pButton (click)="createClassroom()" label="Créer" class="w3-button w3-blue w3-round"></button>
+    </div>
+  </form>
+</p-dialog>
+
+
+<p-table
+  #dt2
+  [value]="classrooms"
+  dataKey="id"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [loading]="loading"
+  [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [globalFilterFields]="['name', 'capacity']"
+  [tableStyle]="{ 'min-width': '75rem' }"
+  class="shadow-1 border-round mt-7 p-4 pt-2"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex">
+      <span class="p-input-icon-left ml-auto">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          #searchInput
+          placeholder="Rechercher une salle"
+          (input)="dt2.filterGlobal(searchInput.value, 'contains')"
+        />
+      </span>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 25%">Id</th>
+      <th style="width: 25%">Salle</th>
+      <th style="width: 25%">Capacité</th>
+      <th style="width: 25%">Actions</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-classroom>
+    <tr>
+      <td>
+        {{ classroom.id }}
+      </td>
+      <td>
+        <div *ngIf="!classroom.isEditing">
+          {{ classroom.name }}
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <input type="text" [(ngModel)]="classroom.editedName" />
+        </div>
+      </td>
+      <td>
+        <div *ngIf="!classroom.isEditing">
+          {{ classroom.capacity }}
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <input type="number" [(ngModel)]="classroom.editedCapacity" />
+        </div>
+      </td>
+      <td>
+        <div *ngIf="!classroom.isEditing">
+          <button
+            class="w3-button w3-blue w3-round"
+            (click)="startEdit(classroom)"
+          >
+            <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            class="w3-button w3-red w3-round"
+            (click)="confirmDelete(classroom)"
+          >
+            <i class="pi pi-trash"></i> 
+          </button>
+          <button
+            class="w3-button w3-green w3-round"
+            [routerLink]="['/admin/classrooms', classroom.id]"
+          >
+            <i class="pi pi-desktop"></i> Matériel
+          </button>
+          <!-- Autres actions -->
+        </div>
+        <div *ngIf="classroom.isEditing">
+          <button
+            class="w3-button w3-green w3-round"
+            (click)="confirmUpdate(classroom)"
+          >
+            <i class="pi pi-check"></i>
+          </button>
+          <button
+            class="w3-button w3-red w3-round"
+            (click)="cancelEdit(classroom)"
+          >
+            <i class="pi pi-times"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="4">Pas de salles de classes.</td>
+    </tr>
+  </ng-template>
+</p-table>
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
+
+<p-toast></p-toast>

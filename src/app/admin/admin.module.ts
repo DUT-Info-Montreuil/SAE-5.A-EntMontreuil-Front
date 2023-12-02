@@ -29,6 +29,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
+import { TagModule } from 'primeng/tag';
+import { ClassroomsComponent } from './components/classrooms/classrooms.component';
+import { SingleClassroomComponent } from './components/single-classroom/single-classroom.component';
+import { ClassroomEquipmentDialogComponent } from './components/classroom-equipment-dialog/classroom-equipment-dialog.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +46,11 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
     TeachersComponent,
     AddUsersComponent,
     AddStudentsComponent,
-    AddTeachersComponent
+    AddTeachersComponent,
+    UsersComponent,
+    ClassroomsComponent,
+    SingleClassroomComponent,
+    ClassroomEquipmentDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -62,9 +70,10 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
     CheckboxModule,
     ReactiveFormsModule,
     AutoCompleteModule,
-    RadioButtonModule
+    RadioButtonModule,
+    TagModule
   ],
   providers: [ConfirmationService, MessageService, DialogService,    
   ]
 })
-export class AdminModule { }
+export class AdminModule {}

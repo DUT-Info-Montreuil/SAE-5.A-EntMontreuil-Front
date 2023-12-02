@@ -9,6 +9,8 @@ import { TeachersComponent } from "./components/teachers/teachers.component";
 import { AddUsersComponent } from "./components/form/add-users/add-users.component";
 import { AddStudentsComponent } from "./components/form/add-students/add-students.component";
 import { AddTeachersComponent } from "./components/form/add-teachers/add-teachers.component";
+import { ClassroomsComponent } from "./components/classrooms/classrooms.component";
+import { SingleClassroomComponent } from "./components/single-classroom/single-classroom.component";
 
 
 const routes: Routes = [
@@ -32,7 +34,9 @@ const routes: Routes = [
     { path: 'teachers', component: TeachersComponent, canActivate: [AuthGuard] },
     { path: 'users/add', component: AddUsersComponent, canActivate: [AuthGuard] },
     { path: 'students/add', component: AddStudentsComponent, canActivate: [AuthGuard] },
-    { path: 'teachers/add', component: AddTeachersComponent, canActivate: [AuthGuard] }
+    { path: 'teachers/add', component: AddTeachersComponent, canActivate: [AuthGuard] },
+    { path: 'classrooms', component: ClassroomsComponent, canActivate: [AuthGuard] },
+    { path: 'classrooms/:id', component: SingleClassroomComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
