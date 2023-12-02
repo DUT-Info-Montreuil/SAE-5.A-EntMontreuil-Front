@@ -32,6 +32,17 @@ export class DegreeListComponent implements OnInit {
       this.filteredDegrees = [...this.degrees];
     });
   }
+  refreshDegreeListAfterCreated(degree: Degree): void {
+    this.degrees.push(degree);
+    this.filteredDegrees.push(degree);
+  }
+
+  showCreateDegreeDialog(): void {
+    this.displayCreateDegreeDialog = false; // Fermer le modal s'il est ouvert
+    setTimeout(() => {
+      this.displayCreateDegreeDialog = true; // Ouvrir le modal avec un léger délai pour assurer la fermeture
+    }, 10);
+  }
 
   onSearch(): void {
     if (!this.searchQuery) {

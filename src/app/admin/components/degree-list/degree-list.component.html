@@ -24,6 +24,7 @@
         placeholder="Rechercher une formation"
       />
       <p-button
+        (click)="showCreateDegreeDialog()"
         icon="pi pi-plus"
         label="Créer une formation"
         class="custom-button"
@@ -99,3 +100,8 @@
 <!-- Confirmation Dialog and Toast Messages -->
 <p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast></p-toast>
+
+<app-create-degree
+  *ngIf="displayCreateDegreeDialog"
+  (degreeCreated)="refreshDegreeListAfterCreated($event)"
+></app-create-degree>

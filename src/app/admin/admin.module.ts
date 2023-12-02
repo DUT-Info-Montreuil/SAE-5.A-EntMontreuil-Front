@@ -18,6 +18,7 @@ import { TrainingListComponent } from './components/training-list/training-list.
 import { CreateTrainingComponent } from './components/create-training/create-training.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
+import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DegreeListComponent } from './components/degree-list/degree-list.compon
     TrainingListComponent,
     CreateTrainingComponent,
     DegreeListComponent,
+    CreateDegreeComponent,
   ],
   imports: [
     CommonModule,

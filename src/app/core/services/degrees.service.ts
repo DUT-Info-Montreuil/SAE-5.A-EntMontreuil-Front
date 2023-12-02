@@ -32,14 +32,13 @@ export class DegreeService {
   }
 
   // Add a new degree
-  addDegree(degreeData: { name: string }): Observable<Degree> {
-    return this.http.post<Degree>(
-      this.apiURL + '/degrees',
-      { datas: degreeData },
+  addDegree(degreeData: { datas: { name: string } }): Observable<any[]> {
+    return this.http.post<any[]>(
+      `${this.apiURL}/degrees`,
+      degreeData,
       this.httpOptions
     );
   }
-
   // Update a degree
   updateDegree(id: number, degreeData: { name: string }): Observable<Degree> {
     return this.http.put<Degree>(
