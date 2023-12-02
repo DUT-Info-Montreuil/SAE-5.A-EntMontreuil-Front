@@ -12,6 +12,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { MessagesModule } from 'primeng/messages'
 import { MessageModule } from 'primeng/message'
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { MessageModule } from 'primeng/message'
     InputTextModule,
     PasswordModule,
     MessagesModule,
-    MessageModule
-  ]
+    MessageModule,
+    ConfirmDialogModule
+  ],
+  providers: [ConfirmationService],
 })
 export class AuthModule { }

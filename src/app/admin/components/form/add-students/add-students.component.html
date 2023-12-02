@@ -1,0 +1,61 @@
+<p-button routerLink="/admin/students" [rounded]="true" [text]="true" severity="secondary " icon="pi pi-arrow-left"></p-button>
+
+<!-- add-user.component.html -->
+<form  [formGroup]="studentForm" (ngSubmit)="onSubmit()" >
+    <div class="col-12 md:col-5">
+        <div class="card p-fluid">
+            <h2>Ajouter un Étudiant</h2>
+            <div class="field">
+                <label htmlfor="username">Pseudo</label>
+                <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username">
+            </div>
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlfor="nom">Nom</label>
+                    <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                </div>
+                <div class="field col">
+                    <label htmlfor="prenom">Prénom</label>
+                    <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                </div>
+            </div>
+            <div class="field">
+                <label htmlfor="email">Email</label>
+                <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+            </div>
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlfor="ine">INE (Identifiant National Étudiant)</label>
+                    <input pinputtext="" id="ine" type="text" class="p-inputtext p-component p-element" formControlName="ine">
+                </div>
+                <div class="field col">
+                    <label htmlfor="nip">NIP (Numéro Étudiant)</label>
+                    <input pinputtext="" id="nip" type="text" class="p-inputtext p-component p-element" formControlName="nip">
+                </div>
+            </div>
+            <div class="flex align-items-center gap-3">
+                <p-checkbox name="group1" value="true"  inputId="apprentie" formControlName="apprentice"></p-checkbox>
+                <label for="apprentie">Est apprentie</label>
+            </div>
+            <div class="field">
+                
+            </div>  
+        </div>
+        <button type="submit" pButton pRipple label="Ajouter l'étudiant" class="w-full p-3" (click)="openModal()" ></button>
+        
+
+        <div class="card p-fluid">
+            <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+            </div>
+
+            <div *ngIf="StudentAddedMessage" class="login-status mb-5 w-full">              
+                <p-dialog header="ATTENTION" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+                    <p class="m-0">
+                        {{ StudentAddedMessage }}
+                    </p>
+                </p-dialog>
+            </div>
+        </div>
+    </div>
+</form>

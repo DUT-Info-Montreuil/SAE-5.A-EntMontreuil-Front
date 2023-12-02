@@ -1,0 +1,61 @@
+<p-button routerLink="/admin/teachers" [rounded]="true" [text]="true" severity="secondary " icon="pi pi-arrow-left"></p-button>
+
+<!-- add-user.component.html -->
+<form  [formGroup]="teacherForm" (ngSubmit)="onSubmit()" >
+    <div class="col-12 md:col-5">
+        <div class="card p-fluid">
+            <h2>Ajouter un Enseignant</h2>
+            <div class="field">
+                <label htmlfor="username">Pseudo</label>
+                <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username">
+            </div>
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlfor="nom">Nom</label>
+                    <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                </div>
+                <div class="field col">
+                    <label htmlfor="prenom">Prénom</label>
+                    <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                </div>
+            </div>
+            <div class="field">
+                <label htmlfor="email">Email</label>
+                <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+            </div>
+            <div class="field"><label htmlfor="mdp">Mot de passe</label>
+                <p-password [feedback]="false" id="mdp" [toggleMask]="true" formControlName="password"></p-password>
+            </div>
+
+            <div class="p-formgrid grid">
+                <div class="field col">
+                    <label htmlfor="initial">Initial</label>
+                    <input pinputtext="" id="initial" type="text" class="p-inputtext p-component p-element" formControlName="initial">
+                </div>
+                <div class="field col">
+                    <label htmlfor="desktop">Bureau (si aucun, ne rien entrer)</label>
+                    <input pinputtext="" id="desktop" type="text" class="p-inputtext p-component p-element" formControlName="desktop">
+                </div>
+            </div>
+
+            <div class="flex align-items-center gap-3">
+                <p-checkbox name="group1" value="true"  inputId="admin" formControlName="admin"></p-checkbox>
+                <label for="admin">Attribuer les droits administrateur</label>
+            </div>
+            <div class="field">
+                
+            </div>  
+        </div>
+        <button type="submit" pButton pRipple label="Ajouter un enseignant" class="w-full p-3" ></button>
+        <div class="card p-fluid">
+            <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+            </div>
+
+            <div *ngIf="TeacherAddedMessage" class="login-status mb-5 w-full">
+                <p class="text-sm text-green-500 font-semibold">{{ TeacherAddedMessage }}</p>
+            </div>
+
+        </div>
+    </div>
+</form>

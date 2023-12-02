@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialListComponent } from './components/material-list/material-list.component';
 import { UsersComponent } from './components/users/users.component';
-import { AdminRoutingModule } from './admin-routing.module'; // Assurez-vous que le chemin est correct
+import { AdminRoutingModule } from './admin-routing.module'; 
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +19,16 @@ import { CreateTrainingComponent } from './components/create-training/create-tra
 import { DialogService } from 'primeng/dynamicdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { SkeletonModule } from 'primeng/skeleton';
+import { StudentsComponent } from './components/students/students.component';
+import { TeachersComponent } from './components/teachers/teachers.component';
+import { AddUsersComponent } from './components/form/add-users/add-users.component';
+import { PasswordModule } from 'primeng/password';
+import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { AddStudentsComponent } from './components/form/add-students/add-students.component';
+import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +37,12 @@ import { SkeletonModule } from 'primeng/skeleton';
     UsersComponent,
     TrainingListComponent,
     CreateTrainingComponent,
+    UsersComponent,
+    StudentsComponent,
+    TeachersComponent,
+    AddUsersComponent,
+    AddStudentsComponent,
+    AddTeachersComponent
   ],
   imports: [
     CommonModule,
@@ -41,8 +57,14 @@ import { SkeletonModule } from 'primeng/skeleton';
     RippleModule,
     TooltipModule,
     DropdownModule,
-    SkeletonModule
+    SkeletonModule,
+    PasswordModule,
+    CheckboxModule,
+    ReactiveFormsModule,
+    AutoCompleteModule,
+    RadioButtonModule
   ],
-  providers: [ConfirmationService, MessageService, DialogService],
+  providers: [ConfirmationService, MessageService, DialogService,    
+  ]
 })
 export class AdminModule { }
