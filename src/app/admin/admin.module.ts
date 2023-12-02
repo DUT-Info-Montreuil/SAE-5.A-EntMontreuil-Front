@@ -27,8 +27,10 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FileUploadModule } from 'primeng/fileupload';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
+import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-students-csv.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +44,8 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
     TeachersComponent,
     AddUsersComponent,
     AddStudentsComponent,
-    AddTeachersComponent
+    AddTeachersComponent,
+    AddStudentsCsvComponent,
   ],
   imports: [
     CommonModule,
@@ -62,7 +65,8 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
     CheckboxModule,
     ReactiveFormsModule,
     AutoCompleteModule,
-    RadioButtonModule
+    RadioButtonModule,
+    FileUploadModule
   ],
   providers: [ConfirmationService, MessageService, DialogService,    
   ]

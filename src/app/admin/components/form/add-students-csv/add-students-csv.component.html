@@ -1,0 +1,49 @@
+
+<div *ngIf="!file_csv" class="flex align-items-center justify-content-center">
+    <input type="file" id="fileInput" #fileInput style="display: none;" accept=".csv" (change)="onFileSelected($event)">
+    <button pButton type="button" label="Séléctionner un fichier CSV" icon="pi pi-plus" (click)="fileInput.click()"
+        class="p-button-rounded p-button-text p-button-raised">
+    </button>
+</div>
+
+
+<div *ngIf="file_csv" class="flex align-items-center justify-content-center">
+    <p  style="margin-right: 2%;">Nom : <span [style.fontWeight]="'bold'">{{file_csv.name}}</span></p>
+    <p  style="margin-right: 2%;">Taille : <span [style.fontWeight]="'bold'">{{file_csv.size}} octet(s)</span></p>
+
+    <button pButton type="button" label="Annuler" icon="pi pi-times" (click)="removeFile()"
+        class="p-button-rounded p-button-text p-button-danger p-button-raised" >
+    </button>
+</div>
+<div *ngIf="error"  style="margin-top: 5%;">
+     <p class="text-sm text-red-500 font-semibold">{{errorMessage}}</p>
+</div>
+
+
+<div *ngIf="file_csv"  style="margin-top: 5%;">
+    {{contenue}}
+    <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Ligne</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>INE</th>
+                <th>NIP</th>
+                <th>Pseudo</th>
+                <th>Email</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+            <tr>
+                <td>{{ student.ligne }}</td>
+                <td>{{ student.lastName }}</td>
+                <td>{{ student.firstName }}</td>
+                <td>{{ student.ine }}</td>
+                <td>{{ student.nip }}</td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
