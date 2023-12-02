@@ -35,3 +35,29 @@
     color: var(--text-color-secondary);
   }
 }
+
+.custom-dialog {
+  .custom-form {
+    .form-group {
+      margin-bottom: 15px;
+
+      .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  button {
+    margin: 5px;
+  }
+}

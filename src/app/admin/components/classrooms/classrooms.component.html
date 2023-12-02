@@ -7,22 +7,23 @@
 
 <!-- Fenêtre modale -->
 
-<p-dialog header="Créer une classe" [(visible)]="displayModal" [modal]="true">
-  <form [formGroup]="classroomForm">
-    <div class="p-field">
-      <label for="name">Nom de la classe</label>
-      <input id="name" type="text" pInputText formControlName="name" />
+<p-dialog header="Créer une classe" [(visible)]="displayModal" [modal]="true" class="custom-dialog">
+  <form [formGroup]="classroomForm" class="custom-form">
+    <div class="form-group">
+      <label for="name" class="form-label">Nom de la classe</label>
+      <input id="name" type="text" pInputText formControlName="name" class="form-control" />
     </div>
-    <div class="p-field">
-      <label for="capacity">Capacité</label>
-      <input id="capacity" type="number" pInputText formControlName="capacity" />
+    <div class="form-group">
+      <label for="capacity" class="form-label">Capacité</label>
+      <input id="capacity" type="number" pInputText formControlName="capacity" class="form-control" />
     </div>
     <div class="p-dialog-footer">
-      <button type="button" pButton (click)="closeModal()" label="Annuler"></button>
-      <button type="button" pButton (click)="createClassroom()" label="Créer"></button>
+      <button type="button" pButton (click)="closeModal()" label="Annuler" class="w3-button w3-grey w3-round"></button>
+      <button type="button" pButton (click)="createClassroom()" label="Créer" class="w3-button w3-blue w3-round"></button>
     </div>
   </form>
 </p-dialog>
+
 
 <p-table
   #dt2
