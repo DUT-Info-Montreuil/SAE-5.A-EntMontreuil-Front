@@ -12,10 +12,10 @@ import { DialogService } from 'primeng/dynamicdialog';
   styleUrls: ['./training-list.component.scss'],
   styles: [
     `
-        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-            background-color: white;
-        }
-    `
+      :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+        background-color: white;
+      }
+    `,
   ],
 })
 export class TrainingListComponent implements OnInit {
@@ -34,7 +34,7 @@ export class TrainingListComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private dialogService: DialogService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.refreshTrainings();
@@ -44,7 +44,6 @@ export class TrainingListComponent implements OnInit {
   }
 
   refreshTrainings(): void {
-
     this.isLoading = true;
 
     this.trainingService.getAllTrainings().subscribe((trainings) => {
@@ -71,7 +70,8 @@ export class TrainingListComponent implements OnInit {
 
     if (selectedDegreeId) {
       this.filteredTrainings = this.trainings.filter(
-        (training) => training.id_Degree.toString() === selectedDegreeId.toString()
+        (training) =>
+          training.id_Degree.toString() === selectedDegreeId.toString()
       );
     } else {
       // Si aucune formation n'est sélectionnée, afficher tous les parcours
@@ -79,24 +79,70 @@ export class TrainingListComponent implements OnInit {
     }
   }
 
-
   deleteTraining(id: number): void {
-
     this.isLoading = true;
 
-    this.trainingService.deleteTraining(id).subscribe(() => {
-      this.trainings = this.trainings.filter((training) => training.id !== id);
-      this.filteredTrainings = this.filteredTrainings.filter(
-        (training) => training.id !== id
-      );
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Suppression réussie',
-        detail: 'Le parcours a été supprimée avec succès.',
-      });
+    this.trainingService.deleteTraining(id).subscribe(
+      (response: any) => {
+        console.log(response);
+        const code = response[1];
+        const msg = response[0].message;
 
-      this.isLoading = false;
-    });
+        if (code === 200) {
+          // Successful deletion
+          this.trainings = this.trainings.filter(
+            (training) => training.id !== id
+          );
+          this.filteredTrainings = this.filteredTrainings.filter(
+            (training) => training.id !== id
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Suppression réussie',
+            detail: 'Le parcours a été supprimé avec succès.',
+          });
+        } else {
+          if (code === 500) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail:
+                'Impossible de supprimer le parcours car il est référencé dans une autre table.',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: msg,
+            });
+          }
+        }
+
+        this.isLoading = false;
+      },
+      (error) => {
+        // Handle HTTP error
+        console.log(error);
+        if (error.status === 500) {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail:
+              'Impossible de supprimer le parcours car il est référencé dans une autre table.',
+          });
+        } else {
+          console.error('HTTP Error:', error);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail:
+              'Une erreur est survenue lors de la suppression du parcours.',
+          });
+        }
+
+        this.isLoading = false;
+      }
+    );
   }
 
   confirmDelete(training: Training): void {
