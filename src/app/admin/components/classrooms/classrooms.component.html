@@ -1,5 +1,28 @@
 <h1>Salles de classes</h1>
-<button class="p-button p-button-success">Créer une classe</button>
+<div>
+  <button class="w3-button w3-green w3-round" (click)="openModal()">
+    <i class="pi pi-plus"></i> Créer une classe
+  </button>
+</div>
+
+<!-- Fenêtre modale -->
+
+<p-dialog header="Créer une classe" [(visible)]="displayModal" [modal]="true">
+  <form [formGroup]="classroomForm">
+    <div class="p-field">
+      <label for="name">Nom de la classe</label>
+      <input id="name" type="text" pInputText formControlName="name" />
+    </div>
+    <div class="p-field">
+      <label for="capacity">Capacité</label>
+      <input id="capacity" type="number" pInputText formControlName="capacity" />
+    </div>
+    <div class="p-dialog-footer">
+      <button type="button" pButton (click)="closeModal()" label="Annuler"></button>
+      <button type="button" pButton (click)="createClassroom()" label="Créer"></button>
+    </div>
+  </form>
+</p-dialog>
 
 <p-table
   #dt2
@@ -11,12 +34,7 @@
   [loading]="loading"
   [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-  [globalFilterFields]="[
-    'name',
-    'country.name',
-    'representative.name',
-    'status'
-  ]"
+  [globalFilterFields]="['name', 'capacity']"
   [tableStyle]="{ 'min-width': '75rem' }"
   class="shadow-1 border-round mt-7 p-4 pt-2"
 >
@@ -28,7 +46,7 @@
           pInputText
           type="text"
           #searchInput
-          placeholder="Search keyword"
+          placeholder="Rechercher une salle"
           (input)="dt2.filterGlobal(searchInput.value, 'contains')"
         />
       </span>
@@ -72,6 +90,12 @@
             (click)="startEdit(classroom)"
           >
             <i class="pi pi-pencil"></i>
+          </button>
+          <button
+            class="w3-button w3-red w3-round"
+            (click)="confirmDelete(classroom)"
+          >
+            <i class="pi pi-trash"></i> 
           </button>
           <button
             class="w3-button w3-green w3-round"

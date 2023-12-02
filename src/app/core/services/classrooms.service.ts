@@ -27,6 +27,30 @@ export class ClassroomsService implements OnInit {
     );
   }
 
+  addClassroom(nom:string, capacite:number): Observable<any> {
+    return this.http
+      .post<Classroom>(this.apiURL + '/classrooms', { datas: {capacity: capacite, name: nom} }, this.httpOptions)
+      .pipe(
+        catchError((error: any) => {
+          console.error(
+            'Erreur lors de l\'ajout d\'une salle de classe:',
+            error
+          );
+          return throwError(error);
+        })
+      );
+  }
+
+  deleteClassroom(idClassroom: number): Observable<any> {
+    return this.http.delete<any>( `${this.apiURL}/classrooms/${idClassroom}`, this.httpOptions)
+    .pipe(
+      catchError((error: any) => {
+        console.error('Erreur lors de la suppression de la salle de classe:', error);
+        return throwError(error);
+      })
+    );
+  }
+
   updateClassroom(
     id: number,
     updatedClassroom: Classroom

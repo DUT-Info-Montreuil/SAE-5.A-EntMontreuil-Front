@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     FormsModule,
     ToastModule,
     ConfirmDialogModule,
+    ReactiveFormsModule,
   ],
   providers: [DialogService, MessageService, ConfirmationService],
 })
