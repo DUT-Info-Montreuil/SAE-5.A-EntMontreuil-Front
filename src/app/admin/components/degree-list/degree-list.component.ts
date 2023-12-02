@@ -8,6 +8,13 @@ import { DialogService } from 'primeng/dynamicdialog';
   selector: 'app-degree-list',
   templateUrl: './degree-list.component.html',
   styleUrls: ['./degree-list.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class DegreeListComponent implements OnInit {
   degrees: Degree[] = [];
@@ -20,7 +27,7 @@ export class DegreeListComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private dialogService: DialogService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.refreshDegrees();
@@ -93,7 +100,7 @@ export class DegreeListComponent implements OnInit {
           }
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
 

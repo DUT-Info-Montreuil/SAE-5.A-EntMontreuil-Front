@@ -14,6 +14,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   selector: 'app-classrooms',
   templateUrl: './classrooms.component.html',
   styleUrls: ['./classrooms.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
 export class ClassroomsComponent implements OnInit, OnDestroy {
   classrooms!: Classroom[];
@@ -145,16 +152,16 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
     // S'assurer que le formulaire est valide avant de créer une classe
     if (this.classroomForm.valid) {
       const formData = this.classroomForm.value;
-  
+
       // Appel du service pour créer la classe
       this.classroomsService.addClassroom(formData.name, formData.capacity).subscribe(
         (response) => {
           // Rafraîchissement la liste après avoir créé la classe
           this.loadData();
-  
+
           // Fermer la fenêtre modale
           this.closeModal();
-  
+
           // Message de succès si nécessaire
           this.messageService.add({
             severity: 'success',
@@ -164,7 +171,7 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.error('Erreur lors de la création de la classe', error);
-  
+
           // Message d'erreur si nécessaire
           this.messageService.add({
             severity: 'error',
@@ -188,18 +195,18 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
       (response: any) => {
         const deleteMessage = response?.message;
         console.log(deleteMessage);
-  
+
         // Vérifie si la réponse est définie pour déterminer le succès
         if (response) {
           // Supprimer la classe du tableau local
           this.classrooms = this.classrooms.filter((c) => c.id !== classroom.id);
-  
+
           this.messageService.add({
             severity: 'success',
             summary: 'Suppression réussie',
             detail: deleteMessage,
           });
-        } else  {
+        } else {
           this.messageService.add({
             severity: 'error',
             summary: 'Échec de la suppression',
@@ -230,9 +237,9 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
-  
-  
+
+
+
 
   confirmDelete(classroom: Classroom) {
     this.confirmationService.confirm({
@@ -241,8 +248,8 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         this.deleteClassroom(classroom);
       },
     });
-  }  
-  
+  }
+
   clear(table: Table) {
     table.clear();
   }
