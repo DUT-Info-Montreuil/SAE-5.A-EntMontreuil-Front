@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialListComponent } from './components/material-list/material-list.component';
 import { UsersComponent } from './components/users/users.component';
-import { AdminRoutingModule } from './admin-routing.module'; 
+import { AdminRoutingModule } from './admin-routing.module';
 import { FormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -33,6 +33,8 @@ import { TagModule } from 'primeng/tag';
 import { ClassroomsComponent } from './components/classrooms/classrooms.component';
 import { SingleClassroomComponent } from './components/single-classroom/single-classroom.component';
 import { ClassroomEquipmentDialogComponent } from './components/classroom-equipment-dialog/classroom-equipment-dialog.component';
+import { DegreeListComponent } from './components/degree-list/degree-list.component';
+import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +53,8 @@ import { ClassroomEquipmentDialogComponent } from './components/classroom-equipm
     ClassroomsComponent,
     SingleClassroomComponent,
     ClassroomEquipmentDialogComponent,
+    DegreeListComponent,
+    CreateDegreeComponent,
   ],
   imports: [
     CommonModule,
@@ -71,9 +75,8 @@ import { ClassroomEquipmentDialogComponent } from './components/classroom-equipm
     ReactiveFormsModule,
     AutoCompleteModule,
     RadioButtonModule,
-    TagModule
+    TagModule,
   ],
-  providers: [ConfirmationService, MessageService, DialogService,    
-  ]
+  providers: [ConfirmationService, MessageService, DialogService],
 })
 export class AdminModule {}

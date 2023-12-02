@@ -1,0 +1,107 @@
+<!-- Dans components/degree-list/degree-list.component.html -->
+<div class="container">
+  <div
+    class="flex align-items-center border-round p-4"
+    style="background-color: rgb(239, 244, 255)"
+  >
+    <div>
+      <h1 class="text-2xl font-semibold">Gestion des Formations</h1>
+      <p class="text-900 -mt-2">Créer, modifier ou supprimer des formations.</p>
+    </div>
+  </div>
+
+  <!-- Search and Add Section -->
+  <div class="shadow-1 border-round mt-7 p-4 pt-2">
+    <h1 class="text-lg font-medium">Formations</h1>
+
+    <div class="flex justify-content-between mt-5 mb-4">
+      <input
+        class="w-4"
+        type="text"
+        pInputText
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+        placeholder="Rechercher une formation"
+      />
+      <p-button
+        (click)="showCreateDegreeDialog()"
+        icon="pi pi-plus"
+        label="Créer une formation"
+        class="custom-button"
+      ></p-button>
+    </div>
+
+    <!-- Degree Table with PrimeNG -->
+    <p-table [value]="filteredDegrees" [paginator]="true" [rows]="9">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Nom de la Formation</th>
+          <th>Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-degree let-editing="editing">
+        <tr>
+          <td>#{{ degree.id }}</td>
+          <td *ngIf="!degree.isEditing">{{ degree.name }}</td>
+          <td *ngIf="degree.isEditing">
+            <input pInputText type="text" [(ngModel)]="degree.updatedName" />
+          </td>
+          <td class="flex justify-content-evenly">
+            <div *ngIf="!degree.isEditing">
+              <button
+                pButton
+                pRipple
+                pTooltip="Modifier"
+                tooltipPosition="top"
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+                (click)="startEditing(degree)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                pTooltip="Supprimer"
+                tooltipPosition="top"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="confirmDelete(degree)"
+              ></button>
+            </div>
+            <div *ngIf="degree.isEditing">
+              <button
+                pButton
+                type="button"
+                label="Sauvegarder"
+                (click)="stopEditing(degree)"
+                class="p-button-success"
+              ></button>
+              <button
+                pButton
+                type="button"
+                label="Annuler"
+                (click)="cancelEditing(degree)"
+                class="p-button-secondary"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">Aucune formation trouvée.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Confirmation Dialog and Toast Messages -->
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>
+
+<app-create-degree
+  *ngIf="displayCreateDegreeDialog"
+  (degreeCreated)="refreshDegreeListAfterCreated($event)"
+></app-create-degree>
