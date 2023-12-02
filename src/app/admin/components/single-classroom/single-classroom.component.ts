@@ -63,7 +63,7 @@ export class SingleClassroomComponent implements OnInit {
 
   openEquipmentDialog(): void {
     const ref = this.dialogService.open(ClassroomEquipmentDialogComponent, {
-      header: 'Choisir un équipement',
+      header: 'Ajouter un équipement',
       width: '500px',
       data: {
         classroomId: this.classroomId,
