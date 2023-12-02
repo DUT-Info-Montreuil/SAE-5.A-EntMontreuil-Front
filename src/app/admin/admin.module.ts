@@ -17,6 +17,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TrainingListComponent } from './components/training-list/training-list.component';
 import { CreateTrainingComponent } from './components/create-training/create-training.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { DegreeListComponent } from './components/degree-list/degree-list.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     UsersComponent,
     TrainingListComponent,
     CreateTrainingComponent,
+    DegreeListComponent,
   ],
   imports: [
     CommonModule,

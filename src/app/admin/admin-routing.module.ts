@@ -4,28 +4,34 @@ import { AuthGuard } from '../core/guards/auth.guard';
 import { MaterialListComponent } from './components/material-list/material-list.component';
 import { UsersComponent } from './components/users/users.component';
 import { TrainingListComponent } from './components/training-list/training-list.component';
+import { DegreeListComponent } from './components/degree-list/degree-list.component';
 
 const routes: Routes = [
-    {
-        path: '',
-        redirectTo: 'users',
-        pathMatch: 'full',
-    },
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
-    {
-        path: 'materials',
-        component: MaterialListComponent,
-        canActivate: [AuthGuard],
-    },
-    {
-        path: 'trainings',
-        component: TrainingListComponent,
-        canActivate: [AuthGuard],
-    },
+  {
+    path: '',
+    redirectTo: 'users',
+    pathMatch: 'full',
+  },
+  { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+  {
+    path: 'materials',
+    component: MaterialListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'trainings',
+    component: TrainingListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'degrees',
+    component: DegreeListComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule],
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
 })
-export class AdminRoutingModule { }
+export class AdminRoutingModule {}
