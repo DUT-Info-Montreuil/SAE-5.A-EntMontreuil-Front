@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StudentsService } from 'src/app/core/services/students.service';
 
@@ -12,12 +12,23 @@ interface Student {
   email : string;
 }
 
+interface Column {
+  field: string;
+  header: string;
+  customExportHeader?: string;
+}
+
+interface ExportColumn {
+  title: string;
+  dataKey: string;
+}
+
 @Component({
   selector: 'app-add-students-csv',
   templateUrl: './add-students-csv.component.html',
   styleUrls: ['./add-students-csv.component.scss']
 })
-export class AddStudentsCsvComponent {
+export class AddStudentsCsvComponent implements OnInit {
 
   file_csv!:any;
   contenue!:string;
@@ -26,8 +37,22 @@ export class AddStudentsCsvComponent {
   errorMessageRequete!:string ;
   transmettre!:boolean;
   detailMessage:string = "Détails : Le fichier CSV doit contenir les colonnes [ first_name - last_name - username - ine - nip - email ], veuillez vérifié si toutes les valeurs sont bien présentes et qu'il n'y a pas d'espace à la fin du fichier.";
+  displayModalPassword:boolean = false;
+  allPassword!:any;
+  cols!: Column[];
+  exportColumns!: ExportColumn[];
 
   constructor(private studentsService : StudentsService, private router: Router){}
+
+  ngOnInit() {
+
+    this.cols = [
+        { field: 'username', header: 'Pseudo' },
+        { field: 'password', header: 'Mot de passe' }
+    ];
+
+    this.exportColumns = this.cols.map((col) => ({ title: col.header, dataKey: col.field }));
+}
 
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
@@ -107,7 +132,9 @@ export class AddStudentsCsvComponent {
     this.studentsService.addStudentCSV(this.file_csv).subscribe({
       next: (response) => {
         if(response.password){
-          this.router.navigate(['/admin/students']);
+          console.log(response.password)
+          this.allPassword = response.password;
+          this.displayModalPassword = true;
         }
         
         
@@ -116,5 +143,19 @@ export class AddStudentsCsvComponent {
         console.log(loginError.error.error)
       }
     });
+  }
+
+  closeModalPassword(){
+    this.displayModalPassword= false;
+    
+  }
+  exportPdf() {
+    import('jspdf').then((jsPDF) => {
+      import('jspdf-autotable').then((x) => {
+          const doc = new jsPDF.default('p', 'px', 'a4');
+          (doc as any).autoTable(this.exportColumns, this.allPassword);
+          doc.save('mot_de_passe.pdf');
+      });
+  });
   }
 }

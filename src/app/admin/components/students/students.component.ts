@@ -50,6 +50,7 @@ export class StudentsComponent {
   openModal(student : any) {
     this.oldUsername = student.user.username
     this.displayModal = true;
+    this.ErrorMessage = "";
     this.studentModal = (student);
     this.old_ine =student.personal_info.ine;
     this.old_nip = student.personal_info.nip;
