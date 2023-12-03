@@ -20,28 +20,11 @@ export class TimetableService {
         const events = [
             <CalendarSchedulerEvent>{
                 id: '1',
-                start: addDays(startOfHour(new Date()), 1),
-                end: addDays(addHours(startOfHour(new Date()), 1), 1),
-                title: 'Event 1',
-                content: 'IMPORTANT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'danger' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true,
-                resizable: {
-                    beforeStart: true,
-                    afterEnd: true
-                }
-            },
-            <CalendarSchedulerEvent>{
-                id: '12',
-                start: subHours(addDays(startOfHour(new Date()), 1), 1),
-                end: subHours(addDays(addHours(startOfHour(new Date()), 1), 1), 1),
-                title: 'R5.A.14.C.12',
-                content: 'Anglais',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-04T09:00:00'), // Début le 4 décembre 2023 à 9h00
+                end: new Date('2023-12-04T12:00:00'),   // Fin le 4 décembre 2023 à 12h00
+                title: 'ANGLAIS',
+                content: 'GOLVEN A.<br>A1-01',
+                color: { primary: '#ffebb3', secondary: '#ffebb3' },
                 actions: actions,
                 isClickable: true,
                 isDisabled: false,
@@ -53,159 +36,115 @@ export class TimetableService {
             },
             <CalendarSchedulerEvent>{
                 id: '2',
-                start: addDays(startOfHour(new Date()), 2),
-                end: subMinutes(addDays(addHours(startOfHour(new Date()), 2), 2), 15),
-                title: 'Event 2',
-                content: 'LESS IMPORTANT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-04T13:30:00'),
+                end: new Date('2023-12-04T17:00:00'),
+                title: 'SAE PROJET',
+                content: 'A1-01',
+                color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
-                status: 'warning' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
-            },
-            <CalendarSchedulerEvent>{
-                id: '22',
-                start: subHours(addDays(startOfHour(new Date()), 2), 1),
-                end: subHours(addDays(addHours(startOfHour(new Date()), 1), 2), 1),
-                title: 'Event 22',
-                content: 'LESS IMPORTANT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'warning' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
                 id: '3',
-                start: addDays(startOfHour(new Date()), 3),
-                end: addDays(addHours(startOfHour(new Date()), 3), 3),
-                title: 'Event 3',
-                content: 'NOT IMPORTANT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-05T09:00:00'),
+                end: new Date('2023-12-05T12:30:00'),
+                title: 'SAE PROJET',
+                content: 'A1-01',
+                color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
-                id: '32',
-                start: subHours(addDays(startOfHour(new Date()), 3), 1),
-                end: subHours(addDays(addHours(startOfHour(new Date()), 1), 3), 1),
-                title: 'Event 32',
-                content: 'NOT IMPORTANT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                id: '3',
+                start: new Date('2023-12-05T13:30:00'),
+                end: new Date('2023-12-05T17:00:00'),
+                title: 'SAE PROJET',
+                content: 'A1-01',
+                color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
                 id: '4',
-                start: startOfHour(addHours(new Date(), 2)),
-                end: addHours(startOfHour(addHours(new Date(), 2)), 2),
-                title: 'Event 4',
-                content: 'TODAY EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-06T09:00:00'),
+                end: new Date('2023-12-06T12:30:00'),
+                title: 'CONTROLE - ECONOMIE',
+                content: 'COMPAROT V.<br>D0-03 D0-02',
+                color: { primary: '#b6ffb0', secondary: '#b6ffb0' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
                 id: '5',
-                start: addDays(startOfHour(setHours(new Date(), 6)), 2),
-                end: addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 1),
-                title: 'Event 5',
-                content: 'EARLY EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-06T13:30:00'),
+                end: new Date('2023-12-06T15:00:00'),
+                title: 'MODELISATIONS',
+                content: 'RICORDEAU A.<br>',
+                color: { primary: '#b0ceff', secondary: '#b0ceff' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
-            },
-            <CalendarSchedulerEvent>{
-                id: '51',
-                start: addDays(startOfHour(setHours(new Date(), 6)), 2),
-                end: addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 1),
-                title: 'Event 51',
-                content: 'EARLY EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true
-            },
-            <CalendarSchedulerEvent>{
-                id: '52',
-                start: addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 1),
-                end: addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 2),
-                title: 'Event 52',
-                content: 'EARLY EVENT WITH LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG LONG DESCRIPTION',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true
-            },
-            <CalendarSchedulerEvent>{
-                id: '53',
-                start: addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 2),
-                end: addMinutes(addHours(addDays(startOfHour(setHours(new Date(), 6)), 2), 2), 30),
-                title: 'Event 53',
-                content: 'EARLY EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
                 id: '6',
-                start: startOfHour(setHours(new Date(), 22)),
-                end: addHours(startOfHour(setHours(new Date(), 22)), 10),
-                title: 'Event 6',
-                content: 'TWO DAYS EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-06T15:00:00'),
+                end: new Date('2023-12-06T17:00:00'),
+                title: 'SAE PROJET',
+                content: 'B1-09',
+                color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             },
             <CalendarSchedulerEvent>{
                 id: '7',
-                start: addDays(startOfHour(setHours(new Date(), 14)), 4),
-                end: addDays(addDays(startOfHour(setHours(new Date(), 14)), 4), 2),
-                title: 'Event 7',
-                content: 'THREE DAYS EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
+                start: new Date('2023-12-07T09:00:00'),
+                end: new Date('2023-12-07T12:00:00'),
+                title: 'NOSQL',
+                content: 'B1-09',
+                color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
-                draggable: true
-            },
-            <CalendarSchedulerEvent>{
-                id: '8',
-                start: startOfHour(addHours(new Date(), 2)),
-                end: addHours(startOfHour(addHours(new Date(), 2)), 3),
-                title: 'Event 8',
-                content: 'CONCURRENT EVENT',
-                color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
-                actions: actions,
-                status: 'ok' as CalendarSchedulerEventStatus,
-                isClickable: true,
-                isDisabled: false,
-                draggable: true
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
             }
         ];
 

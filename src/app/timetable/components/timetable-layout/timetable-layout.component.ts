@@ -43,14 +43,14 @@ export class TimetableLayoutComponent implements OnInit {
   viewDate: Date = new Date();
   viewDays: number = DAYS_IN_WEEK;
   refresh: Subject<any> = new Subject();
-  locale: string = 'en';
+  locale: string = 'fr';
   hourSegments: number = 4;
   weekStartsOn: number = 1;
   startsWithToday: boolean = true;
   activeDayIsOpen: boolean = true;
   excludeDays: number[] = [0, 6]; // [0];
   dayStartHour: number = 8;
-  dayEndHour: number = 19;
+  dayEndHour: number = 18;
 
   minDate: Date = new Date();
   maxDate: Date = endOfDay(addMonths(new Date(), 1));
