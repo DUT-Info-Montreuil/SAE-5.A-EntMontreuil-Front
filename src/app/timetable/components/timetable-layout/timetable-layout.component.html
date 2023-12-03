@@ -55,7 +55,7 @@
     <div [ngSwitch]="view">
         <calendar-scheduler-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
             [locale]="locale" [viewDays]="viewDays" [weekStartsOn]="weekStartsOn" [excludeDays]="excludeDays"
-            [startsWithToday]="startsWithToday" [hourSegments]="4" [dayStartHour]="dayStartHour"
+            [startsWithToday]="startsWithToday" [hourSegments]="2" [dayStartHour]="dayStartHour"
             [dayEndHour]="dayEndHour" [dayModifier]="dayModifier" [hourModifier]="hourModifier"
             [segmentModifier]="segmentModifier" [eventModifier]="eventModifier" [showEventActions]="true"
             [showSegmentHour]="true" [zoomEventOnHover]="true" (dayHeaderClicked)="dayHeaderClicked($event.day)"

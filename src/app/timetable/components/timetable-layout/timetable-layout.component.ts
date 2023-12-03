@@ -48,9 +48,9 @@ export class TimetableLayoutComponent implements OnInit {
   weekStartsOn: number = 1;
   startsWithToday: boolean = true;
   activeDayIsOpen: boolean = true;
-  excludeDays: number[] = []; // [0];
-  dayStartHour: number = 6;
-  dayEndHour: number = 22;
+  excludeDays: number[] = [0, 6]; // [0];
+  dayStartHour: number = 8;
+  dayEndHour: number = 19;
 
   minDate: Date = new Date();
   maxDate: Date = endOfDay(addMonths(new Date(), 1));
@@ -87,7 +87,7 @@ export class TimetableLayoutComponent implements OnInit {
     this.adjustViewDays();
   }
 
-  constructor(@Inject(LOCALE_ID) locale: string, private timetableService: TimetableService, private dateAdapter: DateAdapter) {
+  constructor(@Inject(LOCALE_ID) locale: string, private timetableService: TimetableService, private dateAdapter: DateAdapter, @Inject('Moment') private moment: any) {
     this.locale = locale;
 
     // this.dayModifier = ((day: SchedulerViewDay): void => {

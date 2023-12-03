@@ -39,11 +39,10 @@ export class TimetableService {
                 id: '12',
                 start: subHours(addDays(startOfHour(new Date()), 1), 1),
                 end: subHours(addDays(addHours(startOfHour(new Date()), 1), 1), 1),
-                title: 'Event 12',
-                content: 'IMPORTANT EVENT',
+                title: 'R5.A.14.C.12',
+                content: 'Anglais',
                 color: { primary: '#E0E0E0', secondary: '#EEEEEE' },
                 actions: actions,
-                status: 'danger' as CalendarSchedulerEventStatus,
                 isClickable: true,
                 isDisabled: false,
                 draggable: true,
@@ -62,7 +61,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'warning' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '22',
@@ -74,7 +74,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'warning' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '3',
@@ -86,7 +87,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '32',
@@ -98,7 +100,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '4',
@@ -110,7 +113,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '5',
@@ -122,7 +126,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '51',
@@ -134,7 +139,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '52',
@@ -146,7 +152,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '53',
@@ -158,7 +165,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '6',
@@ -170,7 +178,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '7',
@@ -182,7 +191,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             },
             <CalendarSchedulerEvent>{
                 id: '8',
@@ -194,7 +204,8 @@ export class TimetableService {
                 actions: actions,
                 status: 'ok' as CalendarSchedulerEventStatus,
                 isClickable: true,
-                isDisabled: false
+                isDisabled: false,
+                draggable: true
             }
         ];
 
