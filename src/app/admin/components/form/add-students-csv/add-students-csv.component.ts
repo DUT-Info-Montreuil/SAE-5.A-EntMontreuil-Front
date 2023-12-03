@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { StudentsService } from 'src/app/core/services/students.service';
 
 interface Student {
   ligne : number;
@@ -17,19 +19,22 @@ interface Student {
 })
 export class AddStudentsCsvComponent {
 
-  file_csv:File | null = null;
+  file_csv!:any;
   contenue!:string;
   students: Student[] = [];
   ligne!:number;
-  errorMessage!:string ;
-  error:boolean = false;
+  errorMessageRequete!:string ;
+  transmettre!:boolean;
+  detailMessage:string = "Détails : Le fichier CSV doit contenir les colonnes [ first_name - last_name - username - ine - nip - email ], veuillez vérifié si toutes les valeurs sont bien présentes et qu'il n'y a pas d'espace à la fin du fichier.";
+
+  constructor(private studentsService : StudentsService, private router: Router){}
 
   onFileSelected(event: any) {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
+      this.transmettre = true;
       this.file_csv = selectedFile;
       this.ligne = 1;
-      this.errorMessage = "Certaines lignes de votre fichier CSV ont été ignoré car elles présentes des anomalys à la ligne : "
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
         const fileContent = fileReader.result as string;
@@ -37,12 +42,31 @@ export class AddStudentsCsvComponent {
         this.students = this.parseCSVToStudents(fileContent);
       };
       fileReader.readAsText(selectedFile); // Lire le contenu du fichier en tant que texte
+
+      //REQUETE
+      this.studentsService.verifyCSV(selectedFile).subscribe({
+        next: (response) => {
+          if (response.valide_csv) {
+            this.transmettre = false;
+          }
+          
+        },
+        error: (loginError) => {
+          if (loginError.status === 400) {
+            this.errorMessageRequete = "ERREUR : " + loginError.error.error
+          } else {
+            this.errorMessageRequete = "Impossible de ce connecté à l'api"
+          }
+        }
+      });
+      
     }
   }
 
   removeFile(){
     this.file_csv = null;
-    this.error =false;
+    this.transmettre = true;
+    this.errorMessageRequete = ""
   }
 
   parseCSVToStudents(csvData: string): Student[] {
@@ -66,24 +90,31 @@ export class AddStudentsCsvComponent {
           nip: this.getValueByColumnName('nip', headers, currentLine),
           email: this.getValueByColumnName('email', headers, currentLine),
         };
-
         result.push(student);
       }
       else {
-        if (this.error === true){
-          this.errorMessage += ' - '
-        }
-        this.errorMessage += `${i}`
-        this.error = true;  
       }
     }
-
     return result;
   }
-
 
   getValueByColumnName(columnName: string, headers: string[], currentLine: string[]): string {
     const columnIndex = headers.indexOf(columnName);
     return (columnIndex !== -1) ? currentLine[columnIndex].trim() : '';
+  }
+
+  onSubmitFile(){
+    this.studentsService.addStudentCSV(this.file_csv).subscribe({
+      next: (response) => {
+        if(response.password){
+          this.router.navigate(['/admin/students']);
+        }
+        
+        
+      },
+      error: (loginError) => {
+        console.log(loginError.error.error)
+      }
+    });
   }
 }

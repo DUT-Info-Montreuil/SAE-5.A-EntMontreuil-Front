@@ -11,18 +11,32 @@
     <p  style="margin-right: 2%;">Nom : <span [style.fontWeight]="'bold'">{{file_csv.name}}</span></p>
     <p  style="margin-right: 2%;">Taille : <span [style.fontWeight]="'bold'">{{file_csv.size}} octet(s)</span></p>
 
-    <button pButton type="button" label="Annuler" icon="pi pi-times" (click)="removeFile()"
+    <button pButton type="button" label="Annuler" icon="pi pi-times" (click)="removeFile()" style="margin-right: 2%;"
         class="p-button-rounded p-button-text p-button-danger p-button-raised" >
     </button>
+
+    <button pButton type="button" label="Transmettre" icon="pi pi-upload"  [disabled]="transmettre"
+        class="p-button-rounded p-button-text p-button-raised" (click)="onSubmitFile()">
+    </button>
 </div>
-<div *ngIf="error"  style="margin-top: 5%;">
-     <p class="text-sm text-red-500 font-semibold">{{errorMessage}}</p>
+
+<div style="margin-top: 2%;">
+    <p [style.font-style]="'italic'" class="text-sm text-gray-500 font-semibold">{{detailMessage}}</p>
+</div>
+
+<div *ngIf="errorMessageRequete"  style="margin-top: 2%;">
+    <p class="text-sm text-red-500 font-semibold">{{errorMessageRequete}}</p>
+    
 </div>
 
 
-<div *ngIf="file_csv"  style="margin-top: 5%;">
+
+
+
+<div *ngIf="file_csv"  style="margin-top: 2%;">
     {{contenue}}
-    <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }">
+    <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true"
+    [rows]="10" [showCurrentPageReport]="true">
         <ng-template pTemplate="header">
             <tr>
                 <th>Ligne</th>
