@@ -42,11 +42,17 @@
             "outputPath": "dist/ent",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss",
               "src/assets/fonts/font-file.css",
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
@@ -54,7 +60,9 @@
               "node_modules/primeflex/primeflex.css",
               "node_modules/primeicons/primeicons.css"
             ],
-            "scripts": ["node_modules/topbar/topbar.min.js"]
+            "scripts": [
+              "node_modules/topbar/topbar.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -104,12 +112,24 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss", "src/assets/fonts/font-file.css"],
-            "scripts": ["node_modules/topbar/topbar.min.js"]
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
+              "src/styles.scss",
+              "src/assets/fonts/font-file.css"
+            ],
+            "scripts": [
+              "node_modules/topbar/topbar.min.js"
+            ]
           }
         }
       }
