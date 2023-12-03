@@ -135,7 +135,71 @@ export class TimetableService {
                 start: new Date('2023-12-07T09:00:00'),
                 end: new Date('2023-12-07T12:00:00'),
                 title: 'NOSQL',
-                content: 'B1-09',
+                content: 'LAMOLLE M.<br>A2-05',
+                color: { primary: '#fabc75', secondary: '#fabc75' },
+                actions: actions,
+                isClickable: true,
+                isDisabled: false,
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
+            },
+            <CalendarSchedulerEvent>{
+                id: '8',
+                start: new Date('2023-12-07T13:30:00'),
+                end: new Date('2023-12-07T15:30:00'),
+                title: 'ANGLAIS',
+                content: 'GOLVEN A.<br>A1-01',
+                color: { primary: '#ffebb3', secondary: '#ffebb3' },
+                actions: actions,
+                isClickable: true,
+                isDisabled: false,
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
+            },
+            <CalendarSchedulerEvent>{
+                id: '9',
+                start: new Date('2023-12-07T15:30:00'),
+                end: new Date('2023-12-07T17:30:00'),
+                title: 'MODELISATIONS',
+                content: 'RICORDEAU A.<br>A2-03',
+                color: { primary: '#b0ceff', secondary: '#b0ceff' },
+                actions: actions,
+                isClickable: true,
+                isDisabled: false,
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
+            },
+            <CalendarSchedulerEvent>{
+                id: '10',
+                start: new Date('2023-12-08T09:00:00'),
+                end: new Date('2023-12-08T13:00:00'),
+                title: 'PROG. AVANCEE',
+                content: 'MICCUCI J.<br>A2-05',
+                color: { primary: '#ff9180', secondary: '#ff9180' },
+                actions: actions,
+                isClickable: true,
+                isDisabled: false,
+                draggable: true,
+                resizable: {
+                    beforeStart: true,
+                    afterEnd: true
+                }
+            },
+            <CalendarSchedulerEvent>{
+                id: '11',
+                start: new Date('2023-12-08T14:00:00'),
+                end: new Date('2023-12-08T17:00:00'),
+                title: 'SAE PROJET',
+                content: 'B1-14',
                 color: { primary: '#f5dcfc', secondary: '#f5dcfc' },
                 actions: actions,
                 isClickable: true,
@@ -145,7 +209,7 @@ export class TimetableService {
                     beforeStart: true,
                     afterEnd: true
                 }
-            }
+            },
         ];
 
         return new Promise(resolve => setTimeout(() => resolve(events), 3000));
