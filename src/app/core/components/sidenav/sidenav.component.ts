@@ -2,13 +2,27 @@ import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { filter, map } from 'rxjs';
-import { MenuItem } from 'primeng/api';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss'],
+  animations: [
+    trigger('fade', [
+      // Transition pour "entrer" - Fade In
+      transition(':enter', [
+        style({ opacity: 0 }), // commence avec une opacité de 0 (invisible)
+        animate('250ms ease-out', style({ opacity: 1 })) // anime à une opacité de 1 (visible) en 250ms
+      ]),
+      // Transition pour "quitter" - Fade Out
+      transition(':leave', [
+        animate('150ms ease-in', style({ opacity: 0 })) // anime à une opacité de 0 en 150ms
+      ])
+    ]),
+  ]
 })
+
 export class SidenavComponent {
   menuActive: boolean = false;
   first_name: string = this.auth.getFirstname();
@@ -16,6 +30,8 @@ export class SidenavComponent {
   role: string = this.auth.getRole();
   isAdmin: boolean = this.auth.getIsAdmin();
   currentPageName: string = '';
+
+  showNotifications: boolean = false;
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
 
@@ -39,6 +55,10 @@ export class SidenavComponent {
     });
   }
 
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
+
   toggleMenu() {
     this.menuActive = !this.menuActive;
   }
@@ -50,20 +70,26 @@ export class SidenavComponent {
 
   @HostListener('document:click', ['$event'])
   clickOutside(event: MouseEvent) {
-    if (
-      this.userProfileContainer &&
-      !this.userProfileContainer.nativeElement.contains(event.target as Node)
-    ) {
+    let targetElement = event.target as HTMLElement;
+
+    // Vérifie si l'élément cliqué ou un de ses parents a la classe 'notificationToggle'
+    let clickedInsideNotification = false;
+    while (targetElement && targetElement !== document.body) {
+      if (targetElement.classList.contains('notificationToggle')) {
+        clickedInsideNotification = true;
+        break;
+      }
+      targetElement = targetElement.parentElement as HTMLElement;
+    }
+
+    if (!clickedInsideNotification) {
       this.menuActive = false;
+      this.showNotifications = false;
     }
   }
 
-  items?: MenuItem[];
 
   ngOnInit() {
-    this.items = [
-      { label: 'Add New', icon: 'pi pi-fw pi-plus' },
-      { label: 'Remove', icon: 'pi pi-fw pi-minus' }
-    ];
+
   }
 }
