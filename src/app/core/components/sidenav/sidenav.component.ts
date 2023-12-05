@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { filter, map } from 'rxjs';
@@ -34,13 +34,30 @@ export class SidenavComponent {
   isAdmin: boolean = this.auth.getIsAdmin();
   currentPageName: string = '';
 
-  showNotifications: boolean = false;
+  searchVisible: boolean = false;
+  value3: any;
 
+  showNotifications: boolean = false;
   notifications: Notification[] = [];
   allNotificationsRead = true;
   totalUnread!: number;
 
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
+
+  // Gérer le raccourci recherche
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.metaKey && event.key === 'k' || event.ctrlKey && event.key === 'k') { // metaKey pour Command sur Mac, utilisez event.ctrlKey pour Windows/Linux
+
+      event.preventDefault(); // Empêche l'action par défaut
+
+      if (this.searchVisible) {
+        this.searchVisible = false;
+      } else {
+        this.searchVisible = true;
+      }
+    }
+  }
 
   constructor(
     private eRef: ElementRef,

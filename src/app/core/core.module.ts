@@ -17,12 +17,14 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { BadgeModule } from 'primeng/badge';
 import { NotificationsModalComponent } from './components/notifications-modal/notifications-modal.component';
 import { SkeletonModule } from 'primeng/skeleton';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
     SidenavComponent,
-    NotificationsModalComponent
+    NotificationsModalComponent,
   ],
   imports: [
     CommonModule,
@@ -36,7 +38,9 @@ import { SkeletonModule } from 'primeng/skeleton';
     InputTextModule,
     CheckboxModule,
     BadgeModule,
-    SkeletonModule
+    SkeletonModule,
+    DialogModule,
+    FormsModule
   ],
   exports: [
 

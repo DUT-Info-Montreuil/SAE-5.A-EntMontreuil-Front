@@ -231,11 +231,92 @@
             <path d="M4 18l16 0" />
           </svg>
         </a>
-        <span class="p-input-icon-left">
-          <i class="pi pi-search"></i>
-          <input type="text" pInputText class="border-none w-10rem sm:w-20rem text-sm" placeholder="Rechercher" />
-        </span>
+        <div class="flex w-full align-items-center justify-content-between px-1">
+          <span class="p-input-icon-left w-full">
+            <i class="pi pi-search text-500"></i>
+            <input type="text" pInputText placeholder="Rechercher" class="w-full border-none shadow-none outline-none"
+              (click)="searchVisible = true;" />
+          </span>
+          <span
+            class="border-1 p-1 surface-border border-round surface-100 mr-2 text-600 text-xs hidden md:block">⌘K</span>
+        </div>
       </div>
+
+      <p-dialog [(visible)]="searchVisible" [dismissableMask]="true" [modal]="true" [showHeader]="false"
+        [breakpoints]="{'960px': '75vw', '640px': '100vw'}" [style]="{'width': '50vw', 'max-width': '750px'}"
+        contentStyleClass="border-round-top p-0" appendTo="body" (onShow)="input3.focus();"
+        (onHide)="searchVisible = false; value3 = '';">
+        <div class="flex w-full surface-section align-items-center justify-content-between px-1">
+          <span class="p-input-icon-left w-full">
+            <i class="pi pi-search text-500"></i>
+            <input type="text" #input3 pInputText
+              placeholder="Rechercher une page, un élève, un paramètre et plus encore..." [(ngModel)]="value3"
+              class="w-full border-none shadow-none outline-none" />
+          </span>
+          <span
+            class="border-1 p-1 surface-border border-round surface-100 mr-2 text-600 text-xs hidden md:block">⌘K</span>
+        </div>
+
+        <div class="p-3">
+          <ul class="list-none m-0 p-0">
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-bell mr-2"></i>Notifications</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">CMD</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">C</span>
+              </div>
+            </li>
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-bookmark mr-2"></i>Bookmarks</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">CMD</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">B</span>
+              </div>
+            </li>
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-bolt mr-2"></i>Quick Actions</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">SHIFT</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">Q</span>
+              </div>
+            </li>
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-users mr-2"></i>Manage User Groups</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">CMD</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">U</span>
+              </div>
+            </li>
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-book mr-2"></i>Go to Documentation</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">SHIFT</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">L</span>
+              </div>
+            </li>
+            <li
+              class="select-none p-2 font-medium text-base cursor-pointer border-round-lg hover:surface-hover hover:text-primary flex justify-content-between align-items-center">
+              <span class="flex align-items-center"><i class="pi pi-cog mr-2"></i>System Preferences</span>
+              <div class="hidden md:flex align-items-center">
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">CMD</span>
+                <span class="mx-2 text-600">+</span>
+                <span class="border-1 p-1 surface-border border-round surface-100 text-600 text-xs">P</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </p-dialog>
+
       <a pRipple class="cursor-pointer block lg:hidden text-700" pStyleClass="@next" enterClass="hidden"
         enterActiveClass="fadein" leaveToClass="hidden" leaveActiveClass="fadeout" [hideOnOutsideClick]="true">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-circle" width="20" height="20"
