@@ -36,6 +36,7 @@ import { ClassroomEquipmentDialogComponent } from './components/classroom-equipm
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
 import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ClassroomEquipmentDialogComponent,
     DegreeListComponent,
     CreateDegreeComponent,
+    RessourceListComponent,
   ],
   imports: [
     CommonModule,

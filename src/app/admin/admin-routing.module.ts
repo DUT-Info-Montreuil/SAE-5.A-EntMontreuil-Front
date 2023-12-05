@@ -13,6 +13,7 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
 import { ClassroomsComponent } from './components/classrooms/classrooms.component';
 import { SingleClassroomComponent } from './components/single-classroom/single-classroom.component';
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
+import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,11 @@ const routes: Routes = [
   {
     path: 'degrees',
     component: DegreeListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'ressources',
+    component: RessourceListComponent,
     canActivate: [AuthGuard],
   },
 ];
