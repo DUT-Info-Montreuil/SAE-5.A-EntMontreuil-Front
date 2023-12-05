@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
 import { BadgeModule } from 'primeng/badge';
 import { NotificationsModalComponent } from './components/notifications-modal/notifications-modal.component';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { NotificationsModalComponent } from './components/notifications-modal/no
     ButtonModule,
     InputTextModule,
     CheckboxModule,
-    BadgeModule
+    BadgeModule,
+    SkeletonModule
   ],
   exports: [
 

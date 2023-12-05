@@ -12,17 +12,22 @@ import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 })
 export class NotificationsModalComponent implements OnInit {
   notifications: Notification[] = [];
+  isLoading: boolean = true;
 
   constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {
-    this.notificationService.getNotifications().subscribe(
+
+    this.isLoading = true;
+
+    this.notificationService.readNotifications().subscribe(
       (data: Notification[]) => {
         this.notifications = data;
-        console.log('Notifications récupérées', data);
+        this.isLoading = false;
       },
       (error) => {
         console.error('Erreur lors de la récupération des notifications', error);
+        this.isLoading = false;
       }
     );
   }
