@@ -171,6 +171,7 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
+    this.resetForm();
     this.displayModal = false;
   }
 
