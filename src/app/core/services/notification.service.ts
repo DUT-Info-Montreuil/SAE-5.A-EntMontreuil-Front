@@ -10,7 +10,10 @@ export class NotificationService {
     private apiURL = 'https://localhost:5050';
 
     private notificationsSource = new BehaviorSubject<Notification[]>([]);
-    notifications$ = this.notificationsSource.asObservable();
+    public notifications$ = this.notificationsSource.asObservable();
+
+    private totalUnreadSource = new BehaviorSubject<number>(0);
+    public totalUnread$ = this.totalUnreadSource.asObservable();
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -21,20 +24,13 @@ export class NotificationService {
     constructor(private http: HttpClient) { }
 
     getNotifications(): Observable<Notification[]> {
-        return this.http.get<{ notifications: any[] }>(this.apiURL + '/user/notifications', this.httpOptions)
+        return this.http.get<{ notifications: any[]; totalUnread: number }>(this.apiURL + '/user/notifications', this.httpOptions)
             .pipe(
+                tap(response => {
+                    this.notificationsSource.next(response.notifications.map(notif => notif.notification));
+                    this.totalUnreadSource.next(response.totalUnread);
+                }),
                 map(response => response.notifications.map(notif => notif.notification))
             );
     }
-
-    loadNotifications(): Observable<Notification[]> {
-        return this.http.get<{ notifications: Notification[] }>(this.apiURL + '/user/notifications', this.httpOptions)
-            .pipe(
-                tap(response => {
-                    this.notificationsSource.next(response.notifications);
-                }),
-                map(response => response.notifications) // Ajouter map pour transformer et retourner le type correct
-            );
-    }
-
 }

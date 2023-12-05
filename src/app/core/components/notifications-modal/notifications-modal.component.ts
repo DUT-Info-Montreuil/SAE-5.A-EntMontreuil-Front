@@ -28,10 +28,18 @@ export class NotificationsModalComponent implements OnInit {
   }
 
   formatRelativeDate(dateString: string): string {
-    const utcDate = parseISO(dateString);
-    const timeZone = 'Europe/Paris';
-    const parisTime = utcToZonedTime(utcDate, timeZone);
+    try {
+      const utcDate = parseISO(dateString);
+      if (isNaN(utcDate.getTime())) {
+        throw new Error('Invalid date');
+      }
+      const timeZone = 'Europe/Paris';
+      const parisTime = utcToZonedTime(utcDate, timeZone);
 
-    return formatDistanceToNow(parisTime, { addSuffix: true, locale: fr });
+      return formatDistanceToNow(parisTime, { addSuffix: true, locale: fr });
+    } catch (error) {
+      console.error('Erreur lors de la conversion de la date:', dateString, error);
+      return 'Date invalide';
+    }
   }
 }

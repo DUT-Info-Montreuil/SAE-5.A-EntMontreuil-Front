@@ -3,6 +3,8 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { filter, map } from 'rxjs';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NotificationService } from '../../services/notification.service'
+import { Notification } from '../../models/notification.model'
 
 @Component({
   selector: 'app-sidenav',
@@ -33,13 +35,18 @@ export class SidenavComponent {
 
   showNotifications: boolean = false;
 
+  notifications: Notification[] = [];
+  allNotificationsRead = true;
+  totalUnread!: number;
+
   @ViewChild('userProfileContainer') userProfileContainer?: ElementRef;
 
   constructor(
     private eRef: ElementRef,
     private router: Router,
     private auth: AuthService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private notificationService: NotificationService
   ) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -89,7 +96,12 @@ export class SidenavComponent {
   }
 
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.notificationService.totalUnread$.subscribe(count => {
+      this.totalUnread = count;
+      console.log('Total unread', count);
+    });
 
+    this.notificationService.getNotifications().subscribe();
   }
 }
