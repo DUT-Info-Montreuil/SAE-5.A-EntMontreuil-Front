@@ -1,11 +1,51 @@
 <div class="container">
-    <div class="flex align-items-center border-round p-4 relative" style="background-color: rgb(239, 244, 255);">
+    <div class="flex align-items-center border-round p-4 relative mb-5" style="background-color: rgb(239, 244, 255);">
         <div>
             <h1 class="text-2xl font-semibold">Mes notifications</h1>
             <p class="text-900 -mt-2">Consulter l'historique des notifications reçues.</p>
         </div>
         <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px;">
-            <img src="/assets/images/3dicons/computer.png" alt="cube" width="180px">
+            <img src="/assets/images/3dicons/bell.png" alt="cube" width="180px">
         </div>
     </div>
+
+    <div *ngIf="notifications.length === 0 && !isLoading">
+        <p class="text-center">Aucune notification.</p>
+    </div>
+
+    <div *ngIf="notifications.length > 0" class="mb-3 mt-3 flex justify-content-end">
+        <p-button (click)="confirm($event)" severity="danger" [outlined]="true" label="Tout effacer"
+            icon="pi pi-trash"></p-button>
+    </div>
+
+    <ng-container *ngIf="notifications.length > 0 && !isLoading;">
+        <ng-container *ngFor="let dateGroup of getGroupedNotificationKeys()">
+            <div class="flex w-full relative align-items-center justify-content-start my-3 px-4">
+                <div class="border-top-1 surface-border top-50 left-0 absolute w-full"></div>
+                <div class="px-2 z-1 surface-0 flex align-items-center">
+                    <span class="text-900 font-medium">{{ dateGroup }}</span>
+                </div>
+            </div>
+
+            <ng-container *ngFor="let notification of groupedNotifications[dateGroup]">
+                <div class="nt-single border-round p-2 pt-1 nt-new flex align-items-center gap-4"
+                    routerLink="{{ notification.route }}">
+                    <div>
+                        <i class="pi {{ notification.icon_color }}" [ngClass]="notification.icon"
+                            style="font-size: 21px;"></i>
+                    </div>
+                    <div>
+                        <div class="flex justify-content-between align-items-center">
+                            <h1 class="text-sm">{{ notification.title }}</h1>
+                        </div>
+                        <p class="text-sm -mt-1">{{ notification.content }}</p>
+                        <span class="text-xs">{{ formatRelativeDate(notification.created_at) }}</span>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+    </ng-container>
 </div>
+
+<p-toast></p-toast>
+<p-confirmPopup></p-confirmPopup>

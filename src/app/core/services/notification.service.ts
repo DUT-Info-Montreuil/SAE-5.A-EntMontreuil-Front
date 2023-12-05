@@ -44,4 +44,15 @@ export class NotificationService {
                 map(response => response.notifications.map(notif => notif.notification))
             );
     }
+
+    deleteNotifications(): Observable<void> {
+        return this.http.delete<void>(this.apiURL + '/user/notifications', this.httpOptions)
+            .pipe(
+                tap(() => {
+                    // Réinitialiser les données après la suppression
+                    this.notificationsSource.next([]);
+                    this.totalUnreadSource.next(0);
+                })
+            );
+    }
 }
