@@ -24,7 +24,7 @@ export class NotificationService {
     constructor(private http: HttpClient) { }
 
     readNotifications(): Observable<Notification[]> {
-        return this.http.get<{ notifications: any[]; totalUnread: number }>(this.apiURL + '/user/notifications?reading=true', this.httpOptions)
+        return this.http.get<{ notifications: any[]; totalUnread: number }>(this.apiURL + '/user/notifications?reading=true&display=5', this.httpOptions)
             .pipe(
                 tap(response => {
                     this.notificationsSource.next(response.notifications.map(notif => notif.notification));
@@ -35,7 +35,7 @@ export class NotificationService {
     }
 
     getNotifications(): Observable<Notification[]> {
-        return this.http.get<{ notifications: any[]; totalUnread: number }>(this.apiURL + '/user/notifications', this.httpOptions)
+        return this.http.get<{ notifications: any[]; totalUnread: number }>(this.apiURL + '/user/notifications&display=5', this.httpOptions)
             .pipe(
                 tap(response => {
                     this.notificationsSource.next(response.notifications.map(notif => notif.notification));
