@@ -3,7 +3,7 @@ import { NotificationService } from '../../services/notification.service';
 import { Notification } from '../../models/notification.model';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 import fr from 'date-fns/locale/fr';
-import { utcToZonedTime } from 'date-fns-tz';
+import { utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 
 @Component({
   selector: 'app-notifications-modal',
@@ -28,9 +28,10 @@ export class NotificationsModalComponent implements OnInit {
   }
 
   formatRelativeDate(dateString: string): string {
-    const utcDate = parseISO(dateString); // Parse la date en tant qu'UTC
+    const utcDate = parseISO(dateString);
     const timeZone = 'Europe/Paris';
-    const zonedDate = utcToZonedTime(utcDate, timeZone); // Convertit en heure locale
-    return formatDistanceToNow(zonedDate, { addSuffix: true, locale: fr });
+    const parisTime = utcToZonedTime(utcDate, timeZone);
+
+    return formatDistanceToNow(parisTime, { addSuffix: true, locale: fr });
   }
 }

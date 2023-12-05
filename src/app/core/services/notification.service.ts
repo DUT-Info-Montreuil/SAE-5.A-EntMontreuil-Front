@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { Notification } from '../models/notification.model';
 
 @Injectable({
@@ -8,6 +8,9 @@ import { Notification } from '../models/notification.model';
 })
 export class NotificationService {
     private apiURL = 'https://localhost:5050';
+
+    private notificationsSource = new BehaviorSubject<Notification[]>([]);
+    notifications$ = this.notificationsSource.asObservable();
 
     httpOptions = {
         headers: new HttpHeaders({
@@ -21,6 +24,16 @@ export class NotificationService {
         return this.http.get<{ notifications: any[] }>(this.apiURL + '/user/notifications', this.httpOptions)
             .pipe(
                 map(response => response.notifications.map(notif => notif.notification))
+            );
+    }
+
+    loadNotifications(): Observable<Notification[]> {
+        return this.http.get<{ notifications: Notification[] }>(this.apiURL + '/user/notifications', this.httpOptions)
+            .pipe(
+                tap(response => {
+                    this.notificationsSource.next(response.notifications);
+                }),
+                map(response => response.notifications) // Ajouter map pour transformer et retourner le type correct
             );
     }
 
