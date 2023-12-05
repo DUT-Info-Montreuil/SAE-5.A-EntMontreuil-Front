@@ -37,6 +37,7 @@ import { DegreeListComponent } from './components/degree-list/degree-list.compon
 import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
+import { CreateRessourceComponent } from './components/create-ressource/create-ressource.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { RessourceListComponent } from './components/ressource-list/ressource-li
     DegreeListComponent,
     CreateDegreeComponent,
     RessourceListComponent,
+    CreateRessourceComponent,
   ],
   imports: [
     CommonModule,

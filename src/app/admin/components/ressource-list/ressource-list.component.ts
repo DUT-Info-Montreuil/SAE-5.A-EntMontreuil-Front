@@ -10,9 +10,6 @@ export class RessourceListComponent {
   onSearch() {
     throw new Error('Method not implemented.');
   }
-  showCreateRessourceDialog() {
-    throw new Error('Method not implemented.');
-  }
 
   Ressource: Ressource[] = [];
   filteredRessources: Ressource[] = [];
@@ -30,5 +27,22 @@ export class RessourceListComponent {
       // ... ajoutez plus de fausses ressources si nécessaire ...
     ];
     this.filteredRessources = this.Ressource;
+  }
+
+  showCreateRessourceDialog() {
+    // Définir displayCreateTrainingDialog sur false
+    this.displayCreateRessources = false;
+
+    // Ajouter un délai de 1 seconde (vous pouvez ajuster la durée)
+    setTimeout(() => {
+      // Définir displayCreateTrainingDialog sur true après le délai
+      this.displayCreateRessources = true;
+    }, 1);
+  }
+
+  onRessourceCreated(ressource: Ressource): void {
+    // Ajouter la nouvelle ressource à la liste
+    this.Ressource.push(ressource);
+    this.filteredRessources = [...this.Ressource];
   }
 }

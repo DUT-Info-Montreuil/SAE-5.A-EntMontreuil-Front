@@ -1,6 +1,9 @@
 <div class="container">
   <!-- Remplacer 'app-create-training' par votre composant de création de ressource -->
-
+  <app-create-ressource
+    [displayCreateRessourceDialog]="displayCreateRessources"
+    (ressourceCreated)="onRessourceCreated($event)"
+  ></app-create-ressource>
   <div
     class="flex align-item-center border-round p-4 relative"
     style="background-color: rgb(239, 244, 255)"
