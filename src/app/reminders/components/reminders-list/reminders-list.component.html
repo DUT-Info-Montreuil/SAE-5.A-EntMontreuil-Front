@@ -1,0 +1,33 @@
+<div class="container" style="display: flex; justify-content: space-between; margin: 20px;">
+
+    <div class="rappels-list" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+      <h2>Rappels</h2>
+      <p-list [value]="rappels" [style]="{'max-height': '400px', 'overflow-y': 'auto'}">
+        <ng-template let-rappel pTemplate="item">
+          <div class="rappel-item" style="padding: 8px; margin-bottom: 5px; border: 1px solid #eee; border-radius: 3px; cursor: pointer;" (click)="selectRappel(rappel)">
+            {{ rappel.reminder_text }}
+          </div>
+        </ng-template>
+      </p-list>
+    </div>
+  
+    <div class="rappel-content" style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+      <h2>Contenu du Rappel</h2>
+      <div *ngIf="selectedRappel">
+        <div class="card" style="border: 1px solid #ccc; border-radius: 5px; margin-top: 10px;">
+          <div class="card-header" style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc; border-radius: 5px 5px 0 0;">
+            {{ selectedRappel.reminder_text }}
+          </div>
+          <div class="card-body" style="padding: 10px;">
+            <p>Date du Rappel : {{ selectedRappel.reminder_date }}</p>
+            <p>Utilisateur : {{ selectedRappel.user_username }}</p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!selectedRappel">
+        <p>Sélectionnez un rappel pour voir son contenu.</p>
+      </div>
+    </div>
+  
+  </div>
+  

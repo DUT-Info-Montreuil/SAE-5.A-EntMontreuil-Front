@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -35,6 +34,12 @@ const routes: Routes = [
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
         data: { title: 'Équipements' },
+      },
+      {
+        path: 'reminders',
+        loadChildren: () =>
+          import('./reminders/reminders.module').then((m) => m.RemindersModule),
+        data: { title: 'Reminders' },
       },
     ],
   },
