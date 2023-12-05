@@ -14,10 +14,10 @@ import { ConfirmationService } from 'primeng/api';
   styleUrls: ['./single-classroom.component.scss'],
   styles: [
     `
-        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-            background-color: white;
-        }
-    `
+      :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+        background-color: white;
+      }
+    `,
   ],
 })
 export class SingleClassroomComponent implements OnInit {
@@ -34,7 +34,7 @@ export class SingleClassroomComponent implements OnInit {
     private messageService: MessageService,
     private router: Router,
     private confirmationService: ConfirmationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadClassroomData();
@@ -80,6 +80,8 @@ export class SingleClassroomComponent implements OnInit {
           id: result.equipmentId,
           equipment: result.equipmentName,
           quantity: result.quantity,
+          isEditing: false,
+          updatedQuantity: null,
         };
 
         this.classroomData.materials.push(newEquipment);
