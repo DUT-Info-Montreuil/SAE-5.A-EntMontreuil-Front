@@ -9,6 +9,7 @@ import { Observable, Subscription } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-classrooms',
@@ -16,10 +17,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./classrooms.component.scss'],
   styles: [
     `
-        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-            background-color: white;
-        }
-    `
+      :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+        background-color: white;
+      }
+    `,
   ],
 })
 export class ClassroomsComponent implements OnInit, OnDestroy {
@@ -41,10 +42,15 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   ) {
     this.classroomForm = this.fb.group({
       name: ['', Validators.required],
-      capacity: [0, Validators.required],
+      capacity: [0, [Validators.required, this.greaterThanZeroValidator()]],
     });
   }
-
+  greaterThanZeroValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const valid = control.value > 0;
+      return valid ? null : { greaterThanZero: { value: control.value } };
+    };
+  }
   ngOnInit() {
     this.loadData();
   }
@@ -59,16 +65,18 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
   loadData() {
     this.loading = true;
     // Utilisez subscribe pour traiter les valeurs émises par l'observable
-    this.classroomsSubscription = this.classroomsService.getClassrooms().subscribe(
-      (data: Classroom[]) => {
-        this.classrooms = data;
-        this.loading = false;
-      },
-      (error) => {
-        console.error('Error loading data:', error);
-        this.loading = false;
-      }
-    );
+    this.classroomsSubscription = this.classroomsService
+      .getClassrooms()
+      .subscribe(
+        (data: Classroom[]) => {
+          this.classrooms = data;
+          this.loading = false;
+        },
+        (error) => {
+          console.error('Error loading data:', error);
+          this.loading = false;
+        }
+      );
   }
 
   startEdit(classroom: Classroom) {
@@ -154,38 +162,52 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
       const formData = this.classroomForm.value;
 
       // Appel du service pour créer la classe
-      this.classroomsService.addClassroom(formData.name, formData.capacity).subscribe(
-        (response) => {
-          // Rafraîchissement la liste après avoir créé la classe
-          this.loadData();
+      this.classroomsService
+        .addClassroom(formData.name, formData.capacity)
+        .subscribe(
+          (response: any) => {
+            if (response[1] === 201) {
+              console.log(response);
+              this.loadData();
 
-          // Fermer la fenêtre modale
-          this.closeModal();
+              // Fermer la fenêtre modale
+              this.closeModal;
+              // Message de succès si nécessaire
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Création réussie',
+                detail: 'La classe a été créée avec succès.',
+              });
+            } else {
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur de création',
+                detail: response[0].message,
+              });
+            }
+          },
+          (error) => {
+            console.error('Erreur lors de la création de la classe', error);
 
-          // Message de succès si nécessaire
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Création réussie',
-            detail: 'La classe a été créée avec succès.',
-          });
-        },
-        (error) => {
-          console.error('Erreur lors de la création de la classe', error);
-
-          // Message d'erreur si nécessaire
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Erreur de création',
-            detail: 'Une erreur s\'est produite lors de la création de la classe.',
-          });
-        }
-      );
+            // Message d'erreur si nécessaire
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur de création',
+              detail:
+                "Une erreur s'est produite lors de la création de la classe.",
+            });
+          }
+        );
     } else {
-      // Message d'erreur si le formulaire n'est pas valide
+      let detail =
+        'Veuillez remplir tous les champs du formulaire correctement.';
+      if (this.classroomForm.hasError('greaterThanZero', 'capacity')) {
+        detail = 'La capacité doit être supérieur à 0.';
+      }
       this.messageService.add({
         severity: 'error',
         summary: 'Formulaire invalide',
-        detail: 'Veuillez remplir tous les champs du formulaire correctement.',
+        detail: detail,
       });
     }
   }
@@ -199,7 +221,9 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         // Vérifie si la réponse est définie pour déterminer le succès
         if (response) {
           // Supprimer la classe du tableau local
-          this.classrooms = this.classrooms.filter((c) => c.id !== classroom.id);
+          this.classrooms = this.classrooms.filter(
+            (c) => c.id !== classroom.id
+          );
 
           this.messageService.add({
             severity: 'success',
@@ -210,7 +234,8 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
           this.messageService.add({
             severity: 'error',
             summary: 'Échec de la suppression',
-            detail: 'Une erreur s\'est produite lors de la suppression de la classe.',
+            detail:
+              "Une erreur s'est produite lors de la suppression de la classe.",
           });
         }
       },
@@ -218,28 +243,23 @@ export class ClassroomsComponent implements OnInit, OnDestroy {
         console.error('Erreur lors de la suppression de la classe', error);
 
         if (error?.status === 500) {
-
           this.messageService.add({
             severity: 'error',
             summary: 'Échec de la suppression',
-            detail: 'La classe est une salle utilisée pour des cours, il est impossible de la supprimer.',
+            detail:
+              'La classe est une salle utilisée pour des cours, il est impossible de la supprimer.',
           });
-
         } else {
-
           this.messageService.add({
             severity: 'error',
             summary: 'Erreur',
-            detail: 'Une erreur s\'est produite lors de la suppression de la classe.',
+            detail:
+              "Une erreur s'est produite lors de la suppression de la classe.",
           });
-
         }
       }
     );
   }
-
-
-
 
   confirmDelete(classroom: Classroom) {
     this.confirmationService.confirm({
