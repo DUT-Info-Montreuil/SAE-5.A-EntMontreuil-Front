@@ -7,4 +7,5 @@ export interface Notification {
     title: string;
     icon: string;
     icon_color: string;
+    route: string;
 }

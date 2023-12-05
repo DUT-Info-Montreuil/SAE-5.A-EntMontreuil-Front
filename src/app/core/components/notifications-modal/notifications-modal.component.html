@@ -31,7 +31,7 @@
         <ng-container *ngIf="!isLoading;">
             <ng-container *ngFor="let notification of notifications">
                 <div class="nt-single border-round p-2 pt-1 nt-new flex align-items-center gap-4"
-                    routerLink="/absences">
+                    routerLink="{{ notification.route }}">
                     <div>
                         <i class="pi {{ notification.icon_color }}" [ngClass]="notification.icon"
                             style="font-size: 21px;"></i>
