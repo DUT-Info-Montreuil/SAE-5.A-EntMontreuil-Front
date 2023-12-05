@@ -22,7 +22,8 @@ import { Notification } from '../../models/notification.model'
         animate('150ms ease-in', style({ opacity: 0 })) // anime à une opacité de 0 en 150ms
       ])
     ]),
-  ]
+  ],
+  styles: [':host ::ng-deep .p-badge {  font-size: 0.5rem; font-weight: 700; min-width: 0.8rem; height: 0.8rem; line-height: 0.8rem}']
 })
 
 export class SidenavComponent {
