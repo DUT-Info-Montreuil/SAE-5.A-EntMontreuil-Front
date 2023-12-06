@@ -1,11 +1,13 @@
+// reminders-list.component.ts
+
 import { Component, OnInit } from '@angular/core';
-import { ReminderModel } from '../models/reminders.model';
-import { ReminderService } from '../services/reminders.service';
+import { ReminderModel } from 'src/app/core/models/reminders.model';
+import { ReminderService } from 'src/app/core/services/reminders.service';
 
 @Component({
   selector: 'app-reminders-list',
   templateUrl: './reminders-list.component.html',
-  styleUrls: ['./reminders-list.component.scss']
+  styleUrls: ['./reminders-list.component.scss'],
 })
 export class RemindersListComponent implements OnInit {
   rappels: ReminderModel[] = [];
@@ -22,7 +24,7 @@ export class RemindersListComponent implements OnInit {
       (reminders: ReminderModel[]) => {
         this.rappels = reminders;
       },
-      (error) => {
+      (error: any) => {
         console.error('Error loading reminders:', error);
       }
     );

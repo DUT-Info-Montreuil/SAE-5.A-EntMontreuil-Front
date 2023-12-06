@@ -1,33 +1,43 @@
-<div class="container" style="display: flex; justify-content: space-between; margin: 20px;">
+<div class="container" style="display: flex; justify-content: space-between; margin: 20px; flex-direction: row; overflow: hidden; border: 1px solid #ccc; border-radius: 5px;">
 
-    <div class="rappels-list" style="flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-      <h2>Rappels</h2>
-      <p-list [value]="rappels" [style]="{'max-height': '400px', 'overflow-y': 'auto'}">
-        <ng-template let-rappel pTemplate="item">
-          <div class="rappel-item" style="padding: 8px; margin-bottom: 5px; border: 1px solid #eee; border-radius: 3px; cursor: pointer;" (click)="selectRappel(rappel)">
-            {{ rappel.reminder_text }}
-          </div>
-        </ng-template>
-      </p-list>
-    </div>
-  
-    <div class="rappel-content" style="flex: 2; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
-      <h2>Contenu du Rappel</h2>
-      <div *ngIf="selectedRappel">
-        <div class="card" style="border: 1px solid #ccc; border-radius: 5px; margin-top: 10px;">
-          <div class="card-header" style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc; border-radius: 5px 5px 0 0;">
-            {{ selectedRappel.reminder_text }}
-          </div>
-          <div class="card-body" style="padding: 10px;">
-            <p>Date du Rappel : {{ selectedRappel.reminder_date }}</p>
-            <p>Utilisateur : {{ selectedRappel.user_username }}</p>
-          </div>
+  <!-- Colonne des Rappels avec barre de recherche -->
+<div class="rappels-list" style="flex: 1; padding: 10px; border-right: 1px solid #ccc; margin-left: 20px;">
+  <span><h3>All Reminders</h3></span>
+  <!-- Barre de recherche -->
+  <span class="p-input-icon-left w-full" style="font-size: 14px; height: 30px;">
+    <i class="pi pi-search" style="font-size: 1rem;"></i>
+    <input class="p-inputtext" type="text" placeholder="Rechercher" style="width: calc(100% - 2rem); height: 100%;" />
+  </span>
+  <div *ngFor="let rappel of rappels" class="rappel-item" style="padding: 8px; margin-bottom: 5px; border: 1px solid #eee; border-radius: 3px; cursor: pointer;" (click)="selectRappel(rappel)">
+    {{ rappel.reminder_text }}
+    <div>{{ rappel.reminder_date | date:'E d MMM yyyy' }}</div>
+  </div>
+</div>
+
+  <!-- Colonne du Contenu du Rappel avec bouton d'ajout -->
+  <div class="rappel-content" style="flex: 2; padding: 10px; border-left: 1px solid #ccc; position: relative;">
+    <!-- Bouton Ajouter un rappel -->
+    <button pButton style="background-color: #007bff; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; position: absolute; top: 10px; right: 10px;">
+      Add reminders
+    </button>
+
+    <span>
+      <h3>Change Title</h3>
+    </span>
+    <div *ngIf="selectedRappel">
+      <div class="card" style="border: 1px solid #ccc; border-radius: 5px;">
+        <div class="card-header" style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc; border-radius: 5px 5px 0 0;">
+          {{ selectedRappel.reminder_text }}
+        </div>
+        <div class="card-body" style="padding: 10px;">
+          <p>{{ selectedRappel.reminder_date | date:'E d MMM yyyy' }}</p>
+          <!-- Ajoutez d'autres champs du rappel au besoin -->
         </div>
       </div>
-      <div *ngIf="!selectedRappel">
-        <p>Sélectionnez un rappel pour voir son contenu.</p>
-      </div>
     </div>
-  
+    <div *ngIf="!selectedRappel">
+      <span style="color: #ccc;">Select a reminder to see the details</span>
+    </div>
   </div>
-  
+
+</div>

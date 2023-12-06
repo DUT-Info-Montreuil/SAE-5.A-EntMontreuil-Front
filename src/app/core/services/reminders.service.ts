@@ -1,3 +1,4 @@
+// reminders.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +9,7 @@ import { ReminderModel } from '../models/reminders.model';
   providedIn: 'root',
 })
 export class ReminderService {
-  private apiUrl = 'https://localhost:5050'; // Remplacez par l'URL de base de votre API
+  private apiUrl = 'https://localhost:5050';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -19,8 +20,7 @@ export class ReminderService {
   constructor(private http: HttpClient) {}
 
   getReminderById(id: number): Observable<ReminderModel> {
-    return this.http
-      .get<ReminderModel>(`${this.apiUrl}/users/reminders/${id}`, this.httpOptions);
+    return this.http.get<ReminderModel>(`${this.apiUrl}/users/reminders/${id}`, this.httpOptions);
   }
 
   getAllReminders(): Observable<ReminderModel[]> {
