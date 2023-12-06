@@ -24,4 +24,11 @@ export class RessourceService {
       this.httpOptions
     );
   }
+
+  deleteRessource(resourceId: number): Observable<any[]> {
+    return this.http.delete<any[]>(
+      `${this.apiUrl}/resources/${resourceId}`,
+      this.httpOptions
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Ressource } from '../../models/ressource.model';
 import { RessourceService } from 'src/app/core/services/ressources.service';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-ressource-list',
@@ -8,9 +9,6 @@ import { RessourceService } from 'src/app/core/services/ressources.service';
   styleUrls: ['./ressource-list.component.scss'],
 })
 export class RessourceListComponent {
-  confirmDelete(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
   startEditing(arg0: any) {
     throw new Error('Method not implemented.');
   }
@@ -26,7 +24,11 @@ export class RessourceListComponent {
 
   isLoading: boolean = false;
 
-  constructor(private ressourceService: RessourceService) {}
+  constructor(
+    private ressourceService: RessourceService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadRessources();
@@ -43,7 +45,7 @@ export class RessourceListComponent {
       },
       (error) => {
         // Gérer l'erreur ici
-        console.error('Erreur lors du chargement des ressources', error);
+
         this.isLoading = false;
       }
     );
@@ -64,5 +66,37 @@ export class RessourceListComponent {
     // Ajouter la nouvelle ressource à la liste
     this.Ressource.push(ressource);
     this.filteredRessources = [...this.Ressource];
+  }
+
+  confirmDelete(ressource: Ressource): void {
+    this.confirmationService.confirm({
+      message: `Voulez-vous vraiment supprimer la ressource ${ressource.name}?`,
+      accept: () => {
+        this.deleteRessource(ressource.id);
+      },
+    });
+  }
+
+  deleteRessource(resourceId: number): void {
+    this.ressourceService.deleteRessource(resourceId).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.Ressource = this.Ressource.filter((r) => r.id !== resourceId);
+        this.filteredRessources = [...this.Ressource];
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Suppression réussie',
+          detail: response.message,
+        });
+      },
+      (error) => {
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: error.error.message,
+        });
+      }
+    );
   }
 }
