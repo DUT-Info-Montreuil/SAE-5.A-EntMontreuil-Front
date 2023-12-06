@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Ressource } from '../../models/ressource.model';
+import { RessourceService } from 'src/app/core/services/ressources.service';
 
 @Component({
   selector: 'app-ressource-list',
@@ -25,33 +26,27 @@ export class RessourceListComponent {
 
   isLoading: boolean = false;
 
+  constructor(private ressourceService: RessourceService) {}
+
   ngOnInit(): void {
-    this.Ressource = [
-      {
-        id: 1,
-        name: "Qualité d'algo",
-        trainingId: 101,
-        training: 'devloppement',
-        color: '#FF5733',
+    this.loadRessources();
+  }
+
+  loadRessources(): void {
+    this.isLoading = true;
+    this.ressourceService.getRessources().subscribe(
+      (ressources) => {
+        this.Ressource = ressources;
+        this.filteredRessources = [...this.Ressource];
+        this.isLoading = false;
+        console.log(this.filteredRessources);
       },
-      {
-        id: 2,
-        name: 'analyse de donnée',
-        trainingId: 102,
-        training: 'DATA',
-        color: '#33FF57',
-      },
-      {
-        id: 3,
-        name: 'sécu',
-        trainingId: 103,
-        training: 'Cyber sécurité',
-        color: '#3357FF',
-      },
-      // ... ajoutez plus de fausses ressources si nécessaire ...
-    ];
-    this.filteredRessources = this.Ressource;
-    console.log(this.displayCreateRessources);
+      (error) => {
+        // Gérer l'erreur ici
+        console.error('Erreur lors du chargement des ressources', error);
+        this.isLoading = false;
+      }
+    );
   }
 
   showCreateRessourceDialog() {
