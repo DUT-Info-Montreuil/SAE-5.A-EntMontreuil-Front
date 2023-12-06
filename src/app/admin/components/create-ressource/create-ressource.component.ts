@@ -64,6 +64,7 @@ export class CreateRessourceComponent implements OnInit {
     let ressource: Ressource = {
       id: 0, // ID temporaire, sera mis à jour après la création
       name: this.newRessourceName.trim(),
+      training: '',
       trainingId: this.selectedTrainingId,
       color: this.ressourceColor.trim(),
     };

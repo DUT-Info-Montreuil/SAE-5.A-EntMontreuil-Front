@@ -7,6 +7,12 @@ import { Ressource } from '../../models/ressource.model';
   styleUrls: ['./ressource-list.component.scss'],
 })
 export class RessourceListComponent {
+  confirmDelete(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
+  startEditing(arg0: any) {
+    throw new Error('Method not implemented.');
+  }
   onSearch() {
     throw new Error('Method not implemented.');
   }
@@ -21,12 +27,31 @@ export class RessourceListComponent {
 
   ngOnInit(): void {
     this.Ressource = [
-      { id: 1, name: 'Ressource 1', trainingId: 101, color: '#FF5733' },
-      { id: 2, name: 'Ressource 2', trainingId: 102, color: '#33FF57' },
-      { id: 3, name: 'Ressource 3', trainingId: 103, color: '#3357FF' },
+      {
+        id: 1,
+        name: "Qualité d'algo",
+        trainingId: 101,
+        training: 'devloppement',
+        color: '#FF5733',
+      },
+      {
+        id: 2,
+        name: 'analyse de donnée',
+        trainingId: 102,
+        training: 'DATA',
+        color: '#33FF57',
+      },
+      {
+        id: 3,
+        name: 'sécu',
+        trainingId: 103,
+        training: 'Cyber sécurité',
+        color: '#3357FF',
+      },
       // ... ajoutez plus de fausses ressources si nécessaire ...
     ];
     this.filteredRessources = this.Ressource;
+    console.log(this.displayCreateRessources);
   }
 
   showCreateRessourceDialog() {

@@ -1,6 +1,7 @@
 <div class="container">
   <!-- Remplacer 'app-create-training' par votre composant de création de ressource -->
   <app-create-ressource
+    *ngIf="displayCreateRessources"
     [displayCreateRessourceDialog]="displayCreateRessources"
     (ressourceCreated)="onRessourceCreated($event)"
   ></app-create-ressource>
@@ -63,6 +64,7 @@
           <th>ID</th>
           <th>Nom de la ressource</th>
           <th>Couleur</th>
+          <th>Parcours</th>
           <th>Actions</th>
         </tr>
       </ng-template>
@@ -76,9 +78,32 @@
               [style.background]="ressource.color"
             ></span>
           </td>
+          <td>{{ ressource.training }}</td>
           <td class="flex justify-content-evenly">
-            <!-- Boutons Modifier et Supprimer -->
-            <!-- Implémentez la logique de modification et de suppression comme dans l'exemple des parcours -->
+            <div
+              *ngIf="!ressource.isEditing"
+              class="flex align-items-center justify-content-center"
+            >
+              <button
+                pButton
+                pRipple
+                pTooltip="Modifier"
+                tooltipPosition="top"
+                type="button"
+                icon="pi pi-pencil"
+                class="p-button-rounded p-button-text"
+                (click)="startEditing(ressource)"
+              ></button>
+              <button
+                pButton
+                pRipple
+                pTooltip="Supprimer"
+                tooltipPosition="top"
+                icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger"
+                (click)="confirmDelete(ressource)"
+              ></button>
+            </div>
           </td>
         </tr>
       </ng-template>
