@@ -1,0 +1,101 @@
+
+<div *ngIf="!file_csv" class="flex align-items-center justify-content-center">
+    <input type="file" id="fileInput" #fileInput style="display: none;" accept=".csv" (change)="onFileSelected($event)">
+    <button pButton type="button" label="Séléctionner un fichier CSV" icon="pi pi-plus" (click)="fileInput.click()"
+        class="p-button-rounded p-button-text p-button-raised">
+    </button>
+</div>
+
+
+<div *ngIf="file_csv" class="flex align-items-center justify-content-center">
+    <p  style="margin-right: 2%;">Nom : <span [style.fontWeight]="'bold'">{{file_csv.name}}</span></p>
+    <p  style="margin-right: 2%;">Taille : <span [style.fontWeight]="'bold'">{{file_csv.size}} octet(s)</span></p>
+
+    <button pButton type="button" label="Annuler" icon="pi pi-times" (click)="removeFile()" style="margin-right: 2%;"
+        class="p-button-rounded p-button-text p-button-danger p-button-raised" >
+    </button>
+
+    <button pButton type="button" label="Transmettre" icon="pi pi-upload"  [disabled]="transmettre"
+        class="p-button-rounded p-button-text p-button-raised" (click)="onSubmitFile()">
+    </button>
+</div>
+
+<div style="margin-top: 2%;">
+    <p [style.font-style]="'italic'" class="text-sm text-gray-500 font-semibold">{{detailMessage}}</p>
+</div>
+
+<div *ngIf="errorMessageRequete"  style="margin-top: 2%;">
+    <p class="text-sm text-red-500 font-semibold">{{errorMessageRequete}}</p>
+    
+</div>
+
+
+
+
+
+<div *ngIf="file_csv"  style="margin-top: 2%;">
+    {{contenue}}
+    <p-table [value]="students" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true"
+    [rows]="10" [showCurrentPageReport]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Ligne</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>INE</th>
+                <th>NIP</th>
+                <th>Identifiant</th>
+                <th>Email</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+            <tr>
+                <td>{{ student.ligne }}</td>
+                <td>{{ student.lastName }}</td>
+                <td>{{ student.firstName }}</td>
+                <td>{{ student.ine }}</td>
+                <td>{{ student.nip }}</td>
+                <td>{{ student.username }}</td>
+                <td>{{ student.email }}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+
+<p-dialog [(visible)]="displayModalPassword" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }"  [closable]="false">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+      <div style="margin-top: 2%">
+        <p><i class="pi pi-exclamation-triangle" style="font-size: 2rem"></i>Veuillez à bien sauvegarder les mots de passe, ils ne seront pas récupérable</p>
+        <!------->
+        <div class="card">
+            <p-table #dt [columns]="cols" [value]="allPassword" selectionMode="multiple"  [exportHeader]="'customExportHeader'" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="caption">
+                    <div class="flex">
+                        <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-success mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+                        <p>Sauvegarder en PDF</p>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns">
+                            {{ col.header }}
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                            {{ rowData[col.field] }}
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <!-------><!------->
+        <p-button label="Valider" routerLink="/admin/users" [rounded]="true" severity="primary" icon="pi pi-check" [style]="{ 'margin-right.px': 10 }" click="closeModalPassword()"></p-button>
+      </div>
+    </div>
+</p-dialog>

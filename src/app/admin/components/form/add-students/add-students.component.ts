@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { StudentsService } from 'src/app/core/services/students.service';
 
 @Component({
@@ -19,7 +20,7 @@ export class AddStudentsComponent {
   
 
 
-  constructor(private formBuilder: FormBuilder,  private studentsService : StudentsService) {
+  constructor(private formBuilder: FormBuilder,  private studentsService : StudentsService, private messageService: MessageService) {
     this.studentForm = this.formBuilder.group({
       username: ['', Validators.required],
       first_name: ['', Validators.required],
@@ -44,6 +45,7 @@ export class AddStudentsComponent {
       next: (loginResponse) => {
         if (loginResponse.username) {
           console.log(loginResponse)
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Étudiant ajouté ! Veuillez sauvegarder le mot de passe' + loginResponse.password });
           this.StudentAddedMessage = loginResponse.message + '\nMOT DE PASSE : ' + loginResponse.password;
           this.ErrorMessage = '';
         }

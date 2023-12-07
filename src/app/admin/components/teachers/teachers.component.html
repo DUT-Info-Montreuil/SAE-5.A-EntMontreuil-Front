@@ -9,13 +9,14 @@ dataKey="id"
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>
-            <th>Pseudo</th>
+            <th>Identifiant</th>
             <th>Prénom</th>
             <th>Nom</th>
             <th>Email</th>
             <th>Initial</th>
             <th>Bureau</th>
             <th>Admin</th>
+            <th>Responsable</th>
             <th>Modifier</th>
             <th>Supprimer</th>
         </tr>
@@ -43,6 +44,9 @@ dataKey="id"
             <th>
                 <p-columnFilter type="boolean" field="user.isAdmin"></p-columnFilter>
             </th>
+            <th>
+                <p-columnFilter type="boolean" field="user.isTTManager"></p-columnFilter>
+            </th>
             <th></th>
             <th></th>
             
@@ -63,6 +67,11 @@ dataKey="id"
                     [ngClass]="{ 'pi-check-circle': teacher.user.isAdmin, 'pi-times-circle': !teacher.user.isAdmin }"
                     [ngStyle]="{ 'color': teacher.user.isAdmin ? 'green' : 'red' }"></i>
             </td>
+            <td>
+                <i class="pi"
+                    [ngClass]="{ 'pi-check-circle': teacher.user.isTTManager, 'pi-times-circle': !teacher.user.isTTManager }"
+                    [ngStyle]="{ 'color': teacher.user.isTTManager ? 'green' : 'red' }"></i>
+            </td>
             <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click) ="openModal(teacher)"  ></p-button></td>
             <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (click) ="openModalDelete(teacher)"  ></p-button></td>
         </tr>
@@ -74,7 +83,7 @@ dataKey="id"
     </ng-template>
 </p-table>
 
-<p-button routerLink="add" label="Ajouter un enseignant" [rounded]="true" ></p-button>
+<p-button routerLink="add_teacher" label="Ajouter un enseignant" [rounded]="true" ></p-button>
 
 <div *ngIf="teacherModal" >
     <p-dialog header="Modifier cette enseignant" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
@@ -85,7 +94,7 @@ dataKey="id"
             <div >
                 <div class="card p-fluid">
                     <div class="field">
-                        <label htmlfor="username">Pseudo</label>
+                        <label htmlfor="username">Identifiant</label>
                         <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
                     </div>
 
@@ -123,6 +132,17 @@ dataKey="id"
                         (onChange)="onAdminCheckboxChange($event)">
                         </p-checkbox>
                         <label for="admin">Attribuer les droits administrateur</label>
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="teacherUpdateForm && teacherUpdateForm.get('ttmanager')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="ttmanager" 
+                        formControlName="ttmanager" 
+                        (onChange)="onTTManagerCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="ttmanager">Est un responsable de l'emploi du temps</label>
                     </div>
                     <div class="field">
                     </div>

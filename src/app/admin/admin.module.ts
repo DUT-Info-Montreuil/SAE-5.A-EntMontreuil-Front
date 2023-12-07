@@ -27,6 +27,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { FileUploadModule } from 'primeng/fileupload';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
 import { TagModule } from 'primeng/tag';
@@ -36,6 +37,9 @@ import { ClassroomEquipmentDialogComponent } from './components/classroom-equipm
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
 import { CreateDegreeComponent } from './components/create-degree/create-degree.component';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-students-csv.component';
+import { TableUsersComponent } from './components/table-users/table-users.component';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     ClassroomEquipmentDialogComponent,
     DegreeListComponent,
     CreateDegreeComponent,
+    AddStudentsCsvComponent,
+    TableUsersComponent,
   ],
   imports: [
     CommonModule,
@@ -78,6 +84,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     RadioButtonModule,
     TagModule,
     InputNumberModule,
+    FileUploadModule,
+    CascadeSelectModule
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })

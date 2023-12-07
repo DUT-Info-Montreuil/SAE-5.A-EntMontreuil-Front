@@ -59,6 +59,7 @@ export class TeachersComponent {
       last_name: [teacher.user.last_name, Validators.required],
       email: [teacher.user.email, Validators.required],
       admin: [teacher.user.isAdmin],
+      ttmanager: [teacher.user.isTTManager],
       initial: [teacher.personal_info.initial],
       desktop: [teacher.personal_info.desktop],
     });
@@ -66,11 +67,11 @@ export class TeachersComponent {
 
 
   onSubmit(){
-    const { id, username, first_name, last_name,  email, initial, desktop, admin  } = this.teacherUpdateForm.value;
+    const { id, username, first_name, last_name,  email, initial, desktop, admin, ttmanager  } = this.teacherUpdateForm.value;
 
     console.log(this.teacherUpdateForm.value)
 
-    this.teachersServices.updateTeacher(username,  first_name,last_name, email, id, this.oldUsername, initial, this.old_initial, admin, desktop).subscribe({
+    this.teachersServices.updateTeacher(username,  first_name,last_name, email, id, this.oldUsername, initial, this.old_initial, admin, desktop, ttmanager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.id) {
@@ -99,6 +100,10 @@ export class TeachersComponent {
     this.teacherUpdateForm.get('admin')?.setValue(event.checked);
   }
 
+  onTTManagerCheckboxChange(event: any) {
+    this.teacherUpdateForm.get('ttmanager')?.setValue(event.checked);
+  }
+
 
   openModalDelete(teacher : any) {   
     this.teacher_id = teacher.personal_info.id; 
@@ -123,7 +128,10 @@ export class TeachersComponent {
       error: (loginError) => {
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-        } else {
+        } else if (loginError.status === 403) {
+          this.ErrorMessage = "Vous ne pouvez pas vous supprimer vous-même.";
+        }
+        else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
         }
       }

@@ -22,25 +22,25 @@ export class UsersService implements OnInit {
     }
 
     getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiURL + '/users/user?output_format=model', this.httpOptions)
+        return this.http.get<User[]>(this.apiURL + '/users?output_format=model', this.httpOptions)
     }
 
     errorHandler(error: any) {
         return throwError(error);
     }
 
-    addUser(username: string,  first_name: string,last_name: string, email: string, role: string,isAdmin: boolean,password: string) : Observable<any>{
+    addUser(username: string,  first_name: string,last_name: string, email: string, role: string,isAdmin: boolean,password: string, isTTManager:boolean) : Observable<any>{
         
-        return this.http.post<any>(this.apiURL + '/users', JSON.stringify({ "datas" : {"user" : {username, password,first_name ,last_name,email,role,isAdmin}}}), this.httpOptions)
+        return this.http.post<any>(this.apiURL + '/users', JSON.stringify({ "datas" : {"user" : {username, password,first_name ,last_name,email,role,isAdmin, isTTManager}}}), this.httpOptions)
         .pipe(
             catchError(this.errorHandler)
         );
     }
 
 
-    updateUser(username: string,  first_name: string,last_name: string, email: string, role: string,isAdmin: boolean, id:number, oldUsername:string) : Observable<any>{
+    updateUser(username: string,  first_name: string,last_name: string, email: string, role: string,isAdmin: boolean, id:number, oldUsername:string ,isTTManager: boolean) : Observable<any>{
         
-        return this.http.patch<any>(this.apiURL + `/users/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,role,isAdmin,oldUsername }}}), this.httpOptions)
+        return this.http.patch<any>(this.apiURL + `/users/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,role,isAdmin,oldUsername, isTTManager }}}), this.httpOptions)
         .pipe(
             catchError(this.errorHandler)
         );

@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/core/models/role.model';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { UsersService } from 'src/app/core/services/users.service';
@@ -15,12 +16,13 @@ export class AddUsersComponent {
   filteredRoles!: Role[];
   allRoles!: Role[];
   isAdmin : boolean = false;
+  isTTManager : boolean = false;
   ErrorMessage: string = '';
   roleString !: string;
   UserAddedMessage: string = '';
 
 
-  constructor(private formBuilder: FormBuilder, private roleService: RolesService, private userService : UsersService) {
+  constructor(private formBuilder: FormBuilder, private roleService: RolesService, private userService : UsersService, private messageService: MessageService) {
     this.userForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -28,6 +30,7 @@ export class AddUsersComponent {
       last_name: ['', Validators.required],
       email: ['', Validators.required],
       admin: [''],
+      ttmanager: [''],
       role: ['', Validators.required]
     });
   }
@@ -47,9 +50,12 @@ export class AddUsersComponent {
   }
 
   onSubmit() {
-    const { username, password,first_name, last_name, role, email, admin  } = this.userForm.value;
+    const { username, password,first_name, last_name, role, email, admin, ttmanager  } = this.userForm.value;
     if (admin[0] == 'true') {
       this.isAdmin = true;
+    }
+    if (ttmanager[0] == 'true') {
+      this.isTTManager = true;
     }
 
     if (typeof role === 'string') {
@@ -58,11 +64,11 @@ export class AddUsersComponent {
       this.roleString = role.name;
     }
 
-    this.userService.addUser( username, first_name,last_name, email, this.roleString,this.isAdmin,password).subscribe({
+    this.userService.addUser( username, first_name,last_name, email, this.roleString,this.isAdmin,password, this.isTTManager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.username) {
-          this.UserAddedMessage = "Utilisateur ajouté ! ";
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Utilisateur ajouté !' });
           this.ErrorMessage = '';
         }
       },

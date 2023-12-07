@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/core/models/role.model';
 import { User } from 'src/app/core/models/user.model';
 import { RolesService } from 'src/app/core/services/roles.service';
@@ -29,7 +30,7 @@ export class UsersComponent implements OnInit {
   ErrorMessage: string = '';
   roleString !: string;
 
-  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder,private router: Router){ 
+  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService){ 
     
   }
 
@@ -64,12 +65,13 @@ export class UsersComponent implements OnInit {
       last_name: [user.last_name, Validators.required],
       email: [user.email, Validators.required],
       admin: [user.isAdmin],
+      ttmanager: [user.isTTManager],
       role: [user.role, Validators.required]
     });
   }
 
   onSubmit(){
-    const { id, username, first_name, last_name, role, email, admin  } = this.userUpdateForm.value;
+    const { id, username, first_name, last_name, role, email, admin , ttmanager } = this.userUpdateForm.value;
 
     if (typeof role === 'string') {
       this.roleString = role;
@@ -77,11 +79,12 @@ export class UsersComponent implements OnInit {
       this.roleString = role.name;
     }
 
-    this.usersServices.updateUser( username, first_name,last_name, email, this.roleString,admin,id, this.oldUsername).subscribe({
+    this.usersServices.updateUser( username, first_name,last_name, email, this.roleString,admin,id, this.oldUsername, ttmanager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.id) {
           location.reload();
+          
         }
       },
       error: (loginError) => {
@@ -111,6 +114,10 @@ export class UsersComponent implements OnInit {
     this.userUpdateForm.get('admin')?.setValue(event.checked);
   }
 
+  onTTManagerCheckboxChange(event: any) {
+    this.userUpdateForm.get('ttmanager')?.setValue(event.checked);
+  }
+
   openModalDelete(user : any) {   
     this.user_id = user.id; 
     this.username = user.username;
@@ -133,6 +140,8 @@ export class UsersComponent implements OnInit {
       error: (loginError) => {
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
+        }else if (loginError.status === 403) {
+          this.ErrorMessage = 'Vous ne pouvez pas vous supprimer vous-même.';
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
         }
