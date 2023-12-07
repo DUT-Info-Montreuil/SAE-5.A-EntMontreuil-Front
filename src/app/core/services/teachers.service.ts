@@ -30,17 +30,17 @@ export class TeachersService implements OnInit {
         return throwError(error);
     }
 
-    addTeacher(username: string,  first_name: string,last_name: string, email: string, desktop: string,isAdmin: boolean,password: string, initial:string) : Observable<any>{
+    addTeacher(username: string,  first_name: string,last_name: string, email: string, desktop: string,isAdmin: boolean,password: string, initial:string, isTTManager:boolean) : Observable<any>{
         
-        return this.http.post<any>(this.apiURL + '/teachers', JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,password,isAdmin}, initial , desktop}}), this.httpOptions)
+        return this.http.post<any>(this.apiURL + '/teachers', JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,password,isAdmin, isTTManager}, initial , desktop}}), this.httpOptions)
         .pipe(
             catchError(this.errorHandler)
         );
     }
 
-    updateTeacher(username: string,  first_name: string,last_name: string, email: string, id:number, oldUsername:string, initial : string, old_initial:string, isAdmin:boolean, desktop:string) : Observable<any>{
+    updateTeacher(username: string,  first_name: string,last_name: string, email: string, id:number, oldUsername:string, initial : string, old_initial:string, isAdmin:boolean, desktop:string, isTTManager:boolean) : Observable<any>{
         
-        return this.http.patch<any>(this.apiURL + `/teachers/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,oldUsername,isAdmin },initial, desktop, old_initial}}), this.httpOptions)
+        return this.http.patch<any>(this.apiURL + `/teachers/${id}`, JSON.stringify({ "datas" : {"user" : {username,first_name ,last_name,email,oldUsername,isAdmin,isTTManager },initial, desktop, old_initial}}), this.httpOptions)
         .pipe(
             catchError(this.errorHandler)
         );

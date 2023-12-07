@@ -15,6 +15,7 @@ export class AddUsersComponent {
   filteredRoles!: Role[];
   allRoles!: Role[];
   isAdmin : boolean = false;
+  isTTManager : boolean = false;
   ErrorMessage: string = '';
   roleString !: string;
   UserAddedMessage: string = '';
@@ -28,6 +29,7 @@ export class AddUsersComponent {
       last_name: ['', Validators.required],
       email: ['', Validators.required],
       admin: [''],
+      ttmanager: [''],
       role: ['', Validators.required]
     });
   }
@@ -47,9 +49,12 @@ export class AddUsersComponent {
   }
 
   onSubmit() {
-    const { username, password,first_name, last_name, role, email, admin  } = this.userForm.value;
+    const { username, password,first_name, last_name, role, email, admin, ttmanager  } = this.userForm.value;
     if (admin[0] == 'true') {
       this.isAdmin = true;
+    }
+    if (ttmanager[0] == 'true') {
+      this.isTTManager = true;
     }
 
     if (typeof role === 'string') {
@@ -58,7 +63,7 @@ export class AddUsersComponent {
       this.roleString = role.name;
     }
 
-    this.userService.addUser( username, first_name,last_name, email, this.roleString,this.isAdmin,password).subscribe({
+    this.userService.addUser( username, first_name,last_name, email, this.roleString,this.isAdmin,password, this.isTTManager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.username) {

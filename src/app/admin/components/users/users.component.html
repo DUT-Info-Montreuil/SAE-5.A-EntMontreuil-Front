@@ -16,6 +16,7 @@
         <th >Email</th>
         <th >Rôle</th>
         <th >Admin</th>
+        <th >Responsable</th>
         <th >Modifier</th>
         <th >Supprimer</th>
     </tr>
@@ -39,6 +40,9 @@
         <th>
             <p-columnFilter type="boolean" field="isAdmin"></p-columnFilter>
         </th>
+        <th>
+            <p-columnFilter type="boolean" field="isTTManager"></p-columnFilter>
+        </th>
         <th></th>
         <th></th>
     </tr>
@@ -58,8 +62,14 @@
             [ngStyle]="{ 'color': user.isAdmin ? 'green' : 'red' }">
             </i>
         </td>
-        <td *ngIf="user.role.name != 'student' && user.role.name != 'teacher'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
-        <td *ngIf="user.role.name == 'student' || user.role.name == 'teacher'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
+        <td>
+            <i class="pi"
+            [ngClass]="{ 'pi-check-circle': user.isTTManager, 'pi-times-circle': !user.isTTManager }"
+            [ngStyle]="{ 'color': user.isTTManager ? 'green' : 'red' }">
+            </i>
+        </td>
+        <td *ngIf="user.role.name != 'étudiant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
+        <td *ngIf="user.role.name == 'étudiant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
         
         <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="openModalDelete(user)"></p-button></td>
     </tr>
@@ -120,6 +130,19 @@
                         (onChange)="onAdminCheckboxChange($event)">
                         </p-checkbox>
                         <label for="admin">Attribuer les droits administrateurs</label>
+                    </div>
+                    <div class="field">
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="userUpdateForm && userUpdateForm.get('ttmanager')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="ttmanager" 
+                        formControlName="ttmanager" 
+                        (onChange)="onTTManagerCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="ttmanager">Est un responsable de l'emploi du temps</label>
                     </div>
                     <div class="field">
                     </div>

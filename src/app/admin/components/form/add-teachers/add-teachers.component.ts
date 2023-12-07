@@ -11,6 +11,7 @@ export class AddTeachersComponent {
 
   teacherForm: FormGroup;
   isAdmin : boolean = false;
+  isTTManager : boolean = false;
   ErrorMessage: string = '';
   TeacherAddedMessage: string = '';
   displayModal: boolean = false;
@@ -23,6 +24,7 @@ export class AddTeachersComponent {
       last_name: ['', Validators.required],
       email: ['', Validators.required],
       admin: [''],
+      ttmanager: [''],
       password: ['', Validators.required],
       desktop: ['', Validators.required],
       initial: ['', Validators.required]
@@ -32,12 +34,15 @@ export class AddTeachersComponent {
   onSubmit() {
     
     // To get form values, you can access them using the form controls
-    const { username, initial,first_name, last_name, password, email, admin , desktop } = this.teacherForm.value;
+    const { username, initial,first_name, last_name, password, email, admin , desktop, ttmanager } = this.teacherForm.value;
     if (admin[0] == 'true') {
       this.isAdmin = true;
     }
+    if (ttmanager[0] == 'true') {
+      this.isTTManager = true;
+    }
 
-    this.teachersService.addTeacher(username,  first_name,last_name, email, desktop,this.isAdmin,password, initial).subscribe({
+    this.teachersService.addTeacher(username,  first_name,last_name, email, desktop,this.isAdmin,password, initial, this.isTTManager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.username) {

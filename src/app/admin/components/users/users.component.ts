@@ -64,12 +64,13 @@ export class UsersComponent implements OnInit {
       last_name: [user.last_name, Validators.required],
       email: [user.email, Validators.required],
       admin: [user.isAdmin],
+      ttmanager: [user.isTTManager],
       role: [user.role, Validators.required]
     });
   }
 
   onSubmit(){
-    const { id, username, first_name, last_name, role, email, admin  } = this.userUpdateForm.value;
+    const { id, username, first_name, last_name, role, email, admin , ttmanager } = this.userUpdateForm.value;
 
     if (typeof role === 'string') {
       this.roleString = role;
@@ -77,7 +78,7 @@ export class UsersComponent implements OnInit {
       this.roleString = role.name;
     }
 
-    this.usersServices.updateUser( username, first_name,last_name, email, this.roleString,admin,id, this.oldUsername).subscribe({
+    this.usersServices.updateUser( username, first_name,last_name, email, this.roleString,admin,id, this.oldUsername, ttmanager).subscribe({
 
       next: (loginResponse) => {
         if (loginResponse.id) {
@@ -109,6 +110,10 @@ export class UsersComponent implements OnInit {
 
   onAdminCheckboxChange(event: any) {
     this.userUpdateForm.get('admin')?.setValue(event.checked);
+  }
+
+  onTTManagerCheckboxChange(event: any) {
+    this.userUpdateForm.get('ttmanager')?.setValue(event.checked);
   }
 
   openModalDelete(user : any) {   
