@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { TeachersService } from 'src/app/core/services/teachers.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class AddTeachersComponent {
   displayModal: boolean = false;
 
 
-  constructor(private formBuilder: FormBuilder,  private teachersService : TeachersService) {
+  constructor(private formBuilder: FormBuilder,  private teachersService : TeachersService, private messageService: MessageService) {
     this.teacherForm = this.formBuilder.group({
       username: ['', Validators.required],
       first_name: ['', Validators.required],
@@ -46,7 +47,7 @@ export class AddTeachersComponent {
 
       next: (loginResponse) => {
         if (loginResponse.username) {
-          this.TeacherAddedMessage = "Cette enseignant à été ajouté !";
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Enseignant ajouté ! ' });
           this.ErrorMessage = '';
         }
       },

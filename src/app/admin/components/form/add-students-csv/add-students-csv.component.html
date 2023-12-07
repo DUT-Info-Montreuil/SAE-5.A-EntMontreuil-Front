@@ -65,7 +65,7 @@
 
 
 
-<p-dialog [(visible)]="displayModalPassword" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }">
+<p-dialog [(visible)]="displayModalPassword" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }"  [closable]="false">
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
       <div style="margin-top: 2%">
         <p><i class="pi pi-exclamation-triangle" style="font-size: 2rem"></i>Veuillez à bien sauvegarder les mots de passe, ils ne seront pas récupérable</p>
@@ -95,7 +95,7 @@
             </p-table>
         </div>
         <!-------><!------->
-        <p-button label="Valider" routerLink="/admin/students" [rounded]="true" severity="primary" icon="pi pi-check" [style]="{ 'margin-right.px': 10 }" click="closeModalPassword()"></p-button>
+        <p-button label="Valider" routerLink="/admin/users" [rounded]="true" severity="primary" icon="pi pi-check" [style]="{ 'margin-right.px': 10 }" click="closeModalPassword()"></p-button>
       </div>
     </div>
 </p-dialog>

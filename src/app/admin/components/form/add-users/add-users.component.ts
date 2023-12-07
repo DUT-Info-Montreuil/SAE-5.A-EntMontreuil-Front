@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/core/models/role.model';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { UsersService } from 'src/app/core/services/users.service';
@@ -21,7 +22,7 @@ export class AddUsersComponent {
   UserAddedMessage: string = '';
 
 
-  constructor(private formBuilder: FormBuilder, private roleService: RolesService, private userService : UsersService) {
+  constructor(private formBuilder: FormBuilder, private roleService: RolesService, private userService : UsersService, private messageService: MessageService) {
     this.userForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -67,7 +68,7 @@ export class AddUsersComponent {
 
       next: (loginResponse) => {
         if (loginResponse.username) {
-          this.UserAddedMessage = "Utilisateur ajouté ! ";
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Utilisateur ajouté !' });
           this.ErrorMessage = '';
         }
       },

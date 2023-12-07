@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/core/models/role.model';
 import { User } from 'src/app/core/models/user.model';
 import { RolesService } from 'src/app/core/services/roles.service';
@@ -29,7 +30,7 @@ export class UsersComponent implements OnInit {
   ErrorMessage: string = '';
   roleString !: string;
 
-  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder,private router: Router){ 
+  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService){ 
     
   }
 
@@ -83,6 +84,7 @@ export class UsersComponent implements OnInit {
       next: (loginResponse) => {
         if (loginResponse.id) {
           location.reload();
+          
         }
       },
       error: (loginError) => {
