@@ -12,3 +12,12 @@
   padding-top: 14px !important;
   padding-bottom: 14px !important;
 }
+
+.app-sidebar {
+  overflow-y: hidden !important; /* permet le défilement vertical si le contenu dépasse */
+  overflow-x: hidden !important; /* empêche le défilement horizontal */
+}
+
+.sidebar:hover {
+  overflow-y: auto !important;
+}
