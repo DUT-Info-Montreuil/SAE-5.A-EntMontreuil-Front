@@ -1,0 +1,10 @@
+<div class="container-large">
+    <div class="w-20rem" style="height: 100rem">
+        <p-tree [value]="files" class="w-full md:w-20rem" [filter]="true" filterPlaceholder="Rechercher"
+            selectionMode="single" [(selection)]="selectedFile" (onNodeExpand)="nodeExpand($event)"
+            (onNodeCollapse)="nodeCollapse($event)" (onNodeSelect)="nodeSelect($event)"
+            (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+    </div>
+</div>
+
+<p-toast></p-toast>

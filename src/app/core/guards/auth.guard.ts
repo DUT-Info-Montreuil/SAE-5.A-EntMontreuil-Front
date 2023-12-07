@@ -12,6 +12,7 @@ export class AuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         const isAuth = this.auth.getToken();
         const isAdmin = this.auth.getIsAdmin();
+        const role = this.auth.getRole();
 
         // Si l'utilisateur est déjà authentifié et tente d'accéder à une route d'authentification
         if (isAuth && (state.url.startsWith('/auth'))) {
@@ -27,6 +28,12 @@ export class AuthGuard implements CanActivate {
 
         // Si l'utilisateur est authentifié mais n'est pas un administrateur et tente d'accéder à une route admin
         if (isAuth && !isAdmin && (state.url.startsWith('/admin'))) {
+            this.router.navigateByUrl('/dashboard');
+            return false;
+        }
+
+        // Si l'utilisateur est authentifié mais n'est pas un resp EDT et tente d'accéder à une route resp EDT
+        if (isAuth && (!isAdmin || !(role == 'teacher-resp' || 'admin')) && (state.url.startsWith('/resp'))) {
             this.router.navigateByUrl('/dashboard');
             return false;
         }

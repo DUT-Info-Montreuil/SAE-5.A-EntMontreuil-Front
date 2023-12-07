@@ -35,7 +35,13 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
-        data: { title: 'Équipements' },
+        data: { title: 'Admin' },
+      },
+      {
+        path: 'resp',
+        loadChildren: () =>
+          import('./resp/resp.module').then((m) => m.RespModule),
+        data: { title: 'Responsable EDT' },
       },
       {
         path: 'notifications',

@@ -14,6 +14,14 @@ body {
   margin: auto;
 }
 
+.container-large {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  margin: auto;
+}
+
 /* ===== Scrollbar CSS ===== */
 /* Firefox */
 * {
