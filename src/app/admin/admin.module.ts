@@ -31,6 +31,8 @@ import { FileUploadModule } from 'primeng/fileupload';
 import { AddStudentsComponent } from './components/form/add-students/add-students.component';
 import { AddTeachersComponent } from './components/form/add-teachers/add-teachers.component';
 import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-students-csv.component';
+import { TableUsersComponent } from './components/table-users/table-users.component';
+import { CascadeSelectModule } from 'primeng/cascadeselect';
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-
     AddStudentsComponent,
     AddTeachersComponent,
     AddStudentsCsvComponent,
+    TableUsersComponent,
   ],
   imports: [
     CommonModule,
@@ -66,7 +69,8 @@ import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-
     ReactiveFormsModule,
     AutoCompleteModule,
     RadioButtonModule,
-    FileUploadModule
+    FileUploadModule,
+    CascadeSelectModule
   ],
   providers: [ConfirmationService, MessageService, DialogService,    
   ]

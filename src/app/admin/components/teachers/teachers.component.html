@@ -9,7 +9,7 @@ dataKey="id"
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>
-            <th>Pseudo</th>
+            <th>Identifiant</th>
             <th>Prénom</th>
             <th>Nom</th>
             <th>Email</th>
@@ -74,7 +74,7 @@ dataKey="id"
     </ng-template>
 </p-table>
 
-<p-button routerLink="add" label="Ajouter un enseignant" [rounded]="true" ></p-button>
+<p-button routerLink="add_teacher" label="Ajouter un enseignant" [rounded]="true" ></p-button>
 
 <div *ngIf="teacherModal" >
     <p-dialog header="Modifier cette enseignant" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
@@ -85,7 +85,7 @@ dataKey="id"
             <div >
                 <div class="card p-fluid">
                     <div class="field">
-                        <label htmlfor="username">Pseudo</label>
+                        <label htmlfor="username">Identifiant</label>
                         <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
                     </div>
 

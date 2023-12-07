@@ -10,6 +10,7 @@ import { AddUsersComponent } from "./components/form/add-users/add-users.compone
 import { AddStudentsComponent } from "./components/form/add-students/add-students.component";
 import { AddTeachersComponent } from "./components/form/add-teachers/add-teachers.component";
 import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-students-csv.component';
+import { TableUsersComponent } from './components/table-users/table-users.component';
 
 
 const routes: Routes = [
@@ -18,7 +19,7 @@ const routes: Routes = [
         redirectTo: 'users',
         pathMatch: 'full',
     },
-    { path: 'users', component: UsersComponent, canActivate: [AuthGuard] },
+    { path: 'users', component: TableUsersComponent, canActivate: [AuthGuard] },
     {
         path: 'materials',
         component: MaterialListComponent,
@@ -29,12 +30,10 @@ const routes: Routes = [
         component: TrainingListComponent,
         canActivate: [AuthGuard],
     },
-    { path: 'students', component: StudentsComponent, canActivate: [AuthGuard] },
-    { path: 'teachers', component: TeachersComponent, canActivate: [AuthGuard] },
-    { path: 'users/add', component: AddUsersComponent, canActivate: [AuthGuard] },
-    { path: 'students/add', component: AddStudentsComponent, canActivate: [AuthGuard] },
-    { path: 'students/add_csv',component: AddStudentsCsvComponent, canActivate: [AuthGuard] },
-    { path: 'teachers/add', component: AddTeachersComponent, canActivate: [AuthGuard] }
+    { path: 'users/add_user', component: AddUsersComponent, canActivate: [AuthGuard] },
+    { path: 'users/add_student', component: AddStudentsComponent, canActivate: [AuthGuard] },
+    { path: 'users/add_student_csv',component: AddStudentsCsvComponent, canActivate: [AuthGuard] },
+    { path: 'users/add_teacher', component: AddTeachersComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

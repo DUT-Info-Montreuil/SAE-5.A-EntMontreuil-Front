@@ -133,6 +133,8 @@ export class UsersComponent implements OnInit {
       error: (loginError) => {
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
+        }else if (loginError.status === 403) {
+          this.ErrorMessage = 'Vous ne pouvez pas vous supprimer vous-même.';
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
         }

@@ -22,7 +22,7 @@ export class UsersService implements OnInit {
     }
 
     getAllUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.apiURL + '/users/user?output_format=model', this.httpOptions)
+        return this.http.get<User[]>(this.apiURL + '/users?output_format=model', this.httpOptions)
     }
 
     errorHandler(error: any) {

@@ -10,7 +10,7 @@
 <ng-template pTemplate="header">
     <tr>
         <th >ID</th>
-        <th >Pseudo</th>
+        <th >Identifiant</th>
         <th >Prénom</th>
         <th >Nom</th>
         <th >Email</th>
@@ -58,7 +58,8 @@
             [ngStyle]="{ 'color': user.isAdmin ? 'green' : 'red' }">
             </i>
         </td>
-        <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info " (click)="openModalUpdate(user)" ></p-button></td>
+        <td *ngIf="user.role.name != 'student' && user.role.name != 'teacher'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
+        <td *ngIf="user.role.name == 'student' || user.role.name == 'teacher'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
         
         <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="openModalDelete(user)"></p-button></td>
     </tr>
@@ -76,7 +77,7 @@
 
 </p-table>
 
-<p-button routerLink="add" label="Ajouter un utilisateur" [rounded]="true" ></p-button>
+<p-button routerLink="add_user" label="Ajouter un utilisateur" [rounded]="true" ></p-button>
 
 
 <div *ngIf="userModal" >
@@ -88,7 +89,7 @@
             <div >
                 <div class="card p-fluid">
                     <div class="field">
-                        <label htmlfor="username">Pseudo</label>
+                        <label htmlfor="username">Identifiant</label>
                         <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
                     </div>
 
@@ -118,7 +119,7 @@
                         formControlName="admin" 
                         (onChange)="onAdminCheckboxChange($event)">
                         </p-checkbox>
-                        <label for="admin">Attribuer les droits administrateur</label>
+                        <label for="admin">Attribuer les droits administrateurs</label>
                     </div>
                     <div class="field">
                     </div>
