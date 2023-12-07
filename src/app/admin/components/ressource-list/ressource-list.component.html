@@ -71,17 +71,38 @@
       <ng-template pTemplate="body" let-ressource>
         <tr>
           <td>#{{ ressource.id }}</td>
-          <td>{{ ressource.name }}</td>
+          <td>
+            <div *ngIf="!ressource.is_editing">{{ ressource.name }}</div>
+            <input
+              *ngIf="ressource.is_editing"
+              type="text"
+              [(ngModel)]="ressource.name"
+            />
+          </td>
           <td>
             <span
+              *ngIf="!ressource.is_editing"
               class="color-indicator"
               [style.background]="ressource.color"
             ></span>
+            <input
+              *ngIf="ressource.is_editing"
+              type="color"
+              [(ngModel)]="ressource.color"
+            />
           </td>
-          <td>{{ ressource.id_Training }}</td>
+          <td>
+            <div *ngIf="!ressource.is_editing">{{ ressource.id_Training }}</div>
+            <select
+              *ngIf="ressource.is_editing"
+              [(ngModel)]="ressource.id_Training"
+            >
+              <!-- Options des parcours ici -->
+            </select>
+          </td>
           <td class="flex justify-content-evenly">
             <div
-              *ngIf="!ressource.isEditing"
+              *ngIf="!ressource.is_editing"
               class="flex align-items-center justify-content-center"
             >
               <button
@@ -104,9 +125,18 @@
                 (click)="confirmDelete(ressource)"
               ></button>
             </div>
+            <button
+              *ngIf="ressource.is_editing"
+              pButton
+              pRipple
+              type="button"
+              label="Sauvegarder"
+              (click)="saveChanges(ressource)"
+            ></button>
           </td>
         </tr>
       </ng-template>
+
       <ng-template pTemplate="emptymessage">
         <tr>
           <td colspan="4">Aucune ressource.</td>

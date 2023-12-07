@@ -9,9 +9,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
   styleUrls: ['./ressource-list.component.scss'],
 })
 export class RessourceListComponent {
-  startEditing(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
   onSearch() {
     throw new Error('Method not implemented.');
   }
@@ -38,7 +35,10 @@ export class RessourceListComponent {
     this.isLoading = true;
     this.ressourceService.getRessources().subscribe(
       (ressources) => {
-        this.Ressource = ressources;
+        this.Ressource = ressources.map((ressource) => ({
+          ...ressource,
+          isEditing: false, // Définir isEditing à false pour chaque ressource
+        }));
         this.filteredRessources = [...this.Ressource];
         this.isLoading = false;
         console.log(this.filteredRessources);
@@ -51,6 +51,15 @@ export class RessourceListComponent {
     );
   }
 
+  startEditing(ressource: Ressource) {
+    ressource.is_editing = true;
+    console.log(ressource);
+  }
+
+  saveChanges(ressource: Ressource) {
+    ressource.is_editing = false;
+    console.log(ressource);
+  }
   showCreateRessourceDialog() {
     // Définir displayCreateTrainingDialog sur false
     this.displayCreateRessources = false;
