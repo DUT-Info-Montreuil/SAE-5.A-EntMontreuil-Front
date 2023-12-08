@@ -47,7 +47,7 @@ export class AddStudentsCsvComponent implements OnInit {
   ngOnInit() {
 
     this.cols = [
-        { field: 'username', header: 'Pseudo' },
+        { field: 'username', header: 'Identifiant' },
         { field: 'password', header: 'Mot de passe' }
     ];
 
