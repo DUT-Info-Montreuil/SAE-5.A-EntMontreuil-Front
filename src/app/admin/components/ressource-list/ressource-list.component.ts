@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Ressource } from '../../models/ressource.model';
 import { RessourceService } from 'src/app/core/services/ressources.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { TrainingService } from 'src/app/core/services/trainings.service';
+import { Training } from '../../models/training.model';
 
 @Component({
   selector: 'app-ressource-list',
@@ -15,6 +17,7 @@ export class RessourceListComponent {
 
   Ressource: Ressource[] = [];
   filteredRessources: Ressource[] = [];
+  trainings: Training[] = [];
   searchQuery: string = '';
   scroll = 'scroll';
   displayCreateRessources: boolean = false;
@@ -23,6 +26,7 @@ export class RessourceListComponent {
 
   constructor(
     private ressourceService: RessourceService,
+    private trainingService: TrainingService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
   ) {}
@@ -35,13 +39,22 @@ export class RessourceListComponent {
     this.isLoading = true;
     this.ressourceService.getRessources().subscribe(
       (ressources) => {
+        console.log(ressources);
         this.Ressource = ressources.map((ressource) => ({
           ...ressource,
           isEditing: false, // Définir isEditing à false pour chaque ressource
         }));
         this.filteredRessources = [...this.Ressource];
+
+        this.trainingService.getAllTrainings().subscribe((trainings) => {
+          // Assuming 'trainings' is an array of objects with 'id' and 'name' properties
+          this.trainings = trainings.map(
+            (t) => new Training(t.id, t.name, 0, 'default')
+          );
+          console.log(this.trainings);
+        });
         this.isLoading = false;
-        console.log(this.filteredRessources);
+        console.log(this.trainings);
       },
       (error) => {
         // Gérer l'erreur ici
@@ -56,17 +69,53 @@ export class RessourceListComponent {
     console.log(ressource);
   }
 
-  saveChanges(ressource: Ressource) {
-    ressource.is_editing = false;
-    console.log(ressource);
+  confirmChanges(ressource: Ressource) {
+    this.confirmationService.confirm({
+      message: `Voulez-vous vraiment modfiier la ressource ${ressource.name}?`,
+      accept: () => {
+        this.saveChanges(ressource);
+      },
+    });
   }
+
+  saveChanges(ressource: Ressource) {
+    this.ressourceService.updateRessource(ressource.id, ressource).subscribe({
+      next: () => {
+        console.log('Ressource mise à jour');
+        ressource.is_editing = false; // Arrête l'édition après la mise à jour réussie
+
+        // Mise à jour manuelle de la liste locale de ressources
+        const index = this.Ressource.findIndex((r) => r.id === ressource.id);
+        if (index !== -1) {
+          this.Ressource[index] = { ...ressource }; // Mise à jour de la ressource avec les nouvelles données
+          this.filteredRessources = [...this.Ressource]; // Mise à jour des ressources filtrées si nécessaire
+        }
+
+        // Afficher un message de succès
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Mise à jour réussie',
+          detail: 'La ressource a été mise à jour avec succès.',
+        });
+      },
+      error: (error) => {
+        console.error('Erreur lors de la mise à jour de la ressource :', error);
+
+        // Afficher un message d'erreur
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur de mise à jour',
+          detail:
+            'Une erreur est survenue lors de la mise à jour de la ressource.',
+        });
+      },
+    });
+  }
+
   showCreateRessourceDialog() {
     // Définir displayCreateTrainingDialog sur false
     this.displayCreateRessources = false;
-
-    // Ajouter un délai de 1 seconde (vous pouvez ajuster la durée)
     setTimeout(() => {
-      // Définir displayCreateTrainingDialog sur true après le délai
       this.displayCreateRessources = true;
     }, 1);
   }

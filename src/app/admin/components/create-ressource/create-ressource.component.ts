@@ -68,6 +68,8 @@ export class CreateRessourceComponent implements OnInit {
       id_Training: this.selectedTrainingId,
       color: this.ressourceColor.trim(),
       is_editing: false,
+      training_name: '',
+      training_semester: 0,
     };
     console.log(ressource);
     // Implémentez la logique d'ajout de la ressource ici...

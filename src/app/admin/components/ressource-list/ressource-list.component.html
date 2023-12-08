@@ -92,14 +92,19 @@
             />
           </td>
           <td>
-            <div *ngIf="!ressource.is_editing">{{ ressource.id_Training }}</div>
+            <div *ngIf="!ressource.is_editing">
+              {{ ressource.training_name }}
+            </div>
             <select
               *ngIf="ressource.is_editing"
               [(ngModel)]="ressource.id_Training"
             >
-              <!-- Options des parcours ici -->
+              <option *ngFor="let training of trainings" [value]="training.id">
+                {{ training.name }}
+              </option>
             </select>
           </td>
+
           <td class="flex justify-content-evenly">
             <div
               *ngIf="!ressource.is_editing"
@@ -131,7 +136,7 @@
               pRipple
               type="button"
               label="Sauvegarder"
-              (click)="saveChanges(ressource)"
+              (click)="confirmChanges(ressource)"
             ></button>
           </td>
         </tr>
@@ -147,10 +152,7 @@
 </div>
 
 <!-- Dialogues de Confirmation et Messages Toast -->
-<p-confirmDialog
-  header="Supprimer"
-  icon="pi pi-exclamation-triangle"
-></p-confirmDialog>
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast></p-toast>
 
 <ng-template #singleSkeleton>

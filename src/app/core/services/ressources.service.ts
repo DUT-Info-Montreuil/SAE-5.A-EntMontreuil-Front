@@ -31,4 +31,15 @@ export class RessourceService {
       this.httpOptions
     );
   }
+
+  updateRessource(
+    resourceId: number,
+    resourceData: Ressource
+  ): Observable<Ressource> {
+    return this.http.put<Ressource>(
+      `${this.apiUrl}/resources/${resourceId}`,
+      resourceData,
+      this.httpOptions
+    );
+  }
 }
