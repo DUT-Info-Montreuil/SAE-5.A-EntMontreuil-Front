@@ -1,9 +1,19 @@
 <div class="container-large">
-    <div class="w-20rem" style="height: 100rem">
-        <p-tree [value]="files" class="w-full md:w-20rem" [filter]="true" filterPlaceholder="Rechercher"
-            selectionMode="single" [(selection)]="selectedFile" (onNodeExpand)="nodeExpand($event)"
-            (onNodeCollapse)="nodeCollapse($event)" (onNodeSelect)="nodeSelect($event)"
-            (onNodeUnselect)="nodeUnselect($event)"></p-tree>
+    <div class="w-20rem">
+        <p-tree [value]="files" class="w-full md:w-20rem" [filter]="true" filterMode="strict"
+            filterPlaceholder="Rechercher" selectionMode="single" [(selection)]="selectedFile"
+            (onNodeExpand)="nodeExpand($event)" (onNodeCollapse)="nodeCollapse($event)"
+            (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+
+            <ng-template let-node pTemplate="url">
+                <a [href]="node.data" target="_blank" rel="noopener noreferrer" class="text-700 hover:text-primary">{{
+                    node.label }}</a>
+            </ng-template>
+            <ng-template let-node pTemplate="default">
+                <b>{{ node.label }}</b>
+            </ng-template>
+
+        </p-tree>
     </div>
 </div>
 

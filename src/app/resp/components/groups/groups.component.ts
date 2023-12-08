@@ -6,7 +6,19 @@ import { GroupsService } from 'src/app/core/services/groups.service';
   selector: 'app-groups',
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
+  styles: [` 
+  :host ::ng-deep .p-tree {
+      height: 88dvh;
+      overflow: auto;
+      overflow-y: hidden;
+  }
+  
+  :host ::ng-deep .p-tree:hover {
+      overflow-y: auto;
+  }
+  `
+  ]
 })
 export class GroupsComponent implements OnInit {
 
@@ -20,11 +32,11 @@ export class GroupsComponent implements OnInit {
   }
 
   nodeExpand(event: any) {
-    this.messageService.add({ severity: 'success', summary: 'Node Expanded', detail: event.node.label });
+
   }
 
   nodeCollapse(event: any) {
-    this.messageService.add({ severity: 'warn', summary: 'Node Collapsed', detail: event.node.label });
+
   }
 
   nodeSelect(event: any) {
