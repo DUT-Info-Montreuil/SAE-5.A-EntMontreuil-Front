@@ -63,7 +63,7 @@ export class CreateRessourceComponent implements OnInit {
 
     let ressource = new Ressource(
       0, // ID temporaire
-      this.newRessourceName.trim(),
+      this.newRessourceName.trim().toLowerCase(),
       this.selectedTrainingId,
       this.ressourceColor.trim(),
       false, // is_editing
@@ -90,6 +90,13 @@ export class CreateRessourceComponent implements OnInit {
       },
       error: (error) => {
         // Gérer l'erreur
+        console.log(error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'erreur',
+          detail: error.error.message,
+        });
+        this.loading = false;
       },
       complete: () => {
         this.loading = false;
