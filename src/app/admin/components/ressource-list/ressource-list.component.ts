@@ -11,13 +11,10 @@ import { Training } from '../../models/training.model';
   styleUrls: ['./ressource-list.component.scss'],
 })
 export class RessourceListComponent {
-  onSearch() {
-    throw new Error('Method not implemented.');
-  }
-
   Ressource: Ressource[] = [];
   filteredRessources: Ressource[] = [];
   trainings: Training[] = [];
+  selectedTrainingId: number | null = null;
   searchQuery: string = '';
   scroll = 'scroll';
   displayCreateRessources: boolean = false;
@@ -67,6 +64,37 @@ export class RessourceListComponent {
         }
       );
     });
+  }
+
+  filterByTraining(): void {
+    if (this.selectedTrainingId) {
+      // Assurez-vous que selectedTrainingId est un nombre si id_Training est un nombre
+      const selectedId = Number(this.selectedTrainingId);
+
+      this.filteredRessources = this.Ressource.filter(
+        (ressource) => ressource.id_Training === selectedId
+      );
+    } else {
+      // Si aucune formation n'est sélectionnée, affichez toutes les ressources
+      this.filteredRessources = [...this.Ressource];
+    }
+  }
+
+  onSearch(): void {
+    // Assurez-vous que searchQuery est une chaîne de caractères
+    const query = this.searchQuery.toLowerCase();
+
+    if (!query) {
+      // Si la requête de recherche est vide, affichez toutes les ressources
+      this.filteredRessources = [...this.Ressource];
+    } else {
+      // Filtrer les ressources en fonction de la requête de recherche
+      this.filteredRessources = this.Ressource.filter(
+        (ressource) =>
+          ressource.name.toLowerCase().includes(query) ||
+          ressource.training_name.toLowerCase().includes(query)
+      );
+    }
   }
 
   startEditing(ressource: Ressource) {

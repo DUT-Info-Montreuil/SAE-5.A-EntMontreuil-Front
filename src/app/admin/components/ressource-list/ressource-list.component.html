@@ -41,6 +41,16 @@
         </span>
       </div>
 
+      <div>
+        <label for="trainingSelect">Filtrer par Parcours:</label>
+        <select [(ngModel)]="selectedTrainingId" (change)="filterByTraining()">
+          <option value="">Tous les parcours</option>
+          <option *ngFor="let training of trainings" [value]="training.id">
+            {{ training.name }}
+          </option>
+        </select>
+      </div>
+
       <p-button
         icon="pi pi-plus"
         label="Créer une ressource"
@@ -52,6 +62,7 @@
     <!-- Table des Ressources avec PrimeNG -->
     <p-table
       *ngIf="!isLoading; else tableSkeleton"
+      #dt
       [value]="filteredRessources"
       [paginator]="true"
       [rows]="10"
