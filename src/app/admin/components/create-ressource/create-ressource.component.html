@@ -1,0 +1,77 @@
+<!-- Dialogue de création de ressource -->
+<p-dialog
+  [(visible)]="displayCreateRessourceDialog"
+  header="Créer une ressource"
+  [modal]="true"
+  [responsive]="true"
+  (onHide)="closeCreateRessourceDialog()"
+>
+  <ng-template pTemplate="content">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="newRessourceName" class="font-medium text-900"
+          >Nom de la ressource</label
+        >
+        <input
+          pInputText
+          class="mt-1"
+          type="text"
+          id="newRessourceName"
+          [(ngModel)]="newRessourceName"
+          name="newRessourceName"
+          required
+        />
+      </div>
+
+      <div class="p-field mt-3">
+        <label for="ressourceColor" class="font-medium text-900">Couleur</label>
+        <div class="color-picker">
+          <input
+            type="color"
+            class="color-input"
+            id="ressourceColor"
+            [(ngModel)]="ressourceColor"
+            name="ressourceColor"
+            required
+          />
+        </div>
+      </div>
+
+      <div class="p-field mt-3">
+        <label for="selectedTrainingId" class="font-medium text-900"
+          >Parcours</label
+        >
+        <div class="mt-1">
+          <p-dropdown
+            [options]="trainings"
+            [(ngModel)]="selectedTrainingId"
+            optionLabel="name"
+            optionValue="id"
+            placeholder="Sélectionner un parcours"
+            name="selectedTrainingId"
+            appendTo="body"
+          ></p-dropdown>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      type="button"
+      label="Annuler"
+      [outlined]="true"
+      severity="secondary"
+      class="p-button-secondary"
+      (click)="closeCreateRessourceDialog()"
+    ></p-button>
+    <p-button
+      type="button"
+      label="Créer"
+      class="p-button-primary"
+      (click)="createRessource()"
+      [loading]="loading"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>

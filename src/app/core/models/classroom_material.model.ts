@@ -1,5 +1,8 @@
-export interface ClassroomMaterial {
-    equipment: string,
-    id: number,
-    quantity: number
+export class ClassroomMaterial {
+  id!: number;
+  equipment!: string;
+  quantity!: number;
+  isEditing: boolean = false;
+
+  updatedQuantity!: null | number;
 }

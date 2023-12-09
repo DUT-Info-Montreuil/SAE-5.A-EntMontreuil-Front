@@ -40,6 +40,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AddStudentsCsvComponent } from './components/form/add-students-csv/add-students-csv.component';
 import { TableUsersComponent } from './components/table-users/table-users.component';
 import { CascadeSelectModule } from 'primeng/cascadeselect';
+import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
+import { CreateRessourceComponent } from './components/create-ressource/create-ressource.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,8 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     CreateDegreeComponent,
     AddStudentsCsvComponent,
     TableUsersComponent,
+    RessourceListComponent,
+    CreateRessourceComponent,
   ],
   imports: [
     CommonModule,
@@ -85,8 +89,8 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
     TagModule,
     InputNumberModule,
     FileUploadModule,
-    CascadeSelectModule
+    CascadeSelectModule,
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
-export class AdminModule { }
+export class AdminModule {}

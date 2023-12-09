@@ -1,12 +1,19 @@
 <div class="container">
-
-  <div class="flex align-items-center border-round p-4 relative" style="background-color: rgb(239, 244, 255)">
+  <div
+    class="flex align-items-center border-round p-4 relative"
+    style="background-color: rgb(239, 244, 255)"
+  >
     <div>
       <h1 class="text-2xl font-semibold">Gestion des salles de classe</h1>
-      <p class="text-900 -mt-2">Créer, gérer les équipements ou supprimer des salles de classe.</p>
+      <p class="text-900 -mt-2">
+        Créer, gérer les équipements ou supprimer des salles de classe.
+      </p>
     </div>
-    <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px;">
-      <img src="/assets/images/3dicons/cube.png" alt="cube" width="180px">
+    <div
+      class="absolute hidden sm:hidden md:block"
+      style="top: -14px; right: 50px"
+    >
+      <img src="/assets/images/3dicons/cube.png" alt="cube" width="180px" />
     </div>
   </div>
 
@@ -17,20 +24,37 @@
       <div>
         <span class="p-input-icon-left">
           <i class="pi pi-search mb-3"></i>
-          <input pInputText type="text" #searchInput placeholder="Rechercher une salle"
-            (input)="dt2.filterGlobal(searchInput.value, 'contains')" />
+          <input
+            pInputText
+            type="text"
+            #searchInput
+            placeholder="Rechercher une salle"
+            (input)="dt2.filterGlobal(searchInput.value, 'contains')"
+          />
         </span>
       </div>
 
-      <p-button icon="pi pi-plus" label="Créer une salle" class="custom-button" (click)="openModal()"></p-button>
+      <p-button
+        icon="pi pi-plus"
+        label="Créer une salle"
+        class="custom-button"
+        (click)="openModal()"
+      ></p-button>
     </div>
 
     <ng-container>
-      <p-table #dt2 [value]="classrooms" dataKey="id" [rows]="10" [showCurrentPageReport]="true"
-        [rowsPerPageOptions]="[5, 10, 20, 50, 100]" [paginator]="true" [responsive]="true"
+      <p-table
+        #dt2
+        [value]="classrooms"
+        dataKey="id"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+        [paginator]="true"
+        [responsive]="true"
         currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} salles de classe"
-        [globalFilterFields]="['name', 'capacity']">
-
+        [globalFilterFields]="['name', 'capacity']"
+      >
         <ng-template pTemplate="header">
           <tr>
             <th width="200px">ID</th>
@@ -42,15 +66,17 @@
 
         <ng-template pTemplate="body" let-classroom>
           <tr>
-            <td>
-              #{{ classroom.id }}
-            </td>
+            <td>#{{ classroom.id }}</td>
             <td>
               <div *ngIf="!classroom.isEditing">
                 {{ classroom.name }}
               </div>
               <div *ngIf="classroom.isEditing">
-                <input pInputText type="text" [(ngModel)]="classroom.editedName" />
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="classroom.editedName"
+                />
               </div>
             </td>
             <td>
@@ -58,25 +84,64 @@
                 {{ classroom.capacity }}
               </div>
               <div *ngIf="classroom.isEditing">
-                <input pInputText type="number" [(ngModel)]="classroom.editedCapacity" />
+                <input
+                  pInputText
+                  type="number"
+                  [(ngModel)]="classroom.editedCapacity"
+                />
               </div>
             </td>
             <td>
               <div *ngIf="!classroom.isEditing">
-                <button pButton pRipple pTooltip="Modifier" tooltipPosition="top" type="button" icon="pi pi-pencil"
-                  class="p-button-rounded p-button-text" (click)="startEdit(classroom)"></button>
-                <button pButton pRipple pTooltip="Supprimer" tooltipPosition="top" icon="pi pi-trash"
-                  class="p-button-rounded p-button-text p-button-danger" (click)="confirmDelete(classroom)"></button>
-                <button pButton pRipple pTooltip="Gérer les équipements" tooltipPosition="top" icon="pi pi-desktop"
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Modifier"
+                  tooltipPosition="top"
+                  type="button"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-text"
+                  (click)="startEdit(classroom)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Supprimer"
+                  tooltipPosition="top"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="confirmDelete(classroom)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Gérer les équipements"
+                  tooltipPosition="top"
+                  icon="pi pi-desktop"
                   class="p-button-rounded p-button-text p-button-secondary"
-                  [routerLink]="['/admin/classrooms', classroom.id]"></button>
-
+                  [routerLink]="['/admin/classrooms', classroom.id]"
+                ></button>
               </div>
               <div *ngIf="classroom.isEditing">
-                <button pButton pRipple pTooltip="Sauvegarder" tooltipPosition="top" type="button" icon="pi pi-check"
-                  class="p-button-rounded p-button-text p-button-success" (click)="confirmUpdate(classroom)"></button>
-                <button pButton pRipple pTooltip="Annuler" tooltipPosition="top" icon="pi pi-times"
-                  class="p-button-rounded p-button-text p-button-danger" (click)="cancelEdit(classroom)"></button>
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Sauvegarder"
+                  tooltipPosition="top"
+                  type="button"
+                  icon="pi pi-check"
+                  class="p-button-rounded p-button-text p-button-success"
+                  (click)="confirmUpdate(classroom)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Annuler"
+                  tooltipPosition="top"
+                  icon="pi pi-times"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="cancelEdit(classroom)"
+                ></button>
               </div>
             </td>
           </tr>
@@ -93,37 +158,195 @@
 </div>
 
 <!-- Fenêtre modale -->
-<p-dialog header="Créer une salle" [(visible)]="displayModal" [modal]="true" [responsive]="true">
+<p-dialog
+  header="Détails de la salle"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [responsive]="true"
+>
   <ng-template pTemplate="content">
-    <form [formGroup]="classroomForm" class="custom-form">
-      <div class="p-fluid">
-        <!-- Champ pour le nom de la classe -->
-        <div class="p-field">
-          <label for="name" class="font-medium text-900">Nom de la salle</label>
-          <input id="name" type="text" pInputText formControlName="name" class="mt-1 form-control" />
-        </div>
+    <!-- Affichage conditionnel basé sur l'état de selectedClassroom -->
+    <div *ngIf="selectedClassroom; else createClassroomForm">
+      <!-- Affichage des détails de la salle de classe sélectionnée -->
+      <div class="classroom-details">
+        <h2 class="classroom-title">{{ selectedClassroom.name }}</h2>
+        <div class="classroom-info">
+          <p class="classroom-capacity">
+            Capacité : {{ selectedClassroom.capacity }}
+          </p>
+          <!-- Ici, vous pouvez ajouter plus de détails sur la salle de classe si nécessaire -->
+          <!-- Tableau pour afficher la liste des équipements -->
+          <div class="equipment-table">
+            <p-table [value]="selectedClassroom.materials" [autoLayout]="true">
+              <!-- En-têtes du tableau -->
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Nom de l'équipement</th>
+                  <th>Quantité</th>
+                  <th>Actions</th>
+                </tr>
+              </ng-template>
 
-        <!-- Champ pour la capacité -->
-        <div class="p-field mt-3">
-          <label for="capacity" class="font-medium text-900">Capacité</label>
-          <p-inputNumber id="capacity" type="number" formControlName="capacity" class="mt-1" [showButtons]="true"
-            buttonLayout="horizontal" inputId="horizontal" spinnerMode="horizontal" [step]="1"
-            decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary"
-            incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"></p-inputNumber>
+              <!-- Corps du tableau -->
+              <ng-template pTemplate="body" let-material>
+                <tr>
+                  <!-- Champ pour le nom de l'équipement -->
+                  <td>{{ material.equipment }}</td>
+
+                  <!-- Affichage conditionnel pour la quantité -->
+                  <td>
+                    <div *ngIf="!material.isEditing; else editMode">
+                      {{ material.quantity }}
+                    </div>
+                    <ng-template #editMode>
+                      <input
+                        type="number"
+                        [(ngModel)]="material.updatedQuantity"
+                        pInputText
+                      />
+                    </ng-template>
+                  </td>
+
+                  <!-- Boutons Modifier et Supprimer -->
+                  <td>
+                    <div *ngIf="!material.isEditing">
+                      <button
+                        pButton
+                        pRipple
+                        icon="pi pi-pencil"
+                        class="p-button-rounded p-button-text"
+                        (click)="startEditEquipment(material)"
+                      ></button>
+                      <button
+                        pButton
+                        pRipple
+                        icon="pi pi-trash"
+                        class="p-button-rounded p-button-text p-button-danger"
+                        (click)="confirmDeleteEquipment(material)"
+                      ></button>
+                    </div>
+                    <div *ngIf="material.isEditing">
+                      <button
+                        pButton
+                        pRipple
+                        icon="pi pi-check"
+                        class="p-button-rounded p-button-text p-button-success"
+                        (click)="saveEditEquipment(material)"
+                      ></button>
+                      <button
+                        pButton
+                        pRipple
+                        icon="pi pi-times"
+                        class="p-button-rounded p-button-text p-button-danger"
+                        (click)="cancelEditEquipment(material)"
+                      ></button>
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <!-- Message affiché si la liste des équipements est vide -->
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="3">Il n'y a pas d'équipement.</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
         </div>
+        <!-- Bouton pour ajouter de l'équipement -->
+        <p-button
+          label="Ajouter Équipement"
+          (click)="openEquipmentDialog()"
+          class="equipment-button"
+        ></p-button>
       </div>
-    </form>
+    </div>
+
+    <!-- Template pour créer une nouvelle salle de classe -->
+    <ng-template #createClassroomForm pTemplate="content">
+      <form [formGroup]="classroomForm" class="custom-form">
+        <div class="p-fluid">
+          <!-- Champ pour le nom de la classe -->
+          <div class="p-field">
+            <label for="name" class="font-medium text-900"
+              >Nom de la salle</label
+            >
+            <input
+              id="name"
+              type="text"
+              pInputText
+              formControlName="name"
+              class="mt-1 form-control"
+            />
+          </div>
+
+          <!-- Champ pour la capacité -->
+          <div class="p-field mt-3">
+            <label for="capacity" class="font-medium text-900">Capacité</label>
+            <p-inputNumber
+              id="capacity"
+              type="number"
+              formControlName="capacity"
+              class="mt-1"
+              [showButtons]="true"
+              buttonLayout="horizontal"
+              inputId="horizontal"
+              spinnerMode="horizontal"
+              [step]="1"
+              decrementButtonClass="p-button-secondary"
+              incrementButtonClass="p-button-secondary"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+            ></p-inputNumber>
+            <div class="p-field-checkbox">
+              <p-checkbox
+                formControlName="addEquipment"
+                [binary]="true"
+              ></p-checkbox>
+              <label for="addEquipment" class="p-checkbox-label"
+                >Ajouter de l'équipement</label
+              >
+            </div>
+          </div>
+        </div>
+      </form>
+    </ng-template>
   </ng-template>
 
   <ng-template pTemplate="footer">
-    <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
-      (click)="closeModal()"></p-button>
-    <p-button type="button" label="Créer" class="p-button-primary" (click)="createClassroom()"
-      [loading]="loading"></p-button>
+    <!-- Bouton 'Terminer' visible seulement si une salle de classe est sélectionnée -->
+    <p-button
+      label="Terminer"
+      (click)="closeModal()"
+      *ngIf="selectedClassroom"
+    ></p-button>
+
+    <!-- Boutons 'Annuler' et 'Créer' visibles seulement si aucune salle de classe n'est sélectionnée -->
+    <ng-container *ngIf="!selectedClassroom">
+      <p-button
+        type="button"
+        label="Annuler"
+        [outlined]="true"
+        severity="secondary"
+        class="p-button-secondary"
+        (click)="closeModal()"
+      ></p-button>
+      <p-button
+        type="button"
+        label="Créer"
+        class="p-button-primary"
+        (click)="createClassroom()"
+        [loading]="loading"
+      ></p-button>
+    </ng-container>
   </ng-template>
 </p-dialog>
 
-<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-confirmDialog
+  header="Confirmation"
+  icon="pi pi-exclamation-triangle"
+></p-confirmDialog>
 <p-toast></p-toast>
 
 <ng-template #singleSkeleton>

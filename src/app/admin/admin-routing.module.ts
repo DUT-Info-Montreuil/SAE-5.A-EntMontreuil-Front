@@ -14,6 +14,7 @@ import { AddTeachersComponent } from './components/form/add-teachers/add-teacher
 import { ClassroomsComponent } from './components/classrooms/classrooms.component';
 import { SingleClassroomComponent } from './components/single-classroom/single-classroom.component';
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
+import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
 
 const routes: Routes = [
   {
@@ -47,11 +48,32 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
 
-    { path: 'users', component: TableUsersComponent, canActivate: [AuthGuard] },
-    { path: 'users/add_user', component: AddUsersComponent, canActivate: [AuthGuard] },
-    { path: 'users/add_student', component: AddStudentsComponent, canActivate: [AuthGuard] },
-    { path: 'users/add_student_csv',component: AddStudentsCsvComponent, canActivate: [AuthGuard] },
-    { path: 'users/add_teacher', component: AddTeachersComponent, canActivate: [AuthGuard] }
+  { path: 'users', component: TableUsersComponent, canActivate: [AuthGuard] },
+  {
+    path: 'users/add_user',
+    component: AddUsersComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'users/add_student',
+    component: AddStudentsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'users/add_student_csv',
+    component: AddStudentsCsvComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'users/add_teacher',
+    component: AddTeachersComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'ressources',
+    component: RessourceListComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
