@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ReminderModel } from 'src/app/core/models/reminders.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ReminderService } from 'src/app/core/services/reminders.service';
+import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-reminders-list',
@@ -15,9 +16,7 @@ export class RemindersListComponent implements OnInit {
   textModified: boolean = false;
   dateModified: boolean = false;
   intervalId: any;
-  newReminder: ReminderModel | null = null;
-
-  constructor(private reminderService: ReminderService, private authService: AuthService) {}
+  constructor(private reminderService: ReminderService, private authService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService) {}
 
   ngOnInit(): void {
     this.loadReminders();
@@ -37,6 +36,7 @@ export class RemindersListComponent implements OnInit {
 
   selectRappel(rappel: ReminderModel): void {
     this.selectedRappel = rappel;
+    console.log(this.selectRappel);
     this.resetFlags();
   }
 
@@ -94,9 +94,12 @@ export class RemindersListComponent implements OnInit {
     };
 
     this.reminderService.addReminder(newReminder).subscribe(
-      (addedReminder) => {
+      (addedReminder: any) => {
+        console.log(addedReminder);
+        newReminder.id = addedReminder.id;
         console.log('New reminder added successfully.');
-        this.selectedRappel = addedReminder;
+        this.selectedRappel = newReminder;
+        console.log(this.selectedRappel);
         this.loadReminders();
       },
       (error: any) => {
@@ -106,18 +109,39 @@ export class RemindersListComponent implements OnInit {
   }
   deleteSelectedRappel(): void {
     if (this.selectedRappel) {
-      if (confirm('Are you sure you want to delete this reminder?')) {
-        this.reminderService.deleteReminder(this.selectedRappel.id).subscribe(
-          () => {
-            console.log('Reminder deleted successfully.');
-            this.loadReminders();
-            this.selectedRappel = null; // Deselect the reminder after deletion
-          },
-          (error: any) => {
-            console.error('Error deleting reminder:', error);
+      this.confirmationService.confirm({
+        message: 'Are you sure that you want to delete this reminder?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.deleteReminder();
+        },
+        reject: (type: any) => {
+          switch (type) {
+            case ConfirmEventType.REJECT:
+              break;
+            case ConfirmEventType.CANCEL:
+              this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+              break;
           }
-        );
-      }
+        }
+      });
     }
   }
+  deleteReminder(): void {
+    if (this.selectedRappel) {
+      this.reminderService.deleteReminder(this.selectedRappel.id).subscribe(
+        () => {
+          this.messageService.add({ severity: 'success', summary: 'Rappel supprimé', detail: 'Le rappel a été supprimé avec succès.' });
+          console.log('Reminder deleted successfully.');
+          this.loadReminders();
+          this.selectedRappel = null;
+        },
+        (error: any) => {
+          console.error('Error deleting reminder:', error);
+        }
+      );
+    }
+  }
+  
 }
