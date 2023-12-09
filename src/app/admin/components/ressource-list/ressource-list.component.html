@@ -138,6 +138,15 @@
               label="Sauvegarder"
               (click)="confirmChanges(ressource)"
             ></button>
+            <button
+              *ngIf="ressource.is_editing"
+              pButton
+              pRipple
+              type="button"
+              label="Annuler"
+              class="p-button-secondary"
+              (click)="cancelEdit(ressource)"
+            ></button>
           </td>
         </tr>
       </ng-template>

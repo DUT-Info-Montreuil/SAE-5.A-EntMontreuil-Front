@@ -7,6 +7,9 @@ export class Ressource {
   is_editing: boolean;
   training_name: string;
   training_semester: number;
+  originalName: string;
+  originalId_Training: number;
+  originalColor: string;
 
   constructor(
     id: number,
@@ -14,7 +17,7 @@ export class Ressource {
     training: string,
     id_Training: number,
     color: string,
-    is_editing: boolean = false, // Initialisation par défaut à 'false'
+    is_editing: boolean = false,
     training_name: string,
     training_semester: number
   ) {
@@ -26,5 +29,8 @@ export class Ressource {
     this.is_editing = is_editing;
     this.training_name = training_name;
     this.training_semester = training_semester;
+    this.originalName = name;
+    this.originalId_Training = id_Training;
+    this.originalColor = color;
   }
 }

@@ -66,7 +66,16 @@ export class RessourceListComponent {
 
   startEditing(ressource: Ressource) {
     ressource.is_editing = true;
-    console.log(ressource);
+    ressource.originalName = ressource.name;
+    ressource.originalId_Training = ressource.id_Training;
+    ressource.originalColor = ressource.color;
+  }
+
+  cancelEdit(ressource: Ressource) {
+    ressource.name = ressource.originalName;
+    ressource.id_Training = ressource.originalId_Training;
+    ressource.color = ressource.originalColor;
+    ressource.is_editing = false;
   }
 
   confirmChanges(ressource: Ressource) {
