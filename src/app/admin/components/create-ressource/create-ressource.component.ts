@@ -61,21 +61,25 @@ export class CreateRessourceComponent implements OnInit {
       return;
     }
 
-    let ressource: Ressource = new Ressource(
-      0, // ID temporaire, sera mis à jour après la création
-      '', // 'training' sera mis à jour après la création
+    let ressource = new Ressource(
+      0, // ID temporaire
+      this.newRessourceName.trim(),
       this.selectedTrainingId,
       this.ressourceColor.trim(),
       false, // is_editing
-      '', // training_name sera mis à jour après la création
-      0 // training_semester
+      '', // 'training_name' sera mis à jour après la création
+      0 // 'training_semester'
     );
 
     this.ressourceService.createRessource(ressource).subscribe({
       next: (createdRessource) => {
+        // Mettre à jour l'ID de la ressource
         ressource.id = createdRessource.id;
-
-        console.log(ressource);
+        const ressourceTrainingId = Number(ressource.id_Training);
+        const training = this.trainings.find(
+          (t) => t.id === ressourceTrainingId
+        );
+        if (training) ressource.training_name = training?.name;
         this.ressourceCreated.emit(ressource);
         this.resetForm();
         this.messageService.add({
@@ -85,12 +89,7 @@ export class CreateRessourceComponent implements OnInit {
         });
       },
       error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Erreur lors de la création',
-          detail:
-            'Une erreur s’est produite lors de la création de la ressource.',
-        });
+        // Gérer l'erreur
       },
       complete: () => {
         this.loading = false;
@@ -101,7 +100,8 @@ export class CreateRessourceComponent implements OnInit {
 
   private resetForm(): void {
     this.newRessourceName = '';
-    this.selectedTrainingId = this.trainings[0].id;
+    this.selectedTrainingId =
+      this.trainings.length > 0 ? this.trainings[0].id : 0;
     this.ressourceColor = '';
   }
 }
