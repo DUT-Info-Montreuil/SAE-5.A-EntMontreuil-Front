@@ -15,33 +15,36 @@
   </div>
 
   <!-- Colonne du Contenu du Rappel avec bouton d'ajout -->
-  <div class="rappel-content" style="flex: 2; padding: 10px; border-left: 1px solid #ccc; position: relative;">
-    <!-- Bouton Ajouter un rappel -->
-    <button pButton style="background-color: #007bff; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; position: absolute; top: 10px; right: 10px;">
-      Add reminders
-    </button>  
-    <span>
-      <h3>Change Title</h3>
-    </span>
-    <div *ngIf="selectedRappel">
-      <div class="card" style="border: 1px solid #ccc; border-radius: 5px;">
-        <div class="card-header" style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc; border-radius: 5px 5px 0 0;">
-          <!-- Champ de saisie pour le titre lié à la propriété title -->
-          <input [(ngModel)]="selectedRappel.title" style="width: 100%; padding: 5px;" (input)="onTitleChange()">
-        </div>
-        <div class="card-body" style="padding: 10px;">
-          <!-- Champ de saisie pour le texte lié à la propriété reminder_text -->
-          <textarea [(ngModel)]="selectedRappel.reminder_text" style="width: 100%; height: 100px; padding: 5px;" (input)="onTextChange()"></textarea>
-          <p>{{ dateModified ? (selectedRappel.reminder_date | date:'E d MMM yyyy') : (selectedRappel.reminder_date | date:'E d MMM yyyy H:mm:ss') }}</p>
-          <!-- Ajoutez d'autres champs du rappel au besoin -->
-          <button pButton (click)="updateSelectedRappel()" style="background-color: #007bff; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; margin-top: 10px;">
-            Update Reminder
-          </button>
-        </div>
+<div class="rappel-content" style="flex: 2; padding: 10px; border-left: 1px solid #ccc; position: relative;">
+  <!-- Bouton Ajouter un rappel -->
+  <button pButton (click)="addNewReminder()" style="background-color: #007bff; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; position: absolute; top: 10px; right: 10px;">
+    Add reminders
+  </button>
+
+  <span>
+    <h3>Change Title</h3>
+  </span>
+  <div *ngIf="selectedRappel">
+    <div class="card" style="border: 1px solid #ccc; border-radius: 5px;">
+      <div class="card-header" style="background-color: #f0f0f0; padding: 10px; border-bottom: 1px solid #ccc; border-radius: 5px 5px 0 0;">
+        <!-- Champ de saisie pour le titre lié à la propriété title -->
+        <input [(ngModel)]="selectedRappel.title" style="width: 100%; padding: 5px;" (input)="onTitleChange()">
       </div>
-    </div>    
-    <div *ngIf="!selectedRappel">
-      <span style="color: #ccc;">Select a reminder to see the details</span>
+      <div class="card-body" style="padding: 10px;">
+        <!-- Champ de saisie pour le texte lié à la propriété reminder_text -->
+        <textarea [(ngModel)]="selectedRappel.reminder_text" style="width: 100%; height: 100px; padding: 5px;" (input)="onTextChange()"></textarea>
+        <p>{{ dateModified ? (selectedRappel.reminder_date | date:'E d MMM yyyy') : (selectedRappel.reminder_date | date:'E d MMM yyyy H:mm:ss') }}</p>
+        <!-- Ajoutez d'autres champs du rappel au besoin -->
+        <button pButton (click)="updateSelectedRappel()" style="background-color: #007bff; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; margin-top: 10px;">
+          Update Reminder
+        </button>
+        <button pButton (click)="deleteSelectedRappel()" style="background-color: #dc3545; border: none; color: white; padding: 10px 20px; text-align: center; text-decoration: none; font-size: 14px; cursor: pointer; border-radius: 5px; margin-top: 10px; margin-left: 10px;">
+          Delete Reminder
+        </button>
+      </div>
     </div>
+  </div>
+  <div *ngIf="!selectedRappel">
+    <span style="color: #ccc;">Select a reminder to see the details</span>
   </div>
 </div>

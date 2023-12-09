@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReminderModel } from 'src/app/core/models/reminders.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { ReminderService } from 'src/app/core/services/reminders.service';
 
 @Component({
@@ -14,9 +15,9 @@ export class RemindersListComponent implements OnInit {
   textModified: boolean = false;
   dateModified: boolean = false;
   intervalId: any;
+  newReminder: ReminderModel | null = null;
 
-
-  constructor(private reminderService: ReminderService) {}
+  constructor(private reminderService: ReminderService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadReminders();
@@ -83,4 +84,40 @@ export class RemindersListComponent implements OnInit {
     clearInterval(this.intervalId);
   }
 
+  addNewReminder(): void {
+    const newReminder: any = {
+      title: 'New reminder',
+      reminder_text: 'New reminder text',
+      reminder_date: new Date(),
+      id_User: this.authService.getUserId(),
+      user_username: '',
+    };
+
+    this.reminderService.addReminder(newReminder).subscribe(
+      (addedReminder) => {
+        console.log('New reminder added successfully.');
+        this.selectedRappel = addedReminder;
+        this.loadReminders();
+      },
+      (error: any) => {
+        console.error('Error adding new reminder:', error);
+      }
+    );
+  }
+  deleteSelectedRappel(): void {
+    if (this.selectedRappel) {
+      if (confirm('Are you sure you want to delete this reminder?')) {
+        this.reminderService.deleteReminder(this.selectedRappel.id).subscribe(
+          () => {
+            console.log('Reminder deleted successfully.');
+            this.loadReminders();
+            this.selectedRappel = null; // Deselect the reminder after deletion
+          },
+          (error: any) => {
+            console.error('Error deleting reminder:', error);
+          }
+        );
+      }
+    }
+  }
 }

@@ -121,8 +121,16 @@ export class AuthService {
         return lastname;
     }
 
-    getUserId(): string {
-        return localStorage.getItem('id_user') || '';
+    getUserId(): number {
+        const token = this.getToken();
+        if (!token) {
+            return 0; // Gérer l'absence de jeton
+        }
+        const decodedToken = jwtDecode<JwtPayload>(token);
+
+        const id = decodedToken.sub.id;
+
+        return id;
     }
 
     logout(): void {
