@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService, TreeNode } from 'primeng/api';
-import { GroupsService } from 'src/app/core/services/groups.service';
+import { CohortService } from 'src/app/core/services/cohort.service';
 
 @Component({
-  selector: 'app-groups',
-  templateUrl: './groups.component.html',
-  styleUrls: ['./groups.component.scss'],
+  selector: 'app-cohort',
+  templateUrl: './cohort.component.html',
+  styleUrls: ['./cohort.component.scss'],
   providers: [MessageService],
   styles: [` 
   :host ::ng-deep .p-tree {
@@ -20,15 +21,15 @@ import { GroupsService } from 'src/app/core/services/groups.service';
   `
   ]
 })
-export class GroupsComponent implements OnInit {
+export class CohortComponent implements OnInit {
 
   files!: TreeNode[];
   selectedFile!: TreeNode;
 
-  constructor(private groupsService: GroupsService, private messageService: MessageService) { }
+  constructor(private cohortService: CohortService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit() {
-    this.groupsService.getFiles().then((data) => (this.files = data));
+    this.cohortService.getFiles().then((data) => (this.files = data));
   }
 
   nodeExpand(event: any) {
@@ -41,6 +42,10 @@ export class GroupsComponent implements OnInit {
 
   nodeSelect(event: any) {
     this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
+
+    if (event.node.url) {
+      this.router.navigateByUrl(event.node.url); // Utilisez l'URL pour la navigation
+    }
   }
 
   nodeUnselect(event: any) {

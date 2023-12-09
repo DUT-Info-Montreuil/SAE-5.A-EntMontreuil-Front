@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 
 @Injectable()
-export class GroupsService {
+export class CohortService {
     getTreeNodesData() {
         return [
             {
                 label: 'INFO',
                 icon: 'pi pi-fw pi-compass',
-                data: 'Formation',
+                data: 'degree',
+                url: '/resp/cohort/promotion/1',
                 children: [
                     {
                         label: 'Promo 2023',
