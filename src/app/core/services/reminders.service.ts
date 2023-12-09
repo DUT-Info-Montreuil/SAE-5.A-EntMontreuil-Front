@@ -23,8 +23,8 @@ export class ReminderService {
     return this.http.get<ReminderModel>(`${this.apiUrl}/users/reminders/${id}`, this.httpOptions);
   }
 
-  getAllReminders(): Observable<ReminderModel[]> {
-    return this.http.get<ReminderModel[]>(`${this.apiUrl}/users/reminders`, this.httpOptions);
+  getAllReminders(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/users/reminders`, this.httpOptions);
   }
 
   addReminder(data: ReminderModel): Observable<ReminderModel> {

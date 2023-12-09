@@ -1,0 +1,23 @@
+<!-- add-reminder.component.html -->
+
+<p-dialog header="Add Reminder" [(visible)]="display" [modal]="true" [style]="{width: '400px'}">
+    <div class="p-grid p-fluid">
+      <div class="p-col-12">
+        <div class="p-field">
+          <label for="title">Title</label>
+          <input id="title" type="text" [(ngModel)]="newReminder.title" pInputText />
+        </div>
+      </div>
+      <div class="p-col-12">
+        <div class="p-field">
+          <label for="text">Text</label>
+          <textarea id="text" [(ngModel)]="newReminder.reminder_text" pInputTextarea rows="5"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="p-dialog-footer">
+      <button pButton type="button" (click)="addReminder()" label="Add" class="p-button-success"></button>
+      <button pButton type="button" (click)="closeDialog()" label="Cancel" class="p-button-secondary"></button>
+    </div>
+  </p-dialog>
+  

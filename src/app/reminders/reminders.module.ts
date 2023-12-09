@@ -7,7 +7,7 @@ import { RemindersRoutingModule } from './reminders-routing.module';
 
 @NgModule({
   declarations: [
-    RemindersListComponent
+    RemindersListComponent,
   ],
   imports: [
     CommonModule,
