@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
+import { RessourceService } from 'src/app/core/services/ressources.service';
 import { TrainingService } from 'src/app/core/services/trainings.service';
 import { Ressource } from '../../models/ressource.model';
 import { Training } from '../../models/training.model';
@@ -22,12 +22,12 @@ export class CreateRessourceComponent implements OnInit {
   loading: boolean = false;
 
   constructor(
+    private ressourceService: RessourceService,
     private trainingService: TrainingService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    // Fetch the list of trainings for the dropdown
     this.showCreateRessourceDialog();
   }
 
@@ -58,24 +58,50 @@ export class CreateRessourceComponent implements OnInit {
       });
 
       this.loading = false;
-      return; // Sortez de la fonction si le formulaire n'est pas valide
+      return;
     }
 
-    let ressource: Ressource = {
-      id: 0, // ID temporaire, sera mis à jour après la création
-      name: this.newRessourceName.trim(),
-      training: '',
-      id_Training: this.selectedTrainingId,
-      color: this.ressourceColor.trim(),
-      is_editing: false,
-      training_name: '',
-      training_semester: 0,
-      originalName: '',
-      originalId_Training: 0,
-      originalColor: '',
-    };
-    console.log(ressource);
-    // Implémentez la logique d'ajout de la ressource ici...
-    // Par exemple : this.ressourceService.addRessource(ressource).subscribe(...)
+    let ressource: Ressource = new Ressource(
+      0, // ID temporaire, sera mis à jour après la création
+      '', // 'training' sera mis à jour après la création
+      this.selectedTrainingId,
+      this.ressourceColor.trim(),
+      false, // is_editing
+      '', // training_name sera mis à jour après la création
+      0 // training_semester
+    );
+
+    this.ressourceService.createRessource(ressource).subscribe({
+      next: (createdRessource) => {
+        ressource.id = createdRessource.id;
+
+        console.log(ressource);
+        this.ressourceCreated.emit(ressource);
+        this.resetForm();
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Ressource créée avec succès.',
+        });
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur lors de la création',
+          detail:
+            'Une erreur s’est produite lors de la création de la ressource.',
+        });
+      },
+      complete: () => {
+        this.loading = false;
+        this.closeCreateRessourceDialog();
+      },
+    });
+  }
+
+  private resetForm(): void {
+    this.newRessourceName = '';
+    this.selectedTrainingId = this.trainings[0].id;
+    this.ressourceColor = '';
   }
 }

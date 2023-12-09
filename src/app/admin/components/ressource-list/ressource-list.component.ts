@@ -37,31 +37,36 @@ export class RessourceListComponent {
 
   loadRessources(): void {
     this.isLoading = true;
-    this.ressourceService.getRessources().subscribe(
-      (ressources) => {
-        console.log(ressources);
-        this.Ressource = ressources.map((ressource) => ({
-          ...ressource,
-          isEditing: false, // Définir isEditing à false pour chaque ressource
-        }));
-        this.filteredRessources = [...this.Ressource];
+    this.trainingService.getAllTrainings().subscribe((trainings) => {
+      this.trainings = trainings.map(
+        (t) => new Training(t.id, t.name, 0, 'default')
+      );
+      console.log(this.trainings);
 
-        this.trainingService.getAllTrainings().subscribe((trainings) => {
-          // Assuming 'trainings' is an array of objects with 'id' and 'name' properties
-          this.trainings = trainings.map(
-            (t) => new Training(t.id, t.name, 0, 'default')
-          );
-          console.log(this.trainings);
-        });
-        this.isLoading = false;
-        console.log(this.trainings);
-      },
-      (error) => {
-        // Gérer l'erreur ici
-
-        this.isLoading = false;
-      }
-    );
+      // Charger les ressources après avoir chargé les parcours
+      this.ressourceService.getRessources().subscribe(
+        (ressources) => {
+          this.Ressource = ressources.map((ressource) => {
+            // Trouver le parcours correspondant
+            const training = this.trainings.find(
+              (t) => t.id === ressource.id_Training
+            );
+            return {
+              ...ressource,
+              isEditing: false,
+              training_name: training ? training.name : 'Inconnu',
+            };
+          });
+          this.filteredRessources = [...this.Ressource];
+          console.log(this.Ressource);
+          this.isLoading = false;
+        },
+        (error) => {
+          // Gérer l'erreur ici
+          this.isLoading = false;
+        }
+      );
+    });
   }
 
   startEditing(ressource: Ressource) {
@@ -92,6 +97,19 @@ export class RessourceListComponent {
       next: () => {
         console.log('Ressource mise à jour');
         ressource.is_editing = false; // Arrête l'édition après la mise à jour réussie
+        const ressourceTrainingId = Number(ressource.id_Training);
+        const training = this.trainings.find(
+          (t) => t.id === ressourceTrainingId
+        );
+
+        if (training) {
+          ressource.training_name = training.name;
+        } else {
+          ressource.training_name = 'Inconnu';
+          console.warn(
+            `Aucune formation trouvée pour l'ID ${ressource.id_Training}`
+          );
+        }
 
         // Mise à jour manuelle de la liste locale de ressources
         const index = this.Ressource.findIndex((r) => r.id === ressource.id);

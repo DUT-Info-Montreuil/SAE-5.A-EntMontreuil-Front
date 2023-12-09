@@ -42,4 +42,12 @@ export class RessourceService {
       this.httpOptions
     );
   }
+
+  createRessource(resourceData: Ressource): Observable<any> {
+    return this.http.post<any>(
+      `${this.apiUrl}/resources`,
+      resourceData,
+      this.httpOptions
+    );
+  }
 }

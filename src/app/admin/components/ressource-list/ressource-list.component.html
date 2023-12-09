@@ -3,6 +3,7 @@
   <app-create-ressource
     *ngIf="displayCreateRessources"
     [displayCreateRessourceDialog]="displayCreateRessources"
+    [trainings]="trainings"
     (ressourceCreated)="onRessourceCreated($event)"
   ></app-create-ressource>
   <div
