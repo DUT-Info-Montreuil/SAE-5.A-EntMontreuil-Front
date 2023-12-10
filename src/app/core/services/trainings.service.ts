@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Training } from '../../admin/models/training.model'; // Assumed model for Training
 import { response } from '../models/response.model';
+import { Promotion } from 'src/app/admin/models/promotion.model';
 
 @Injectable({
   providedIn: 'root',
@@ -37,15 +38,12 @@ export class TrainingService implements OnInit {
     );
   }
 
-  // Modifiez la méthode addTraining pour envoyer les données au format attendu
   addTraining(training: Training): Observable<any> {
     const requestData = {
       datas: {
-        id_Degree:
-          typeof training.id_Degree === 'string'
-            ? parseInt(training.id_Degree, 10)
-            : training.id_Degree,
         name: training.name,
+        id_Promotion: training.id_Promotion,
+        semester: training.semester,
       },
     };
 
@@ -56,14 +54,20 @@ export class TrainingService implements OnInit {
     );
   }
 
-  updateTraining(id: number, name: string, id_Degree: number): Observable<any> {
+  updateTraining(
+    id: number,
+    name: string,
+    id_Promotion: number,
+    semester: number | null
+  ): Observable<any> {
     const payload = {
       datas: {
         name: name,
-        id_Degree: id_Degree,
+        id_Promotion: id_Promotion,
+        semester: semester,
       },
     };
-
+    console.log(payload);
     return this.http.put<any>(
       `${this.apiURL}/trainings/${id}`,
       payload,
@@ -74,5 +78,12 @@ export class TrainingService implements OnInit {
   // Delete a training
   deleteTraining(id: number): Observable<{}> {
     return this.http.delete(`${this.apiURL}/trainings/${id}`, this.httpOptions);
+  }
+
+  getAllPromotions(): Observable<Promotion[]> {
+    return this.http.get<Promotion[]>(
+      `${this.apiURL}/promotions`,
+      this.httpOptions
+    );
   }
 }

@@ -6,6 +6,7 @@ import { Training } from '../../models/training.model';
 import { Degree } from '../../models/degree.model';
 
 import { MessageService } from 'primeng/api';
+import { Promotion } from '../../models/promotion.model';
 
 @Component({
   selector: 'app-create-training',
@@ -14,19 +15,18 @@ import { MessageService } from 'primeng/api';
 })
 export class CreateTrainingComponent implements OnInit {
   @Input() displayCreateTrainingDialog: boolean = false;
-  @Input() degrees: Degree[] = [];
+  @Input() promotions: Promotion[] = [];
   @Output() trainingCreated: EventEmitter<Training> =
     new EventEmitter<Training>();
 
-  newTrainingName: string = '';
-  selectedDegreeId!: number;
   loading: boolean = false;
-
+  newTrainingName: string = '';
+  selectedPromotionId!: number;
+  selectedSemester!: number;
   constructor(
     private trainingService: TrainingService,
-    private degreeService: DegreeService,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // Fetch the list of degrees for the dropdow
@@ -42,36 +42,36 @@ export class CreateTrainingComponent implements OnInit {
   }
 
   isFormValid(): boolean {
-    return !!this.newTrainingName.trim() && !!this.selectedDegreeId;
+    return (
+      !!this.newTrainingName.trim() &&
+      !!this.selectedPromotionId &&
+      !!this.selectedSemester
+    );
   }
 
   createTraining(): void {
-
     this.loading = true;
 
     if (!this.isFormValid()) {
       this.messageService.add({
         severity: 'error',
         summary: 'Erreur',
-        detail: 'Veuillez saisir un nom de parcours et sélectionner une formation.',
+        detail:
+          'Veuillez saisir un nom de parcours et sélectionner une formation.',
       });
 
       this.loading = false;
       return; // Sortez de la fonction si le formulaire n'est pas valide
     }
 
-    let training: Training = {
-      name: this.newTrainingName.trim(),
-      id_Degree: this.selectedDegreeId!,
-      id: 0,
-      degree_name: '',
-      isEditing: false,
-      isLoading: false,
-      updatedName: '',
-      updatedDegreeId: 0,
-    };
-
-    this.trainingService.addTraining(training).subscribe(
+    let newTraining = new Training(
+      0, // ID sera défini par la réponse de l'API
+      this.newTrainingName.trim(),
+      this.selectedPromotionId,
+      this.selectedSemester
+    );
+    console.log(newTraining);
+    this.trainingService.addTraining(newTraining).subscribe(
       (response) => {
         console.log(response);
         if (response[1] !== 200) {
@@ -88,24 +88,9 @@ export class CreateTrainingComponent implements OnInit {
             summary: 'Succès', // Résumé du toast
             detail: response[0].message, // Détails du toast
           });
-          training.id = response[0].id;
-          const selectedDegreeId = parseInt(
-            this.selectedDegreeId.toString(),
-            10
-          );
+          newTraining.id = response[0].id;
 
-          let selectedDegreeName = ''; // Initialisez une variable pour stocker le nom du degré
-
-          for (let i = 0; i < this.degrees.length; i++) {
-            if (this.degrees[i].id === selectedDegreeId) {
-              selectedDegreeName = this.degrees[i].name;
-              break; // Sortez de la boucle dès que le degré est trouvé
-            }
-          }
-
-          training.degree_name = selectedDegreeName;
-
-          this.trainingCreated.emit(training);
+          this.trainingCreated.emit(newTraining);
           this.displayCreateTrainingDialog = false;
 
           this.loading = false;

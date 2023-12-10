@@ -5,6 +5,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Degree } from '../../models/degree.model';
 import { DegreeService } from 'src/app/core/services/degrees.service';
 import { DialogService } from 'primeng/dynamicdialog';
+import { Promotion } from '../../models/promotion.model';
 
 @Component({
   selector: 'app-training-list',
@@ -22,6 +23,7 @@ export class TrainingListComponent implements OnInit {
   trainings: Training[] = [];
   filteredTrainings: Training[] = [];
   degrees: Degree[] = [];
+  promotions: Promotion[] = [];
   searchQuery: string = '';
   scroll = 'scroll';
   displayCreateTrainingDialog: boolean = false;
@@ -41,6 +43,18 @@ export class TrainingListComponent implements OnInit {
     this.degreeService.getAllDegrees().subscribe((data) => {
       this.degrees = data; // Store degrees for dropdown
     });
+    this.trainingService.getAllPromotions().subscribe(
+      (data) => {
+        this.promotions = data.map((promo) => ({
+          ...promo,
+          uniqueLabel: `BUT${promo.level}:${promo.year} ${promo.degree_name}`,
+        }));
+        console.log(this.promotions); // Pour vérifier les données
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des promotions:', error);
+      }
+    );
   }
 
   refreshTrainings(): void {
@@ -52,6 +66,7 @@ export class TrainingListComponent implements OnInit {
       this.filteredTrainings = [...this.trainings];
 
       this.isLoading = false;
+      console.log(this.filteredTrainings);
     });
   }
 
@@ -158,41 +173,55 @@ export class TrainingListComponent implements OnInit {
     training.isEditing = true;
     training.updatedName = training.name;
     training.updatedDegreeId = training.id_Degree;
+    training.updatedPromotionId = training.id_Promotion;
+    training.updatedSemester = training.semester;
     training.isLoading = false;
   }
-
   stopEditing(training: Training): void {
     training.isEditing = false;
     training.isLoading = true;
 
-    // Convert id_Degree to an integer if it's a string
+    // Convertir les valeurs si nécessaire
+
     const updatedDegreeId =
       typeof training.updatedDegreeId === 'string'
         ? parseInt(training.updatedDegreeId, 10)
         : training.updatedDegreeId;
+    const updatedPromotionId =
+      typeof training.updatedPromotionId === 'string'
+        ? parseInt(training.updatedPromotionId, 10)
+        : training.updatedPromotionId;
+    const updatedSemester =
+      typeof training.updatedSemester === 'string'
+        ? parseInt(training.updatedSemester, 10)
+        : training.updatedSemester;
 
+    // Vérifiez si des changements ont été apportés avant de lancer l'update
     if (
       training.updatedName !== training.name ||
-      updatedDegreeId !== training.id_Degree
+      updatedDegreeId !== training.id_Degree ||
+      updatedPromotionId !== training.id_Promotion ||
+      updatedSemester !== training.semester
     ) {
       this.trainingService
         .updateTraining(
           training.id,
           training.updatedName.trim(),
-          updatedDegreeId
+          updatedPromotionId,
+          training.updatedSemester
         )
         .subscribe(
           (response) => {
             // Handle success$
             if (response[1] == 200) {
               training.name = training.updatedName;
-              training.id_Degree = updatedDegreeId;
-              const selectedDegree = this.degrees.find(
-                (degree) => degree.id === updatedDegreeId
+              training.id_Promotion = updatedPromotionId;
+              training.semester = updatedSemester;
+              const promotion = this.promotions.find(
+                (p) => p.id === training.id_Promotion
               );
-              if (selectedDegree) {
-                training.degree_name = selectedDegree.name;
-              }
+              training.promotion_year = promotion ? promotion.year : 0;
+              training.degree_name = promotion?.degree_name ?? 'Inconnu';
               this.messageService.add({
                 severity: 'success',
                 summary: 'Succès',
@@ -228,8 +257,20 @@ export class TrainingListComponent implements OnInit {
     }, 1);
   }
   onTrainingCreated(training: Training): void {
-    // Utilisez les données de la formation pour mettre à jour la liste des formations
-    this.trainings.push(training); // Ajoutez la nouvelle formation à la liste
-    this.filteredTrainings = [...this.trainings]; // Mettez à jour la liste filtrée
+    // Trouver la promotion correspondante
+    const promotion = this.promotions.find(
+      (p) => p.id === training.id_Promotion
+    );
+
+    if (promotion) {
+      // Mettre à jour les informations de la promotion dans le parcours
+      training.promotion_year = promotion.year; // Mise à jour de l'année de la promotion
+      training.degree_name = promotion.degree_name; // Mise à jour du nom de la formation
+      // Vous pouvez également mettre à jour d'autres informations ici si nécessaire
+    }
+
+    // Ajouter le parcours à la liste des parcours
+    this.trainings.push(training);
+    this.filteredTrainings = [...this.trainings];
   }
 }
