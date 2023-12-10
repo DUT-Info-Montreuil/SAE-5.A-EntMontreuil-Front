@@ -35,9 +35,10 @@ export class RessourceListComponent {
   loadRessources(): void {
     this.isLoading = true;
     this.trainingService.getAllTrainings().subscribe((trainings) => {
-      this.trainings = trainings.map(
-        (t) => new Training(t.id, t.name, 0, 'default')
-      );
+      this.trainings = [
+        new Training(0, 'Sélectionner un parcours', 0, 'default'),
+        ...trainings.map((t) => new Training(t.id, t.name, 0, 'default')),
+      ];
       console.log(this.trainings);
 
       // Charger les ressources après avoir chargé les parcours

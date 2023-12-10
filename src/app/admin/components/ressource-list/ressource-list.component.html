@@ -41,16 +41,6 @@
         </span>
       </div>
 
-      <div>
-        <label for="trainingSelect">Filtrer par Parcours:</label>
-        <select [(ngModel)]="selectedTrainingId" (change)="filterByTraining()">
-          <option value="">Tous les parcours</option>
-          <option *ngFor="let training of trainings" [value]="training.id">
-            {{ training.name }}
-          </option>
-        </select>
-      </div>
-
       <p-button
         icon="pi pi-plus"
         label="Créer une ressource"
@@ -76,7 +66,17 @@
           <th>ID</th>
           <th>Nom de la ressource</th>
           <th>Couleur</th>
-          <th>Parcours</th>
+          <th>
+            Parcours
+            <p-dropdown
+              [options]="trainings"
+              [(ngModel)]="selectedTrainingId"
+              optionLabel="name"
+              optionValue="id"
+              placeholder="Sélectionner un parcours"
+              (onChange)="filterByTraining()"
+            ></p-dropdown>
+          </th>
           <th>Actions</th>
         </tr>
       </ng-template>
