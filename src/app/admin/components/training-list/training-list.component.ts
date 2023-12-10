@@ -266,7 +266,7 @@ export class TrainingListComponent implements OnInit {
       // Mettre à jour les informations de la promotion dans le parcours
       training.promotion_year = promotion.year; // Mise à jour de l'année de la promotion
       training.degree_name = promotion.degree_name; // Mise à jour du nom de la formation
-      // Vous pouvez également mettre à jour d'autres informations ici si nécessaire
+      training.id_Degree = promotion.id_Degree;
     }
 
     // Ajouter le parcours à la liste des parcours
