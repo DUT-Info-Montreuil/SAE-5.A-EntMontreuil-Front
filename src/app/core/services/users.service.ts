@@ -53,6 +53,24 @@ export class UsersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    getUserSettings(idUser: number) : Observable<any> {
+        return this.http.get<any>(this.apiURL +  `/settings/${idUser}`, this.httpOptions)
+    }
         
-    
+    updateUserSettings(idUser: number, notificationMail: boolean, notificationWebsite: boolean) : Observable<any> {
+        return this.http.put<any>(this.apiURL +  `/settings/${idUser}`, 
+        JSON.stringify({notification_mail: notificationMail, notification_website: notificationWebsite}),
+        this.httpOptions)
+        .pipe(
+            catchError((error: any) => {
+              console.error(
+                'Erreur lors de la modification des paramètres:',
+                error
+              );
+              return throwError(error);
+            })
+          );
+    }
+        
 }

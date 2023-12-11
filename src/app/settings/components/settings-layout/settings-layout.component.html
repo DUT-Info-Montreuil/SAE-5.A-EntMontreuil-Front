@@ -1,0 +1,27 @@
+<!-- settings-layout.component.html -->
+
+<h1>Paramètres</h1>
+
+<form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
+
+    <p>Sélectionnez les options que vous souhaitez:</p>
+
+    <div>
+      <label>
+        Notification par e-mail
+        <input type="checkbox" formControlName="notificationMail">
+      </label>
+    </div>
+    <div>
+      <label>
+        Notifications sur le site web
+        <input type="checkbox" formControlName="notificationWebsite">
+      </label>
+    </div>
+  
+    <div [style.margin-top.px]="20">
+        <p-button type="submit">Enregistrer</p-button>
+    </div>
+</form>
+
+<p-toast></p-toast>

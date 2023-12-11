@@ -36,6 +36,12 @@ const routes: Routes = [
           import('./admin/admin.module').then((m) => m.AdminModule),
         data: { title: 'Équipements' },
       },
+      {
+        path: 'settings',
+        loadChildren: () =>
+          import('./settings/settings.module').then((m) => m.SettingsModule),
+        data: { title: 'Paramètres' },
+      },
     ],
   },
 ];
