@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ReminderModel } from 'src/app/core/models/reminders.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ReminderService } from 'src/app/core/services/reminders.service';
@@ -9,22 +9,47 @@ import { ConfirmationService, ConfirmEventType, MessageService } from 'primeng/a
   templateUrl: './reminders-list.component.html',
   styleUrls: ['./reminders-list.component.scss'],
 })
-export class RemindersListComponent implements OnInit {
+export class RemindersListComponent implements OnInit, OnDestroy {
   rappels: ReminderModel[] = [];
+  filteredRappels: ReminderModel[] = [];
   selectedRappel: ReminderModel | null = null;
   titleModified: boolean = false;
   textModified: boolean = false;
   dateModified: boolean = false;
   intervalId: any;
-  constructor(private reminderService: ReminderService, private authService: AuthService, private confirmationService: ConfirmationService, private messageService: MessageService) {}
+  searchText: string = '';
+
+  constructor(
+    private reminderService: ReminderService,
+    private authService: AuthService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.loadReminders();
   }
 
+  ngOnDestroy(): void {
+    this.stopInterval();
+  }
+
+  filterReminders(): void {
+    if (!this.searchText) {
+      this.filteredRappels = [...this.rappels];
+    } else {
+      this.filteredRappels = this.rappels.filter(rappel => {
+        return rappel.title.toLowerCase().includes(this.searchText.toLowerCase()) ||
+          rappel.reminder_text.toLowerCase().includes(this.searchText.toLowerCase());
+      });
+    }
+  }
+
+
   loadReminders(): void {
     this.reminderService.getAllReminders().subscribe(
       (reminders) => {
+        this.filteredRappels = [...this.rappels];
         this.rappels = reminders;
         this.startInterval();
       },
@@ -36,7 +61,6 @@ export class RemindersListComponent implements OnInit {
 
   selectRappel(rappel: ReminderModel): void {
     this.selectedRappel = rappel;
-    console.log(this.selectRappel);
     this.resetFlags();
   }
 
@@ -107,6 +131,7 @@ export class RemindersListComponent implements OnInit {
       }
     );
   }
+
   deleteSelectedRappel(): void {
     if (this.selectedRappel) {
       this.confirmationService.confirm({
@@ -128,11 +153,16 @@ export class RemindersListComponent implements OnInit {
       });
     }
   }
+
   deleteReminder(): void {
     if (this.selectedRappel) {
       this.reminderService.deleteReminder(this.selectedRappel.id).subscribe(
         () => {
-          this.messageService.add({ severity: 'success', summary: 'Rappel supprimé', detail: 'Le rappel a été supprimé avec succès.' });
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Rappel supprimé',
+            detail: 'Le rappel a été supprimé avec succès.',
+          });
           console.log('Reminder deleted successfully.');
           this.loadReminders();
           this.selectedRappel = null;
@@ -143,5 +173,4 @@ export class RemindersListComponent implements OnInit {
       );
     }
   }
-  
 }
