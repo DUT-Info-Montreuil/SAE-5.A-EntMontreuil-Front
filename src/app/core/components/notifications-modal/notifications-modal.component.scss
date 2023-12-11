@@ -1,0 +1,32 @@
+
+.notification-popup {
+    background-color: white;
+    z-index: 100000;
+    width: 400px;
+    max-height: auto;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  }
+  
+  .nt-single {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .nt-single:hover {
+    background-color: var(--surface-100) !important;
+    cursor: pointer;
+  }
+  
+  .nt-content {
+    max-height: 350px; /* ajustez cette valeur selon vos besoins */
+    overflow-y: hidden; /* permet le défilement vertical si le contenu dépasse */
+    overflow-x: hidden; /* empêche le défilement horizontal */
+  }
+  
+  .nt-content:hover {
+    overflow-y: auto;
+  }
+  
+  .nt-new {
+    
+  }

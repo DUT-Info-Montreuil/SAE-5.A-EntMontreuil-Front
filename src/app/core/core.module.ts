@@ -14,11 +14,17 @@ import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CheckboxModule } from 'primeng/checkbox';
+import { BadgeModule } from 'primeng/badge';
+import { NotificationsModalComponent } from './components/notifications-modal/notifications-modal.component';
+import { SkeletonModule } from 'primeng/skeleton';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
-    SidenavComponent
+    SidenavComponent,
+    NotificationsModalComponent,
   ],
   imports: [
     CommonModule,
@@ -30,7 +36,11 @@ import { CheckboxModule } from 'primeng/checkbox';
     RippleModule,
     ButtonModule,
     InputTextModule,
-    CheckboxModule
+    CheckboxModule,
+    BadgeModule,
+    SkeletonModule,
+    DialogModule,
+    FormsModule
   ],
   exports: [
 

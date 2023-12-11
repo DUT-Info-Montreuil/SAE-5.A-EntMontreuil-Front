@@ -83,11 +83,7 @@ export class AuthService {
         }
         const decodedToken = jwtDecode<JwtPayload>(token);
 
-        // Liste des rôles autorisés
-        const validRoles = ['admin', 'user', 'teacher', 'student'];
-
-        // Vérifier si le rôle extrait du jeton est l'un des rôles valides
-        const role = validRoles.includes(decodedToken.sub.role) ? decodedToken.sub.role : '';
+        const role = decodedToken.sub.role;
 
         return role;
     }

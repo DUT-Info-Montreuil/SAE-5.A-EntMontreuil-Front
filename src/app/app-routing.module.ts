@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -34,7 +35,18 @@ const routes: Routes = [
         path: 'admin',
         loadChildren: () =>
           import('./admin/admin.module').then((m) => m.AdminModule),
-        data: { title: 'Équipements' },
+        data: { title: 'Admin' },
+      },
+      {
+        path: 'resp',
+        loadChildren: () =>
+          import('./resp/resp.module').then((m) => m.RespModule),
+        data: { title: 'Responsable EDT' },
+      },
+      {
+        path: 'notifications',
+        component: NotificationsComponent,
+        data: { title: 'Notifications' },
       },
       {
         path: 'settings',
@@ -50,4 +62,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
