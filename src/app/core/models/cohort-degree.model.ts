@@ -14,6 +14,7 @@ export interface Promotion {
 export interface Student {
     first_name: string;
     id: number;
+    id_promotion: number;
     last_name: string;
     td: TD[];
     tp: TP[];

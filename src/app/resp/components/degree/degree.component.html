@@ -10,6 +10,7 @@
                 <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
                 <th pSortableColumn="year">Année <p-sortIcon field="year"></p-sortIcon></th>
                 <th pSortableColumn="level">Niveau <p-sortIcon field="level"></p-sortIcon></th>
+                <th pSortableColumn="student_count">Nb. Étudiants <p-sortIcon field="student_count"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
@@ -18,6 +19,7 @@
                 <td>{{promotion.id}}</td>
                 <td>{{promotion.year}}</td>
                 <td>{{promotion.level}}</td>
+                <td>{{getStudentCountByPromotion(promotion.id)}}</td>
                 <td></td>
             </tr>
         </ng-template>

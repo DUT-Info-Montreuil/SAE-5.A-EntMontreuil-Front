@@ -31,6 +31,10 @@ export class DegreeComponent implements OnInit {
     });
   }
 
+  getStudentCountByPromotion(id_promotion: number): number {
+    return this.students?.filter(student => student.id_promotion === id_promotion).length || 0;
+  }
+
   get promotions() {
     return this.degreeInfo?.promotions;
   }
