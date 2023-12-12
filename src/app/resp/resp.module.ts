@@ -10,7 +10,10 @@ import { PromotionComponent } from './components/promotion/promotion.component';
 import { DegreeComponent } from './components/degree/degree.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
-
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
+import { TabViewModule } from 'primeng/tabview';
+import { BadgeModule } from 'primeng/badge';
 
 
 @NgModule({
@@ -25,7 +28,11 @@ import { TableModule } from 'primeng/table';
     TreeModule,
     ToastModule,
     HttpClientModule,
-    TableModule
+    TableModule,
+    ButtonModule,
+    MenuModule,
+    TabViewModule,
+    BadgeModule
   ],
   providers: [
     CohortService,

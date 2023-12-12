@@ -15,7 +15,10 @@ export interface Student {
     first_name: string;
     id: number;
     id_promotion: number;
+    id_student: number;
+    isApprentice: boolean;
     last_name: string;
+    promotion: Promotion;
     td: TD[];
     tp: TP[];
     username: string;

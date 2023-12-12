@@ -1,20 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { Degree } from 'src/app/core/models/cohort-degree.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
 
 @Component({
   selector: 'app-degree',
   templateUrl: './degree.component.html',
-  styleUrls: ['./degree.component.scss']
+  styleUrls: ['./degree.component.scss'],
+  styles: [`
+        :host ::ng-deep .p-tabview-panels {
+            padding: 0;
+            padding-top: 1.5em;
+        }
+        :host ::ng-deep th {
+            background-color: transparent !important;
+        }
+    `]
 })
 export class DegreeComponent implements OnInit {
 
   degreeInfo!: Degree;
 
+  menuItemsStudents: MenuItem[] | undefined; // Menu des actions pour les étudiants
+
   constructor(private route: ActivatedRoute, private cohortService: CohortService) { }
 
   ngOnInit() {
+    // Récupérer les informations de la formation (degree) depuis l'API
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
@@ -29,6 +42,32 @@ export class DegreeComponent implements OnInit {
         );
       }
     });
+
+    // Créer le menu des actions pour les étudiants
+    this.menuItemsStudents = [
+      {
+        label: 'Voir',
+        icon: 'pi pi-eye',
+        command: () => {
+
+        }
+      },
+      {
+        label: 'Éditer',
+        icon: 'pi pi-pencil',
+        command: () => {
+
+        }
+      },
+      {
+        label: 'Retirer de la formation',
+        icon: 'pi pi-times',
+        command: () => {
+
+        }
+      }
+    ];
+
   }
 
   getStudentCountByPromotion(id_promotion: number): number {
@@ -42,6 +81,5 @@ export class DegreeComponent implements OnInit {
   get students() {
     return this.degreeInfo?.students;
   }
-
 
 }
