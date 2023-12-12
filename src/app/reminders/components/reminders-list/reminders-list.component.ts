@@ -49,8 +49,8 @@ export class RemindersListComponent implements OnInit, OnDestroy {
   loadReminders(): void {
     this.reminderService.getAllReminders().subscribe(
       (reminders) => {
-        this.filteredRappels = [...this.rappels];
         this.rappels = reminders;
+        this.filteredRappels = [...this.rappels];
         this.startInterval();
       },
       (error: any) => {
@@ -139,7 +139,7 @@ export class RemindersListComponent implements OnInit, OnDestroy {
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          this.deleteReminder();
+          this.deleteReminder(this.selectedRappel!); // Use the non-null assertion operator
         },
         reject: (type: any) => {
           switch (type) {
@@ -153,10 +153,9 @@ export class RemindersListComponent implements OnInit, OnDestroy {
       });
     }
   }
-
-  deleteReminder(): void {
-    if (this.selectedRappel) {
-      this.reminderService.deleteReminder(this.selectedRappel.id).subscribe(
+  deleteReminder(reminder?: ReminderModel): void {
+    if (reminder) {
+      this.reminderService.deleteReminder(reminder.id).subscribe(
         () => {
           this.messageService.add({
             severity: 'success',

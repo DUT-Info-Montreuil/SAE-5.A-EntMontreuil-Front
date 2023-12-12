@@ -17,14 +17,13 @@
       <!-- Barre de recherche -->
       <input pInputText class="w-full mb-4 mt-2" type="text" placeholder="Rechercher un rappel" [(ngModel)]="searchText"
         (ngModelChange)="filterReminders()" />
-
+    
       <div pRipple *ngFor="let rappel of filteredRappels" (click)="selectRappel(rappel)"
         class="rappelItem p-3 border-round mb-3 pt-3">
         <h1 class="text-lg mb-3 font-semibold">{{ rappel.title }}</h1>
         <div class="flex justify-content-between -mt-2">
           <p class="text-sm">{{ rappel.reminder_date | date:'E d MMM yyyy' }}</p>
-          <p-button (click)="deleteSelectedRappel()" icon="pi pi-trash" [rounded]="true" [text]="true"
-            severity="danger"></p-button>
+          <p-button (click)="deleteSelectedRappel()" icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"></p-button>
         </div>
       </div>
     </div>
