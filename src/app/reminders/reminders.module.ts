@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { Ripple, RippleModule } from 'primeng/ripple';
 @NgModule({
   declarations: [
     RemindersListComponent,
@@ -16,7 +19,10 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     ConfirmDialogModule,
     ToastModule,
+    InputTextModule,
+    ButtonModule,
+    RippleModule
   ],
-  providers: [ MessageService],
+  providers: [MessageService],
 })
 export class RemindersModule { }
