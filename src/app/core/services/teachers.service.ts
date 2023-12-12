@@ -52,4 +52,26 @@ export class TeachersService implements OnInit {
             catchError(this.errorHandler)
         );
     }
+
+    getHoursNumber(id:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hours`, this.httpOptions)
+    }
+
+    getNumberOfHoursLeft(id:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hoursleft`, this.httpOptions)
+    }
+
+    getNumberOfHoursPassed(id:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hourspassed`, this.httpOptions)
+    }
+
+    getHoursByMonth(id:number,year:string,month:string): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hours/${year}/${month}`, this.httpOptions)
+    }
+
+    getHoursByResource(id_teacher:number,id_resource:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hours/${id_resource}`, this.httpOptions)
+    }
+
+
 }

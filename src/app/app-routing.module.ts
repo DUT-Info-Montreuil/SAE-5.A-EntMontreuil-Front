@@ -54,6 +54,12 @@ const routes: Routes = [
           import('./settings/settings.module').then((m) => m.SettingsModule),
         data: { title: 'Paramètres' },
       },
+      {
+        path: 'statistics',
+        loadChildren: () =>
+          import('./statistics/statistics.module').then((m) => m.StatisticsModule),
+        data: { title: 'Statistiques' },
+      },
     ],
   },
 ];
