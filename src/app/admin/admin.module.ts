@@ -42,6 +42,7 @@ import { TableUsersComponent } from './components/table-users/table-users.compon
 import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
 import { CreateRessourceComponent } from './components/create-ressource/create-ressource.component';
+import { RoleComponent } from './components/role/role.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { CreateRessourceComponent } from './components/create-ressource/create-r
     TableUsersComponent,
     RessourceListComponent,
     CreateRessourceComponent,
+    RoleComponent,
   ],
   imports: [
     CommonModule,

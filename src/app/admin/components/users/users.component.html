@@ -88,14 +88,11 @@
 </p-table>
 
 <p-button routerLink="add_user" label="Ajouter un utilisateur" [rounded]="true" ></p-button>
+<p-button label="Gestion des rôles" [rounded]="true" (click)="openModalRole()"></p-button>
 
-
+<!--MODAL MODIFIER UN UTILISATEUR-->
 <div *ngIf="userModal" >
     <p-dialog header="Modifier cette utilisateur" [(visible)]="displayModalUpdate" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-
-
-        <!--------------------------------->
-        
         <form  [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
             <div >
                 <div class="card p-fluid">
@@ -159,11 +156,7 @@
         
             </div>
         </form>
-
-
-
     </p-dialog>
-
 </div>
 
 
@@ -171,7 +164,7 @@
 
 
 
-
+<!--MODAL SUPPRIMER UN UTILISATEUR-->
 <p-dialog header="Supprimer un utilisateur" [(visible)]="displayModalDelete" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }">
     <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
       <p>Supprimer l'utilisateur <span [style.fontWeight]="'bold'">{{ username }}</span></p>
@@ -181,11 +174,13 @@
         <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
       </div>
     </div>
-  </p-dialog>
+</p-dialog>
   
 
-
-
+<!--MODAL ROLE-->
+<p-dialog header="Gestion des rôles" [(visible)]="displayModalRole" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <app-role></app-role>
+</p-dialog>
 
 
 

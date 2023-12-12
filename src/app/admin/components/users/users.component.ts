@@ -19,6 +19,7 @@ export class UsersComponent implements OnInit {
   displayModalUpdate : boolean = false;
   oldUsername !: string;
   displayModalDelete : boolean = false;
+  displayModalRole : boolean = false;
   user_id!:number;
   username!:string;
   
@@ -147,6 +148,10 @@ export class UsersComponent implements OnInit {
         }
       }
     });
+  }
+
+  openModalRole() {
+    this.displayModalRole = true;
   }
 
 }
