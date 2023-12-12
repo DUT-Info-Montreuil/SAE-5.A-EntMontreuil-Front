@@ -1,0 +1,49 @@
+<div *ngIf="degreeInfo" class="p-2 pl-5 pr-5">
+    <h1 class="font-semibold">BUT {{ degreeInfo.name }}</h1>
+    <p>Nombre de promotions : {{ promotions.length }}</p>
+    <p>Nombre d'étudiants : {{ students.length }}</p>
+
+    <h3>Promotions</h3>
+    <p-table [value]="promotions" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="year">Année <p-sortIcon field="year"></p-sortIcon></th>
+                <th pSortableColumn="level">Niveau <p-sortIcon field="level"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-promotion>
+            <tr>
+                <td>{{promotion.id}}</td>
+                <td>{{promotion.year}}</td>
+                <td>{{promotion.level}}</td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <h3>Etudiants</h3>
+    <p-table [value]="students" [tableStyle]="{'min-width': '60rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="firstname">Nom <p-sortIcon field="firstname"></p-sortIcon></th>
+                <th pSortableColumn="lastname">Prénom <p-sortIcon field="lastname"></p-sortIcon></th>
+                <th pSortableColumn="td">TD <p-sortIcon field="td"></p-sortIcon></th>
+                <th pSortableColumn="tp">TP <p-sortIcon field="tp"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+            <tr>
+                <td>{{student.id}}</td>
+                <td>{{student.first_name}}</td>
+                <td>{{student.last_name}}</td>
+                <td>{{student.td[0].name}}</td>
+                <td>{{student.tp[0].name}}</td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

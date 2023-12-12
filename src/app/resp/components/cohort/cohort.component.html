@@ -1,9 +1,8 @@
 <div class="container-large">
     <div class="flex gap-5">
-        <div class="w-20rem">
+        <div class="w-30rem">
             <p-tree [value]="files" class="w-full md:w-20rem" [filter]="true" filterMode="strict"
                 filterPlaceholder="Rechercher" selectionMode="single" [(selection)]="selectedFile"
-                (onNodeExpand)="nodeExpand($event)" (onNodeCollapse)="nodeCollapse($event)"
                 (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
 
                 <ng-template let-node pTemplate="url">
@@ -18,7 +17,7 @@
             </p-tree>
         </div>
 
-        <div>
+        <div class="w-full border-round" style="border: 1px solid #dee2e6">
             <router-outlet></router-outlet>
         </div>
     </div>

@@ -32,16 +32,8 @@ export class CohortComponent implements OnInit {
     this.cohortService.getFiles().then((data) => (this.files = data));
   }
 
-  nodeExpand(event: any) {
-
-  }
-
-  nodeCollapse(event: any) {
-
-  }
-
   nodeSelect(event: any) {
-    this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
+    // this.messageService.add({ severity: 'info', summary: 'Node Selected', detail: event.node.label });
 
     if (event.node.url) {
       this.router.navigateByUrl(event.node.url); // Utilisez l'URL pour la navigation
@@ -49,6 +41,6 @@ export class CohortComponent implements OnInit {
   }
 
   nodeUnselect(event: any) {
-    this.messageService.add({ severity: 'info', summary: 'Node Unselected', detail: event.node.label });
+    // this.messageService.add({ severity: 'info', summary: 'Node Unselected', detail: event.node.label });
   }
 }
