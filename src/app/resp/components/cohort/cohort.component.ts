@@ -37,7 +37,14 @@ export class CohortComponent implements OnInit {
   constructor(private cohortService: CohortService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit() {
-    this.cohortService.getFiles().then((data) => (this.files = data));
+    this.cohortService.getFiles().subscribe(
+      data => {
+        this.files = data;
+      },
+      error => {
+        console.error('Erreur lors de la récupération des données de l’arbre:', error);
+      }
+    );
   }
 
   nodeSelect(event: any) {
