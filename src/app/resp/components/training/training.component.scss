@@ -1,0 +1,13 @@
+.content {
+  height: 88dvh;
+  overflow: auto;
+  overflow-y: hidden;
+}
+
+.content:hover {
+  overflow-y: auto;
+}
+
+.badge {
+  color: #3b82f6;
+}

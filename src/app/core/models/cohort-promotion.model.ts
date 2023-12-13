@@ -38,4 +38,6 @@ export interface Training {
   id: number;
   name: string;
   semester: number;
+  student_count: number;
+  td_count: number;
 }

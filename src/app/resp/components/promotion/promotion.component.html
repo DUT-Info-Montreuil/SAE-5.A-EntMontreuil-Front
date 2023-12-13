@@ -50,6 +50,9 @@
             <th pSortableColumn="student_count">
               Étudiants inscrits <p-sortIcon field="student_count"></p-sortIcon>
             </th>
+            <th pSortableColumn="td_count">
+              Nombre de TD <p-sortIcon field="td_count"></p-sortIcon>
+            </th>
             <th></th>
           </tr>
         </ng-template>
@@ -58,7 +61,8 @@
             <td>
               {{ training.name }}
             </td>
-            <td>getstudentcountbytraining</td>
+            <td>{{ training.student_count }}</td>
+            <td>{{ training.td_count }}</td>
             <td>
               <p-button
                 icon="pi pi-ellipsis-v"

@@ -14,13 +14,15 @@ import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
+import { TrainingComponent } from './components/training/training.component';
 
 
 @NgModule({
   declarations: [
     CohortComponent,
     PromotionComponent,
-    DegreeComponent
+    DegreeComponent,
+    TrainingComponent
   ],
   imports: [
     CommonModule,
