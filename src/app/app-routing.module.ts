@@ -54,6 +54,14 @@ const routes: Routes = [
           import('./settings/settings.module').then((m) => m.SettingsModule),
         data: { title: 'Paramètres' },
       },
+      {
+        path: 'courses-call',
+        loadChildren: () =>
+          import('./courses-call/courses-call.module').then(
+            (m) => m.CoursesCallModule
+          ),
+        data: { title: 'Appel' },
+      }
     ],
   },
 ];
