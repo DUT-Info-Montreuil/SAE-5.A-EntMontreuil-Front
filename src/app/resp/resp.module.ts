@@ -13,9 +13,15 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
-
+import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 @NgModule({
-  declarations: [CohortComponent, PromotionComponent, ManageCoursesComponent],
+  declarations: [
+    CohortComponent,
+    PromotionComponent,
+    ManageCoursesComponent,
+    SimpleCalendarComponent,
+  ],
   imports: [
     CommonModule,
     RespRoutingModule,
@@ -24,6 +30,7 @@ import { DropdownModule } from 'primeng/dropdown';
     ToastModule,
     CardModule,
     DropdownModule,
+    FullCalendarModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,

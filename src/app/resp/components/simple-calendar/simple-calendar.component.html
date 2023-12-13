@@ -1,0 +1,12 @@
+<div class="dropdown-section">
+  <p-dropdown
+    [options]="promotions"
+    [(ngModel)]="selectedPromotionId"
+    (onChange)="onPromotionChange()"
+    optionLabel="uniqueLabel"
+    optionValue="id"
+    placeholder="Sélectionnez une promotion"
+  >
+  </p-dropdown>
+</div>
+<full-calendar [options]="calendarOptions"></full-calendar>

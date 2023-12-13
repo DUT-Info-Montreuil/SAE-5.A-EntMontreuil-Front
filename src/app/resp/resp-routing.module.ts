@@ -4,6 +4,7 @@ import { AuthGuard } from '../core/guards/auth.guard';
 import { CohortComponent } from './components/cohort/cohort.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
+import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'courses',
-    component: ManageCoursesComponent,
+    component: SimpleCalendarComponent,
     canActivate: [AuthGuard],
   },
 ];
