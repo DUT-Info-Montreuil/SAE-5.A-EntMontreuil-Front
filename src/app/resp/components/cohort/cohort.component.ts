@@ -23,6 +23,14 @@ import { CohortService } from 'src/app/core/services/cohort.service';
 })
 export class CohortComponent implements OnInit {
 
+  showTreeCohort = true;
+  hoverOnPipeIcon = false;
+
+  toggleTreeCohort() {
+    this.showTreeCohort = !this.showTreeCohort;
+  }
+
+
   files!: TreeNode[];
   selectedFile!: TreeNode;
 

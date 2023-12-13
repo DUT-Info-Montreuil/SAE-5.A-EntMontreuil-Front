@@ -1,0 +1,11 @@
+.TreeCohort {
+    transition: transform 0.3s ease-in-out;
+}
+
+.TreeCohort-hide {
+    transform: translateX(-100%);
+}
+
+.TreeCohort-show {
+    transform: translateX(0);
+}
