@@ -7,6 +7,7 @@ import { User } from 'src/app/core/models/user.model';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { RoleComponent } from '../role/role.component';
+import { SharedService } from 'src/app/core/services/shared.service';
 
 @Component({
   selector: 'app-users',
@@ -32,13 +33,16 @@ export class UsersComponent implements OnInit {
   ErrorMessage: string = '';
   roleString !: string;
 
-  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService){ 
+  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService, private sharedService: SharedService){ 
     
   }
 
 
   ngOnInit(): void {
     this.fetchAllUsers();
+    this.sharedService.onUpdateUsers().subscribe(() => {
+      this.fetchAllUsers();
+    });
   }
 
   fetchAllUsers(){

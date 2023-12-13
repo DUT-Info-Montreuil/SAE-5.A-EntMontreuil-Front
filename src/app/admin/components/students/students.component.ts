@@ -78,7 +78,7 @@ export class StudentsComponent {
 
       next: (loginResponse) => {
         if (loginResponse.id) {
-          location.reload();
+          this.fetchAllUsers();
 
         }
       },
@@ -118,7 +118,7 @@ export class StudentsComponent {
 
       next: (loginResponse) => {
         if (loginResponse.id) {
-          location.reload();
+          this.fetchAllUsers();
         }
       },
       error: (loginError) => {

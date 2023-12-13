@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Role } from 'src/app/core/models/role.model';
 import { RolesService } from 'src/app/core/services/roles.service';
+import { SharedService } from 'src/app/core/services/shared.service';
 
 @Component({
   selector: 'app-role',
@@ -14,7 +15,7 @@ export class RoleComponent implements OnInit{
   roleForm!: FormGroup;
   ErrorMessage !: string;
 
-  constructor(private rolesService : RolesService,private formBuilder: FormBuilder, private messageService: MessageService){}
+  constructor(private rolesService : RolesService,private formBuilder: FormBuilder, private messageService: MessageService, private sharedService: SharedService){}
 
   ngOnInit(): void {
     this.roleForm = this.formBuilder.group({
@@ -71,6 +72,7 @@ export class RoleComponent implements OnInit{
             this.rolesService.getRoles().subscribe((data) => {
               this.allRoles = data;
             });
+            this.sharedService.triggerUpdateUsers();
             this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Rôle modifié avec succès"});
           }
         },
@@ -97,6 +99,7 @@ export class RoleComponent implements OnInit{
           this.rolesService.getRoles().subscribe((data) => {
             this.allRoles = data;
           });
+          this.sharedService.triggerUpdateUsers();
           this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Rôle supprimé avec succès"});
         }
       },
