@@ -4,6 +4,7 @@ export interface Promotion {
   level: number;
   degree: Degree;
   students: Student[];
+  trainings: Training[];
 }
 
 export interface Degree {
@@ -31,4 +32,10 @@ export interface TD {
 export interface TP {
   id_tp: number;
   name: string;
+}
+
+export interface Training {
+  id: number;
+  name: string;
+  semester: number;
 }
