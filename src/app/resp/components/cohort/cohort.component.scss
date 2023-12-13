@@ -1,15 +1,33 @@
 .TreeCohort {
-    transition: transform 0.3s ease-in-out;
+  transition: transform 0.3s ease-in-out;
 }
 
 .TreeCohort-hide {
-    transform: translateX(-100%);
+  transform: translateX(-100%);
 }
 
 .TreeCohort-show {
-    transform: translateX(0);
+  transform: translateX(0);
 }
 
-.pipe-icon:hover, .chevron-left-icon:hover, .chevron-right-icon:hover {
-    color: #757575 !important;
+.pipe-icon:hover,
+.chevron-left-icon:hover,
+.chevron-right-icon:hover {
+  color: #757575 !important;
+}
+
+.tree-node {
+  position: relative;
+}
+
+.plus-button {
+  position: absolute;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.tree-node:hover .plus-button {
+  display: block;
 }
