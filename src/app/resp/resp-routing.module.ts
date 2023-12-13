@@ -5,6 +5,7 @@ import { CohortComponent } from './components/cohort/cohort.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { DegreeComponent } from './components/degree/degree.component';
 import { TrainingComponent } from './components/training/training.component';
+import { TdComponent } from './components/td/td.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
         component: TrainingComponent,
         data: { title: 'Training' },
       },
+      {
+        path: 'td/:id',
+        component: TdComponent,
+        data: { title: 'TD' },
+      },
     ],
   },
 ];
@@ -40,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class RespRoutingModule {}
+export class RespRoutingModule { }

@@ -20,6 +20,7 @@ export interface Student {
   last_name: string;
   isApprentice: boolean;
   id_promotion: number;
+  training: TrainingStudent;
   td: TD[];
   tp: TP[];
 }
@@ -40,4 +41,10 @@ export interface Training {
   semester: number;
   student_count: number;
   td_count: number;
+}
+
+export interface TrainingStudent {
+  id: number;
+  name: string;
+  semester: number;
 }
