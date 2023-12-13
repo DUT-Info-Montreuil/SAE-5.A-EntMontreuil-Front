@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
+import { Role } from 'src/app/core/models/role.model';
 import { RolesService } from 'src/app/core/services/roles.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { RolesService } from 'src/app/core/services/roles.service';
   styleUrls: ['./role.component.scss']
 })
 export class RoleComponent implements OnInit{
-  allRoles !: any
+  allRoles !: Role[]
   roleForm!: FormGroup;
   ErrorMessage !: string;
 
@@ -35,13 +36,13 @@ export class RoleComponent implements OnInit{
               this.allRoles = updatedRoles;
               this.roleForm.reset(); 
             });
-            this.messageService.add({ severity: 'success', summary: 'Success', detail: "Rôle ajouté avec succès"});
+            this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Rôle ajouté avec succès"});
           }
         },
         error: (loginError) => {
     
           if (loginError.status === 400) {
-            this.messageService.add({ severity: 'error', summary: 'error', detail: "Le rôle existe déjà"});
+            this.messageService.add({ severity: 'error', summary: 'ERREUR', detail: "Le rôle existe déjà"});
             
           } 
         }
@@ -49,5 +50,64 @@ export class RoleComponent implements OnInit{
         
   
     }
+  }
+
+  startUpdateRole(role : Role){
+    role.isEditing = true;
+    role.updateName = role.name;
+  }
+
+  stopUpdateRole(role : Role){
+    role.isEditing = false;
+    role.isDeleting = false;
+  }
+
+  updateRole(role : Role){
+    role.isEditing = false;
+    if (role.name !== role.updateName){
+      this.rolesService.updateRole(role.updateName , role.id).subscribe({
+        next: (Response) => {
+          if (Response) {
+            this.rolesService.getRoles().subscribe((data) => {
+              this.allRoles = data;
+            });
+            this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Rôle modifié avec succès"});
+          }
+        },
+        error: (loginError) => {
+    
+          if (loginError.status === 400) {
+            this.messageService.add({ severity: 'error', summary: 'ERREUR', detail: "Le rôle existe déjà"});
+            
+          } 
+        }
+      });
+    }
+  }
+
+  startDeleteRole(role : Role){
+    role.isDeleting = true;
+  }
+
+  deleteRole(role : Role){
+    role.isDeleting = false;
+    this.rolesService.deleteRole( role.id).subscribe({
+      next: (Response) => {
+        if (Response) {
+          this.rolesService.getRoles().subscribe((data) => {
+            this.allRoles = data;
+          });
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Rôle supprimé avec succès"});
+        }
+      },
+      error: (loginError) => {
+  
+        if (loginError.status === 400) {
+          this.messageService.add({ severity: 'error', summary: 'ERREUR', detail: "Erreur inconnue"});
+          
+        } 
+      }
+    });
+  
   }
 }

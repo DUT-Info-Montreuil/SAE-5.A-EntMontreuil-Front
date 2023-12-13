@@ -27,6 +27,14 @@ export class RolesService implements OnInit {
     }
 
     addRole(name:string): Observable<any> {
-        return this.http.post<Role[]>(this.apiURL + '/roles', JSON.stringify({name}),this.httpOptions)
+        return this.http.post<any>(this.apiURL + '/roles', JSON.stringify({name}),this.httpOptions)
+    }
+
+    updateRole(name:string, id:number): Observable<Role> {
+        return this.http.patch<Role>(this.apiURL + `/roles/${id}`, JSON.stringify({name}),this.httpOptions)
+    }
+
+    deleteRole(id:number): Observable<any> {
+        return this.http.delete<any>(this.apiURL + `/roles/${id}`,this.httpOptions)
     }
 }

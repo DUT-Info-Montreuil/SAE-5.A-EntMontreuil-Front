@@ -40,9 +40,17 @@
 
 <ng-template pTemplate="body" let-role>
     <tr>
-        <td>{{ role.name}}</td>
-        <td><p-button *ngIf="role.name  != 'étudiant' && role.name  != 'enseignant' && role.name  != 'utilisateur'" icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info"></p-button></td>
-        <td><p-button *ngIf="role.name  != 'étudiant' && role.name  != 'enseignant' && role.name  != 'utilisateur'" icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " ></p-button></td>
+        <td *ngIf="!role.isEditing">{{ role.name}}</td>
+        <td *ngIf="role.isEditing"><input pInputText type="text" [(ngModel)]="role.updateName"/></td>
+        <td>
+                <p-button *ngIf="role.isEditing " icon="pi pi-check" [rounded]="true" severity="success" label="Modifier" (click) = "updateRole(role)"></p-button>
+                <p-button *ngIf="role.isDeleting " icon="pi pi-trash" [rounded]="true" severity="danger" label="Supprimer" (click) = "deleteRole(role)"></p-button>
+                <p-button *ngIf="role.name  != 'étudiant' && role.name  != 'enseignant' && role.name  != 'utilisateur' && !role.isEditing && !role.isDeleting" icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" (click)="startUpdateRole(role)"></p-button>
+        </td>
+        <td>
+                <p-button *ngIf="role.isEditing || role.isDeleting" icon="pi pi-times" [rounded]="true" severity="secondary" label="Annuler" (click)="stopUpdateRole(role)" ></p-button>
+                <p-button *ngIf="role.name  != 'étudiant' && role.name  != 'enseignant' && role.name  != 'utilisateur' && !role.isEditing && !role.isDeleting" icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="startDeleteRole(role)" ></p-button>
+        </td>
     </tr>
    
 

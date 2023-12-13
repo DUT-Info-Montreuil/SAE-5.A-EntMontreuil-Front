@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -6,6 +6,7 @@ import { Role } from 'src/app/core/models/role.model';
 import { User } from 'src/app/core/models/user.model';
 import { RolesService } from 'src/app/core/services/roles.service';
 import { UsersService } from 'src/app/core/services/users.service';
+import { RoleComponent } from '../role/role.component';
 
 @Component({
   selector: 'app-users',
@@ -38,9 +39,6 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchAllUsers();
-    this.rolesService.getRoles().subscribe((data) => {
-      this.allRoles = data;
-    });
   }
 
   fetchAllUsers(){
@@ -69,6 +67,9 @@ export class UsersComponent implements OnInit {
       ttmanager: [user.isTTManager],
       role: [user.role, Validators.required]
     });
+    this.rolesService.getRoles().subscribe((data) => {
+      this.allRoles = data;
+    });
   }
 
   onSubmit(){
@@ -84,8 +85,8 @@ export class UsersComponent implements OnInit {
 
       next: (loginResponse) => {
         if (loginResponse.id) {
-          location.reload();
-          
+          this.fetchAllUsers();
+          this.displayModalUpdate = false;
         }
       },
       error: (loginError) => {
@@ -135,7 +136,8 @@ export class UsersComponent implements OnInit {
 
       next: (loginResponse) => {
         if (loginResponse.id) {
-          location.reload();
+          this.fetchAllUsers();
+          this.displayModalDelete = false;
         }
       },
       error: (loginError) => {
