@@ -26,32 +26,32 @@ const routes: Routes = [
         component: PromotionComponent,
         data: { title: 'Promotion' },
       },
+      {
+        path: 'degree/:id',
+        component: DegreeComponent,
+        data: { title: 'Degree' },
+      },
+      {
+        path: 'training/:id',
+        component: TrainingComponent,
+        data: { title: 'Training' },
+      },
+      {
+        path: 'td/:id',
+        component: TdComponent,
+        data: { title: 'TD' },
+      },
+      {
+        path: 'tp/:id',
+        component: TpComponent,
+        data: { title: 'TP' },
+      },
     ],
   },
   {
     path: 'courses',
     component: SimpleCalendarComponent,
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'degree/:id',
-    component: DegreeComponent,
-    data: { title: 'Degree' },
-  },
-  {
-    path: 'training/:id',
-    component: TrainingComponent,
-    data: { title: 'Training' },
-  },
-  {
-    path: 'td/:id',
-    component: TdComponent,
-    data: { title: 'TD' },
-  },
-  {
-    path: 'tp/:id',
-    component: TpComponent,
-    data: { title: 'TP' },
   },
 ];
 
