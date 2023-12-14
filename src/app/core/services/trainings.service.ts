@@ -18,9 +18,9 @@ export class TrainingService implements OnInit {
     }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   // Get all trainings
   getAllTrainings(): Observable<Training[]> {

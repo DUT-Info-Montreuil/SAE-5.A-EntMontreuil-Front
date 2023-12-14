@@ -16,7 +16,7 @@ export class DegreeService {
     }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // Get all degrees
   getAllDegrees(): Observable<Degree[]> {
