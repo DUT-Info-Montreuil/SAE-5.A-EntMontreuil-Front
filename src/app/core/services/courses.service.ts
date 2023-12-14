@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Course } from '../models/course.model';
 
@@ -90,5 +90,31 @@ export class CourseService {
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
+  }
+
+  getGroupName(id_group: number, groupType: string): Observable<any[]> {
+    let endpoint: string;
+    switch (groupType) {
+      case 'promotion':
+        endpoint = `${this.apiURL}/promotions/${id_group}`;
+        break;
+      case 'training':
+        endpoint = `${this.apiURL}/trainings/${id_group}`;
+        break;
+      case 'td':
+        endpoint = `${this.apiURL}/td/${id_group}`;
+        break;
+      case 'tp':
+        endpoint = `${this.apiURL}/tp/${id_group}`;
+        break;
+      // Ajoutez d'autres cas si nécessaire
+      default:
+        throw new Error(`Type de groupe non pris en charge: ${groupType}`);
+    }
+
+    return this.http.get<any>(endpoint, this.httpOptions).pipe(
+      catchError(this.handleError),
+      map((response: any) => response.name) // Supposons que la réponse contient un champ 'name'
+    );
   }
 }

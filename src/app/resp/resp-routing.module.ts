@@ -26,7 +26,7 @@ const routes: Routes = [
   },
   {
     path: 'courses',
-    component: ManageCoursesComponent,
+    component: SimpleCalendarComponent,
     canActivate: [AuthGuard],
   },
 ];

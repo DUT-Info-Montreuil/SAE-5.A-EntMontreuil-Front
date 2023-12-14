@@ -70,58 +70,25 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByPromotion(this.selectedPromotionId)
         .subscribe((data: any) => {
-          const coursesData = data.courses;
           console.log(data);
-          if (Array.isArray(coursesData)) {
-            this.events = [
-              ...coursesData.map((courseData: any) => {
-                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-                course.dateCourse = courseData.courses.dateCourse;
-                course.startTime = courseData.courses.startTime;
-                course.endTime = courseData.courses.endTime;
-                // Construction des chaînes de date et d'heure
-                const startDateTime = `${course.dateCourse}T${course.startTime}`;
-                const endDateTime = `${course.dateCourse}T${course.endTime}`;
-
-                // Conversion en objets Date
-                const startDate = parse(
-                  startDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                const endDate = parse(
-                  endDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-
-                // Création de l'événement de calendrier
-                return {
-                  title: 'promo' + course.resource.name, // Nom de la ressource pour le titre
-                  start: startDate,
-                  end: endDate,
-                  color: {
-                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
-                    secondary: course.resource.color || '#ffcc00',
-                  },
-                  meta: {
-                    // Informations supplémentaires
-                    resourceName: course.resource.name,
-                    teacherNames: 'teacherNames',
-                    classroomName: 'classroomName',
-                  },
-                };
-              }),
-            ];
-            console.log('events'); // Pour vérifier les données
-            console.log(this.events); // Pour déboguer
-            this.changeDetectorRef.detectChanges();
-          } else {
-            console.error(
-              'Les données de cours ne sont pas un tableau valide:',
-              coursesData
-            );
+          const coursePromotionData = data.courses.courses_promotion;
+          const courseTrainingData = data.courses.courses_training;
+          const courseTDData = data.courses.courses_td;
+          const courseTPData = data.courses.courses_tp;
+          this.events = [];
+          for (let i = 0; i < courseTrainingData.length; i++) {
+            this.createEventsFromCourses(courseTrainingData[i]);
           }
+          for (let i = 0; i < courseTDData.length; i++) {
+            this.createEventsFromCourses(courseTDData[i]);
+          }
+          for (let i = 0; i < courseTPData.length; i++) {
+            this.createEventsFromCourses(courseTPData[i]);
+          }
+          this.createEventsFromCourses(coursePromotionData);
+
+          this.changeDetectorRef.detectChanges();
+          console.log(this.events); // Pour vérifier les données
         });
     }
   }
@@ -208,5 +175,45 @@ export class ManageCoursesComponent {
     this.filteredPromotions = this.promotions.filter(
       (promo) => promo.id_Degree === degreeId
     );
+  }
+
+  createEventsFromCourses(coursesData: any) {
+    const newEvents = coursesData.map((courseData: any) => {
+      const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
+      course.dateCourse = courseData.courses.dateCourse;
+      course.startTime = courseData.courses.startTime;
+      course.endTime = courseData.courses.endTime;
+
+      // Construction des chaînes de date et d'heure
+      const startDateTime = `${course.dateCourse}T${course.startTime}`;
+      const endDateTime = `${course.dateCourse}T${course.endTime}`;
+
+      // Conversion en objets Date
+      const startDate = parse(
+        startDateTime,
+        "yyyy-MM-dd'T'HH:mm:ss",
+        new Date()
+      );
+      const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
+
+      // Création de l'événement de calendrier
+      return {
+        title: course.resource.name, // Nom de la ressource pour le titre
+        start: startDate,
+        end: endDate,
+        color: {
+          primary: '#000000', // Utilisez une couleur par défaut si nécessaire
+          secondary: course.resource.color || '#ffcc00',
+        },
+        meta: {
+          // Informations supplémentaires
+          resourceName: course.resource.name,
+          teacherNames: 'teacherNames',
+          classroomName: 'classroomName',
+        },
+      };
+    });
+
+    this.events.push(...newEvents);
   }
 }
