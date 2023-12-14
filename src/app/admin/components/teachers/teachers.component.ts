@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Teacher } from 'src/app/core/models/teachers.model';
 import { TeachersService } from 'src/app/core/services/teachers.service';
 
@@ -25,7 +26,7 @@ export class TeachersComponent {
   old_initial!:string;
   old_nip!:string;
 
-  constructor(private teachersServices : TeachersService,private formBuilder: FormBuilder,private router: Router){
+  constructor(private teachersServices : TeachersService,private formBuilder: FormBuilder,private router: Router, private messageService : MessageService){
 
   }
   ngOnInit(): void {
@@ -76,7 +77,8 @@ export class TeachersComponent {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
-
+          this.displayModal = false;
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Enseignant modifié"});
         }
       },
       error: (loginError) => {
@@ -90,10 +92,6 @@ export class TeachersComponent {
         }
       }
     });
-
-    
-   
-
   }
 
   onAdminCheckboxChange(event: any) {
@@ -123,6 +121,8 @@ export class TeachersComponent {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
+          this.displayModalDelete = false
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Enseignant supprimé"});
         }
       },
       error: (loginError) => {

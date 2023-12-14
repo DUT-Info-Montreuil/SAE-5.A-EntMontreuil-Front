@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { Student } from 'src/app/core/models/students.model';
 import { StudentsService } from 'src/app/core/services/students.service';
 
@@ -27,7 +28,7 @@ export class StudentsComponent {
   old_ine!:string;
   old_nip!:string;
 
-  constructor(private studentsServices : StudentsService,  private formBuilder: FormBuilder,private router: Router){
+  constructor(private studentsServices : StudentsService,  private formBuilder: FormBuilder,private router: Router, private messageService : MessageService){
 
   }
   ngOnInit(): void {
@@ -79,15 +80,13 @@ export class StudentsComponent {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
-
+          this.displayModal = false;
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Étudiant modifié"});
         }
       },
       error: (loginError) => {
-  
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-        
-          
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
         }
@@ -119,6 +118,8 @@ export class StudentsComponent {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
+          this.displayModalDelete = false;
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Étudiant supprimé"});
         }
       },
       error: (loginError) => {
