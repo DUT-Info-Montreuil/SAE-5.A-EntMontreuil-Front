@@ -16,6 +16,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
 import { TrainingComponent } from './components/training/training.component';
 import { TdComponent } from './components/td/td.component';
+import { TpComponent } from './components/tp/tp.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { TdComponent } from './components/td/td.component';
     PromotionComponent,
     DegreeComponent,
     TrainingComponent,
-    TdComponent
+    TdComponent,
+    TpComponent
   ],
   imports: [
     CommonModule,

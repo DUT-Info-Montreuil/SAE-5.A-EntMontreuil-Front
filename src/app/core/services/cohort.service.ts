@@ -6,6 +6,7 @@ import { TreeNode } from 'primeng/api';
 import { Promotion } from '../models/cohort-promotion.model';
 import { Training } from '../models/cohort-training.model';
 import { TD } from '../models/cohort-td.model';
+import { TP } from '../models/cohort-tp.model';
 
 @Injectable({ providedIn: 'root' })
 export class CohortService {
@@ -43,6 +44,13 @@ export class CohortService {
   getTDInfo(id: string) {
     return this.http.get<TD>(
       this.apiURL + `/td/${id}`,
+      this.httpOptions
+    );
+  }
+
+  getTPInfo(id: string) {
+    return this.http.get<TP>(
+      this.apiURL + `/tp/${id}`,
       this.httpOptions
     );
   }

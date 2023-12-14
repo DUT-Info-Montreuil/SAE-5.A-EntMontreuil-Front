@@ -6,6 +6,7 @@ import { PromotionComponent } from './components/promotion/promotion.component';
 import { DegreeComponent } from './components/degree/degree.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TdComponent } from './components/td/td.component';
+import { TpComponent } from './components/tp/tp.component';
 
 const routes: Routes = [
   {
@@ -37,6 +38,11 @@ const routes: Routes = [
         path: 'td/:id',
         component: TdComponent,
         data: { title: 'TD' },
+      },
+      {
+        path: 'tp/:id',
+        component: TpComponent,
+        data: { title: 'TP' },
       },
     ],
   },
