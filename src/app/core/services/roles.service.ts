@@ -23,7 +23,7 @@ export class RolesService implements OnInit {
     }
 
     getRoles(): Observable<Role[]> {
-        return this.http.get<Role[]>(this.apiURL + '/roles', this.httpOptions)
+        return this.http.get<Role[]>(this.apiURL + '/roles/nee', this.httpOptions)
     }
 
     addRole(name:string): Observable<any> {

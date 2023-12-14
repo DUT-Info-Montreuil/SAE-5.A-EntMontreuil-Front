@@ -68,8 +68,8 @@
             [ngStyle]="{ 'color': user.isTTManager ? 'green' : 'red' }">
             </i>
         </td>
-        <td *ngIf="user.role.name != 'étudiant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
-        <td *ngIf="user.role.name == 'étudiant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
+        <td *ngIf="user.role.name != 'étudiant' && user.role.name != 'enseignant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
+        <td *ngIf="user.role.name == 'étudiant' || user.role.name == 'enseignant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
         
         <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="openModalDelete(user)"></p-button></td>
     </tr>
