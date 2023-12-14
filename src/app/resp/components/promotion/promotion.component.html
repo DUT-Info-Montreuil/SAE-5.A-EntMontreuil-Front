@@ -27,6 +27,11 @@
         </div>
       </ng-template>
 
+      <div class="flex justify-content-end mb-1">
+        <p-button (click)="isAddTrainingDialogVisible = true" icon="pi pi-plus" [outlined]="true"
+          label="Ajouter un parcours"></p-button>
+      </div>
+
       <p-table [value]="promotionInfo.trainings" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
         [showCurrentPageReport]="true"
         currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} parcours"
@@ -115,3 +120,27 @@
 
 <ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
 <p-toast></p-toast>
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog header="Ajouter un parcours" [(visible)]="isAddTrainingDialogVisible" [modal]="true" [responsive]="true">
+  <ng-template pTemplate="content">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="newTrainingName" class="font-medium text-900">Nom du parcours</label>
+        <input pInputText class="mt-1" type="text" id="newTrainingName" [(ngModel)]="newTraining.name"
+          name="newTrainingName" required />
+      </div>
+
+      <div class="p-field mt-3">
+        <label for="newTrainingSemester" class="font-medium text-900">Semestre</label>
+        <input pInputText type="number" pInputText id="newTrainingSemester" [(ngModel)]="newTraining.semester" />
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+      (click)="isAddTrainingDialogVisible = false"></p-button>
+    <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addTraining()"></p-button>
+  </ng-template>
+</p-dialog>

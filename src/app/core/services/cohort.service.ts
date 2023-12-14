@@ -7,6 +7,7 @@ import { Promotion } from '../models/cohort-promotion.model';
 import { Training } from '../models/cohort-training.model';
 import { TD } from '../models/cohort-td.model';
 import { TP } from '../models/cohort-tp.model';
+import { SingleTD } from '../models/single-td.model';
 
 @Injectable({ providedIn: 'root' })
 export class CohortService {
@@ -51,6 +52,14 @@ export class CohortService {
   getTPInfo(id: string) {
     return this.http.get<TP>(
       this.apiURL + `/tp/${id}`,
+      this.httpOptions
+    );
+  }
+
+  addTD(td: SingleTD): Observable<any> {
+    return this.http.post<SingleTD>(
+      `${this.apiURL}/td`, // Endpoint pour créer un parcours
+      td, // Utilisez la structure adaptée
       this.httpOptions
     );
   }

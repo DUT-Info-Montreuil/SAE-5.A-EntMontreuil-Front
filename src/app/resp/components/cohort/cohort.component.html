@@ -5,7 +5,8 @@
           'TreeCohort-hide': !showTreeCohort,
           'TreeCohort-show': showTreeCohort
         }" [filter]="true" filterMode="strict" filterPlaceholder="Rechercher" selectionMode="single"
-        [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
+        [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)"
+        (onNodeRightClick)="nodeRightClick($event)" [contextMenu]="cm">
         <ng-template let-node pTemplate="url">
           <a [href]="node.data" target="_blank" rel="noopener noreferrer" class="text-700 hover:text-primary">{{
             node.label }}</a>
@@ -60,3 +61,4 @@
 </div>
 
 <p-toast></p-toast>
+<p-contextMenu #cm [model]="items" [appendTo]="'body'"></p-contextMenu>
