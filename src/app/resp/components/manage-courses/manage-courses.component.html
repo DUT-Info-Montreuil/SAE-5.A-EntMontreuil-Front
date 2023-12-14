@@ -1,0 +1,49 @@
+<div class="app-layout">
+  <div class="calendar-section">
+    <div class="dropdown-section">
+      <p-dropdown
+        [options]="degrees"
+        (onChange)="onDegreeChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une formation"
+      ></p-dropdown>
+
+      <p-dropdown
+        [options]="filteredPromotions"
+        [(ngModel)]="selectedPromotionId"
+        (onChange)="onPromotionChange()"
+        optionLabel="uniqueLabel"
+        optionValue="id"
+        placeholder="Sélectionnez une promotion"
+      ></p-dropdown>
+
+      <p-dropdown
+        *ngIf="trainings && trainings.length > 0"
+        [options]="trainings"
+        [(ngModel)]="selectedTrainingId"
+        (onChange)="onTrainingChange()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez un training"
+      ></p-dropdown>
+    </div>
+    <mwl-calendar-week-view
+      [viewDate]="viewDate"
+      [excludeDays]="excludeDays"
+      [events]="events"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [weekStartsOn]="1"
+    >
+    </mwl-calendar-week-view>
+  </div>
+
+  <div class="menu-section">
+    <app-create-course
+      [degrees]="degrees"
+      [promotions]="promotions"
+    ></app-create-course>
+  </div>
+</div>

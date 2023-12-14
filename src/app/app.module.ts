@@ -13,10 +13,18 @@ import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
-  imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule, CoreModule, AuthModule, SharedModule, ButtonModule, ConfirmPopupModule, ToastModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    CoreModule,
+    AuthModule,
+    SharedModule,
+    ButtonModule,
+    ConfirmPopupModule,
+    ToastModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {
-
-} 
+export class AppModule {}

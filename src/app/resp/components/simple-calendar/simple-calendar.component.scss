@@ -1,0 +1,35 @@
+/* Dans votre fichier de style, par exemple: manage-courses.component.css */
+.app-layout {
+  display: flex;
+}
+
+.calendar-section {
+  flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
+}
+
+.menu-section {
+  flex: 1;
+  padding-left: 20px; /* Espace entre le calendrier et le menu */
+}
+
+::ng-deep .fc-event-main-frame {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+::ng-deep .fc-event-title {
+  font-size: 0.85em; // ajustez la taille de la police au besoin
+}
+
+::ng-deep .fc .fc-v-event .fc-event-main {
+  color: black; /* Couleur du texte de l'événement */
+  font-weight: bold; /* Met le texte en gras */
+  padding: 4px; /* Espacement intérieur pour le texte de l'événement */
+  border-radius: 4px; /* Bordures arrondies pour l'événement */
+  display: flex;
+  flex-direction: horizontal;
+  justify-content: space-between; /* Étale les enfants verticalement */
+  height: 100%;
+  font-size: 9px;
+}
