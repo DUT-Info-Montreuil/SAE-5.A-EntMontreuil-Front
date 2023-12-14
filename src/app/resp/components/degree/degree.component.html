@@ -74,11 +74,14 @@
             <th pSortableColumn="lastname">
               Prénom <p-sortIcon field="lastname"></p-sortIcon>
             </th>
+            <th pSortableColumn="td">
+              Apprenti <p-sortIcon field="td"></p-sortIcon>
+            </th>
             <th pSortableColumn="promotion">
               Promotion <p-sortIcon field="promotion"></p-sortIcon>
             </th>
-            <th pSortableColumn="td">
-              Apprenti <p-sortIcon field="td"></p-sortIcon>
+            <th pSortableColumn="training">
+              Parcours <p-sortIcon field="training"></p-sortIcon>
             </th>
             <th pSortableColumn="td">
               TD <p-sortIcon field="td"></p-sortIcon>
@@ -94,15 +97,16 @@
             <td>{{ student.first_name }}</td>
             <td>{{ student.last_name }}</td>
             <td>
-              BUT {{ student.promotion.level }} {{ degreeInfo.name }}
-              {{ student.promotion.year }}
-            </td>
-            <td>
               <i class="pi" [ngClass]="{
                   'pi-check-circle text-green-300': student.isApprentice,
                   'pi-times-circle text-red-300': !student.isApprentice
                 }"></i>
             </td>
+            <td>
+              BUT {{ student.promotion.level }} {{ degreeInfo.name }}
+              {{ student.promotion.year }}
+            </td>
+            <td>{{ student.td[0].training.name }}</td>
             <td>{{ student.td[0].name }}</td>
             <td>{{ student.tp[0].name }}</td>
             <td>

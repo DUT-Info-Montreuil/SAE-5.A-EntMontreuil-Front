@@ -40,7 +40,7 @@ export class CohortComponent implements OnInit {
     private cohortService: CohortService,
     private messageService: MessageService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.cohortService.getFiles().subscribe(

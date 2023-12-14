@@ -1,101 +1,44 @@
 <div class="container-large">
   <div class="flex gap-1">
-    <div
-      [ngClass]="{ 'w-30rem': showTreeCohort }"
-      class="flex align-items-center gap-2"
-    >
-      <p-tree
-        [value]="files"
-        class="w-full md:w-20rem TreeCohort"
-        *ngIf="showTreeCohort"
-        [ngClass]="{
+    <div [ngClass]="{ 'w-30rem': showTreeCohort }" class="flex align-items-center gap-2">
+      <p-tree [value]="files" class="w-full md:w-20rem TreeCohort" *ngIf="showTreeCohort" [ngClass]="{
           'TreeCohort-hide': !showTreeCohort,
           'TreeCohort-show': showTreeCohort
-        }"
-        [filter]="true"
-        filterMode="strict"
-        filterPlaceholder="Rechercher"
-        selectionMode="single"
-        [(selection)]="selectedFile"
-        (onNodeSelect)="nodeSelect($event)"
-        (onNodeUnselect)="nodeUnselect($event)"
-      >
+        }" [filter]="true" filterMode="strict" filterPlaceholder="Rechercher" selectionMode="single"
+        [(selection)]="selectedFile" (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnselect($event)">
         <ng-template let-node pTemplate="url">
-          <a
-            [href]="node.data"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-700 hover:text-primary"
-            >{{ node.label }}</a
-          >
+          <a [href]="node.data" target="_blank" rel="noopener noreferrer" class="text-700 hover:text-primary">{{
+            node.label }}</a>
         </ng-template>
         <ng-template let-node pTemplate="default">
           <b>{{ node.label }}</b>
         </ng-template>
       </p-tree>
       <div>
-        <div
-          class="pipe-icon text-400 cursor-pointer"
-          *ngIf="showTreeCohort && !hoverOnPipeIcon"
-          (mouseenter)="hoverOnPipeIcon = true"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-letter-i"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+        <div class="pipe-icon text-400 cursor-pointer" *ngIf="showTreeCohort && !hoverOnPipeIcon"
+          (mouseenter)="hoverOnPipeIcon = true">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-letter-i" width="24" height="24"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M12 4l0 16" />
           </svg>
         </div>
 
-        <div
-          class="chevron-left-icon text-400 cursor-pointer"
-          *ngIf="hoverOnPipeIcon"
-          (mouseleave)="hoverOnPipeIcon = false"
-          (click)="toggleTreeCohort()"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-chevron-compact-left"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+        <div class="chevron-left-icon text-400 cursor-pointer" *ngIf="hoverOnPipeIcon"
+          (mouseleave)="hoverOnPipeIcon = false" (click)="toggleTreeCohort()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-left" width="24"
+            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M13 20l-3 -8l3 -8" />
           </svg>
         </div>
 
-        <div
-          class="chevron-right-icon text-400 cursor-pointer"
-          *ngIf="!showTreeCohort"
-          (click)="toggleTreeCohort()"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-chevron-compact-right"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
+        <div class="chevron-right-icon text-400 cursor-pointer" *ngIf="!showTreeCohort" (click)="toggleTreeCohort()">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-compact-right" width="24"
+            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+            stroke-linejoin="round">
             <path stroke="none" d="M0 0h24v24H0z" fill="none" />
             <path d="M11 4l3 8l-3 8" />
           </svg>

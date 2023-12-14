@@ -27,9 +27,16 @@ export interface Student {
 export interface TD {
     id_td: number;
     name: string;
+    training: Training;
 }
 
 export interface TP {
     id_tp: number;
     name: string;
+}
+
+export interface Training {
+    id: number;
+    name: string,
+    semester: number,
 }
