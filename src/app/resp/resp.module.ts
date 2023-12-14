@@ -16,6 +16,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
+import { TooltipModule } from 'primeng/tooltip';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -37,6 +38,7 @@ import { CreateCourseComponent } from './components/create-course/create-course.
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    TooltipModule,
   ],
   providers: [CohortService, MessageService],
 })

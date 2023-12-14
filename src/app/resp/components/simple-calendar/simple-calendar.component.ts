@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { CalendarOptions } from '@fullcalendar/core';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -7,6 +7,8 @@ import { CourseService } from 'src/app/core/services/courses.service';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Course } from 'src/app/core/models/course.model';
 import { Observable, forkJoin, from, map, mergeMap, of, toArray } from 'rxjs';
+import { Degree } from 'src/app/admin/models/degree.model';
+import { DegreeService } from 'src/app/core/services/degrees.service';
 
 interface EventExtendedProps {
   professor: string;
@@ -22,16 +24,26 @@ export class SimpleCalendarComponent implements OnInit {
   date: any;
   startTime: any;
   endTime: any;
-  addCourse(arg0: any, arg1: any, arg2: any, arg3: any) {
-    throw new Error('Method not implemented.');
-  }
+  degrees: Degree[] = [];
+
   selectedPromotionId: number | null = null;
   promotions: Promotion[] = [];
   calendarOptions: CalendarOptions;
 
+  ngOnInit() {
+    this.courseService.getAllPromotions().subscribe((data) => {
+      this.promotions = data.map((promo) => ({
+        ...promo,
+        uniqueLabel: `BUT${promo.level}:${promo.year} ${promo.degree_name}`,
+      }));
+    });
+    this.getDegrees();
+  }
+
   constructor(
     private courseService: CourseService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private deegreeService: DegreeService
   ) {
     this.calendarOptions = {
       plugins: [timeGridPlugin, interactionPlugin],
@@ -81,13 +93,20 @@ export class SimpleCalendarComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-    this.courseService.getAllPromotions().subscribe((data) => {
-      this.promotions = data.map((promo) => ({
-        ...promo,
-        uniqueLabel: `BUT${promo.level}:${promo.year} ${promo.degree_name}`,
-      }));
-    });
+  addEvent(event: any) {
+    // Vérifiez si 'this.calendarOptions.events' est un tableau
+    if (Array.isArray(this.calendarOptions.events)) {
+      // Ajoutez le nouvel événement
+      console.log(event);
+      this.calendarOptions.events.push(event);
+      this.changeDetectorRef.detectChanges();
+    } else {
+      // Si ce n'est pas un tableau, initialisez-le en tant que tel avec le nouvel événement
+      this.calendarOptions.events = [event];
+    }
+
+    this.changeDetectorRef.detectChanges();
+    console.log(this.calendarOptions.events);
   }
 
   onPromotionChange() {
@@ -194,5 +213,10 @@ export class SimpleCalendarComponent implements OnInit {
       }),
       toArray() // Regroupez tous les événements dans un tableau
     );
+  }
+  getDegrees() {
+    this.deegreeService.getAllDegrees().subscribe((data) => {
+      this.degrees = data;
+    });
   }
 }

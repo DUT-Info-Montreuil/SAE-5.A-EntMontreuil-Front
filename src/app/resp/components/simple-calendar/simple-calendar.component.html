@@ -15,19 +15,10 @@
   </div>
 
   <div class="menu-section">
-    <p-card header="Créer  un cours">
-      <form (submit)="addCourse(name, date, startTime, endTime)">
-        <input
-          type="text"
-          [(ngModel)]="name"
-          name="name"
-          placeholder="Nom du cours"
-        />
-        <input type="date" [(ngModel)]="date" name="date" />
-        <input type="time" [(ngModel)]="startTime" name="startTime" />
-        <input type="time" [(ngModel)]="endTime" name="endTime" />
-        <button type="submit">Créer le cours</button>
-      </form>
-    </p-card>
+    <app-create-course
+      (eventCreated)="addEvent($event)"
+      [degrees]="degrees"
+      [promotions]="promotions"
+    ></app-create-course>
   </div>
 </div>

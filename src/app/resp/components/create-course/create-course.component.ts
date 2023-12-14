@@ -1,7 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
+import { Training } from 'src/app/admin/models/training.model';
+import { Classroom } from 'src/app/core/models/classroom.model';
+import { Teacher } from 'src/app/core/models/teachers.model';
+import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { CourseService } from 'src/app/core/services/courses.service';
+import { RessourceService } from 'src/app/core/services/ressources.service';
+import { TeachersService } from 'src/app/core/services/teachers.service';
 
 @Component({
   selector: 'app-create-course',
@@ -11,42 +17,159 @@ import { CourseService } from 'src/app/core/services/courses.service';
 export class CreateCourseComponent implements OnInit {
   @Input() degrees: Degree[] = [];
   @Input() promotions: Promotion[] = [];
+  @Output() eventCreated = new EventEmitter<any>();
   filteredPromotions: any[] = [];
-  name: string = '';
   date: string = '';
   startTime: string = '';
   endTime: string = '';
   selectedDegreeId: number | null = null;
   selectedPromotionId: number | null = null;
+  selectedTrainingId: number | null = null;
+  selectedClassroomId: number | null = null;
+  classrooms: any[] = [];
+  trainings: Training[] = [];
+  teachers: Teacher[] = [];
+  teachersDropdownOptions: any[] = [];
+  resources: any[] = [];
+  selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
+  control: boolean = false;
 
-  constructor(private courseService: CourseService) {}
+  selectedTeacherId: number | null = null;
+
+  constructor(
+    private courseService: CourseService,
+    private classroomsService: ClassroomsService,
+    private teachersService: TeachersService,
+    private ressourceService: RessourceService
+  ) {}
   ngOnInit(): void {
     console.log(this.degrees);
     console.log(this.promotions);
+    this.classroomsService.getClassrooms().subscribe(
+      (data: Classroom[]) => {
+        this.classrooms = data;
+        console.log(this.classrooms);
+      },
+      (error) => {
+        console.error('Error loading data:', error);
+      }
+    );
+
+    this.teachersService.getAllTeachers().subscribe((data: any) => {
+      this.teachers = data.map((teacherObj: any) => teacherObj);
+      this.prepareTeachersDropdownOptions();
+      console.log(this.teachers);
+    });
   }
 
-  addCourse() {
-    // Création de l'objet cours
-    const newCourse = {
-      name: this.name,
-      date: this.date,
-      startTime: this.startTime,
-      endTime: this.endTime,
-      // Ajoutez ici d'autres propriétés nécessaires
-    };
+  prepareTeachersDropdownOptions() {
+    this.teachersDropdownOptions = this.teachers.map((teacher: any) => ({
+      label: `${teacher.user.first_name} ${teacher.user.last_name}`,
+      value: teacher.personal_info.id,
+    }));
+  }
+  getTrainingOfPromo(promotionId: number) {
+    console.log('getTrainingOfPromo');
+    this.courseService.getTrainingOfPromo(promotionId).subscribe((data) => {
+      // Handle the retrieved training data here, e.g., assign it to this.trainings
+
+      this.trainings = data.trainings;
+    });
   }
 
   resetForm() {
-    this.name = '';
     this.date = '';
     this.startTime = '';
     this.endTime = '';
   }
 
-  onDegreeChange() {
-    this.selectedPromotionId = null;
+  onDegreeChange(id_Degree: number) {
+    this.selectedPromotionId = null; // Réinitialiser l'ID de promotion sélectionnée
+    this.selectedDegreeId = id_Degree; // Mise à jour de l'ID de diplôme sélectionné
+    console.log(this.promotions);
     this.filteredPromotions = this.promotions.filter(
-      (promo) => promo.id_Degree === this.selectedDegreeId
+      (promo) => promo.id_Degree === id_Degree
+    );
+  }
+
+  onPromotionChange(promotionId: number) {
+    this.selectedPromotionId = promotionId; // Mise à jour de l'ID de promotion sélectionnée
+    this.selectedTrainingId = null; // Réinitialiser l'ID de formation sélectionnée
+
+    if (promotionId !== null) {
+      this.getTrainingOfPromo(promotionId);
+    } else {
+      this.trainings = []; // Réinitialiser les formations si aucune promotion n'est sélectionnée
+    }
+  }
+
+  onTrainingChange(trainingId: number) {
+    this.selectedTrainingId = trainingId;
+
+    if (trainingId !== null) {
+      this.ressourceService.getRessourceByIdTraining(trainingId).subscribe(
+        (data: any) => {
+          this.resources = data;
+        },
+        (error: any) => {
+          console.error('Error loading resources:', error);
+        }
+      );
+    } else {
+      this.resources = []; // Réinitialiser les ressources si aucune formation n'est sélectionnée
+    }
+  }
+
+  onTeacherChange(teacherId: number) {
+    this.selectedTeacherId = teacherId;
+    // Ajoutez ici toute autre logique nécessaire lors de la sélection d'un enseignant
+  }
+
+  onResourceChange(resourceId: number) {
+    this.selectedResourceId = resourceId;
+    console.log(this.selectedResourceId);
+  }
+  onClassroomChange(classroomId: number) {
+    this.selectedClassroomId = classroomId;
+    console.log(this.selectedClassroomId);
+    // Ajoutez ici toute autre logique nécessaire lors de la sélection d'une salle de classe
+  }
+  CreateCourse() {
+    const newCourse = {
+      startTime: this.startTime,
+      endTime: this.endTime,
+      dateCourse: this.date,
+      control: this.control,
+      id_resource: this.selectedResourceId, // Assurez-vous d'avoir cette propriété
+      id_promotion: this.selectedPromotionId, // Ou l'identifiant approprié
+      teachers_id: this.selectedTeacherId ? [this.selectedTeacherId] : [],
+      classrooms_id: this.selectedClassroomId ? [this.selectedClassroomId] : [],
+    };
+
+    console.log('newCourse', newCourse);
+
+    this.courseService.addCourse(newCourse).subscribe(
+      (response) => {
+        console.log('Cours créé avec succès', response);
+        // Gérer la réponse ou les actions de succès ici
+        const calendarEvent = {
+          title: response.name || 'Nouveau cours', // Utilisez un champ approprié de la réponse pour le titre
+          start: `${this.date}T${this.startTime}`,
+          end: `${this.date}T${this.endTime}`,
+          color: '#ffcc00',
+          extendedProps: {
+            groupName: 'promotion',
+            professor: newCourse.teachers_id[0].toString(),
+            classroom: newCourse.classrooms_id[0].toString(),
+          },
+        };
+        this.eventCreated.emit(calendarEvent);
+      },
+
+      (error) => {
+        console.error('Erreur lors de la création du cours', error);
+        // Gérer les erreurs ici
+      }
     );
   }
 }
