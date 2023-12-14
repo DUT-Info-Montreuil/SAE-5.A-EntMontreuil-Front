@@ -96,7 +96,7 @@
           <tr>
             <td>{{ student.first_name }}</td>
             <td>{{ student.last_name }}</td>
-            <td>{{ student.training.name }}</td>
+            <td><ng-container *ngIf="student.training.name; else notSet">{{ student.training.name }}</ng-container></td>
             <td>
               <i class="pi" [ngClass]="{
                   'pi-check-circle text-green-300': student.isApprentice,
@@ -113,4 +113,5 @@
   </p-tabView>
 </div>
 
+<ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
 <p-toast></p-toast>

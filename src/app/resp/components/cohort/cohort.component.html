@@ -11,7 +11,14 @@
             node.label }}</a>
         </ng-template>
         <ng-template let-node pTemplate="default">
-          <b>{{ node.label }}</b>
+          <div>
+            <div>
+              <b>{{ node.label }}</b>
+            </div>
+            <div>
+              <small>{{ node.data }}</small>
+            </div>
+          </div>
         </ng-template>
       </p-tree>
       <div>

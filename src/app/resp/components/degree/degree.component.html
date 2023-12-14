@@ -106,9 +106,15 @@
               BUT {{ student.promotion.level }} {{ degreeInfo.name }}
               {{ student.promotion.year }}
             </td>
-            <td>{{ student.td[0].training.name }}</td>
-            <td>{{ student.td[0].name }}</td>
-            <td>{{ student.tp[0].name }}</td>
+            <td>
+              <ng-container *ngIf="student.td[0]; else notSet">{{ student.td[0].training.name }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="student.td[0]; else notSet">{{ student.td[0].name }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="student.tp[0]; else notSet">{{ student.tp[0].name }}</ng-container>
+            </td>
             <td>
               <p-button (click)="menuStudents.toggle($event)" icon="pi pi-ellipsis-v" [rounded]="true" [text]="true"
                 severity="secondary"></p-button>
@@ -120,5 +126,6 @@
   </p-tabView>
 </div>
 
+<ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
 <p-toast></p-toast>
 <p-menu #menuStudents [model]="menuItemsStudents" [popup]="true" appendTo="body"></p-menu>
