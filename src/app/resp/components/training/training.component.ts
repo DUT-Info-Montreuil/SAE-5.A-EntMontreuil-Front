@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Training } from 'src/app/core/models/cohort-training.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
 import { SingleTD } from 'src/app/core/models/single-td.model';
+import { CohortSharedService } from 'src/app/shared/services/cohort-shared.service';
 
 @Component({
   selector: 'app-training',
@@ -28,7 +29,8 @@ export class TrainingComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cohortService: CohortService
+    private cohortService: CohortService,
+    private cohortSharedService: CohortSharedService
   ) { }
 
   ngOnInit() {
@@ -70,11 +72,29 @@ export class TrainingComponent implements OnInit {
         this.trainingInfo.tds.push(response); // Mettre à jour la liste locale des TDs
         this.isAddTDDialogVisible = false; // Fermer le dialogue
         this.newTDName = ''; // Réinitialiser le nom du TD
+
+        // Rappeler getPromotionInfo pour actualiser les données
+        this.refreshTrainingData();
+        this.cohortSharedService.triggerRefresh();
       },
       error => {
         // Gérer l'erreur
         console.error("Erreur lors de l'ajout du TD: ", error);
       }
     );
+  }
+
+  refreshTrainingData() {
+    const trainingId = this.route.snapshot.paramMap.get('id');
+    if (trainingId) {
+      this.cohortService.getTrainingInfo(trainingId).subscribe(
+        data => {
+          this.trainingInfo = data;
+        },
+        error => {
+          console.error('Erreur lors de la récupération des informations du parcours:', error);
+        }
+      );
+    }
   }
 }

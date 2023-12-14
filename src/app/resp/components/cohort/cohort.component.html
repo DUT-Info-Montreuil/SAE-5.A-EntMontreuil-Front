@@ -21,6 +21,9 @@
             </div>
           </div>
         </ng-template>
+        <ng-template let-node pTemplate="emptymessage">
+          <div class="p-text-center">Aucun résultat</div>
+        </ng-template>
       </p-tree>
       <div>
         <div class="pipe-icon text-400 cursor-pointer" *ngIf="showTreeCohort && !hoverOnPipeIcon"

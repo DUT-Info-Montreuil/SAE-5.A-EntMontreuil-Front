@@ -8,6 +8,7 @@ import { Training } from '../models/cohort-training.model';
 import { TD } from '../models/cohort-td.model';
 import { TP } from '../models/cohort-tp.model';
 import { SingleTD } from '../models/single-td.model';
+import { SingleTP } from '../models/single-tp.model';
 
 @Injectable({ providedIn: 'root' })
 export class CohortService {
@@ -60,6 +61,14 @@ export class CohortService {
     return this.http.post<SingleTD>(
       `${this.apiURL}/td`, // Endpoint pour créer un parcours
       td, // Utilisez la structure adaptée
+      this.httpOptions
+    );
+  }
+
+  addTP(tp: SingleTP): Observable<any> {
+    return this.http.post<SingleTP>(
+      `${this.apiURL}/tp`, // Endpoint pour créer un parcours
+      tp, // Utilisez la structure adaptée
       this.httpOptions
     );
   }

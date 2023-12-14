@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { CohortService } from 'src/app/core/services/cohort.service';
+import { CohortSharedService } from 'src/app/shared/services/cohort-shared.service';
 
 @Component({
   selector: 'app-cohort',
@@ -33,6 +34,8 @@ export class CohortComponent implements OnInit {
     this.showTreeCohort = !this.showTreeCohort;
   }
 
+  isDataLoaded: boolean = false;
+
   files!: TreeNode[];
   selectedFile!: TreeNode;
 
@@ -42,15 +45,26 @@ export class CohortComponent implements OnInit {
   constructor(
     private cohortService: CohortService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private cohortSharedService: CohortSharedService
   ) { }
 
   ngOnInit() {
+
+    this.cohortSharedService.refreshNeeded$.subscribe(() => {
+      this.loadFiles();
+    });
+
+    this.loadFiles();
+  }
+
+  loadFiles() {
     this.cohortService.getFiles().subscribe(
-      (data) => {
+      data => {
         this.files = data;
       },
-      (error) => {
+      error => {
         console.error(
           'Erreur lors de la récupération des données de l’arbre:',
           error

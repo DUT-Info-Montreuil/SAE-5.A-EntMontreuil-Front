@@ -27,6 +27,11 @@
                 </div>
             </ng-template>
 
+            <div class="flex justify-content-end mb-1">
+                <p-button (click)="isAddTPDialogVisible = true" icon="pi pi-plus" [outlined]="true"
+                    label="Ajouter un TP"></p-button>
+            </div>
+
             <p-table [value]="TDInfo.tps" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} TPs"
@@ -112,3 +117,22 @@
 </div>
 
 <p-toast></p-toast>
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog header="Ajouter un TP" [(visible)]="isAddTPDialogVisible" [modal]="true" [responsive]="true">
+    <ng-template pTemplate="content">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="newTPName" class="font-medium text-900">Nom du TP</label>
+                <input pInputText class="mt-1" type="text" id="newTPName" [(ngModel)]="newTPName" name="newTPName"
+                    required />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+            (click)="isAddTPDialogVisible = false"></p-button>
+        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addTP()"></p-button>
+    </ng-template>
+</p-dialog>

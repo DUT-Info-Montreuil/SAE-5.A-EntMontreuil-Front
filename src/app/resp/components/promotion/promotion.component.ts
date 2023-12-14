@@ -4,6 +4,7 @@ import { Training } from 'src/app/admin/models/training.model';
 import { Promotion } from 'src/app/core/models/cohort-promotion.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
 import { TrainingService } from 'src/app/core/services/trainings.service';
+import { CohortSharedService } from 'src/app/shared/services/cohort-shared.service';
 
 @Component({
   selector: 'app-promotion',
@@ -31,6 +32,7 @@ export class PromotionComponent implements OnInit {
     private route: ActivatedRoute,
     private cohortService: CohortService,
     private trainingService: TrainingService,
+    private cohortSharedService: CohortSharedService
   ) { }
 
   ngOnInit() {
@@ -70,16 +72,32 @@ export class PromotionComponent implements OnInit {
         this.trainingService.addTraining(training).subscribe(
           response => {
             console.log('Parcours ajouté', response);
-            // Mettre à jour l'interface utilisateur ou rafraîchir les données
             this.isAddTrainingDialogVisible = false;
-            // Vous pouvez également ajouter un message de succès ici
+
+            // Rappeler getPromotionInfo pour actualiser les données
+            this.refreshPromotionData();
+            this.cohortSharedService.triggerRefresh();
           },
           error => {
             console.error("Erreur lors de l'ajout du parcours", error);
-            // Gérer l'erreur ici, par exemple en affichant un message d'erreur
           }
         );
       }
     }
   }
+
+  refreshPromotionData() {
+    const promotionId = this.route.snapshot.paramMap.get('id');
+    if (promotionId) {
+      this.cohortService.getPromotionInfo(promotionId).subscribe(
+        data => {
+          this.promotionInfo = data;
+        },
+        error => {
+          console.error('Erreur lors de la récupération des informations de promotion:', error);
+        }
+      );
+    }
+  }
+
 }
