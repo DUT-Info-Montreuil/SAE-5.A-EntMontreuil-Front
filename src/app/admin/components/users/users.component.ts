@@ -8,6 +8,7 @@ import { RolesService } from 'src/app/core/services/roles.service';
 import { UsersService } from 'src/app/core/services/users.service';
 import { RoleComponent } from '../role/role.component';
 import { SharedService } from 'src/app/core/services/shared.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -24,7 +25,8 @@ export class UsersComponent implements OnInit {
   displayModalRole : boolean = false;
   user_id!:number;
   username!:string;
-  
+  IdToken !: number;
+
   //update
   userModal!:User ;
   userUpdateForm!: FormGroup;
@@ -33,12 +35,14 @@ export class UsersComponent implements OnInit {
   ErrorMessage: string = '';
   roleString !: string;
 
-  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService, private sharedService: SharedService){ 
+  constructor(private usersServices : UsersService, private rolesService : RolesService, private formBuilder: FormBuilder, private messageService: MessageService, private sharedService: SharedService, private authService: AuthService){ 
     
   }
 
 
   ngOnInit(): void {
+    this.IdToken = this.authService.getUserId()
+    console.log(this.IdToken)
     this.fetchAllUsers();
     this.sharedService.onUpdateUsers().subscribe(() => {
       this.fetchAllUsers();
@@ -90,19 +94,15 @@ export class UsersComponent implements OnInit {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Utilisateur modifié"});
           this.displayModalUpdate = false;
         }
       },
       error: (loginError) => {
-  
         if (loginError.status === 400) {
           this.ErrorMessage = loginError.error.error;
-
-        
-          
         } else {
           this.ErrorMessage = 'Une erreur est survenue lors de la connexion.';
-
         }
       }
     });
@@ -141,6 +141,7 @@ export class UsersComponent implements OnInit {
       next: (loginResponse) => {
         if (loginResponse.id) {
           this.fetchAllUsers();
+          this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Utilisateur supprimé"});
           this.displayModalDelete = false;
         }
       },

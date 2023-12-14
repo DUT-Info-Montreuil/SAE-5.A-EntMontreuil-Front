@@ -1,5 +1,4 @@
-<!-- users.component.html -->
-<!-- users.component.html -->
+<p-toast></p-toast>
 <p-table
     #dt2
     [value]="users"
@@ -71,7 +70,8 @@
         <td *ngIf="user.role.name != 'étudiant' && user.role.name != 'enseignant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click)="openModalUpdate(user)" ></p-button></td>
         <td *ngIf="user.role.name == 'étudiant' || user.role.name == 'enseignant'"><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" [disabled]="true"></p-button></td>
         
-        <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="openModalDelete(user)"></p-button></td>
+        <td *ngIf="IdToken !== user.id"><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger " (click)="openModalDelete(user)"></p-button></td>
+        <td *ngIf="IdToken == user.id"><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger "[disabled]="true"></p-button></td>
     </tr>
    
 
