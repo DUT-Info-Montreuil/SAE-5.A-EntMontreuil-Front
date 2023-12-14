@@ -1,0 +1,33 @@
+<p-card header="Créer un cours">
+  <form (submit)="addCourse()">
+    <p-dropdown
+      [options]="degrees"
+      [(ngModel)]="selectedDegreeId"
+      (onChange)="onDegreeChange()"
+      optionLabel="name"
+      optionValue="id"
+      placeholder="Sélectionnez une formation"
+    >
+    </p-dropdown>
+
+    <p-dropdown
+      [options]="filteredPromotions"
+      [(ngModel)]="selectedPromotionId"
+      optionLabel="uniqueLabel"
+      optionValue="id"
+      placeholder="Sélectionnez une promotion"
+    >
+    </p-dropdown>
+
+    <input
+      type="text"
+      [(ngModel)]="name"
+      name="name"
+      placeholder="Nom du cours"
+    />
+    <input type="date" [(ngModel)]="date" name="date" />
+    <input type="time" [(ngModel)]="startTime" name="startTime" />
+    <input type="time" [(ngModel)]="endTime" name="endTime" />
+    <button type="submit">Créer le cours</button>
+  </form>
+</p-card>

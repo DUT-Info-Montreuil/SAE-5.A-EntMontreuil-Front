@@ -1,30 +1,35 @@
+/* Dans votre fichier de style, par exemple: manage-courses.component.css */
+.app-layout {
+  display: flex;
+}
+
+.calendar-section {
+  flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
+}
+
+.menu-section {
+  flex: 1;
+  padding-left: 20px; /* Espace entre le calendrier et le menu */
+}
+
+::ng-deep .fc-event-main-frame {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+::ng-deep .fc-event-title {
+  font-size: 0.85em; // ajustez la taille de la police au besoin
+}
+
 ::ng-deep .fc .fc-v-event .fc-event-main {
-  color: #333; /* Couleur du texte de l'événement */
+  color: black; /* Couleur du texte de l'événement */
   font-weight: bold; /* Met le texte en gras */
   padding: 4px; /* Espacement intérieur pour le texte de l'événement */
   border-radius: 4px; /* Bordures arrondies pour l'événement */
   display: flex;
-  flex-direction: column;
+  flex-direction: horizontal;
   justify-content: space-between; /* Étale les enfants verticalement */
   height: 100%;
-}
-
-::ng-deep .fc .fc-v-event .fc-event-main .event-title {
-  font-size: 0.85em; /* Taille de la police pour le titre */
-  color: #ffd700; /* Couleur du titre */
-}
-
-::ng-deep .fc .fc-v-event .fc-event-main .event-professor {
-  font-size: 0.75em; /* Taille de la police pour le professeur */
-  color: #999; /* Couleur du professeur */
-  margin-bottom: auto; /* Pousse le professeur vers le haut et la salle vers le bas */
-}
-
-::ng-deep .fc .fc-v-event .fc-event-main .event-classroom {
-  font-size: 0.75em; /* Taille de la police pour la salle */
-  color: #fff; /* Couleur de la salle */
-
-  padding: 2px; /* Espacement intérieur pour la salle */
-  border-radius: 2px; /* Bordures arrondies pour la salle */
-  margin-top: 2px; /* Espacement au-dessus de la salle */
+  font-size: 12px;
 }

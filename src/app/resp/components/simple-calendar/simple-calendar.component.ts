@@ -17,6 +17,13 @@ interface EventExtendedProps {
   styleUrls: ['./simple-calendar.component.scss'],
 })
 export class SimpleCalendarComponent implements OnInit {
+  name: any;
+  date: any;
+  startTime: any;
+  endTime: any;
+  addCourse(arg0: any, arg1: any, arg2: any, arg3: any) {
+    throw new Error('Method not implemented.');
+  }
   selectedPromotionId: number | null = null;
   promotions: Promotion[] = [];
   calendarOptions: CalendarOptions;
@@ -39,7 +46,7 @@ export class SimpleCalendarComponent implements OnInit {
       slotDuration: '00:30:00',
       allDaySlot: false,
       weekends: false,
-
+      editable: true,
       events: [],
 
       eventContent: function (arg) {

@@ -41,6 +41,15 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
+  getCourseByTraining(trainingID: number): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(
+        `${this.apiURL}/courses/training/${trainingID}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   getCourseById(courseId: number): Observable<any> {
     return this.http
       .get<any>(`${this.apiURL}/courses/id/${courseId}`, this.httpOptions)
@@ -72,5 +81,14 @@ export class CourseService {
   private handleError(error: any) {
     console.error('Une erreur s’est produite', error);
     return throwError(error);
+  }
+
+  getTrainingOfPromo(idPromo: number): Observable<any> {
+    return this.http
+      .get<any>(
+        `${this.apiURL}/promotions/trainings/${idPromo}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
   }
 }

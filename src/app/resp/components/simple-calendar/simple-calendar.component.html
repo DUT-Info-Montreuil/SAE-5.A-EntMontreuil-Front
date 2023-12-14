@@ -1,12 +1,33 @@
-<div class="dropdown-section">
-  <p-dropdown
-    [options]="promotions"
-    [(ngModel)]="selectedPromotionId"
-    (onChange)="onPromotionChange()"
-    optionLabel="uniqueLabel"
-    optionValue="id"
-    placeholder="Sélectionnez une promotion"
-  >
-  </p-dropdown>
+<div class="app-layout">
+  <div class="calendar-section">
+    <div class="dropdown-section">
+      <p-dropdown
+        [options]="promotions"
+        [(ngModel)]="selectedPromotionId"
+        (onChange)="onPromotionChange()"
+        optionLabel="uniqueLabel"
+        optionValue="id"
+        placeholder="Sélectionnez une promotion"
+      >
+      </p-dropdown>
+    </div>
+    <full-calendar [options]="calendarOptions"></full-calendar>
+  </div>
+
+  <div class="menu-section">
+    <p-card header="Créer  un cours">
+      <form (submit)="addCourse(name, date, startTime, endTime)">
+        <input
+          type="text"
+          [(ngModel)]="name"
+          name="name"
+          placeholder="Nom du cours"
+        />
+        <input type="date" [(ngModel)]="date" name="date" />
+        <input type="time" [(ngModel)]="startTime" name="startTime" />
+        <input type="time" [(ngModel)]="endTime" name="endTime" />
+        <button type="submit">Créer le cours</button>
+      </form>
+    </p-card>
+  </div>
 </div>
-<full-calendar [options]="calendarOptions"></full-calendar>

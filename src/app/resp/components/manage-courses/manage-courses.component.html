@@ -2,14 +2,31 @@
   <div class="calendar-section">
     <div class="dropdown-section">
       <p-dropdown
-        [options]="promotions"
+        [options]="degrees"
+        (onChange)="onDegreeChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une formation"
+      ></p-dropdown>
+
+      <p-dropdown
+        [options]="filteredPromotions"
         [(ngModel)]="selectedPromotionId"
         (onChange)="onPromotionChange()"
         optionLabel="uniqueLabel"
         optionValue="id"
         placeholder="Sélectionnez une promotion"
-      >
-      </p-dropdown>
+      ></p-dropdown>
+
+      <p-dropdown
+        *ngIf="trainings && trainings.length > 0"
+        [options]="trainings"
+        [(ngModel)]="selectedTrainingId"
+        (onChange)="onTrainingChange()"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez un training"
+      ></p-dropdown>
     </div>
     <mwl-calendar-week-view
       [viewDate]="viewDate"
@@ -24,19 +41,9 @@
   </div>
 
   <div class="menu-section">
-    <p-card header="Créer  un cours">
-      <form (submit)="addCourse(name, date, startTime, endTime)">
-        <input
-          type="text"
-          [(ngModel)]="name"
-          name="name"
-          placeholder="Nom du cours"
-        />
-        <input type="date" [(ngModel)]="date" name="date" />
-        <input type="time" [(ngModel)]="startTime" name="startTime" />
-        <input type="time" [(ngModel)]="endTime" name="endTime" />
-        <button type="submit">Créer le cours</button>
-      </form>
-    </p-card>
+    <app-create-course
+      [degrees]="degrees"
+      [promotions]="promotions"
+    ></app-create-course>
   </div>
 </div>
