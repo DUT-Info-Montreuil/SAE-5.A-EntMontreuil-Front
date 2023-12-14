@@ -59,6 +59,15 @@
 
     <div class="w-full">
       <router-outlet></router-outlet>
+
+      <div *ngIf="showAskSelectMessage && isDataLoaded" class="message"
+        style="height: 88dvh; display: flex; align-items: center; justify-content: center;">
+        <div class="flex flex-column align-items-center">
+          <i class="pi pi-sitemap text-300" style="font-size: 10rem;"></i>
+          <h1 class="font-semibold text-300 text-lg text-center">Sélectionnez un cohorte pour<br>afficher ses détails
+          </h1>
+        </div>
+      </div>
     </div>
   </div>
 </div>

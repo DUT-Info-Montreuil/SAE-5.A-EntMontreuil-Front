@@ -27,6 +27,9 @@ import { CohortSharedService } from 'src/app/shared/services/cohort-shared.servi
   ],
 })
 export class CohortComponent implements OnInit {
+
+  currentUrl: string = '';
+
   showTreeCohort = true;
   hoverOnPipeIcon = false;
 
@@ -42,6 +45,8 @@ export class CohortComponent implements OnInit {
   items!: MenuItem[]; // Items pour le context menu
   selectedNode!: TreeNode; // Noeud sélectionné
 
+  showAskSelectMessage: boolean = false;
+
   constructor(
     private cohortService: CohortService,
     private messageService: MessageService,
@@ -51,6 +56,10 @@ export class CohortComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    this.router.events.subscribe(event => {
+      this.showAskSelectMessage = (this.router.url === '/resp/cohort');
+    });
 
     this.cohortSharedService.refreshNeeded$.subscribe(() => {
       this.loadFiles();
@@ -63,6 +72,7 @@ export class CohortComponent implements OnInit {
     this.cohortService.getFiles().subscribe(
       data => {
         this.files = data;
+        this.isDataLoaded = true;
       },
       error => {
         console.error(

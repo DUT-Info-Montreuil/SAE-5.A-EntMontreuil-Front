@@ -39,8 +39,10 @@
         <ng-template pTemplate="body" let-promotion>
           <tr>
             <td>
-              BUT {{ promotion.level }} {{ degreeInfo.name }}
-              {{ promotion.year }}
+              <div class="cursor-pointer" routerLink="/resp/cohort/promotion/{{ promotion.id }}">
+                <span class="font-semibold hover:text-blue-500">BUT {{ promotion.level }} {{ degreeInfo.name }}
+                  {{ promotion.year }}</span>
+              </div>
             </td>
             <td>{{ getStudentCountByPromotion(promotion.id) }}</td>
             <td>

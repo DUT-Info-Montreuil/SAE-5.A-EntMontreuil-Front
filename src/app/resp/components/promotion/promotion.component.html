@@ -14,6 +14,11 @@
     </div>
   </div>
 
+  <div class="-ml-3 mb-3">
+    <p-button label="Retour" [text]="true" icon="pi pi-arrow-left"
+      routerLink="/resp/cohort/degree/{{ promotionInfo.degree.id }}"></p-button>
+  </div>
+
   <p-tabView>
     <p-tabPanel>
       <ng-template pTemplate="header">
@@ -53,7 +58,9 @@
         <ng-template pTemplate="body" let-training>
           <tr>
             <td>
-              {{ training.name }}
+              <div class="cursor-pointer" routerLink="/resp/cohort/training/{{ training.id }}">
+                <span class="font-semibold hover:text-blue-500">{{ training.name }}</span>
+              </div>
             </td>
             <td>{{ training.student_count }}</td>
             <td>{{ training.td_count }}</td>
