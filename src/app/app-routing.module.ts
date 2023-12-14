@@ -54,6 +54,12 @@ const routes: Routes = [
           import('./settings/settings.module').then((m) => m.SettingsModule),
         data: { title: 'Paramètres' },
       },
+      {
+        path: 'reminders',
+        loadChildren: () =>
+          import('./reminders/reminders.module').then((m) => m.RemindersModule),
+        data: { title: 'Reminders' },
+      },
     ],
   },
 ];

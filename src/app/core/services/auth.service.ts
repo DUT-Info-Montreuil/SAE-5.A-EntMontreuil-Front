@@ -118,16 +118,15 @@ export class AuthService {
     }
 
     getUserId(): number {
-        
         const token = this.getToken();
         if (!token) {
             return 0; // Gérer l'absence de jeton
         }
         const decodedToken = jwtDecode<JwtPayload>(token);
 
-        const id_user = decodedToken.sub.id;
+        const id = decodedToken.sub.id;
 
-        return id_user;
+        return id;
     }
 
     logout(): void {
