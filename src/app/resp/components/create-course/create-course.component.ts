@@ -80,12 +80,6 @@ export class CreateCourseComponent implements OnInit {
     });
   }
 
-  resetForm() {
-    this.date = '';
-    this.startTime = '';
-    this.endTime = '';
-  }
-
   onDegreeChange(id_Degree: number) {
     this.selectedPromotionId = null; // Réinitialiser l'ID de promotion sélectionnée
     this.selectedDegreeId = id_Degree; // Mise à jour de l'ID de diplôme sélectionné
@@ -199,6 +193,8 @@ export class CreateCourseComponent implements OnInit {
           summary: 'Succès',
           detail: 'Le cours a été créé avec succès.',
         });
+
+        this.resetForm();
       },
       (error) => {
         console.error('Erreur lors de la création du cours', error);
@@ -217,5 +213,28 @@ export class CreateCourseComponent implements OnInit {
         });
       }
     );
+  }
+  resetForm() {
+    // Resetting date, time, and control fields
+    this.date = '';
+    this.startTime = '';
+    this.endTime = '';
+    this.control = false;
+
+    // Resetting all selected IDs
+    this.selectedDegreeId = null;
+    this.selectedPromotionId = null;
+    this.selectedTrainingId = null;
+    this.selectedClassroomId = null;
+    this.selectedTeacherId = null;
+    this.selectedResourceId = null;
+
+    // Clearing any filtered or dynamic data
+    this.filteredPromotions = [];
+    this.trainings = [];
+    this.resources = [];
+    this.teachersDropdownOptions = [];
+
+    // Any other fields or lists that are part of the form should also be reset here
   }
 }

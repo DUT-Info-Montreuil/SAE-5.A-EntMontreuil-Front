@@ -41,7 +41,7 @@
       ></p-dropdown>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" *ngIf="selectedTrainingId !== null">
       <label for="resource">Ressource</label>
       <p-dropdown
         id="resource"
