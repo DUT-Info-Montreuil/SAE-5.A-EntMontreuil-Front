@@ -182,7 +182,7 @@ export class CreateCourseComponent implements OnInit {
           end: parseISO(`${this.date}T${this.endTime}`),
           color: {
             primary: resourceColor, // Setting the primary color
-            secondary: '#f0e68c', // You might want to set a secondary color as well
+            secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
             resourceName: resourceName,

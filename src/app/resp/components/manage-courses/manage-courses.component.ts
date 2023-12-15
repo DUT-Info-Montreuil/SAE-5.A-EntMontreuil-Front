@@ -4,7 +4,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
-import { addWeeks, subWeeks } from 'date-fns';
+import { addWeeks, endOfWeek, format, startOfWeek, subWeeks } from 'date-fns';
 import parse from 'date-fns/parse';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -42,7 +42,7 @@ export class ManageCoursesComponent {
   dayStartHour: number = 8;
   dayEndHour: number = 20;
   hourSegments: number = 2; // Pour avoir des incréments de 30 minutes
-  weekStartsOn: number = 1; // Semaine commence le lundi
+  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Semaine commence le lundi
 
   constructor(
     private courseService: CourseService,
@@ -247,5 +247,13 @@ export class ManageCoursesComponent {
     this.events = [...this.events, event];
     this.changeDetectorRef.detectChanges();
     console.log(this.events);
+  }
+
+  getWeekPeriod(): string {
+    const start = startOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+    const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
+    return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
   }
 }

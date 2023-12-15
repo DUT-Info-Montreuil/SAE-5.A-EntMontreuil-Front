@@ -30,18 +30,26 @@
         ></p-dropdown>
       </div>
     </div>
-    <p-button
-      [rounded]="true"
-      [text]="true"
-      (click)="previousWeek()"
-      icon="pi pi-chevron-left"
-    ></p-button>
-    <p-button
-      [rounded]="true"
-      [text]="true"
-      (click)="nextWeek()"
-      icon="pi pi-chevron-right"
-    ></p-button>
+
+    <div class="flex justify-content-between align-items-center mt-2 mb-2">
+      <div>
+        <span>{{ getWeekPeriod() }}</span>
+      </div>
+      <div>
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="previousWeek()"
+          icon="pi pi-chevron-left"
+        ></p-button>
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="nextWeek()"
+          icon="pi pi-chevron-right"
+        ></p-button>
+      </div>
+    </div>
 
     <mwl-calendar-week-view
       [viewDate]="viewDate"

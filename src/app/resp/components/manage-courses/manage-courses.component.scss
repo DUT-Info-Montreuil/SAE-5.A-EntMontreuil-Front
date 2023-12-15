@@ -32,6 +32,13 @@
   color: black; /* Changer la couleur de texte si nécessaire */
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep .cal-week-view .cal-time-events .cal-event {
+  display: flex;
+  flex-direction: column;
 }
 
 .custom-event-title {
@@ -50,6 +57,42 @@
   &__resource,
   &__teachers,
   &__classroom {
-    font-size: 5px;
+    font-size: 10px;
   }
+}
+
+::ng-deep .cal-week-view .cal-time {
+  font-weight: 100 !important;
+}
+
+::ng-deep .cal-week-view {
+  background: rgb(255, 255, 255) !important;
+}
+
+::ng-deep .cal-week-view .cal-day-headers {
+  border-top-left-radius: 5px !important;
+  // border-top-right-radius: 5px !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(221, 221, 221) !important;
+}
+
+::ng-deep .cal-week-view {
+  border: none !important;
+}
+
+::ng-deep .cal-week-view .cal-day-headers .cal-header:last-child {
+  // border-top-right-radius: 5px !important;
+}
+
+::ng-deep .cal-week-view .cal-time-events {
+  border: none;
+}
+
+::ng-deep .cal-week-view .cal-header.cal-today {
+  background-color: rgb(239, 244, 255);
+}
+
+::ng-deep .cal-week-view .cal-hour:not(:last-child) .cal-hour-segment,
+.cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+  border-bottom: none;
 }
