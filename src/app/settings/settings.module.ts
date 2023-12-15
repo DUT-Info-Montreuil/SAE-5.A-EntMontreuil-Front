@@ -8,11 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
-  declarations: [
-    SettingsLayoutComponent
-  ],
+  declarations: [SettingsLayoutComponent],
   imports: [
     CommonModule,
     SettingsRoutingModule,
@@ -21,8 +20,9 @@ import { ToastModule } from 'primeng/toast';
     FormsModule,
     ButtonModule,
     CheckboxModule,
-    ToastModule
+    ToastModule,
+    TabViewModule,
   ],
-  providers: [MessageService]
+  providers: [MessageService],
 })
-export class SettingsModule { }
+export class SettingsModule {}
