@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { TabViewModule } from 'primeng/tabview';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [SettingsLayoutComponent],
@@ -22,6 +23,7 @@ import { TabViewModule } from 'primeng/tabview';
     CheckboxModule,
     ToastModule,
     TabViewModule,
+    InputSwitchModule,
   ],
   providers: [MessageService],
 })

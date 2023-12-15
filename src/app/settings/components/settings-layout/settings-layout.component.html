@@ -27,28 +27,49 @@
         <i class="pi pi-bell mr-2"></i> Notifications
       </ng-template>
 
-      <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
-        <p>Sélectionnez les options que vous souhaitez:</p>
+      <h1 class="font-semibold text-xl mb-3">Notifications</h1>
 
+      <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
         <div>
-          <label>
-            Notification par e-mail
-            <input
-              type="checkbox"
-              formControlName="notificationMail"
-              (change)="updateSettings()"
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Notifications sur le site web
-            <input
-              type="checkbox"
-              formControlName="notificationWebsite"
-              (change)="updateSettings()"
-            />
-          </label>
+          <div>
+            <div class="flex align-items-center justify-content-between">
+              <div>
+                <h3 for="notificationMail" class="text-lg font-medium">
+                  Notifications site web
+                </h3>
+                <p class="text-sm text-gray-500 -mt-2">
+                  Recevez des notifications sur l'ENT pour vos absences, des
+                  cours annulés, etc.
+                </p>
+              </div>
+
+              <div>
+                <p-inputSwitch
+                  formControlName="notificationWebsite"
+                  (onChange)="updateSettings()"
+                ></p-inputSwitch>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex align-items-center justify-content-between">
+            <div>
+              <h3 for="notificationMail" class="text-lg font-medium">
+                Notifications par e-mail
+              </h3>
+              <p class="text-sm text-gray-500 -mt-2">
+                Recevez des notifications par e-mail pour vos absences, des
+                cours annulés, etc.
+              </p>
+            </div>
+
+            <div>
+              <p-inputSwitch
+                formControlName="notificationMail"
+                (onChange)="updateSettings()"
+              ></p-inputSwitch>
+            </div>
+          </div>
         </div>
       </form>
     </p-tabPanel>
