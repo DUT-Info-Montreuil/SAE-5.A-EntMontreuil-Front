@@ -1,35 +1,47 @@
 <div class="app-layout">
   <div class="calendar-section">
     <div class="dropdown-section">
-      <p-dropdown
-        [options]="degrees"
-        (onChange)="onDegreeChange($event.value)"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Sélectionnez une formation"
-      ></p-dropdown>
+      <div class="flex gap-3">
+        <p-dropdown
+          [options]="degrees"
+          (onChange)="onDegreeChange($event.value)"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionnez une formation"
+        ></p-dropdown>
 
-      <p-dropdown
-        [options]="filteredPromotions"
-        [(ngModel)]="selectedPromotionId"
-        (onChange)="onPromotionChange()"
-        optionLabel="uniqueLabel"
-        optionValue="id"
-        placeholder="Sélectionnez une promotion"
-      ></p-dropdown>
+        <p-dropdown
+          [options]="filteredPromotions"
+          [(ngModel)]="selectedPromotionId"
+          (onChange)="onPromotionChange()"
+          optionLabel="uniqueLabel"
+          optionValue="id"
+          placeholder="Sélectionnez une promotion"
+        ></p-dropdown>
 
-      <p-dropdown
-        *ngIf="trainings && trainings.length > 0"
-        [options]="trainings"
-        [(ngModel)]="selectedTrainingId"
-        (onChange)="onTrainingChange()"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Sélectionnez un training"
-      ></p-dropdown>
+        <p-dropdown
+          *ngIf="trainings && trainings.length > 0"
+          [options]="trainings"
+          [(ngModel)]="selectedTrainingId"
+          (onChange)="onTrainingChange()"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionnez un training"
+        ></p-dropdown>
+      </div>
     </div>
-    <button (click)="previousWeek()">Previous Week</button>
-    <button (click)="nextWeek()">Next Week</button>
+    <p-button
+      [rounded]="true"
+      [text]="true"
+      (click)="previousWeek()"
+      icon="pi pi-chevron-left"
+    ></p-button>
+    <p-button
+      [rounded]="true"
+      [text]="true"
+      (click)="nextWeek()"
+      icon="pi pi-chevron-right"
+    ></p-button>
 
     <mwl-calendar-week-view
       [viewDate]="viewDate"

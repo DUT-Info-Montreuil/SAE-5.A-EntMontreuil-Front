@@ -17,6 +17,7 @@ import { SimpleCalendarComponent } from './components/simple-calendar/simple-cal
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -40,6 +41,7 @@ import { TooltipModule } from 'primeng/tooltip';
       useFactory: adapterFactory,
     }),
     TooltipModule,
+    ButtonModule,
   ],
   providers: [CohortService, MessageService],
 })
