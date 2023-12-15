@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { addWeeks, endOfWeek, format, startOfWeek, subWeeks } from 'date-fns';
 import parse from 'date-fns/parse';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -41,7 +42,7 @@ export class ManageCoursesComponent {
   dayStartHour: number = 8;
   dayEndHour: number = 20;
   hourSegments: number = 2; // Pour avoir des incréments de 30 minutes
-  weekStartsOn: number = 1; // Semaine commence le lundi
+  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Semaine commence le lundi
 
   constructor(
     private courseService: CourseService,
@@ -178,7 +179,7 @@ export class ManageCoursesComponent {
   }
 
   createEventsFromCourses(coursesData: any) {
-    const newEvents = coursesData.map((courseData: any) => {
+    let newEvents = coursesData.map((courseData: any) => {
       const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
       course.dateCourse = courseData.courses.dateCourse;
       course.startTime = courseData.courses.startTime;
@@ -187,7 +188,7 @@ export class ManageCoursesComponent {
       // Construction des chaînes de date et d'heure
       const startDateTime = `${course.dateCourse}T${course.startTime}`;
       const endDateTime = `${course.dateCourse}T${course.endTime}`;
-
+      //const idCourse = coursesData.courses.id;
       // Conversion en objets Date
       const startDate = parse(
         startDateTime,
@@ -195,7 +196,7 @@ export class ManageCoursesComponent {
         new Date()
       );
       const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
-
+      console.log(courseData);
       // Création de l'événement de calendrier
       return {
         title: course.resource.name, // Nom de la ressource pour le titre
@@ -207,13 +208,52 @@ export class ManageCoursesComponent {
         },
         meta: {
           // Informations supplémentaires
+
+          courseid: courseData.courses.id,
           resourceName: course.resource.name,
-          teacherNames: 'teacherNames',
-          classroomName: 'classroomName',
+          teacherNames: course.teacher
+            .map((t) => `${t.first_name} ${t.last_name}`)
+            .join(', '),
+          classroomName: course.classroom.map((c) => c.name).join(', '),
         },
       };
     });
 
     this.events.push(...newEvents);
+  }
+
+  previousWeek(): void {
+    this.viewDate = subWeeks(this.viewDate, 1);
+  }
+
+  nextWeek(): void {
+    this.viewDate = addWeeks(this.viewDate, 1);
+  }
+
+  addEvent(event: any) {
+    // Vérifiez si 'this.calendarOptions.events' est un tableau
+    // if (Array.isArray(this.calendarOptions.events)) {
+    //   // Ajoutez le nouvel événement
+    //   console.log(event);
+    //   this.calendarOptions.events.push(event);
+    //   this.changeDetectorRef.detectChanges();
+    // } else {
+    //   // Si ce n'est pas un tableau, initialisez-le en tant que tel avec le nouvel événement
+    //   this.calendarOptions.events = [event];
+    // }
+
+    // this.changeDetectorRef.detectChanges();
+    // console.log(this.calendarOptions.events);
+    this.events = [...this.events, event];
+    this.changeDetectorRef.detectChanges();
+    console.log(this.events);
+  }
+
+  getWeekPeriod(): string {
+    const start = startOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+    const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
+    return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
   }
 }

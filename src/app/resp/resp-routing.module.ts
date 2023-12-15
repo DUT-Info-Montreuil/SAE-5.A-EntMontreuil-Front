@@ -50,7 +50,7 @@ const routes: Routes = [
   },
   {
     path: 'courses',
-    component: SimpleCalendarComponent,
+    component: ManageCoursesComponent,
     canActivate: [AuthGuard],
   },
 ];

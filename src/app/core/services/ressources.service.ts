@@ -25,6 +25,13 @@ export class RessourceService {
     );
   }
 
+  getRessourceByIdTraining(idTraining: number): Observable<Ressource[]> {
+    return this.http.get<Ressource[]>(
+      `${this.apiUrl}/resources/training/${idTraining}`,
+      this.httpOptions
+    );
+  }
+
   deleteRessource(resourceId: number): Observable<any[]> {
     return this.http.delete<any[]>(
       `${this.apiUrl}/resources/${resourceId}`,

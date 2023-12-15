@@ -18,7 +18,6 @@ import { CreateCourseComponent } from './components/create-course/create-course.
 import { DegreeComponent } from './components/degree/degree.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { TabViewModule } from 'primeng/tabview';
 import { BadgeModule } from 'primeng/badge';
@@ -30,6 +29,8 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TooltipModule } from 'primeng/tooltip';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     DegreeComponent,
     TrainingComponent,
     TdComponent,
-    TpComponent
+    TpComponent,
   ],
 
   imports: [
@@ -69,11 +70,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    TooltipModule,
+    ButtonModule,
   ],
-  providers: [
-    CohortService,
-    MessageService,
-    ContextMenuService
-  ]
+  providers: [CohortService, MessageService, ContextMenuService],
 })
-export class RespModule { }
+export class RespModule {}

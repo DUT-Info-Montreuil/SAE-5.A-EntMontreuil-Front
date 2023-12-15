@@ -1,33 +1,110 @@
 <p-card header="Créer un cours">
-  <form (submit)="addCourse()">
-    <p-dropdown
-      [options]="degrees"
-      [(ngModel)]="selectedDegreeId"
-      (onChange)="onDegreeChange()"
-      optionLabel="name"
-      optionValue="id"
-      placeholder="Sélectionnez une formation"
-    >
-    </p-dropdown>
+  <form (submit)="CreateCourse()" class="create-course-form">
+    <div class="form-group">
+      <label for="degree">Formation</label>
+      <p-dropdown
+        id="degree"
+        [options]="degrees"
+        (onChange)="onDegreeChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une formation"
+      ></p-dropdown>
+    </div>
 
-    <p-dropdown
-      [options]="filteredPromotions"
-      [(ngModel)]="selectedPromotionId"
-      optionLabel="uniqueLabel"
-      optionValue="id"
-      placeholder="Sélectionnez une promotion"
-    >
-    </p-dropdown>
+    <div class="form-group" *ngIf="selectedDegreeId !== null">
+      <label for="promotion">Promotion</label>
+      <p-dropdown
+        id="promotion"
+        [options]="filteredPromotions"
+        [(ngModel)]="selectedPromotionId"
+        (onChange)="onPromotionChange($event.value)"
+        optionLabel="uniqueLabel"
+        optionValue="id"
+        placeholder="Sélectionnez une promotion"
+      ></p-dropdown>
+    </div>
 
-    <input
-      type="text"
-      [(ngModel)]="name"
-      name="name"
-      placeholder="Nom du cours"
-    />
-    <input type="date" [(ngModel)]="date" name="date" />
-    <input type="time" [(ngModel)]="startTime" name="startTime" />
-    <input type="time" [(ngModel)]="endTime" name="endTime" />
-    <button type="submit">Créer le cours</button>
+    <div
+      class="form-group"
+      *ngIf="selectedPromotionId !== null && trainings != []"
+    >
+      <label for="training">Parcours</label>
+      <p-dropdown
+        id="training"
+        [options]="trainings"
+        [(ngModel)]="selectedTrainingId"
+        (onChange)="onTrainingChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez un Parcours"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="resource">Ressource</label>
+      <p-dropdown
+        id="resource"
+        [options]="resources"
+        [(ngModel)]="selectedResourceId"
+        (onChange)="onResourceChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une ressource"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="teacher">Enseignant</label>
+      <p-dropdown
+        id="teacher"
+        [options]="teachersDropdownOptions"
+        [(ngModel)]="selectedTeacherId"
+        (onChange)="onTeacherChange($event.value)"
+        placeholder="Sélectionnez un enseignant"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="classroom">Salle de classe</label>
+      <p-dropdown
+        [options]="classrooms"
+        [(ngModel)]="selectedClassroomId"
+        (onChange)="onClassroomChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une salle"
+        appendTo="body"
+      >
+        <ng-template let-classroom pTemplate="item">
+          {{ classroom.name }} (Capacité : {{ classroom.capacity }})
+        </ng-template>
+      </p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="courseDate">Date du cours</label>
+      <input id="courseDate" type="date" [(ngModel)]="date" name="date" />
+    </div>
+
+    <div class="form-group">
+      <label for="startTime">Heure de début</label>
+      <input
+        id="startTime"
+        type="time"
+        [(ngModel)]="startTime"
+        name="startTime"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="endTime">Heure de fin</label>
+      <input id="endTime" type="time" [(ngModel)]="endTime" name="endTime" />
+    </div>
+
+    <button (click)="(CreateCourse)" class="submit-button">
+      Créer le cours
+    </button>
   </form>
 </p-card>
+<p-toast></p-toast>
