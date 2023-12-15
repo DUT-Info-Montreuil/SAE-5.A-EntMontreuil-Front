@@ -1,27 +1,43 @@
 <!-- settings-layout.component.html -->
+<div class="container">
+  <div
+    class="flex align-items-center border-round p-4 relative mb-6"
+    style="background-color: rgb(255, 247, 234)"
+  >
+    <div>
+      <h1 class="text-2xl font-semibold">Paramètres</h1>
+      <p class="text-900 font-medium"></p>
+    </div>
+    <div
+      class="absolute hidden sm:hidden md:block"
+      style="top: -14px; right: 50px"
+    >
+      <img src="/assets/images/3dicons/rocket.png" alt="cube" width="180px" />
+    </div>
+  </div>
 
-<h1>Paramètres</h1>
+  <h1>Paramètres</h1>
 
-<form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
-
+  <form [formGroup]="settingsForm" (ngSubmit)="updateSettings()">
     <p>Sélectionnez les options que vous souhaitez:</p>
 
     <div>
       <label>
         Notification par e-mail
-        <input type="checkbox" formControlName="notificationMail">
+        <input type="checkbox" formControlName="notificationMail" />
       </label>
     </div>
     <div>
       <label>
         Notifications sur le site web
-        <input type="checkbox" formControlName="notificationWebsite">
+        <input type="checkbox" formControlName="notificationWebsite" />
       </label>
     </div>
-  
+
     <div [style.margin-top.px]="20">
-        <p-button type="submit">Enregistrer</p-button>
+      <p-button type="submit">Enregistrer</p-button>
     </div>
-</form>
+  </form>
+</div>
 
 <p-toast></p-toast>
