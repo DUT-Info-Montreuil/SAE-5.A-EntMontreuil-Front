@@ -219,7 +219,15 @@ export class ManageCoursesComponent {
       };
     });
 
-    this.events.push(...newEvents);
+    const uniqueEvents = newEvents.filter((newEvent: any) => {
+      return !this.events.some(
+        (existingEvent) =>
+          existingEvent.meta.courseid === newEvent.meta.courseid
+      );
+    });
+
+    // Add only unique events to the main events array
+    this.events.push(...uniqueEvents);
   }
 
   previousWeek(): void {
