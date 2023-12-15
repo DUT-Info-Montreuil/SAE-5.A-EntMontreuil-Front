@@ -33,6 +33,7 @@ import { TooltipModule } from 'primeng/tooltip';
     ToastModule,
     CardModule,
     DropdownModule,
+    ToastModule,
     FullCalendarModule,
     CalendarModule.forRoot({
       provide: DateAdapter,

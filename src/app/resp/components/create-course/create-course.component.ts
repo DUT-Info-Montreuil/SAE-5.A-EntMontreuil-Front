@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Training } from 'src/app/admin/models/training.model';
@@ -40,7 +41,8 @@ export class CreateCourseComponent implements OnInit {
     private courseService: CourseService,
     private classroomsService: ClassroomsService,
     private teachersService: TeachersService,
-    private ressourceService: RessourceService
+    private ressourceService: RessourceService,
+    private messageService: MessageService
   ) {}
   ngOnInit(): void {
     console.log(this.degrees);
@@ -164,11 +166,27 @@ export class CreateCourseComponent implements OnInit {
           },
         };
         this.eventCreated.emit(calendarEvent);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Le cours a été créé avec succès.',
+        });
       },
-
       (error) => {
         console.error('Erreur lors de la création du cours', error);
-        // Gérer les erreurs ici
+        let errorMessage =
+          'Une erreur s’est produite lors de la création du cours.';
+
+        // Vérifiez si l'erreur contient un message spécifique
+        if (error.error && error.error.error) {
+          errorMessage = error.error.error;
+        }
+        console.log('errorMessage', errorMessage);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: errorMessage,
+        });
       }
     );
   }
