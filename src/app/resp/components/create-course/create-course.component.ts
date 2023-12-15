@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { parseISO } from 'date-fns';
 import { MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -29,7 +30,7 @@ export class CreateCourseComponent implements OnInit {
   selectedClassroomId: number | null = null;
   classrooms: any[] = [];
   trainings: Training[] = [];
-  teachers: Teacher[] = [];
+  teachers: any[] = [];
   teachersDropdownOptions: any[] = [];
   resources: any[] = [];
   selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
@@ -147,6 +148,27 @@ export class CreateCourseComponent implements OnInit {
       teachers_id: this.selectedTeacherId ? [this.selectedTeacherId] : [],
       classrooms_id: this.selectedClassroomId ? [this.selectedClassroomId] : [],
     };
+    const selectedTeacher = this.teachers.find(
+      (t) => t.personal_info.id === this.selectedTeacherId
+    );
+    const selectedClassroom = this.classrooms.find(
+      (c) => c.id === this.selectedClassroomId
+    );
+    const selectedResource = this.resources.find(
+      (r) => r.id === this.selectedResourceId
+    );
+
+    const teacherName = selectedTeacher
+      ? `${selectedTeacher.user.first_name} ${selectedTeacher.user.last_name}`
+      : 'Unassigned';
+    const classroomName = selectedClassroom
+      ? selectedClassroom.name
+      : 'No Classroom Assigned';
+
+    const resourceName = selectedResource
+      ? selectedResource.name
+      : 'Unknown Resource';
+    const resourceColor = selectedResource ? selectedResource.color : '#000000'; // Default color
 
     console.log('newCourse', newCourse);
 
@@ -155,17 +177,23 @@ export class CreateCourseComponent implements OnInit {
         console.log('Cours créé avec succès', response);
         // Gérer la réponse ou les actions de succès ici
         const calendarEvent = {
-          title: response.name || 'Nouveau cours', // Utilisez un champ approprié de la réponse pour le titre
-          start: `${this.date}T${this.startTime}`,
-          end: `${this.date}T${this.endTime}`,
-          color: '#ffcc00',
-          extendedProps: {
-            groupName: 'promotion',
-            professor: newCourse.teachers_id[0].toString(),
-            classroom: newCourse.classrooms_id[0].toString(),
+          title: response.name || 'Nouveau cours', // Using 'name' from response for the title
+          start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
+          end: parseISO(`${this.date}T${this.endTime}`),
+          color: {
+            primary: resourceColor, // Setting the primary color
+            secondary: '#f0e68c', // You might want to set a secondary color as well
+          },
+          meta: {
+            resourceName: resourceName,
+            groupName: 'promotion', // Assuming this is a static value
+            teacherNames: teacherName,
+            classroomName: classroomName,
           },
         };
+
         this.eventCreated.emit(calendarEvent);
+
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',

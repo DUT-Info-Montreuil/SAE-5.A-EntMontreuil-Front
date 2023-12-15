@@ -95,18 +95,20 @@ export class SimpleCalendarComponent implements OnInit {
 
   addEvent(event: any) {
     // Vérifiez si 'this.calendarOptions.events' est un tableau
-    if (Array.isArray(this.calendarOptions.events)) {
-      // Ajoutez le nouvel événement
-      console.log(event);
-      this.calendarOptions.events.push(event);
-      this.changeDetectorRef.detectChanges();
-    } else {
-      // Si ce n'est pas un tableau, initialisez-le en tant que tel avec le nouvel événement
-      this.calendarOptions.events = [event];
-    }
+    // if (Array.isArray(this.calendarOptions.events)) {
+    //   // Ajoutez le nouvel événement
+    //   console.log(event);
+    //   this.calendarOptions.events.push(event);
+    //   this.changeDetectorRef.detectChanges();
+    // } else {
+    //   // Si ce n'est pas un tableau, initialisez-le en tant que tel avec le nouvel événement
+    //   this.calendarOptions.events = [event];
+    // }
+
+    // this.changeDetectorRef.detectChanges();
+    // console.log(this.calendarOptions.events);
 
     this.changeDetectorRef.detectChanges();
-    console.log(this.calendarOptions.events);
   }
 
   onPromotionChange() {

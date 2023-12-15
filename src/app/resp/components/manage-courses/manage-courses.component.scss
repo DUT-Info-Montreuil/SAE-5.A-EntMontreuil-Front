@@ -41,3 +41,15 @@
 .custom-event-time {
   display: block; /* ou 'inline' selon la disposition souhaitée */
 }
+
+/* manage-courses.component.scss */
+
+.custom-event-title {
+  display: block; /* Make each span a block element to appear on a new line */
+
+  &__resource,
+  &__teachers,
+  &__classroom {
+    font-size: 5px;
+  }
+}

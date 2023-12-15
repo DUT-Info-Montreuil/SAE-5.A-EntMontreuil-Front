@@ -28,6 +28,9 @@
         placeholder="Sélectionnez un training"
       ></p-dropdown>
     </div>
+    <button (click)="previousWeek()">Previous Week</button>
+    <button (click)="nextWeek()">Next Week</button>
+
     <mwl-calendar-week-view
       [viewDate]="viewDate"
       [excludeDays]="excludeDays"
@@ -36,14 +39,28 @@
       [dayEndHour]="dayEndHour"
       [hourSegments]="hourSegments"
       [weekStartsOn]="1"
+      [eventTitleTemplate]="customEventTitleTemplate"
     >
     </mwl-calendar-week-view>
   </div>
 
   <div class="menu-section">
     <app-create-course
+      (eventCreated)="addEvent($event)"
       [degrees]="degrees"
       [promotions]="promotions"
     ></app-create-course>
   </div>
 </div>
+
+<ng-template #customEventTitleTemplate let-event="event">
+  <span class="custom-event-title__resource">{{
+    event.meta.resourceName
+  }}</span>
+  <span class="custom-event-title__teachers">{{
+    event.meta.teacherNames
+  }}</span>
+  <span class="custom-event-title__classroom">{{
+    event.meta.classroomName
+  }}</span>
+</ng-template>
