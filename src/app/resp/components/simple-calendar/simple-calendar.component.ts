@@ -115,48 +115,48 @@ export class SimpleCalendarComponent implements OnInit {
     this.calendarOptions.events = [];
     if (this.selectedPromotionId !== null) {
       this.calendarOptions.events = [];
-      this.courseService
-        .getCourseByPromotion(this.selectedPromotionId)
-        .subscribe((data: any) => {
-          const coursePromotionObservable = this.createEventsFromCourses(
-            data.courses.courses_promotion,
-            'promotion'
-          );
-          const courseTrainingObservables = data.courses.courses_training.map(
-            (trainingData: any) =>
-              this.createEventsFromCourses(trainingData, 'training')
-          );
-          const courseTDObservables = data.courses.courses_td.map(
-            (tdData: any) => this.createEventsFromCourses(tdData, 'td')
-          );
-          const courseTPObservables = data.courses.courses_tp.map(
-            (tpData: any) => this.createEventsFromCourses(tpData, 'tp')
-          );
+      //   this.courseService
+      //     .getCourseByPromotion(this.selectedPromotionId)
+      //     .subscribe((data: any) => {
+      //       const coursePromotionObservable = this.createEventsFromCourses(
+      //         data.courses.courses_promotion,
+      //         'promotion'
+      //       );
+      //       const courseTrainingObservables = data.courses.courses_training.map(
+      //         (trainingData: any) =>
+      //           this.createEventsFromCourses(trainingData, 'training')
+      //       );
+      //       const courseTDObservables = data.courses.courses_td.map(
+      //         (tdData: any) => this.createEventsFromCourses(tdData, 'td')
+      //       );
+      //       const courseTPObservables = data.courses.courses_tp.map(
+      //         (tpData: any) => this.createEventsFromCourses(tpData, 'tp')
+      //       );
 
-          forkJoin([
-            coursePromotionObservable,
-            ...courseTrainingObservables,
-            ...courseTDObservables,
-            ...courseTPObservables,
-          ])
-            .pipe(
-              map((results) => results.flat()),
-              map((events) => {
-                const uniqueEvents = new Map();
-                events.forEach((event) => {
-                  const eventKey = `${event.title}-${event.start}-${event.end}`;
-                  if (!uniqueEvents.has(eventKey)) {
-                    uniqueEvents.set(eventKey, event);
-                  }
-                });
-                return Array.from(uniqueEvents.values());
-              })
-            )
-            .subscribe((uniqueEvents) => {
-              this.calendarOptions.events = uniqueEvents;
-              this.changeDetectorRef.detectChanges();
-            });
-        });
+      //       forkJoin([
+      //         coursePromotionObservable,
+      //         ...courseTrainingObservables,
+      //         ...courseTDObservables,
+      //         ...courseTPObservables,
+      //       ])
+      //         .pipe(
+      //           map((results) => results.flat()),
+      //           map((events) => {
+      //             const uniqueEvents = new Map();
+      //             events.forEach((event) => {
+      //               const eventKey = `${event.title}-${event.start}-${event.end}`;
+      //               if (!uniqueEvents.has(eventKey)) {
+      //                 uniqueEvents.set(eventKey, event);
+      //               }
+      //             });
+      //             return Array.from(uniqueEvents.values());
+      //           })
+      //         )
+      //         .subscribe((uniqueEvents) => {
+      //           this.calendarOptions.events = uniqueEvents;
+      //           this.changeDetectorRef.detectChanges();
+      //         });
+      //     });
     }
   }
 

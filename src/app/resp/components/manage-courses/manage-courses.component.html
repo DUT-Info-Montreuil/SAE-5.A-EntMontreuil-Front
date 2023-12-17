@@ -20,13 +20,22 @@
         ></p-dropdown>
 
         <p-dropdown
+          *ngIf="selectedPromotionId"
+          [options]="semesterOptions"
+          [(ngModel)]="selectedSemester"
+          placeholder="Sélectionnez un semestre"
+          (onChange)="onSemesterChange()"
+          (optionValue)="(selectedSemester)"
+        ></p-dropdown>
+
+        <p-dropdown
           *ngIf="trainings && trainings.length > 0"
           [options]="trainings"
           [(ngModel)]="selectedTrainingId"
           (onChange)="onTrainingChange()"
           optionLabel="name"
           optionValue="id"
-          placeholder="Sélectionnez un training"
+          placeholder="Sélectionnez un parcours"
         ></p-dropdown>
       </div>
     </div>
@@ -69,6 +78,9 @@
       (eventCreated)="addEvent($event)"
       [degrees]="degrees"
       [promotions]="promotions"
+      [selectedPromotionId]="selectedPromotionId"
+      [selectedTrainingId]="selectedTrainingId"
+      [resources]="resources"
     ></app-create-course>
   </div>
 </div>

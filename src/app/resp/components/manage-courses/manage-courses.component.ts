@@ -8,10 +8,12 @@ import { addWeeks, endOfWeek, format, startOfWeek, subWeeks } from 'date-fns';
 import parse from 'date-fns/parse';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
+import { Ressource } from 'src/app/admin/models/ressource.model';
 import { Training } from 'src/app/admin/models/training.model';
 import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from 'src/app/core/services/courses.service';
 import { DegreeService } from 'src/app/core/services/degrees.service';
+import { RessourceService } from 'src/app/core/services/ressources.service';
 
 @Component({
   selector: 'app-manage-courses',
@@ -24,9 +26,12 @@ export class ManageCoursesComponent {
   selectedTrainingId: number | null = null;
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
-
+  resources: any[] = [];
   degrees: Degree[] = [];
   trainings: Training[] = [];
+
+  selectedSemester: number | null = null;
+  semesterOptions: number[] = [1, 2, 3];
 
   handleEventClick($event: {
     event: CalendarEvent<any>;
@@ -47,7 +52,8 @@ export class ManageCoursesComponent {
   constructor(
     private courseService: CourseService,
     private changeDetectorRef: ChangeDetectorRef,
-    private deegreeService: DegreeService
+    private deegreeService: DegreeService,
+    private ressourceService: RessourceService
   ) {
     this.courseService.getAllPromotions().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -65,11 +71,19 @@ export class ManageCoursesComponent {
   }
 
   onPromotionChange() {
+    this.selectedSemester = null;
     if (this.selectedPromotionId !== null) {
-      this.getTrainingOfPromo(this.selectedPromotionId);
       this.selectedTrainingId = null;
+    }
+  }
+
+  onSemesterChange() {
+    this.resources = [];
+    this.events = [];
+    if (this.selectedSemester && this.selectedPromotionId) {
+      this.getTrainingOfPromo(this.selectedPromotionId, this.selectedSemester);
       this.courseService
-        .getCourseByPromotion(this.selectedPromotionId)
+        .getCourseByPromotion(this.selectedPromotionId, this.selectedSemester)
         .subscribe((data: any) => {
           console.log(data);
           const coursePromotionData = data.courses.courses_promotion;
@@ -92,10 +106,28 @@ export class ManageCoursesComponent {
           console.log(this.events); // Pour vérifier les données
         });
     }
+
+    console.log(this.selectedSemester);
   }
 
   onTrainingChange() {
-    if (this.selectedTrainingId !== null) {
+    if (
+      this.selectedTrainingId !== null &&
+      this.selectedPromotionId !== null &&
+      this.selectedSemester !== null
+    ) {
+      this.ressourceService
+        .getRessourceByIdTraining(this.selectedTrainingId)
+        .subscribe(
+          (data: any) => {
+            this.resources = data;
+            this.changeDetectorRef.detectChanges();
+          },
+          (error: any) => {
+            console.error('Error loading resources:', error);
+          }
+        );
+
       this.courseService
         .getCourseByTraining(this.selectedTrainingId)
         .subscribe((data: any) => {
@@ -111,7 +143,6 @@ export class ManageCoursesComponent {
                 // Construction des chaînes de date et d'heure
                 const startDateTime = `${course.dateCourse}T${course.startTime}`;
                 const endDateTime = `${course.dateCourse}T${course.endTime}`;
-
                 // Conversion en objets Date
                 const startDate = parse(
                   startDateTime,
@@ -123,7 +154,6 @@ export class ManageCoursesComponent {
                   "yyyy-MM-dd'T'HH:mm:ss",
                   new Date()
                 );
-
                 // Création de l'événement de calendrier
                 return {
                   title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
@@ -155,13 +185,17 @@ export class ManageCoursesComponent {
     }
   }
 
-  getTrainingOfPromo(promotionId: number) {
+  getTrainingOfPromo(promotionId: number, idSemester: number) {
     console.log('getTrainingOfPromo');
-    this.courseService.getTrainingOfPromo(promotionId).subscribe((data) => {
-      // Handle the retrieved training data here, e.g., assign it to this.trainings
-
-      this.trainings = data.trainings;
-    });
+    this.trainings = [];
+    this.courseService
+      .getTrainingByPromotionAndSemester(promotionId, idSemester)
+      .subscribe((data) => {
+        // Handle the retrieved training data here, e.g., assign it to this.trainings
+        console.log(data);
+        this.trainings = data;
+      });
+    console.log(this.trainings);
   }
 
   getDegrees() {

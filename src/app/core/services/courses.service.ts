@@ -32,10 +32,13 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  getCourseByPromotion(promotionId: number): Observable<Course[]> {
+  getCourseByPromotion(
+    promotionId: number,
+    semester: number
+  ): Observable<Course[]> {
     return this.http
       .get<Course[]>(
-        `${this.apiURL}/courses/promotion/${promotionId}`,
+        `${this.apiURL}/courses/promotion/${promotionId}/${semester}`,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -90,6 +93,16 @@ export class CourseService {
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
+  }
+
+  getTrainingByPromotionAndSemester(
+    idPromotion: number,
+    semester: number
+  ): Observable<any> {
+    return this.http.get<any[]>(
+      `${this.apiURL}/trainings/${idPromotion}/${semester}`,
+      this.httpOptions
+    );
   }
 
   getGroupName(id_group: number, groupType: string): Observable<any[]> {

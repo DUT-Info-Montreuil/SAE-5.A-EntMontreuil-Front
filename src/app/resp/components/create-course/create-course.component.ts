@@ -20,19 +20,20 @@ export class CreateCourseComponent implements OnInit {
   @Input() degrees: Degree[] = [];
   @Input() promotions: Promotion[] = [];
   @Output() eventCreated = new EventEmitter<any>();
+  @Input() selectedPromotionId: number | null = null;
+  @Input() selectedTrainingId: number | null = null;
+  @Input() resources: any[] = [];
   filteredPromotions: any[] = [];
   date: string = '';
   startTime: string = '';
   endTime: string = '';
-  selectedDegreeId: number | null = null;
-  selectedPromotionId: number | null = null;
-  selectedTrainingId: number | null = null;
+
   selectedClassroomId: number | null = null;
   classrooms: any[] = [];
   trainings: Training[] = [];
   teachers: any[] = [];
   teachersDropdownOptions: any[] = [];
-  resources: any[] = [];
+
   selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
   control: boolean = false;
 
@@ -84,15 +85,6 @@ export class CreateCourseComponent implements OnInit {
     this.date = '';
     this.startTime = '';
     this.endTime = '';
-  }
-
-  onDegreeChange(id_Degree: number) {
-    this.selectedPromotionId = null; // Réinitialiser l'ID de promotion sélectionnée
-    this.selectedDegreeId = id_Degree; // Mise à jour de l'ID de diplôme sélectionné
-    console.log(this.promotions);
-    this.filteredPromotions = this.promotions.filter(
-      (promo) => promo.id_Degree === id_Degree
-    );
   }
 
   onPromotionChange(promotionId: number) {
