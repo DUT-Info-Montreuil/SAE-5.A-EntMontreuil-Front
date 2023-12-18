@@ -162,8 +162,13 @@ export class CreateCourseComponent implements OnInit {
       : 'Unknown Resource';
     const resourceColor = selectedResource ? selectedResource.color : '#000000'; // Default color
 
+    console.log('newCourse', this.teachers);
+    console.log('newCourse', this.selectedResourceId);
+    console.log('newCourse', this.selectedClassroomId);
+    console.log('newCourse', this.selectedTeacherId);
     console.log('newCourse', newCourse);
 
+    /* 
     this.courseService.addCourse(newCourse).subscribe(
       (response) => {
         console.log('Cours créé avec succès', response);
@@ -173,7 +178,7 @@ export class CreateCourseComponent implements OnInit {
           start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
           end: parseISO(`${this.date}T${this.endTime}`),
           color: {
-            primary: resourceColor, // Setting the primary color
+            primary: '#000000', // Setting the primary color
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
@@ -208,6 +213,6 @@ export class CreateCourseComponent implements OnInit {
           detail: errorMessage,
         });
       }
-    );
+    ); */
   }
 }

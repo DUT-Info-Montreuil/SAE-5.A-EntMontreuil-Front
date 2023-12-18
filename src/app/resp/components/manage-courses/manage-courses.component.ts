@@ -24,6 +24,7 @@ import { RessourceService } from 'src/app/core/services/ressources.service';
 export class ManageCoursesComponent {
   selectedPromotionId: number | null = null;
   selectedTrainingId: number | null = null;
+  selectedCourseId: number | null = null;
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
   resources: any[] = [];
@@ -33,11 +34,11 @@ export class ManageCoursesComponent {
   selectedSemester: number | null = null;
   semesterOptions: number[] = [1, 2, 3];
 
-  handleEventClick($event: {
-    event: CalendarEvent<any>;
-    sourceEvent: MouseEvent | KeyboardEvent;
-  }) {
-    throw new Error('Method not implemented.');
+  // In ManageCoursesComponent class
+
+  handleEventClick(event: CalendarEvent): void {
+    console.log(event);
+    this.selectedCourseId = event.meta.courseid;
   }
 
   view: CalendarView = CalendarView.Week;
@@ -289,5 +290,10 @@ export class ManageCoursesComponent {
     });
     const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
     return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
+  }
+
+  resetModal(): void {
+    this.selectedCourseId = null;
+    this.changeDetectorRef.detectChanges(); // Since you're using OnPush change detection
   }
 }

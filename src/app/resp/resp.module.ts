@@ -18,6 +18,8 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
+import { CourseDetailsModalComponent } from './components/course-details-modal/course-details-modal.component';
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -25,6 +27,7 @@ import { ButtonModule } from 'primeng/button';
     ManageCoursesComponent,
     SimpleCalendarComponent,
     CreateCourseComponent,
+    CourseDetailsModalComponent,
   ],
   imports: [
     CommonModule,
@@ -36,6 +39,7 @@ import { ButtonModule } from 'primeng/button';
     DropdownModule,
     ToastModule,
     FullCalendarModule,
+    DialogModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,

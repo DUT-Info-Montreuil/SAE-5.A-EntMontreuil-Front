@@ -69,6 +69,7 @@
       [hourSegments]="hourSegments"
       [weekStartsOn]="1"
       [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)"
     >
     </mwl-calendar-week-view>
   </div>
@@ -96,3 +97,8 @@
     event.meta.classroomName
   }}</span>
 </ng-template>
+<app-course-details-modal
+  *ngIf="selectedCourseId"
+  [selectedCourseId]="selectedCourseId"
+  (close)="resetModal()"
+></app-course-details-modal>

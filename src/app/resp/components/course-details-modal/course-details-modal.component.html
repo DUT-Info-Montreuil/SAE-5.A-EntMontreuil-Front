@@ -1,0 +1,72 @@
+<p-dialog
+  header="Détails du cours"
+  [(visible)]="display"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+>
+  <div class="course-details">
+    <p-card>
+      <div class="p-grid">
+        <div class="p-col-4">ID du cours:</div>
+        <div class="p-col-8">{{ course.courses.id }}</div>
+
+        <div class="p-col-4">Date du cours:</div>
+        <div class="p-col-8">
+          {{ course.courses.dateCourse | date : "fullDate" }}
+        </div>
+
+        <div class="p-col-4">Heure de début:</div>
+        <div class="p-col-8">
+          {{ course.courses.startTime }}
+        </div>
+
+        <div class="p-col-4">Heure de fin:</div>
+        <div class="p-col-8">
+          {{ course.courses.endTime }}
+        </div>
+
+        <div class="p-col-4">Nom de la ressource:</div>
+        <div class="p-col-8">{{ course.resource.name }}</div>
+
+        <div class="p-col-4">Couleur de la ressource:</div>
+        <div
+          class="p-col-8 color-box"
+          [style.background]="course.resource.color"
+        ></div>
+
+        <div class="p-col-4">Salles:</div>
+        <div class="p-col-8">
+          <ul class="classrooms-list">
+            <li *ngFor="let classroom of course.classroom">
+              {{ classroom.name }} (Capacité : {{ classroom.capacity }})
+            </li>
+          </ul>
+        </div>
+
+        <div class="p-col-4">Noms des enseignants:</div>
+        <div class="p-col-8">
+          <ul class="teachers-list">
+            <li *ngFor="let teacher of course.teacher">
+              {{ teacher.first_name }} {{ teacher.last_name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <p-footer>
+    <p-button
+      label="Modifier"
+      icon="pi pi-pencil"
+      (click)="onEdit()"
+    ></p-button>
+    <p-button
+      label="Supprimer"
+      icon="pi pi-trash"
+      styleClass="p-button-danger"
+      (click)="onDelete()"
+    ></p-button>
+    <p-button label="Fermer" icon="pi pi-times" (click)="onClose()"></p-button>
+  </p-footer>
+</p-dialog>
