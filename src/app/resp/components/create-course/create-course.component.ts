@@ -182,7 +182,7 @@ export class CreateCourseComponent implements OnInit {
         console.log('Cours créé avec succès', response);
         // Gérer la réponse ou les actions de succès ici
         const calendarEvent = {
-          title: response.name || 'Nouveau cours', // Using 'name' from response for the title
+          title: resourceName, // Using 'name' from response for the title
           start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
           end: parseISO(`${this.date}T${this.endTime}`),
           color: {

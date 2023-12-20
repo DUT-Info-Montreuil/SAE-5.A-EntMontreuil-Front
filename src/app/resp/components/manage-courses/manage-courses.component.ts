@@ -73,6 +73,7 @@ export class ManageCoursesComponent {
 
   onPromotionChange() {
     this.selectedSemester = null;
+    this.events = [];
     if (this.selectedPromotionId !== null) {
       this.selectedTrainingId = null;
     }
