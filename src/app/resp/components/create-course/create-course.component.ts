@@ -178,7 +178,7 @@ export class CreateCourseComponent implements OnInit {
     console.log('newCourse', newCourse);
 
     this.courseService.addCourse(newCourse).subscribe(
-      (response) => {
+      (response: any) => {
         console.log('Cours créé avec succès', response);
         // Gérer la réponse ou les actions de succès ici
         const calendarEvent = {
@@ -190,6 +190,7 @@ export class CreateCourseComponent implements OnInit {
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
+            courseid: response.id,
             resourceName: resourceName,
             groupName: 'promotion', // Assuming this is a static value
             teacherNames: teacherName,
