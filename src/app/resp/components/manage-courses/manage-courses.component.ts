@@ -294,6 +294,6 @@ export class ManageCoursesComponent {
 
   resetModal(): void {
     this.selectedCourseId = null;
-    this.changeDetectorRef.detectChanges(); // Since you're using OnPush change detection
+    this.changeDetectorRef.markForCheck(); // Trigger change detection manually
   }
 }
