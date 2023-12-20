@@ -111,12 +111,26 @@ export class ManageCoursesComponent {
           }
           this.createEventsFromCourses(coursePromotionData);
 
+          this.events = this.removeDuplicateEvents(this.events);
           this.changeDetectorRef.detectChanges();
           console.log(this.events); // Pour vérifier les données
         });
     }
 
     console.log(this.selectedSemester);
+  }
+
+  removeDuplicateEvents(events: CalendarEvent[]): CalendarEvent[] {
+    const uniqueEventIds = new Set();
+    const uniqueEvents = events.filter((event) => {
+      const courseid = event.meta.courseid;
+      if (!uniqueEventIds.has(courseid)) {
+        uniqueEventIds.add(courseid);
+        return true;
+      }
+      return false;
+    });
+    return uniqueEvents;
   }
 
   onTrainingChange() {
