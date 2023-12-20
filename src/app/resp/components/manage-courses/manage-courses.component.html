@@ -101,4 +101,5 @@
   *ngIf="selectedCourseId"
   [selectedCourseId]="selectedCourseId"
   (close)="resetModal()"
+  (courseDeleted)="removeEvent($event)"
 ></app-course-details-modal>

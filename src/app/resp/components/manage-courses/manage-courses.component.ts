@@ -78,6 +78,14 @@ export class ManageCoursesComponent {
     }
   }
 
+  removeEvent(courseId: number): void {
+    // Filter out the event with the given ID
+    this.events = this.events.filter(
+      (event) => event.meta.courseid !== courseId
+    );
+    this.changeDetectorRef.detectChanges(); // Since you're using OnPush change detection
+  }
+
   onSemesterChange() {
     this.resources = [];
     this.events = [];

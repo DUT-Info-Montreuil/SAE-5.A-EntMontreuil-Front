@@ -5,56 +5,84 @@
   [style]="{ width: '50vw' }"
   (onHide)="onClose()"
 >
-  <div class="course-details">
-    <p-card>
-      <div class="p-grid">
-        <div class="p-col-4">ID du cours:</div>
-        <div class="p-col-8">{{ course.courses.id }}</div>
-
-        <div class="p-col-4">Date du cours:</div>
-        <div class="p-col-8">
-          {{ course.courses.dateCourse | date : "fullDate" }}
+  <p-tabView>
+    <p-tabPanel header="Informations générales">
+      <div class="p-grid course-general-info">
+        <!-- Course Information -->
+        <div class="p-col-12 p-md-6">
+          <div class="info-item">
+            <i class="pi pi-fw pi-id-card info-icon"></i>
+            <span class="info-label">ID du cours:</span>
+            <span class="info-value">{{ course.courses.id }}</span>
+          </div>
+          <div class="info-item">
+            <i class="pi pi-fw pi-calendar info-icon"></i>
+            <span class="info-label">Date du cours:</span>
+            <span class="info-value">{{
+              course.courses.dateCourse | date : "fullDate"
+            }}</span>
+          </div>
         </div>
-
-        <div class="p-col-4">Heure de début:</div>
-        <div class="p-col-8">
-          {{ course.courses.startTime }}
-        </div>
-
-        <div class="p-col-4">Heure de fin:</div>
-        <div class="p-col-8">
-          {{ course.courses.endTime }}
-        </div>
-
-        <div class="p-col-4">Nom de la ressource:</div>
-        <div class="p-col-8">{{ course.resource.name }}</div>
-
-        <div class="p-col-4">Couleur de la ressource:</div>
-        <div
-          class="p-col-8 color-box"
-          [style.background]="course.resource.color"
-        ></div>
-
-        <div class="p-col-4">Salles:</div>
-        <div class="p-col-8">
-          <ul class="classrooms-list">
-            <li *ngFor="let classroom of course.classroom">
-              {{ classroom.name }} (Capacité : {{ classroom.capacity }})
-            </li>
-          </ul>
-        </div>
-
-        <div class="p-col-4">Noms des enseignants:</div>
-        <div class="p-col-8">
-          <ul class="teachers-list">
-            <li *ngFor="let teacher of course.teacher">
-              {{ teacher.first_name }} {{ teacher.last_name }}
-            </li>
-          </ul>
+        <!-- Time Information -->
+        <div class="p-col-12 p-md-6">
+          <div class="info-item">
+            <i class="pi pi-fw pi-clock info-icon"></i>
+            <span class="info-label">Heure de début:</span>
+            <span class="info-value">{{ course.courses.startTime }}</span>
+          </div>
+          <div class="info-item">
+            <i class="pi pi-fw pi-clock info-icon"></i>
+            <span class="info-label">Heure de fin:</span>
+            <span class="info-value">{{ course.courses.endTime }}</span>
+          </div>
         </div>
       </div>
-    </p-card>
-  </div>
+    </p-tabPanel>
+    <p-tabPanel header="Ressources et Personnels">
+      <div class="p-grid course-resources-personnel">
+        <!-- Resource Information -->
+        <div class="p-col-12 p-md-6">
+          <div class="info-item">
+            <i class="pi pi-fw pi-book info-icon"></i>
+            <span class="info-label">Nom de la ressource:</span>
+            <span class="info-value">{{ course.resource.name }}</span>
+          </div>
+          <div class="info-item">
+            <i class="pi pi-fw pi-palette info-icon"></i>
+            <span class="info-label">Couleur de la ressource:</span>
+            <span
+              class="color-box"
+              [style.background]="course.resource.color"
+            ></span>
+          </div>
+        </div>
+        <!-- Teachers Information -->
+        <div class="p-col-12 p-md-6">
+          <div class="info-item">
+            <i class="pi pi-fw pi-users info-icon"></i>
+            <span class="info-label">Enseignants:</span>
+            <ul class="info-value-list">
+              <li *ngFor="let teacher of course.teacher">
+                {{ teacher.first_name }} {{ teacher.last_name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </p-tabPanel>
+    <p-tabPanel header="Classes">
+      <!-- Classrooms Information -->
+      <div class="info-item">
+        <i class="pi pi-fw pi-home info-icon"></i>
+        <span class="info-label">Salles:</span>
+        <ul class="info-value-list">
+          <li *ngFor="let classroom of course.classroom">
+            {{ classroom.name }} (Capacité : {{ classroom.capacity }})
+          </li>
+        </ul>
+      </div>
+    </p-tabPanel>
+  </p-tabView>
 
   <p-footer>
     <p-button
@@ -71,3 +99,5 @@
     <p-button label="Fermer" icon="pi pi-times" (click)="onClose()"></p-button>
   </p-footer>
 </p-dialog>
+<p-confirmDialog></p-confirmDialog>
+<p-toast></p-toast>

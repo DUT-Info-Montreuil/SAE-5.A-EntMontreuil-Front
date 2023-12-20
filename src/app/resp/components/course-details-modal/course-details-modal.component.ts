@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CourseService } from 'src/app/core/services/courses.service';
 import { Course } from 'src/app/core/models/course.model';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-course-details-modal',
@@ -12,8 +13,13 @@ export class CourseDetailsModalComponent implements OnInit {
   display: boolean = true;
   course!: any;
   @Output() close = new EventEmitter<void>(); // Emit when the modal closes
+  @Output() courseDeleted = new EventEmitter<number>();
 
-  constructor(private courseService: CourseService) {}
+  constructor(
+    private courseService: CourseService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     console.log('selectedCourseId', this.selectedCourseId);
@@ -41,17 +47,37 @@ export class CourseDetailsModalComponent implements OnInit {
 
   onDelete(): void {
     // La logique pour confirmer et supprimer le cours
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce cours ?')) {
-      this.courseService.deleteCourse(this.course.id).subscribe(
-        (response) => {
-          console.log('Cours supprimé', response);
-          this.display = false;
-          // Vous pourriez émettre un événement ou appeler une autre méthode pour informer le composant parent
-        },
-        (error) => {
-          console.error('Erreur lors de la suppression du cours', error);
-        }
-      );
-    }
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir supprimer ce cours ?',
+      header: 'Confirmation de suppression',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // Perform the actual deletion logic
+        this.courseService.deleteCourse(this.course.courses.id).subscribe(
+          (response) => {
+            console.log('Cours supprimé', response);
+            this.display = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Suppression réussie',
+              detail: 'Le cours a été supprimé avec succès.',
+            });
+            this.courseDeleted.emit(this.course.courses.id);
+            // Vous pourriez émettre un événement ou appeler une autre méthode pour informer le composant parent
+          },
+          (error) => {
+            console.error('Erreur lors de la suppression du cours', error);
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Erreur',
+              detail: 'Une erreur est survenue lors de la suppression.',
+            });
+          }
+        );
+      },
+      reject: () => {
+        // Handle rejection action, if necessary
+      },
+    });
   }
 }

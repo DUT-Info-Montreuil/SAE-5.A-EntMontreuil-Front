@@ -4,7 +4,7 @@ import { CohortComponent } from './components/cohort/cohort.component';
 import { RespRoutingModule } from './resp-routing.module';
 import { TreeModule } from 'primeng/tree';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { CohortService } from '../core/services/cohort.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
@@ -20,6 +20,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { CourseDetailsModalComponent } from './components/course-details-modal/course-details-modal.component';
 import { DialogModule } from 'primeng/dialog';
+
+import { TabViewModule } from 'primeng/tabview';
+import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -40,13 +43,20 @@ import { DialogModule } from 'primeng/dialog';
     ToastModule,
     FullCalendarModule,
     DialogModule,
+    TabViewModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
     TooltipModule,
     ButtonModule,
+    ConfirmDialogModule,
   ],
-  providers: [CohortService, MessageService],
+  providers: [
+    CohortService,
+    MessageService,
+    ConfirmationService,
+    MessageService,
+  ],
 })
 export class RespModule {}
