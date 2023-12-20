@@ -20,6 +20,7 @@ export class CreateCourseComponent implements OnInit {
   @Input() degrees: Degree[] = [];
   @Input() promotions: Promotion[] = [];
   @Output() eventCreated = new EventEmitter<any>();
+
   @Input() selectedPromotionId: number | null = null;
   @Input() selectedTrainingId: number | null = null;
   @Input() resources: any[] = [];
@@ -28,15 +29,13 @@ export class CreateCourseComponent implements OnInit {
   startTime: string = '';
   endTime: string = '';
 
-  selectedClassroomId: number | null = null;
   classrooms: any[] = [];
   trainings: Training[] = [];
   teachers: any[] = [];
   teachersDropdownOptions: any[] = [];
-
-  selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
   control: boolean = false;
-
+  selectedClassroomId: number | null = null;
+  selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
   selectedTeacherId: number | null = null;
 
   constructor(
@@ -47,12 +46,16 @@ export class CreateCourseComponent implements OnInit {
     private messageService: MessageService
   ) {}
   ngOnInit(): void {
-    console.log(this.degrees);
-    console.log(this.promotions);
+    this.selectedResourceId = null;
+    this.selectedClassroomId = null;
+    this.selectedTeacherId = null;
+    console.log('init create component');
+    console.log(this.selectedClassroomId);
+    console.log(this.selectedTeacherId);
+    console.log(this.selectedResourceId);
     this.classroomsService.getClassrooms().subscribe(
       (data: Classroom[]) => {
         this.classrooms = data;
-        console.log(this.classrooms);
       },
       (error) => {
         console.error('Error loading data:', error);
@@ -85,6 +88,9 @@ export class CreateCourseComponent implements OnInit {
     this.date = '';
     this.startTime = '';
     this.endTime = '';
+    this.selectedClassroomId = null;
+    this.selectedResourceId = null;
+    this.selectedTeacherId = null;
   }
 
   onPromotionChange(promotionId: number) {
@@ -130,6 +136,9 @@ export class CreateCourseComponent implements OnInit {
     // Ajoutez ici toute autre logique nécessaire lors de la sélection d'une salle de classe
   }
   CreateCourse() {
+    if (!this.isValidCourseData()) {
+      return;
+    }
     const newCourse = {
       startTime: this.startTime,
       endTime: this.endTime,
@@ -163,12 +172,11 @@ export class CreateCourseComponent implements OnInit {
     const resourceColor = selectedResource ? selectedResource.color : '#000000'; // Default color
 
     console.log('newCourse', this.teachers);
-    console.log('newCourse', this.selectedResourceId);
-    console.log('newCourse', this.selectedClassroomId);
-    console.log('newCourse', this.selectedTeacherId);
+    console.log('id ressource', this.selectedResourceId);
+    console.log('id rooms', this.selectedClassroomId);
+    console.log('id teacher', this.selectedTeacherId);
     console.log('newCourse', newCourse);
 
-    /* 
     this.courseService.addCourse(newCourse).subscribe(
       (response) => {
         console.log('Cours créé avec succès', response);
@@ -213,6 +221,40 @@ export class CreateCourseComponent implements OnInit {
           detail: errorMessage,
         });
       }
-    ); */
+    );
   }
+
+  isValidCourseData(): boolean {
+    if (
+      !this.date ||
+      !this.startTime ||
+      !this.endTime ||
+      !this.selectedResourceId
+    ) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Veuillez remplir tous les champs requis.',
+      });
+      return false;
+    }
+
+    const startHour = parseInt(this.startTime.split(':')[0]);
+    const endHour = parseInt(this.endTime.split(':')[0]);
+
+    if (startHour < 8 || endHour > 20) {
+      this.messageService.add({
+        severity: 'error',
+        summary: "Erreur d'horaire",
+        detail: 'Le cours doit commencer après 8h et finir avant 20h.',
+      });
+      return false;
+    }
+
+    // Ajoutez ici d'autres vérifications si nécessaire
+
+    return true;
+  }
+
+  // ... Autres méthodes ...
 }

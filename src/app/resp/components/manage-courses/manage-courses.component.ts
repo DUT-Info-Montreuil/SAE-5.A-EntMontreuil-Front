@@ -253,7 +253,6 @@ export class ManageCoursesComponent {
         new Date()
       );
       const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
-      console.log(courseData);
       // Création de l'événement de calendrier
       return {
         title: course.resource.name, // Nom de la ressource pour le titre
