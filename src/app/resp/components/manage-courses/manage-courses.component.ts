@@ -239,6 +239,7 @@ export class ManageCoursesComponent {
   createEventsFromCourses(coursesData: any) {
     let newEvents = coursesData.map((courseData: any) => {
       const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
+      console.log(courseData);
       course.dateCourse = courseData.courses.dateCourse;
       course.startTime = courseData.courses.startTime;
       course.endTime = courseData.courses.endTime;
@@ -268,9 +269,7 @@ export class ManageCoursesComponent {
 
           courseid: courseData.courses.id,
           resourceName: course.resource.name,
-          teacherNames: course.teacher
-            .map((t) => `${t.first_name} ${t.last_name}`)
-            .join(', '),
+          teacherNames: course.teacher.map((t) => `${t.initial}`).join(', '),
           classroomName: course.classroom.map((c) => c.name).join(', '),
         },
       };

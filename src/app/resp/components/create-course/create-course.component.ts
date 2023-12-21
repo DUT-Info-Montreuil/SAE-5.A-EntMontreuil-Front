@@ -148,7 +148,7 @@ export class CreateCourseComponent implements OnInit {
     };
     const teacherNames = teacherIds
       .map((id) => this.teachers.find((t: any) => t.personal_info.id === id))
-      .map((t: any) => `${t.user.first_name} ${t.user.last_name}`)
+      .map((t: any) => `${t.user.initial}`)
       .join(', ');
 
     const classroomNames = classroomIds
