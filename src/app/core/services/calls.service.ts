@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { Call } from "../models/calls.model";
+import { formatDate } from "@angular/common";
 
 @Injectable({
     providedIn: "root"
@@ -61,7 +62,15 @@ export class CallsService {
             );
     }
 
+    getCallByCourse(courseId: number): Observable<any> {
+        return this.http.get<any>(`${this.apiURL}/calls/courses/${courseId}`);
+      }
     errorHandler(error: any) {
         return throwError(error);
     }
+    
+    getCallsForDate(date: Date): Observable<Call[]> {
+        const formattedDate = formatDate(date, 'yyyy-MM-dd', 'FR-fr');
+        return this.http.get<Call[]>(`${this.apiURL}/calls/day/${formattedDate}`);
+      }
 }

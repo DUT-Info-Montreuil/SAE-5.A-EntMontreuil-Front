@@ -55,13 +55,11 @@ const routes: Routes = [
         data: { title: 'Paramètres' },
       },
       {
-        path: 'courses-call',
+        path: 'calls',
         loadChildren: () =>
-          import('./courses-call/courses-call.module').then(
-            (m) => m.CoursesCallModule
-          ),
-        data: { title: 'Appel' },
-      }
+          import('./calls/calls.module').then((m) => m.CallsModule),
+        data: { title: 'Appels' },
+      },
     ],
   },
 ];
