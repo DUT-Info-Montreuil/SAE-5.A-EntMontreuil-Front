@@ -23,6 +23,7 @@ import { DialogModule } from 'primeng/dialog';
 
 import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
+import { MultiSelectModule } from 'primeng/multiselect';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -44,6 +45,7 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
     FullCalendarModule,
     DialogModule,
     TabViewModule,
+    MultiSelectModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,

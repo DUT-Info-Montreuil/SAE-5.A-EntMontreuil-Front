@@ -4,11 +4,6 @@
     (submit)="CreateCourse()"
     class="create-course-form"
   >
-    <div
-      class="form-group"
-      *ngIf="selectedPromotionId !== null && trainings != []"
-    ></div>
-
     <div class="form-group">
       <label for="resource">Ressource</label>
       <p-dropdown
@@ -19,36 +14,29 @@
         optionLabel="name"
         optionValue="id"
         placeholder="Sélectionnez une ressource"
+        name="resource"
       ></p-dropdown>
     </div>
 
-    <div class="form-group">
-      <label for="teacher">Enseignant</label>
-      <p-dropdown
-        id="teacher"
-        [options]="teachersDropdownOptions"
-        [(ngModel)]="selectedTeacherId"
-        (onChange)="onTeacherChange($event.value)"
-        placeholder="Sélectionnez un enseignant"
-      ></p-dropdown>
-    </div>
+    <p-multiSelect
+      [options]="teachersDropdownOptions"
+      [(ngModel)]="selectedTeacherIds"
+      (onChange)="onTeacherChange($event)"
+      optionLabel="label"
+      value="id"
+      placeholder="Sélectionnez des enseignants"
+      name="teachers"
+    ></p-multiSelect>
 
-    <div class="form-group">
-      <label for="classroom">Salle de classe</label>
-      <p-dropdown
-        [options]="classrooms"
-        [(ngModel)]="selectedClassroomId"
-        (onChange)="onClassroomChange($event.value)"
-        optionLabel="name"
-        optionValue="id"
-        placeholder="Sélectionnez une salle"
-        appendTo="body"
-      >
-        <ng-template let-classroom pTemplate="item">
-          {{ classroom.name }} (Capacité : {{ classroom.capacity }})
-        </ng-template>
-      </p-dropdown>
-    </div>
+    <p-multiSelect
+      [options]="classrooms"
+      [(ngModel)]="selectedClassroomIds"
+      (onChange)="onClassroomChange($event)"
+      optionLabel="label"
+      value="id"
+      placeholder="Sélectionnez des salles de classe"
+      name="classrooms"
+    ></p-multiSelect>
 
     <div class="form-group">
       <label for="courseDate">Date du cours</label>
@@ -70,12 +58,12 @@
       <input id="endTime" type="time" [(ngModel)]="endTime" name="endTime" />
     </div>
 
-    <button (click)="(CreateCourse)" class="submit-button">
-      Créer le cours
-    </button>
+    <button class="submit-button">Créer le cours</button>
   </form>
 </p-card>
+
 <p-toast></p-toast>
+
 <ng-template #noData>
   <p class="no-data-message">
     Veuillez sélectionner une promotion, un parcours, un TD ou un TP.

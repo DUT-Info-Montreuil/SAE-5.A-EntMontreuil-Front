@@ -24,7 +24,6 @@ export class CreateCourseComponent implements OnInit {
   @Input() selectedPromotionId: number | null = null;
   @Input() selectedTrainingId: number | null = null;
   @Input() resources: any[] = [];
-  filteredPromotions: any[] = [];
   date: string = '';
   startTime: string = '';
   endTime: string = '';
@@ -34,9 +33,10 @@ export class CreateCourseComponent implements OnInit {
   teachers: any[] = [];
   teachersDropdownOptions: any[] = [];
   control: boolean = false;
-  selectedClassroomId: number | null = null;
-  selectedResourceId: number | null = null; // Stocker l'ID de la ressource sélectionnée
-  selectedTeacherId: number | null = null;
+
+  selectedResourceId: number | null = null;
+  selectedTeacherIds: number[] = [];
+  selectedClassroomIds: number[] = [];
 
   constructor(
     private courseService: CourseService,
@@ -45,100 +45,97 @@ export class CreateCourseComponent implements OnInit {
     private ressourceService: RessourceService,
     private messageService: MessageService
   ) {}
+
   ngOnInit(): void {
-    this.selectedResourceId = null;
-    this.selectedClassroomId = null;
-    this.selectedTeacherId = null;
-    console.log('init create component');
-    console.log(this.selectedClassroomId);
-    console.log(this.selectedTeacherId);
-    console.log(this.selectedResourceId);
     this.classroomsService.getClassrooms().subscribe(
       (data: Classroom[]) => {
-        this.classrooms = data;
+        this.classrooms = data.map((classroom) => ({
+          label: classroom.name,
+          id: classroom.id,
+        }));
       },
       (error) => {
         console.error('Error loading data:', error);
       }
     );
 
-    this.teachersService.getAllTeachers().subscribe((data: any) => {
-      this.teachers = data.map((teacherObj: any) => teacherObj);
-      this.prepareTeachersDropdownOptions();
-      console.log(this.teachers);
-    });
+    this.teachersService.getAllTeachers().subscribe(
+      (data: Teacher[]) => {
+        this.teachers = data;
+        this.prepareTeachersDropdownOptions();
+      },
+      (error) => {
+        console.error('Error loading data:', error);
+      }
+    );
   }
 
   prepareTeachersDropdownOptions() {
-    this.teachersDropdownOptions = this.teachers.map((teacher: any) => ({
+    this.teachersDropdownOptions = this.teachers.map((teacher) => ({
       label: `${teacher.user.first_name} ${teacher.user.last_name}`,
-      value: teacher.personal_info.id,
+      value: teacher.personal_info.id, // Ici, 'value' est l'ID de l'enseignant
     }));
   }
-  getTrainingOfPromo(promotionId: number) {
-    console.log('getTrainingOfPromo');
-    this.courseService.getTrainingOfPromo(promotionId).subscribe((data) => {
-      // Handle the retrieved training data here, e.g., assign it to this.trainings
 
-      this.trainings = data.trainings;
-    });
+  getTrainingOfPromo(promotionId: number) {
+    this.courseService.getTrainingOfPromo(promotionId).subscribe(
+      (data) => {
+        this.trainings = data.trainings;
+      },
+      (error) => {
+        console.error('Error loading training data:', error);
+      }
+    );
   }
 
   resetForm() {
     this.date = '';
     this.startTime = '';
     this.endTime = '';
-    this.selectedClassroomId = null;
     this.selectedResourceId = null;
-    this.selectedTeacherId = null;
   }
 
   onPromotionChange(promotionId: number) {
-    this.selectedPromotionId = promotionId; // Mise à jour de l'ID de promotion sélectionnée
-    this.selectedTrainingId = null; // Réinitialiser l'ID de formation sélectionnée
-
-    if (promotionId !== null) {
-      this.getTrainingOfPromo(promotionId);
-    } else {
-      this.trainings = []; // Réinitialiser les formations si aucune promotion n'est sélectionnée
-    }
+    this.selectedPromotionId = promotionId;
+    this.selectedTrainingId = null;
+    this.trainings = [];
   }
 
   onTrainingChange(trainingId: number) {
     this.selectedTrainingId = trainingId;
-
-    if (trainingId !== null) {
-      this.ressourceService.getRessourceByIdTraining(trainingId).subscribe(
-        (data: any) => {
-          this.resources = data;
-        },
-        (error: any) => {
-          console.error('Error loading resources:', error);
-        }
-      );
-    } else {
-      this.resources = []; // Réinitialiser les ressources si aucune formation n'est sélectionnée
-    }
+    this.resources = [];
   }
 
-  onTeacherChange(teacherId: number) {
-    this.selectedTeacherId = teacherId;
-    // Ajoutez ici toute autre logique nécessaire lors de la sélection d'un enseignant
+  onTeacherChange(event: any) {
+    console.log('selectedTeacherIds', this.selectedTeacherIds);
+  }
+
+  onClassroomChange(event: any) {
+    console.log('selectedClassroomIds', this.selectedClassroomIds);
   }
 
   onResourceChange(resourceId: number) {
     this.selectedResourceId = resourceId;
-    console.log(this.selectedResourceId);
   }
-  onClassroomChange(classroomId: number) {
-    this.selectedClassroomId = classroomId;
-    console.log(this.selectedClassroomId);
-    // Ajoutez ici toute autre logique nécessaire lors de la sélection d'une salle de classe
-  }
+
   CreateCourse() {
     if (!this.isValidCourseData()) {
       return;
     }
+    console.log('techaer', this.selectedTeacherIds);
+    console.log('classroom', this.selectedClassroomIds);
+    // Convertir 'selectedTeacherIds' pour qu'il ne contienne que des IDs
+    const teacherIds = this.selectedTeacherIds.map((teacher: any) => {
+      return teacher.value ? teacher.value : teacher;
+    });
+
+    const classroomIds = this.selectedClassroomIds.map((classroom: any) => {
+      return classroom.id ? classroom.id : classroom;
+    });
+
+    console.log('teacher IDs:', teacherIds);
+    console.log('classroom IDs:', classroomIds);
+    console.log(this.classrooms);
     const newCourse = {
       startTime: this.startTime,
       endTime: this.endTime,
@@ -146,25 +143,22 @@ export class CreateCourseComponent implements OnInit {
       control: this.control,
       id_resource: this.selectedResourceId, // Assurez-vous d'avoir cette propriété
       id_promotion: this.selectedPromotionId, // Ou l'identifiant approprié
-      teachers_id: this.selectedTeacherId ? [this.selectedTeacherId] : [],
-      classrooms_id: this.selectedClassroomId ? [this.selectedClassroomId] : [],
+      teachers_id: teacherIds, // Tableau des IDs enseignants
+      classrooms_id: classroomIds, // Tableau des IDs salles de classe
     };
-    const selectedTeacher = this.teachers.find(
-      (t) => t.personal_info.id === this.selectedTeacherId
-    );
-    const selectedClassroom = this.classrooms.find(
-      (c) => c.id === this.selectedClassroomId
-    );
+    const teacherNames = teacherIds
+      .map((id) => this.teachers.find((t: any) => t.personal_info.id === id))
+      .map((t: any) => `${t.user.first_name} ${t.user.last_name}`)
+      .join(', ');
+
+    const classroomNames = classroomIds
+      .map((id) => this.classrooms.find((c) => c.id === id))
+      .filter((c) => c !== undefined) // Assurez-vous que la salle de classe existe
+      .map((c) => c.name)
+      .join(', ');
     const selectedResource = this.resources.find(
       (r) => r.id === this.selectedResourceId
     );
-
-    const teacherName = selectedTeacher
-      ? `${selectedTeacher.user.first_name} ${selectedTeacher.user.last_name}`
-      : 'Unassigned';
-    const classroomName = selectedClassroom
-      ? selectedClassroom.name
-      : 'No Classroom Assigned';
 
     const resourceName = selectedResource
       ? selectedResource.name
@@ -173,8 +167,7 @@ export class CreateCourseComponent implements OnInit {
 
     console.log('newCourse', this.teachers);
     console.log('id ressource', this.selectedResourceId);
-    console.log('id rooms', this.selectedClassroomId);
-    console.log('id teacher', this.selectedTeacherId);
+
     console.log('newCourse', newCourse);
 
     this.courseService.addCourse(newCourse).subscribe(
@@ -193,8 +186,8 @@ export class CreateCourseComponent implements OnInit {
             courseid: response.id,
             resourceName: resourceName,
             groupName: 'promotion', // Assuming this is a static value
-            teacherNames: teacherName,
-            classroomName: classroomName,
+            teacherNames: teacherNames,
+            classroomName: classroomNames,
           },
         };
 
