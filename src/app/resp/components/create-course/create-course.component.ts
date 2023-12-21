@@ -50,7 +50,7 @@ export class CreateCourseComponent implements OnInit {
     this.classroomsService.getClassrooms().subscribe(
       (data: Classroom[]) => {
         this.classrooms = data.map((classroom) => ({
-          label: classroom.name,
+          label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
           id: classroom.id,
         }));
       },
