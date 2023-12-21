@@ -24,6 +24,8 @@ import { DialogModule } from 'primeng/dialog';
 import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     CohortComponent,
@@ -38,6 +40,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     RespRoutingModule,
     TreeModule,
     FormsModule,
+    ReactiveFormsModule,
     ToastModule,
     CardModule,
     DropdownModule,

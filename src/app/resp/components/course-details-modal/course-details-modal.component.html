@@ -1,103 +1,157 @@
 <p-dialog
-  header="Détails du cours"
+  header="{{ editMode ? 'Modifier le cours' : 'Détails du cours' }}"
   [(visible)]="display"
   [modal]="true"
   [style]="{ width: '50vw' }"
   (onHide)="onClose()"
 >
-  <p-tabView>
-    <p-tabPanel header="Informations générales">
-      <div class="p-grid course-general-info">
-        <!-- Course Information -->
-        <div class="p-col-12 p-md-6">
-          <div class="info-item">
-            <i class="pi pi-fw pi-id-card info-icon"></i>
-            <span class="info-label">ID du cours:</span>
-            <span class="info-value">"{{ course.courses.id }}"</span>
+  <div *ngIf="!editMode">
+    <p-tabView>
+      <p-tabPanel header="Informations générales">
+        <div class="p-grid course-general-info">
+          <!-- Course Information -->
+          <div class="p-col-12 p-md-6">
+            <div class="info-item">
+              <i class="pi pi-fw pi-id-card info-icon"></i>
+              <span class="info-label">ID du cours:</span>
+              <span class="info-value">{{ course?.courses?.id }}</span>
+            </div>
+            <div class="info-item">
+              <i class="pi pi-fw pi-calendar info-icon"></i>
+              <span class="info-label">Date du cours:</span>
+              <span class="info-value">{{
+                course?.courses?.dateCourse | date : "fullDate"
+              }}</span>
+            </div>
           </div>
-          <div class="info-item">
-            <i class="pi pi-fw pi-calendar info-icon"></i>
-            <span class="info-label">Date du cours:</span>
-            <span class="info-value">{{
-              course.courses.dateCourse | date : "fullDate"
-            }}</span>
-          </div>
-        </div>
-        <!-- Time Information -->
-        <div class="p-col-12 p-md-6">
-          <div class="info-item">
-            <i class="pi pi-fw pi-clock info-icon"></i>
-            <span class="info-label">Heure de début:</span>
-            <span class="info-value">{{ course.courses.startTime }}</span>
-          </div>
-          <div class="info-item">
-            <i class="pi pi-fw pi-clock info-icon"></i>
-            <span class="info-label">Heure de fin:</span>
-            <span class="info-value">{{ course.courses.endTime }}</span>
-          </div>
-        </div>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Ressources et Personnels">
-      <div class="p-grid course-resources-personnel">
-        <!-- Resource Information -->
-        <div class="p-col-12 p-md-6">
-          <div class="info-item">
-            <i class="pi pi-fw pi-book info-icon"></i>
-            <span class="info-label">Nom de la ressource:</span>
-            <span class="info-value">{{ course.resource.name }}</span>
-          </div>
-          <div class="info-item">
-            <i class="pi pi-fw pi-palette info-icon"></i>
-            <span class="info-label">Couleur de la ressource:</span>
-            <span
-              class="color-box"
-              [style.background]="course.resource.color"
-            ></span>
+          <!-- Time Information -->
+          <div class="p-col-12 p-md-6">
+            <div class="info-item">
+              <i class="pi pi-fw pi-clock info-icon"></i>
+              <span class="info-label">Heure de début:</span>
+              <span class="info-value">{{ course?.courses?.startTime }}</span>
+            </div>
+            <div class="info-item">
+              <i class="pi pi-fw pi-clock info-icon"></i>
+              <span class="info-label">Heure de fin:</span>
+              <span class="info-value">{{ course?.courses?.endTime }}</span>
+            </div>
           </div>
         </div>
-        <!-- Teachers Information -->
-        <div class="p-col-12 p-md-6">
-          <div class="info-item">
-            <i class="pi pi-fw pi-users info-icon"></i>
-            <span class="info-label">Enseignants:</span>
-            <ul class="info-value-list">
-              <li *ngFor="let teacher of course.teacher">
-                {{ teacher.first_name }} {{ teacher.last_name }}
-              </li>
-            </ul>
+      </p-tabPanel>
+      <p-tabPanel header="Ressources et Personnels">
+        <div class="p-grid course-resources-personnel">
+          <!-- Resource Information -->
+          <div class="p-col-12 p-md-6">
+            <div class="info-item">
+              <i class="pi pi-fw pi-book info-icon"></i>
+              <span class="info-label">Nom de la ressource:</span>
+              <span class="info-value">{{ course?.resource?.name }}</span>
+            </div>
+            <div class="info-item">
+              <i class="pi pi-fw pi-palette info-icon"></i>
+              <span class="info-label">Couleur de la ressource:</span>
+              <span
+                class="color-box"
+                [ngStyle]="{ 'background-color': course?.resource?.color }"
+              ></span>
+            </div>
+          </div>
+          <!-- Teachers Information -->
+          <div class="p-col-12 p-md-6">
+            <div class="info-item">
+              <i class="pi pi-fw pi-users info-icon"></i>
+              <span class="info-label">Enseignants:</span>
+              <ul class="info-value-list">
+                <li *ngFor="let teacher of course?.teacher">
+                  {{ teacher?.first_name }} {{ teacher?.last_name }}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
-    </p-tabPanel>
-    <p-tabPanel header="Classes">
-      <!-- Classrooms Information -->
-      <div class="info-item">
-        <i class="pi pi-fw pi-home info-icon"></i>
-        <span class="info-label">Salles:</span>
-        <ul class="info-value-list">
-          <li *ngFor="let classroom of course.classroom">
-            {{ classroom.name }} (Capacité : {{ classroom.capacity }})
-          </li>
-        </ul>
-      </div>
-    </p-tabPanel>
-  </p-tabView>
+      </p-tabPanel>
+      <p-tabPanel header="Classes">
+        <!-- Classrooms Information -->
+        <div class="info-item">
+          <i class="pi pi-fw pi-home info-icon"></i>
+          <span class="info-label">Salles:</span>
+          <ul class="info-value-list">
+            <li *ngFor="let classroom of course?.classroom">
+              {{ classroom?.name }} (Capacité : {{ classroom?.capacity }})
+            </li>
+          </ul>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
 
-  <p-footer>
-    <p-button
-      label="Modifier"
-      icon="pi pi-pencil"
-      (click)="onEdit()"
-    ></p-button>
-    <p-button
-      label="Supprimer"
-      icon="pi pi-trash"
-      styleClass="p-button-danger"
-      (click)="onDelete()"
-    ></p-button>
-    <p-button label="Fermer" icon="pi pi-times" (click)="onClose()"></p-button>
-  </p-footer>
+    <p-footer>
+      <p-button
+        label="Modifier"
+        icon="pi pi-pencil"
+        (click)="onEdit()"
+      ></p-button>
+      <p-button
+        label="Supprimer"
+        icon="pi pi-trash"
+        styleClass="p-button-danger"
+        (click)="onDelete()"
+      ></p-button>
+      <p-button
+        label="Fermer"
+        icon="pi pi-times"
+        (click)="onClose()"
+      ></p-button>
+    </p-footer>
+  </div>
+  <div *ngIf="editMode" class="edit-course-form">
+    <form [formGroup]="editCourseForm">
+      <div class="form-group">
+        <label for="dateCourse">Date du cours</label>
+        <input id="dateCourse" type="date" formControlName="dateCourse" />
+      </div>
+
+      <div class="form-group">
+        <label for="startTime">Heure de début</label>
+        <input id="startTime" type="time" formControlName="startTime" />
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">Heure de fin</label>
+        <input id="endTime" type="time" formControlName="endTime" />
+      </div>
+
+      <div class="form-group">
+        <label>Ressource</label>
+        <p-dropdown
+          formControlName="resource"
+          optionLabel="name"
+          placeholder="Sélectionnez une ressource"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="form-group">
+        <label>Enseignants</label>
+        <p-multiSelect
+          formControlName="teachers"
+          optionLabel="name"
+        ></p-multiSelect>
+      </div>
+
+      <div class="form-group">
+        <label>Salle de classe</label>
+        <p-dropdown formControlName="classroom" optionLabel="name"></p-dropdown>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="save-button" (click)="onSave()">
+          Enregistrer
+        </button>
+      </div>
+    </form>
+  </div>
 </p-dialog>
+
 <p-confirmDialog></p-confirmDialog>
 <p-toast></p-toast>
