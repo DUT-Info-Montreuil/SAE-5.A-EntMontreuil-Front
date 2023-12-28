@@ -5,7 +5,14 @@
   [style]="{ width: '50vw' }"
   (onHide)="onClose()"
 >
-  <div *ngIf="!editMode">
+  <div *ngIf="isLoading" class="skeleton-loading">
+    <!-- Contenu du skeleton ici -->
+    <div class="loading-text">Chargement du cours...</div>
+    <p-skeleton width="100%" height="1rem"></p-skeleton>
+    <p-skeleton width="80%" height="1rem" styleClass="my-4"></p-skeleton>
+    <p-skeleton width="60%" height="1rem"></p-skeleton>
+  </div>
+  <div *ngIf="!editMode && !isLoading">
     <p-tabView>
       <p-tabPanel header="Informations générales">
         <div class="p-grid course-general-info">
@@ -16,6 +23,15 @@
               <span class="info-label">ID du cours:</span>
               <span class="info-value">{{ course?.courses?.id }}</span>
             </div>
+
+            <div class="p-col-12">
+              <div class="info-item">
+                <i class="pi pi-fw pi-tag info-icon"></i>
+                <span class="info-label">Groupe:</span>
+                <span class="info-value">{{ course?.groupName }}</span>
+              </div>
+            </div>
+
             <div class="info-item">
               <i class="pi pi-fw pi-calendar info-icon"></i>
               <span class="info-label">Date du cours:</span>

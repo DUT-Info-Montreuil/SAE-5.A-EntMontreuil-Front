@@ -17,6 +17,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   // ... styles, etc.
 })
 export class CourseDetailsModalComponent implements OnInit {
+  isLoading: boolean = true;
+
   @Input() selectedCourseId: number | null = null;
   display: boolean = true;
   course!: any;
@@ -26,6 +28,7 @@ export class CourseDetailsModalComponent implements OnInit {
   editCourseForm!: FormGroup;
   teachersOptions: any[] | undefined;
   classroomOptions: any[] | undefined;
+
   constructor(
     private courseService: CourseService,
     private confirmationService: ConfirmationService,
@@ -41,13 +44,50 @@ export class CourseDetailsModalComponent implements OnInit {
         (course) => {
           this.course = course.courses;
           console.log('course', this.course);
-          this.changeDetectorRef.detectChanges();
+
+          // Déterminer le type de groupe et son ID
+          let groupType = '';
+          let groupId = null;
+
+          if (this.course.promotion && this.course.promotion.length > 0) {
+            groupId = this.course.promotion[0];
+            groupType = 'promotion';
+          } else if (this.course.training && this.course.training.length > 0) {
+            groupId = this.course.training[0];
+            groupType = 'training';
+          } else if (this.course.td && this.course.td.length > 0) {
+            groupId = this.course.td[0];
+            groupType = 'td';
+          } else if (this.course.tp && this.course.tp.length > 0) {
+            groupId = this.course.tp[0];
+            groupType = 'tp';
+          }
+
+          // Récupérer le nom du groupe
+          if (groupId != null && groupType !== '') {
+            this.courseService.getGroupName(groupId, groupType).subscribe(
+              (groupName: any) => {
+                console.log('groupName', groupName);
+                this.course.groupName = groupName;
+                this.changeDetectorRef.detectChanges();
+              },
+              (error) =>
+                console.error(
+                  `Erreur lors de la récupération du nom de ${groupType}`,
+                  error
+                )
+            );
+          }
+
+          this.isLoading = false;
         },
         (error) => {
           console.error('Erreur lors de la récupération du cours', error);
+          this.isLoading = false;
         }
       );
     }
+
     this.editCourseForm = this.formBuilder.group({
       dateCourse: ['', Validators.required],
       startTime: ['', Validators.required],

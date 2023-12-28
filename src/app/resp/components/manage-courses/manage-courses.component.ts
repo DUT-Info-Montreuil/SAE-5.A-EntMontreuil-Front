@@ -192,6 +192,7 @@ export class ManageCoursesComponent {
                     resourceName: course.resource.name,
                     teacherNames: 'teacherNames',
                     classroomName: 'classroomName',
+                    courseid: courseData.courses.id,
                   },
                 };
               }),

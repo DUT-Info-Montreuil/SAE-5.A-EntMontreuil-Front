@@ -25,7 +25,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { SkeletonModule } from 'primeng/skeleton';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -47,6 +47,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ToastModule,
     FullCalendarModule,
     DialogModule,
+    SkeletonModule,
     TabViewModule,
     MultiSelectModule,
     CalendarModule.forRoot({
