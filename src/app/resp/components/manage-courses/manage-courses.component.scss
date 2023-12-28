@@ -96,3 +96,31 @@
 .cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
   border-bottom: none;
 }
+
+::ng-deep mwl-calendar-event-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  color: black; /* Texte en noir */
+  padding: 4px; /* Espacement autour du contenu */
+  width: 100%;
+}
+
+.custom-event-title__classroom {
+  order: 1; /* En haut */
+  padding: 2px;
+  text-align: left;
+}
+
+.custom-event-title__resource {
+  order: 2; /* Au milieu */
+  padding: 2px;
+  text-align: center;
+}
+
+.custom-event-title__teachers {
+  order: 3; /* En bas */
+  padding: 2px;
+  text-align: left;
+}

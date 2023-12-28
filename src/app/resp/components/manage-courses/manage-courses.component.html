@@ -89,7 +89,11 @@
   </div>
 </div>
 
-<ng-template #customEventTitleTemplate let-event="event">
+<ng-template
+  class="custom-event-title"
+  #customEventTitleTemplate
+  let-event="event"
+>
   <span class="custom-event-title__resource">{{
     event.meta.resourceName
   }}</span>

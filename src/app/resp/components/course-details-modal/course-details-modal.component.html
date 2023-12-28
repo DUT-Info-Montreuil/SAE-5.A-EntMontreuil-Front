@@ -122,6 +122,8 @@
   </div>
   <div *ngIf="editMode" class="edit-course-form">
     <form [formGroup]="editCourseForm">
+      <span class="info-label">Groupe:</span>
+      <span class="info-value">{{ course?.groupName }}</span>
       <div class="form-group">
         <label for="dateCourse">Date du cours</label>
         <input id="dateCourse" type="date" formControlName="dateCourse" />
