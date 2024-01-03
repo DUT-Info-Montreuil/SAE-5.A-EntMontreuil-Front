@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { TeachersService } from 'src/app/core/services/teachers.service';
 
 
@@ -9,21 +10,44 @@ import { TeachersService } from 'src/app/core/services/teachers.service';
 })
 export class StatisticsLayoutComponent implements OnInit {
 
-  constructor(private teachersService: TeachersService) { }
-
+  id_user!: number;
+  id_teacher!: number;
   totalHours: any;
   hoursLeft: any;
+  hoursPassed:any;
+
+  constructor(private teachersService: TeachersService, private authService: AuthService) { 
+  }
+
+  
 
   ngOnInit() {
-    /*
-      this.teachersService.getHoursNumber(id).subscribe(data => {
-          this.totalHours = data; // Mettez à jour la variable avec les données du service
+
+    console.log("UserID:", this.authService.getUserId());
+
+    this.teachersService.getIdTeacherByIdUser(this.authService.getUserId()).subscribe(data => {
+      console.log("Response from getIdTeacherByIdUser:", data);
+      this.id_teacher = data.id_Teacher;
+      console.log("id_teacher after assignment:", this.id_teacher);
+
+      this.teachersService.getNumberOfHoursPassed(this.id_teacher).subscribe(data => {
+        this.hoursPassed = data.hours_passed; 
+      });
+      
+      this.teachersService.getHoursNumber(this.id_teacher).subscribe(data => {
+        this.totalHours = data.total_hours; 
+      });
+  
+      this.teachersService.getNumberOfHoursLeft(this.id_teacher).subscribe(data => {
+        this.hoursLeft = data.hours_left;
       });
 
-      this.teachersService.getNumberOfHoursLeft(id).subscribe(data => {
-          this.hoursLeft = data; // Mettez à jour la variable avec les données du service
-      });
-      */
+    });
+
+    //-----------------------------------------------------------------------------------------//
+
+    
+
   }
 
 

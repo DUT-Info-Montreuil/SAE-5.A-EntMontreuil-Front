@@ -1,1 +1,18 @@
-<p>statistics-layout works!</p>
+<div class="p-grid p-dir-col">
+    <h2 class="p-text-center">Statistiques</h2>
+
+    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
+        <h3>Total des heures :</h3>
+        <span class="p-text-bold">{{ totalHours }}</span>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
+        <h3>Heures effectuées :</h3>
+        <span class="p-text-bold">{{ hoursPassed }}</span>
+    </div>
+
+    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
+        <h3>Heures restantes :</h3>
+        <span class="p-text-bold">{{ hoursLeft }}</span>
+    </div>
+</div>
