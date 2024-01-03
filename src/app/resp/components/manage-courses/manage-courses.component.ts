@@ -76,6 +76,30 @@ export class ManageCoursesComponent {
     this.events = [];
     if (this.selectedPromotionId !== null) {
       this.selectedTrainingId = null;
+      // Trouvez la promotion sélectionnée et mettez à jour le niveau actuel
+      const selectedPromotion = this.promotions.find(
+        (promo) => promo.id === this.selectedPromotionId
+      );
+      if (selectedPromotion) {
+        this.updateSemesterOptions(selectedPromotion.level);
+      }
+    }
+  }
+
+  updateSemesterOptions(level: number): void {
+    switch (level) {
+      case 1:
+        this.semesterOptions = [1, 2];
+        break;
+      case 2:
+        this.semesterOptions = [3, 4];
+        break;
+      case 3:
+        this.semesterOptions = [5, 6];
+        break;
+      default:
+        this.semesterOptions = []; // Ou toute autre valeur par défaut que vous souhaitez
+        break;
     }
   }
 
