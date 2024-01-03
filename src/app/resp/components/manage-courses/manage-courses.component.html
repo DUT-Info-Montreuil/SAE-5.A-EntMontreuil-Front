@@ -12,6 +12,7 @@
         ></p-dropdown>
 
         <p-dropdown
+          *ngIf="filteredPromotions && filteredPromotions.length > 0"
           [options]="filteredPromotions"
           [(ngModel)]="selectedPromotionId"
           (onChange)="onPromotionChange()"

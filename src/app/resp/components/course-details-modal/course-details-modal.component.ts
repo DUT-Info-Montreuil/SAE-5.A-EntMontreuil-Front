@@ -10,6 +10,10 @@ import { CourseService } from 'src/app/core/services/courses.service';
 import { Course } from 'src/app/core/models/course.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { TeachersService } from 'src/app/core/services/teachers.service';
+import { ClassroomsService } from 'src/app/core/services/classrooms.service';
+import { Classroom } from 'src/app/core/models/classroom.model';
+import { Teacher } from 'src/app/core/models/teachers.model';
 
 @Component({
   selector: 'app-course-details-modal',
@@ -26,19 +30,39 @@ export class CourseDetailsModalComponent implements OnInit {
   @Output() courseDeleted = new EventEmitter<number>();
   editMode: boolean = false;
   editCourseForm!: FormGroup;
-  teachersOptions: any[] | undefined;
-  classroomOptions: any[] | undefined;
+
+  classrooms: any[] = [];
+  teachers: any[] = [];
+  selectedTeacherIds: number[] = [];
+  selectedClassroomIds: number[] = [];
 
   constructor(
     private courseService: CourseService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private teachersService: TeachersService,
+    private classroomsService: ClassroomsService
   ) {}
 
   ngOnInit(): void {
-    console.log('selectedCourseId', this.selectedCourseId);
+    this.initializeForm();
+    this.loadCourseDetails();
+  }
+
+  initializeForm(): void {
+    this.editCourseForm = this.formBuilder.group({
+      dateCourse: ['', Validators.required],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
+      resource: ['', Validators.required],
+      teachers: [[]], // Pour la pré-sélection, nous utilisons un tableau d'ID.
+      classroom: [[]], // Pareil pour les salles de classe.
+    });
+  }
+
+  loadCourseDetails(): void {
     if (this.selectedCourseId) {
       this.courseService.getCourseById(this.selectedCourseId).subscribe(
         (course) => {
@@ -48,7 +72,6 @@ export class CourseDetailsModalComponent implements OnInit {
           // Déterminer le type de groupe et son ID
           let groupType = '';
           let groupId = null;
-
           if (this.course.promotion && this.course.promotion.length > 0) {
             groupId = this.course.promotion[0];
             groupType = 'promotion';
@@ -67,7 +90,6 @@ export class CourseDetailsModalComponent implements OnInit {
           if (groupId != null && groupType !== '') {
             this.courseService.getGroupName(groupId, groupType).subscribe(
               (groupName: any) => {
-                console.log('groupName', groupName);
                 this.course.groupName = groupName;
                 this.changeDetectorRef.detectChanges();
               },
@@ -78,6 +100,50 @@ export class CourseDetailsModalComponent implements OnInit {
                 )
             );
           }
+          if (this.course.teacher && this.course.classroom) {
+            const teacherIds = this.course.teacher.map((t: any) => t.id);
+            const classroomIds = this.course.classroom.map((c: any) => c.id);
+            console.log('teacherIds', teacherIds);
+            console.log('classroomIds', classroomIds);
+            // Mettez à jour le formulaire avec les données chargées
+            this.editCourseForm.patchValue({
+              teachers: teacherIds,
+              classroom: classroomIds,
+              // Autres champs si nécessaire...
+            });
+            console.log('editCourseForm', this.editCourseForm);
+          }
+
+          this.classroomsService.getClassrooms().subscribe(
+            (data: Classroom[]) => {
+              this.classrooms = data.map((classroom) => ({
+                label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
+                id: classroom.id,
+              }));
+            },
+            (error) => {
+              console.error('Error loading data:', error);
+            }
+          );
+
+          // Après avoir récupéré les données des enseignants :
+          this.teachersService.getAllTeachers().subscribe((data: Teacher[]) => {
+            this.teachers = data.map((teacher: any) => ({
+              label: `${teacher.user.first_name} ${teacher.user.last_name}`,
+              value: teacher.personal_info.id,
+            }));
+
+            // Synchronisez les ID pré-sélectionnés avec les nouvelles options des enseignants
+            this.selectedTeacherIds = this.course.teacher.map((t: any) => t.id);
+
+            // Mettez à jour le formulaire avec les données chargées
+            this.editCourseForm.patchValue({
+              teachers: this.selectedTeacherIds,
+              // Autres champs si nécessaire...
+            });
+          });
+
+          console.log(this.editCourseForm);
 
           this.isLoading = false;
         },
@@ -87,15 +153,6 @@ export class CourseDetailsModalComponent implements OnInit {
         }
       );
     }
-
-    this.editCourseForm = this.formBuilder.group({
-      dateCourse: ['', Validators.required],
-      startTime: ['', Validators.required],
-      endTime: ['', Validators.required],
-      resource: ['', Validators.required],
-      teachers: [[]], // Assumant un tableau d'IDs pour les enseignants
-      classroom: [''], // ID de la salle de classe
-    });
   }
 
   onClose(): void {
