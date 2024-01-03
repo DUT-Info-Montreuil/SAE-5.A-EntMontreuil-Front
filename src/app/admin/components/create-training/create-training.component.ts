@@ -23,6 +23,8 @@ export class CreateTrainingComponent implements OnInit {
   newTrainingName: string = '';
   selectedPromotionId!: number;
   selectedSemester!: number;
+
+  semesterOptions: any[] = [];
   constructor(
     private trainingService: TrainingService,
     private messageService: MessageService
@@ -49,6 +51,47 @@ export class CreateTrainingComponent implements OnInit {
     );
   }
 
+  updateSemesterOptions(): void {
+    const selectedPromotion = this.promotions.find(
+      (promotion) => promotion.id === this.selectedPromotionId
+    );
+    if (selectedPromotion) {
+      const level = selectedPromotion.level;
+      switch (level) {
+        case 1:
+          this.semesterOptions = [
+            { label: 'Semestre 1', value: 1 },
+            { label: 'Semestre 2', value: 2 },
+          ];
+          break;
+        case 2:
+          this.semesterOptions = [
+            { label: 'Semestre 3', value: 3 },
+            { label: 'Semestre 4', value: 4 },
+          ];
+          break;
+        case 3:
+          this.semesterOptions = [
+            { label: 'Semestre 5', value: 5 },
+            { label: 'Semestre 6', value: 6 },
+          ];
+          break;
+        // Ajoutez des cas supplémentaires si nécessaire
+        default:
+          this.semesterOptions = [];
+          break;
+      }
+    } else {
+      this.semesterOptions = [];
+    }
+  }
+  onPromotionChange(): void {
+    this.updateSemesterOptions();
+  }
+  // ...
+
+  // ...
+
   createTraining(): void {
     this.loading = true;
 
@@ -57,7 +100,7 @@ export class CreateTrainingComponent implements OnInit {
         severity: 'error',
         summary: 'Erreur',
         detail:
-          'Veuillez saisir un nom de parcours et sélectionner une formation.',
+          'Veuillez saisir un nom de parcours , une formation et un semestre.',
       });
 
       this.loading = false;
