@@ -254,6 +254,7 @@ export class ManageCoursesComponent {
   }
   onDegreeChange(degreeId: number) {
     this.selectedPromotionId = null;
+    this.trainings = [];
     this.selectedTrainingId = null;
     this.events = [];
     this.filteredPromotions = this.promotions.filter(
