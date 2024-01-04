@@ -77,5 +77,9 @@ export class TeachersService implements OnInit {
         return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hours/${id_resource}`, this.httpOptions)
     }
 
+    getHoursByPromotion(id_teacher:number,id_promotion:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hours/promotion/${id_promotion}`, this.httpOptions)
+    }
+
 
 }

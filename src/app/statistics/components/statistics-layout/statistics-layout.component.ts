@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MenuItem } from 'primeng/api';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { TeachersService } from 'src/app/core/services/teachers.service';
 
@@ -15,6 +16,10 @@ export class StatisticsLayoutComponent implements OnInit {
   totalHours: any;
   hoursLeft: any;
   hoursPassed:any;
+  items: MenuItem[] | undefined;
+  activeItem: MenuItem | undefined;
+
+
 
   constructor(private teachersService: TeachersService, private authService: AuthService) { 
   }
@@ -23,12 +28,19 @@ export class StatisticsLayoutComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log("UserID:", this.authService.getUserId());
+    this.items = [
+      { label: 'Par Mois', icon: 'pi pi-fw pi-calendar' },
+      { label: 'Par Ressources', icon: 'pi pi-fw pi-briefcase' },
+      { label: 'Par Promotions', icon: 'pi pi-fw pi-users' }
+    ];
+    
+    this.activeItem = this.items[0];
+
 
     this.teachersService.getIdTeacherByIdUser(this.authService.getUserId()).subscribe(data => {
-      console.log("Response from getIdTeacherByIdUser:", data);
+
       this.id_teacher = data.id_Teacher;
-      console.log("id_teacher after assignment:", this.id_teacher);
+      
 
       this.teachersService.getNumberOfHoursPassed(this.id_teacher).subscribe(data => {
         this.hoursPassed = data.hours_passed; 
@@ -44,11 +56,12 @@ export class StatisticsLayoutComponent implements OnInit {
 
     });
 
+
+
     //-----------------------------------------------------------------------------------------//
 
-    
-
   }
+  
 
 
 

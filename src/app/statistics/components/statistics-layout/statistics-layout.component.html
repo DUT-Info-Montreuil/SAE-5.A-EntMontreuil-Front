@@ -1,18 +1,27 @@
-<div class="p-grid p-dir-col">
-    <h2 class="p-text-center">Statistiques</h2>
+<h2 class="p-text-center">Statistiques globales :</h2>
 
-    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
-        <h3>Total des heures :</h3>
-        <span class="p-text-bold">{{ totalHours }}</span>
-    </div>
+<div class="p-flex">
+    <p-card class="card-item" header="Total des heures">
+        <p class="m-0">{{ totalHours }}</p>
+    </p-card>
 
-    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
-        <h3>Heures effectuées :</h3>
-        <span class="p-text-bold">{{ hoursPassed }}</span>
-    </div>
+    <p-divider layout="vertical"></p-divider>
 
-    <div class="p-col-12 p-md-6 p-lg-4 p-fluid statistic-item">
-        <h3>Heures restantes :</h3>
-        <span class="p-text-bold">{{ hoursLeft }}</span>
-    </div>
+    <p-card class="card-item" header="Heures effectuées">
+        <p class="m-0">{{ hoursPassed }}</p>
+    </p-card>
+
+    <p-divider layout="vertical"></p-divider>
+
+    <p-card class="card-item" header="Heures restantes">
+        <p class="m-0">{{ hoursLeft }}</p>
+    </p-card>
+</div>
+
+<p-divider></p-divider>
+
+<h2 class="p-text-center">Statistiques avancées :</h2>
+
+<div class="card">
+    <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
 </div>
