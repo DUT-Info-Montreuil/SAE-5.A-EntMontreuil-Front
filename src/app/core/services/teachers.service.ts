@@ -57,6 +57,8 @@ export class TeachersService implements OnInit {
         );
     }
 
+    /**************************************HOURS & STATISTICS***********************************************/
+
     getHoursNumber(id:number): Observable<any> {
         return this.http.get<any>(this.apiURL + `/teachers/${id}/hours`, this.httpOptions)
     }
@@ -69,16 +71,47 @@ export class TeachersService implements OnInit {
         return this.http.get<any>(this.apiURL + `/teachers/${id}/hourspassed`, this.httpOptions)
     }
 
+    /***************************************************************************************************************************/
+
     getHoursByMonth(id:number,year:string,month:string): Observable<any> {
         return this.http.get<any>(this.apiURL + `/teachers/${id}/hours/${year}/${month}`, this.httpOptions)
     }
+
+    getLeftHoursByMonth(id:number,year:string,month:string): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hoursleft/${year}/${month}`, this.httpOptions)
+    }
+
+    getPassedHoursByMonth(id:number,year:string,month:string): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id}/hourspassed/${year}/${month}`, this.httpOptions)
+    }
+
+    /***************************************************************************************************************************/
+
 
     getHoursByResource(id_teacher:number,id_resource:number): Observable<any> {
         return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hours/${id_resource}`, this.httpOptions)
     }
 
+    getLeftHoursByResource(id_teacher:number,id_resource:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hoursleft/${id_resource}`, this.httpOptions)
+    }
+
+    getPassedHoursByResource(id_teacher:number,id_resource:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hourspassed/${id_resource}`, this.httpOptions)
+    }
+
+    /***************************************************************************************************************************/
+
     getHoursByPromotion(id_teacher:number,id_promotion:number): Observable<any> {
         return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hours/promotion/${id_promotion}`, this.httpOptions)
+    }
+
+    getLeftHoursByPromotion(id_teacher:number,id_promotion:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hoursleft/promotion/${id_promotion}`, this.httpOptions)
+    }
+
+    getPassedHoursByPromotion(id_teacher:number,id_promotion:number): Observable<any> {
+        return this.http.get<any>(this.apiURL + `/teachers/${id_teacher}/hourspassed/promotion/${id_promotion}`, this.httpOptions)
     }
 
 

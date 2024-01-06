@@ -6,11 +6,17 @@ import { StatisticsLayoutComponent } from './components/statistics-layout/statis
 import { TabMenuModule } from 'primeng/tabmenu';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
+import { HoursByMonthComponent } from './components/hours-by-month/hours-by-month.component';
+import { HoursByResourceComponent } from './components/hours-by-resource/hours-by-resource.component';
+import { HoursByPromotionComponent } from './components/hours-by-promotion/hours-by-promotion.component';
 
 
 @NgModule({
   declarations: [
-    StatisticsLayoutComponent
+    StatisticsLayoutComponent,
+    HoursByMonthComponent,
+    HoursByResourceComponent,
+    HoursByPromotionComponent
   ],
   imports: [
     CommonModule,
