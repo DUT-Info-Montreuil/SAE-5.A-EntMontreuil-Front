@@ -224,8 +224,12 @@ export class ManageCoursesComponent {
                   meta: {
                     // Informations supplémentaires
                     resourceName: course.resource.name,
-                    teacherNames: 'teacherNames',
-                    classroomName: 'classroomName',
+                    teacherNames: course.teacher
+                      .map((t) => `${t.initial}`)
+                      .join(', '),
+                    classroomName: course.classroom
+                      .map((c) => c.name)
+                      .join(', '),
                     courseid: courseData.courses.id,
                   },
                 };
