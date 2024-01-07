@@ -1,6 +1,14 @@
-<p-card header="Créer un cours">
+<p-card
+  [header]="
+    selectedTdId
+      ? 'Créer un cours pour un TD'
+      : selectedTrainingId && tds && tds.length > 0
+      ? 'Créer un cours pour un parcours'
+      : 'Créer un cours pour une promotion'
+  "
+>
   <form
-    *ngIf="resources && resources.length > 0; else noData"
+    *ngIf="resources && resources.length; else noData"
     (submit)="CreateCourse()"
     class="create-course-form"
   >

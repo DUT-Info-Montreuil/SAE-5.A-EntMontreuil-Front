@@ -11,9 +11,11 @@ import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Ressource } from 'src/app/admin/models/ressource.model';
 import { Training } from 'src/app/admin/models/training.model';
 import { Course } from 'src/app/core/models/course.model';
+import { TD } from 'src/app/core/models/td.model';
 import { CourseService } from 'src/app/core/services/courses.service';
 import { DegreeService } from 'src/app/core/services/degrees.service';
 import { RessourceService } from 'src/app/core/services/ressources.service';
+import { TrainingService } from 'src/app/core/services/trainings.service';
 
 @Component({
   selector: 'app-manage-courses',
@@ -25,12 +27,13 @@ export class ManageCoursesComponent {
   selectedPromotionId: number | null = null;
   selectedTrainingId: number | null = null;
   selectedCourseId: number | null = null;
+  selectedTdId: number | null = null;
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
   resources: any[] = [];
   degrees: Degree[] = [];
   trainings: Training[] = [];
-
+  tds: TD[] = [];
   selectedSemester: number | null = null;
   semesterOptions: number[] = [1, 2, 3];
 
@@ -54,7 +57,8 @@ export class ManageCoursesComponent {
     private courseService: CourseService,
     private changeDetectorRef: ChangeDetectorRef,
     private deegreeService: DegreeService,
-    private ressourceService: RessourceService
+    private ressourceService: RessourceService,
+    private trainingService: TrainingService
   ) {
     this.courseService.getAllPromotions().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -73,7 +77,11 @@ export class ManageCoursesComponent {
 
   onPromotionChange() {
     this.selectedSemester = null;
+    this.selectedTrainingId = null;
+    this.selectedTdId = null;
+    this.resources = [];
     this.events = [];
+    this.tds = [];
     if (this.selectedPromotionId !== null) {
       this.selectedTrainingId = null;
       // Trouvez la promotion sélectionnée et mettez à jour le niveau actuel
@@ -114,12 +122,12 @@ export class ManageCoursesComponent {
   onSemesterChange() {
     this.resources = [];
     this.events = [];
+    this.tds = [];
     if (this.selectedSemester && this.selectedPromotionId) {
       this.getTrainingOfPromo(this.selectedPromotionId, this.selectedSemester);
       this.courseService
         .getCourseByPromotion(this.selectedPromotionId, this.selectedSemester)
         .subscribe((data: any) => {
-          console.log(data);
           const coursePromotionData = data.courses.courses_promotion;
           const courseTrainingData = data.courses.courses_training;
           const courseTDData = data.courses.courses_td;
@@ -138,11 +146,9 @@ export class ManageCoursesComponent {
 
           this.events = this.removeDuplicateEvents(this.events);
           this.changeDetectorRef.detectChanges();
-          console.log(this.events); // Pour vérifier les données
         });
     }
-
-    console.log(this.selectedSemester);
+    this.changeDetectorRef.detectChanges();
   }
 
   removeDuplicateEvents(events: CalendarEvent[]): CalendarEvent[] {
@@ -159,11 +165,15 @@ export class ManageCoursesComponent {
   }
 
   onTrainingChange() {
+    console.log('onTrainingChange');
+    this.tds = [];
+    this.selectedTdId = null;
     if (
       this.selectedTrainingId !== null &&
       this.selectedPromotionId !== null &&
       this.selectedSemester !== null
     ) {
+      this.fetchTDsByTrainingId(this.selectedTrainingId);
       this.ressourceService
         .getRessourceByIdTraining(this.selectedTrainingId)
         .subscribe(
@@ -180,7 +190,7 @@ export class ManageCoursesComponent {
         .getCourseByTraining(this.selectedTrainingId)
         .subscribe((data: any) => {
           const coursesData = data.courses;
-          console.log(data);
+
           if (Array.isArray(coursesData)) {
             this.events = [
               ...coursesData.map((courseData: any) => {
@@ -221,9 +231,9 @@ export class ManageCoursesComponent {
                 };
               }),
             ];
-            console.log('events'); // Pour vérifier les données
-            console.log(this.events); // Pour déboguer
-            this.changeDetectorRef.detectChanges();
+            console.log(this.tds);
+            console.log(this.selectedTdId);
+            console.log(this.selectedTrainingId);
           } else {
             console.error(
               'Les données de cours ne sont pas un tableau valide:',
@@ -255,6 +265,9 @@ export class ManageCoursesComponent {
   onDegreeChange(degreeId: number) {
     this.selectedPromotionId = null;
     this.trainings = [];
+    this.tds = [];
+    this.selectedSemester = null;
+    this.selectedTdId = null;
     this.selectedTrainingId = null;
     this.events = [];
     this.filteredPromotions = this.promotions.filter(
@@ -329,6 +342,25 @@ export class ManageCoursesComponent {
     this.events = [...this.events, event];
     this.changeDetectorRef.detectChanges();
     console.log(this.events);
+  }
+
+  fetchTDsByTrainingId(trainingId: number): void {
+    this.trainingService.getTDsByTrainingId(trainingId).subscribe(
+      (data) => {
+        this.tds = data;
+        this.changeDetectorRef.detectChanges(); // Since using OnPush change detection
+        console.log(this.tds);
+      },
+      (error) => {
+        console.error('Error fetching TDs:', error);
+      }
+    );
+    this.changeDetectorRef.detectChanges();
+  }
+
+  onTdChange() {
+    console.log('onTdChange');
+    console.log(`TD selected: ${this.selectedTdId}`);
   }
 
   getWeekPeriod(): string {

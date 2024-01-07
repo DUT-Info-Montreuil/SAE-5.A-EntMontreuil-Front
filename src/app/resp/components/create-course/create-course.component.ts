@@ -5,6 +5,7 @@ import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Training } from 'src/app/admin/models/training.model';
 import { Classroom } from 'src/app/core/models/classroom.model';
+import { TD } from 'src/app/core/models/td.model';
 import { Teacher } from 'src/app/core/models/teachers.model';
 import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { CourseService } from 'src/app/core/services/courses.service';
@@ -24,6 +25,8 @@ export class CreateCourseComponent implements OnInit {
   @Input() selectedPromotionId: number | null = null;
   @Input() selectedTrainingId: number | null = null;
   @Input() resources: any[] = [];
+  @Input() selectedTdId: number | null = null;
+  @Input() tds: TD[] = [];
   date: string = '';
   startTime: string = '';
   endTime: string = '';
@@ -136,16 +139,42 @@ export class CreateCourseComponent implements OnInit {
     console.log('teacher IDs:', teacherIds);
     console.log('classroom IDs:', classroomIds);
     console.log(this.classrooms);
-    const newCourse = {
+    var selectionType = this.selectedTdId
+      ? 'TD'
+      : this.selectedTrainingId && (!this.tds || this.tds.length === 0) // Vérifiez si tds est vide
+      ? 'Promotion'
+      : this.selectedTrainingId
+      ? 'Training'
+      : this.selectedPromotionId
+      ? 'Promotion'
+      : null;
+
+    var newCourse: any = {
       startTime: this.startTime,
       endTime: this.endTime,
       dateCourse: this.date,
       control: this.control,
-      id_resource: this.selectedResourceId, // Assurez-vous d'avoir cette propriété
-      id_promotion: this.selectedPromotionId, // Ou l'identifiant approprié
-      teachers_id: teacherIds, // Tableau des IDs enseignants
-      classrooms_id: classroomIds, // Tableau des IDs salles de classe
+      id_resource: this.selectedResourceId,
+      teachers_id: teacherIds,
+      classrooms_id: classroomIds,
     };
+
+    switch (selectionType) {
+      case 'TD':
+        newCourse['id_td'] = this.selectedTdId;
+        break;
+      case 'Training':
+        newCourse['id_training'] = this.selectedTrainingId;
+        break;
+      case 'Promotion':
+        newCourse['id_promotion'] = this.selectedPromotionId;
+        break;
+      default:
+        // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
+        break;
+    }
+
+    console.log('newCourse', newCourse);
     const teacherNames = teacherIds
       .map((id) => this.teachers.find((t: any) => t.personal_info.id === id))
       .map((t: any) => `${t.personal_info.initial}`)
@@ -249,6 +278,4 @@ export class CreateCourseComponent implements OnInit {
 
     return true;
   }
-
-  // ... Autres méthodes ...
 }
