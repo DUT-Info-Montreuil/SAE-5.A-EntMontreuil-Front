@@ -24,4 +24,10 @@
 
 <div class="card">
     <p-tabMenu [model]="items" [activeItem]="activeItem"></p-tabMenu>
+
+    <div *ngIf="activeItem && activeItem.label === 'Par Mois'">
+        <app-hours-by-month [year]="selectedYear" [month]="selectedMonth"></app-hours-by-month>
+    </div>
+
+
 </div>

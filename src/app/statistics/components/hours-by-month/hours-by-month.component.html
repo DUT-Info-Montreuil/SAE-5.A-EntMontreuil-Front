@@ -1,1 +1,25 @@
-<p>hours-by-month works!</p>
+
+<div class="m-3">
+    <p-dropdown [(ngModel)]="selectedMonth" [options]="months" (onChange)="updateHours()"></p-dropdown>
+
+    <p-dropdown [(ngModel)]="selectedYear" [options]="years" (onChange)="updateHours()"></p-dropdown>
+</div>
+
+
+<div class="p-flex">
+    <p-card class="card-item" header="Total des heures">
+        <p class="m-0">{{ totalHours }}</p>
+    </p-card>
+
+    <p-divider layout="vertical"></p-divider>
+
+    <p-card class="card-item" header="Heures effectuées">
+        <p class="m-0">{{ hoursPassed }}</p>
+    </p-card>
+
+    <p-divider layout="vertical"></p-divider>
+
+    <p-card class="card-item" header="Heures restantes">
+        <p class="m-0">{{ hoursLeft }}</p>
+    </p-card>
+</div>

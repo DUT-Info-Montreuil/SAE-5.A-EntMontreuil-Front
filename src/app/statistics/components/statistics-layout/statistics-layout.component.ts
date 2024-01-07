@@ -22,12 +22,6 @@ export class StatisticsLayoutComponent implements OnInit {
 
 
   constructor(private teachersService: TeachersService, private authService: AuthService) { 
-  }
-
-  
-
-  ngOnInit() {
-
     this.items = [
       { label: 'Par Mois', icon: 'pi pi-fw pi-calendar' },
       { label: 'Par Ressources', icon: 'pi pi-fw pi-briefcase' },
@@ -35,7 +29,11 @@ export class StatisticsLayoutComponent implements OnInit {
     ];
     
     this.activeItem = this.items[0];
+  }
 
+  
+
+  ngOnInit() {
 
     this.teachersService.getIdTeacherByIdUser(this.authService.getUserId()).subscribe(data => {
 

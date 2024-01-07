@@ -9,6 +9,9 @@ import { DividerModule } from 'primeng/divider';
 import { HoursByMonthComponent } from './components/hours-by-month/hours-by-month.component';
 import { HoursByResourceComponent } from './components/hours-by-resource/hours-by-resource.component';
 import { HoursByPromotionComponent } from './components/hours-by-promotion/hours-by-promotion.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -24,6 +27,8 @@ import { HoursByPromotionComponent } from './components/hours-by-promotion/hours
     TabMenuModule,
     CardModule,
     DividerModule,
+    DropdownModule,
+    FormsModule,
   ]
 })
 export class StatisticsModule { }
