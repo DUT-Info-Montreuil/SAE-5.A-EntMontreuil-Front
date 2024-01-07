@@ -53,11 +53,10 @@ export class StatisticsLayoutComponent implements OnInit {
       });
 
     });
+  }
 
-
-
-    //-----------------------------------------------------------------------------------------//
-
+  onActiveItemChange(event: MenuItem) {
+    this.activeItem = event;
   }
   
 
