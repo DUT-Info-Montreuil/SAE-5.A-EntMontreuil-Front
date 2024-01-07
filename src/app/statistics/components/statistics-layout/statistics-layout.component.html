@@ -33,5 +33,9 @@
         <app-hours-by-resource [resource]="selectedYear"></app-hours-by-resource>
     </div>
 
+    <div *ngIf="activeItem && activeItem.label === 'Par Promotions'">
+        <app-hours-by-promotion [resource]="selectedPromotion"></app-hours-by-promotion>
+    </div>
+
 
 </div>
