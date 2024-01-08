@@ -215,56 +215,6 @@ export class CreateCourseComponent implements OnInit {
 
     this.courseService.addCourse(newCourse).subscribe(
       (response: any) => {
-        const classroom = classroomIds.map((id) => {
-          return this.classroomsSave.find((c) => c.id === id);
-        });
-        const teacher = teacherIds.map((id) => {
-          return this.teachers.find((t) => t.personal_info.id === id);
-        });
-
-        console.log('classroom add', classroom);
-        console.log('teacher add', teacher);
-        let course = {
-          courses: {
-            ...newCourse, // Inclut toutes les clés et valeurs de newCourse
-            id: response.id, // Placeholder pour l'ID, sera défini lors de la création du cours
-          },
-          teacher: teacher,
-          classroom: classroom,
-          promotion:
-            selectionType === 'Promotion' ? newCourse.id_promotion : null,
-          resource: {
-            name: resourceName,
-            color: resourceColor,
-            id: this.selectedResourceId,
-          },
-          td: selectionType === 'TD' ? newCourse.id_td : null,
-          tp: selectionType === 'TP' ? newCourse.id_tp : null,
-          training: selectionType === 'Training' ? newCourse.id_training : null,
-        };
-
-        switch (selectionType) {
-          case 'TD':
-            course.td = [this.selectedTdId]; // Ajouter l'ID du TD à la propriété 'td' de course
-            break;
-          case 'Training':
-            course.training = [this.selectedTrainingId]; // Ajouter l'ID de la formation à la propriété 'training' de course
-            break;
-          case 'Promotion':
-            course.promotion = [this.selectedPromotionId]; // Ajouter l'ID de la promotion à la propriété 'promotion' de course
-            break;
-          case 'TP':
-            course.tp = [this.selectedTpId]; // Ajouter l'ID du TP à la propriété 'tp' de course
-            break;
-          default:
-            // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
-            break;
-        }
-
-        console.log('Cours créé avec succès', response);
-        // Gérer la réponse ou les actions de succès ici
-
-        console.log('course bonus', course);
         const calendarEvent = {
           title: resourceName, // Using 'name' from response for the title
           start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
@@ -274,11 +224,15 @@ export class CreateCourseComponent implements OnInit {
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
-            course: course,
+            course: response.course[0].courses,
             courseid: response.id,
             resourceName: resourceName,
-            teacherNames: teacherNames,
-            classroomName: classroomNames,
+            teacherNames: response.course[0].courses.teacher
+              .map((t: any) => `${t.initial}`)
+              .join(', '),
+            classroomName: response.course[0].courses.classroom
+              .map((c: any) => c.name)
+              .join(', '),
           },
         };
 
