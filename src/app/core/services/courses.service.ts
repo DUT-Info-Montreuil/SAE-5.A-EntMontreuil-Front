@@ -53,6 +53,18 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
+  getCourseByTD(IDtd: number): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(`${this.apiURL}/courses/td/${IDtd}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getCourseByTp(IDtp: number): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(`${this.apiURL}/courses/tp/${IDtp}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
   getCourseById(courseId: number): Observable<any> {
     return this.http
       .get<any>(`${this.apiURL}/courses/id/${courseId}`, this.httpOptions)

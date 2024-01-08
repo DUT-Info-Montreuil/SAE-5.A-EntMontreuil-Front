@@ -397,12 +397,138 @@ export class ManageCoursesComponent {
     console.log('onTdChange - TD selected:', this.selectedTdId);
     this.selectedTpId = null;
     if (this.selectedTdId !== null) {
+      this.events = [];
       this.fetchTpsByTDId(this.selectedTdId);
+      this.courseService
+        .getCourseByTD(this.selectedTdId)
+        .subscribe((data: any) => {
+          const coursesData = data.courses;
+
+          if (Array.isArray(coursesData)) {
+            this.events = [
+              ...coursesData.map((courseData: any) => {
+                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
+                course.dateCourse = courseData.courses.dateCourse;
+                course.startTime = courseData.courses.startTime;
+                course.endTime = courseData.courses.endTime;
+                // Construction des chaînes de date et d'heure
+                const startDateTime = `${course.dateCourse}T${course.startTime}`;
+                const endDateTime = `${course.dateCourse}T${course.endTime}`;
+                // Conversion en objets Date
+                const startDate = parse(
+                  startDateTime,
+                  "yyyy-MM-dd'T'HH:mm:ss",
+                  new Date()
+                );
+                const endDate = parse(
+                  endDateTime,
+                  "yyyy-MM-dd'T'HH:mm:ss",
+                  new Date()
+                );
+                // Création de l'événement de calendrier
+                return {
+                  title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
+                  start: startDate,
+                  end: endDate,
+                  color: {
+                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
+                    secondary: course.resource.color || '#ffcc00',
+                  },
+                  meta: {
+                    // Informations supplémentaires
+                    course: courseData,
+                    resourceName: course.resource.name,
+                    teacherNames: course.teacher
+                      .map((t) => `${t.initial}`)
+                      .join(', '),
+                    classroomName: course.classroom
+                      .map((c) => c.name)
+                      .join(', '),
+                    courseid: courseData.courses.id,
+                  },
+                };
+              }),
+            ];
+            this.changeDetectorRef.detectChanges();
+            console.log(this.tds);
+            console.log(this.selectedTdId);
+            console.log(this.selectedTrainingId);
+          } else {
+            console.error(
+              'Les données de cours ne sont pas un tableau valide:',
+              coursesData
+            );
+          }
+        });
     }
   }
 
   onTpChange() {
     console.log('onTpChange - TP selected:', this.selectedTpId);
+    if (this.selectedTpId) {
+      this.events = [];
+      this.courseService
+        .getCourseByTp(this.selectedTpId)
+        .subscribe((data: any) => {
+          const coursesData = data.courses;
+
+          if (Array.isArray(coursesData)) {
+            this.events = [
+              ...coursesData.map((courseData: any) => {
+                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
+                course.dateCourse = courseData.courses.dateCourse;
+                course.startTime = courseData.courses.startTime;
+                course.endTime = courseData.courses.endTime;
+                // Construction des chaînes de date et d'heure
+                const startDateTime = `${course.dateCourse}T${course.startTime}`;
+                const endDateTime = `${course.dateCourse}T${course.endTime}`;
+                // Conversion en objets Date
+                const startDate = parse(
+                  startDateTime,
+                  "yyyy-MM-dd'T'HH:mm:ss",
+                  new Date()
+                );
+                const endDate = parse(
+                  endDateTime,
+                  "yyyy-MM-dd'T'HH:mm:ss",
+                  new Date()
+                );
+                // Création de l'événement de calendrier
+                return {
+                  title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
+                  start: startDate,
+                  end: endDate,
+                  color: {
+                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
+                    secondary: course.resource.color || '#ffcc00',
+                  },
+                  meta: {
+                    // Informations supplémentaires
+                    course: courseData,
+                    resourceName: course.resource.name,
+                    teacherNames: course.teacher
+                      .map((t) => `${t.initial}`)
+                      .join(', '),
+                    classroomName: course.classroom
+                      .map((c) => c.name)
+                      .join(', '),
+                    courseid: courseData.courses.id,
+                  },
+                };
+              }),
+            ];
+            this.changeDetectorRef.detectChanges();
+            console.log(this.tds);
+            console.log(this.selectedTdId);
+            console.log(this.selectedTrainingId);
+          } else {
+            console.error(
+              'Les données de cours ne sont pas un tableau valide:',
+              coursesData
+            );
+          }
+        });
+    }
   }
 
   getWeekPeriod(): string {
