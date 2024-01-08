@@ -27,7 +27,6 @@
       placeholder="Sélectionnez des enseignants"
       name="teachers"
     ></p-multiSelect>
-
     <p-multiSelect
       [options]="classrooms"
       [(ngModel)]="selectedClassroomIds"
@@ -40,22 +39,39 @@
 
     <div class="form-group">
       <label for="courseDate">Date du cours</label>
-      <input id="courseDate" type="date" [(ngModel)]="date" name="date" />
+      <p-calendar
+        id="courseDate"
+        [(ngModel)]="date"
+        inputId="courseDate"
+        dateFormat="yy-mm-dd"
+        [showIcon]="true"
+        name="date"
+      >
+      </p-calendar>
     </div>
 
     <div class="form-group">
       <label for="startTime">Heure de début</label>
-      <input
+      <p-inputMask
         id="startTime"
-        type="time"
         [(ngModel)]="startTime"
+        mask="99:99"
+        placeholder="HH:MM"
         name="startTime"
-      />
+      >
+      </p-inputMask>
     </div>
 
     <div class="form-group">
       <label for="endTime">Heure de fin</label>
-      <input id="endTime" type="time" [(ngModel)]="endTime" name="endTime" />
+      <p-inputMask
+        id="endTime"
+        [(ngModel)]="endTime"
+        mask="99:99"
+        placeholder="HH:MM"
+        name="endTime"
+      >
+      </p-inputMask>
     </div>
 
     <button class="submit-button">Créer le cours</button>

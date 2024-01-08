@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { parseISO } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { th } from 'date-fns/locale';
 import { MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
@@ -29,7 +29,7 @@ export class CreateCourseComponent implements OnInit {
   @Input() selectedTdId: number | null = null;
   @Input() tds: TD[] = [];
   @Input() selectedTpId: number | null = null;
-  date: string = '';
+  date!: Date;
   startTime: string = '';
   endTime: string = '';
 
@@ -96,7 +96,7 @@ export class CreateCourseComponent implements OnInit {
   }
 
   resetForm() {
-    this.date = '';
+    this.date = new Date();
     this.startTime = '';
     this.endTime = '';
     this.selectedResourceId = null;
@@ -157,10 +157,12 @@ export class CreateCourseComponent implements OnInit {
       ? 'Promotion'
       : null;
 
+    const formattedDate = format(this.date, 'yyyy-MM-dd');
+
     var newCourse: any = {
       startTime: this.startTime,
       endTime: this.endTime,
-      dateCourse: this.date,
+      dateCourse: formattedDate,
       control: this.control,
       id_resource: this.selectedResourceId,
       teachers_id: teacherIds,
@@ -217,8 +219,10 @@ export class CreateCourseComponent implements OnInit {
       (response: any) => {
         const calendarEvent = {
           title: resourceName, // Using 'name' from response for the title
-          start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
-          end: parseISO(`${this.date}T${this.endTime}`),
+          start: parseISO(
+            `${format(this.date, 'yyyy-MM-dd')}T${this.startTime}`
+          ), // Ensure the date strings are converted to Date objects
+          end: parseISO(`${format(this.date, 'yyyy-MM-dd')}T${this.endTime}`),
           color: {
             primary: '#000000', // Setting the primary color
             secondary: resourceColor, // You might want to set a secondary color as well

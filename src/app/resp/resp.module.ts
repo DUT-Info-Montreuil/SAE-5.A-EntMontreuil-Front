@@ -26,6 +26,9 @@ import { ConfirmDialog, ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SkeletonModule } from 'primeng/skeleton';
+
+import { CalendarModule as PrimeNgCalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -50,6 +53,8 @@ import { SkeletonModule } from 'primeng/skeleton';
     SkeletonModule,
     TabViewModule,
     MultiSelectModule,
+    PrimeNgCalendarModule,
+    InputMaskModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
