@@ -12,6 +12,7 @@ import { Ressource } from 'src/app/admin/models/ressource.model';
 import { Training } from 'src/app/admin/models/training.model';
 import { Course } from 'src/app/core/models/course.model';
 import { TD } from 'src/app/core/models/td.model';
+import { TP } from 'src/app/core/models/tp.model';
 import { CourseService } from 'src/app/core/services/courses.service';
 import { DegreeService } from 'src/app/core/services/degrees.service';
 import { RessourceService } from 'src/app/core/services/ressources.service';
@@ -28,12 +29,15 @@ export class ManageCoursesComponent {
   selectedTrainingId: number | null = null;
   selectedCourse: any;
   selectedTdId: number | null = null;
+  selectedTpId: number | null = null;
+
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
   resources: any[] = [];
   degrees: Degree[] = [];
   trainings: Training[] = [];
   tds: TD[] = [];
+  tps: TP[] = [];
   selectedSemester: number | null = null;
   semesterOptions: number[] = [1, 2, 3];
 
@@ -79,9 +83,11 @@ export class ManageCoursesComponent {
     this.selectedSemester = null;
     this.selectedTrainingId = null;
     this.selectedTdId = null;
+    this.selectedTpId = null;
     this.resources = [];
     this.events = [];
     this.tds = [];
+
     if (this.selectedPromotionId !== null) {
       this.selectedTrainingId = null;
       // Trouvez la promotion sélectionnée et mettez à jour le niveau actuel
@@ -123,7 +129,10 @@ export class ManageCoursesComponent {
     this.resources = [];
     this.events = [];
     this.selectedTrainingId = null;
+    this.selectedTdId = null;
+    this.selectedTpId = null;
     this.tds = [];
+    this.tps = [];
     if (this.selectedSemester && this.selectedPromotionId) {
       this.getTrainingOfPromo(this.selectedPromotionId, this.selectedSemester);
       this.courseService
@@ -168,8 +177,10 @@ export class ManageCoursesComponent {
   onTrainingChange() {
     console.log('onTrainingChange');
     this.tds = [];
+    this.tps = [];
     this.events = [];
     this.selectedTdId = null;
+    this.selectedTpId = null;
     if (
       this.selectedTrainingId !== null &&
       this.selectedPromotionId !== null &&
@@ -274,9 +285,11 @@ export class ManageCoursesComponent {
     this.selectedPromotionId = null;
     this.trainings = [];
     this.tds = [];
+    this.tps = [];
     this.selectedSemester = null;
     this.selectedTdId = null;
     this.selectedTrainingId = null;
+    this.selectedTpId = null;
     this.events = [];
     this.filteredPromotions = this.promotions.filter(
       (promo) => promo.id_Degree === degreeId
@@ -366,9 +379,30 @@ export class ManageCoursesComponent {
     this.changeDetectorRef.detectChanges();
   }
 
+  fetchTpsByTDId(tdId: number): void {
+    this.trainingService.getTpsByTDID(tdId).subscribe(
+      (data) => {
+        this.tps = data;
+        console.log('TPs fetched:', this.tps);
+        console.log('TPs length:', this.tps.length);
+        this.changeDetectorRef.detectChanges();
+      },
+      (error) => {
+        console.error('Error fetching tps:', error);
+      }
+    );
+  }
+
   onTdChange() {
-    console.log('onTdChange');
-    console.log(`TD selected: ${this.selectedTdId}`);
+    console.log('onTdChange - TD selected:', this.selectedTdId);
+    this.selectedTpId = null;
+    if (this.selectedTdId !== null) {
+      this.fetchTpsByTDId(this.selectedTdId);
+    }
+  }
+
+  onTpChange() {
+    console.log('onTpChange - TP selected:', this.selectedTpId);
   }
 
   getWeekPeriod(): string {

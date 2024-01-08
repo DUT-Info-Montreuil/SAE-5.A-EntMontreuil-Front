@@ -22,6 +22,7 @@ import { Teacher } from 'src/app/core/models/teachers.model';
 })
 export class CourseDetailsModalComponent implements OnInit {
   @Input() selectedCourse: any;
+
   display: boolean = true;
   course!: any;
   @Output() close = new EventEmitter<void>(); // Emit when the modal closes

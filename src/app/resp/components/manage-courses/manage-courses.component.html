@@ -52,6 +52,17 @@
           placeholder="Sélectionnez un TD"
           (onChange)="onTdChange()"
         ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="tps && tps.length > 0"
+          id="tdDropdown"
+          [options]="tps"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="selectedTpId"
+          placeholder="Sélectionnez un TP"
+          (onChange)="onTpChange()"
+        ></p-dropdown>
       </div>
     </div>
 
@@ -97,6 +108,7 @@
       [selectedPromotionId]="selectedPromotionId"
       [selectedTrainingId]="selectedTrainingId"
       [selectedTdId]="selectedTdId"
+      [selectedTpId]="selectedTpId"
       [resources]="resources"
       [tds]="tds"
     ></app-create-course>

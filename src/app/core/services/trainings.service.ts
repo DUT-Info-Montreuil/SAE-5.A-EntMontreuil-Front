@@ -93,4 +93,7 @@ export class TrainingService implements OnInit {
       this.httpOptions
     );
   }
+  getTpsByTDID(idTD: number): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/td/tp/${idTD}`, this.httpOptions);
+  }
 }

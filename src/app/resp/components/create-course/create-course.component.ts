@@ -28,11 +28,13 @@ export class CreateCourseComponent implements OnInit {
   @Input() resources: any[] = [];
   @Input() selectedTdId: number | null = null;
   @Input() tds: TD[] = [];
+  @Input() selectedTpId: number | null = null;
   date: string = '';
   startTime: string = '';
   endTime: string = '';
 
   classrooms: any[] = [];
+  classroomsSave: any[] = [];
   trainings: Training[] = [];
   teachers: any[] = [];
   teachersDropdownOptions: any[] = [];
@@ -53,6 +55,7 @@ export class CreateCourseComponent implements OnInit {
   ngOnInit(): void {
     this.classroomsService.getClassrooms().subscribe(
       (data: Classroom[]) => {
+        this.classroomsSave = data;
         this.classrooms = data.map((classroom) => ({
           label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
           id: classroom.id,
@@ -142,7 +145,9 @@ export class CreateCourseComponent implements OnInit {
     console.log('teacher IDs:', teacherIds);
     console.log('classroom IDs:', classroomIds);
     console.log(this.classrooms);
-    var selectionType = this.selectedTdId
+    var selectionType = this.selectedTpId
+      ? 'TP'
+      : this.selectedTdId
       ? 'TD'
       : this.selectedTrainingId && (!this.tds || this.tds.length === 0) // Vérifiez si tds est vide
       ? 'Promotion'
@@ -161,21 +166,6 @@ export class CreateCourseComponent implements OnInit {
       teachers_id: teacherIds,
       classrooms_id: classroomIds,
     };
-
-    switch (selectionType) {
-      case 'TD':
-        newCourse['id_td'] = this.selectedTdId;
-        break;
-      case 'Training':
-        newCourse['id_training'] = this.selectedTrainingId;
-        break;
-      case 'Promotion':
-        newCourse['id_promotion'] = this.selectedPromotionId;
-        break;
-      default:
-        // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
-        break;
-    }
 
     console.log('newCourse', newCourse);
     const teacherNames = teacherIds
@@ -202,10 +192,79 @@ export class CreateCourseComponent implements OnInit {
 
     console.log('newCourse', newCourse);
 
+    switch (selectionType) {
+      case 'TD':
+        newCourse['id_td'] = this.selectedTdId;
+        break;
+      case 'Training':
+        newCourse['id_training'] = this.selectedTrainingId;
+
+        break;
+      case 'Promotion':
+        newCourse['id_promotion'] = this.selectedPromotionId;
+
+        break;
+      case 'TP':
+        newCourse['id_tp'] = this.selectedTpId;
+
+        break;
+      default:
+        // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
+        break;
+    }
+
     this.courseService.addCourse(newCourse).subscribe(
       (response: any) => {
+        const classroom = classroomIds.map((id) => {
+          return this.classroomsSave.find((c) => c.id === id);
+        });
+        const teacher = teacherIds.map((id) => {
+          return this.teachers.find((t) => t.personal_info.id === id);
+        });
+
+        console.log('classroom add', classroom);
+        console.log('teacher add', teacher);
+        let course = {
+          courses: {
+            ...newCourse, // Inclut toutes les clés et valeurs de newCourse
+            id: response.id, // Placeholder pour l'ID, sera défini lors de la création du cours
+          },
+          teacher: teacher,
+          classroom: classroom,
+          promotion:
+            selectionType === 'Promotion' ? newCourse.id_promotion : null,
+          resource: {
+            name: resourceName,
+            color: resourceColor,
+            id: this.selectedResourceId,
+          },
+          td: selectionType === 'TD' ? newCourse.id_td : null,
+          tp: selectionType === 'TP' ? newCourse.id_tp : null,
+          training: selectionType === 'Training' ? newCourse.id_training : null,
+        };
+
+        switch (selectionType) {
+          case 'TD':
+            course.td = [this.selectedTdId]; // Ajouter l'ID du TD à la propriété 'td' de course
+            break;
+          case 'Training':
+            course.training = [this.selectedTrainingId]; // Ajouter l'ID de la formation à la propriété 'training' de course
+            break;
+          case 'Promotion':
+            course.promotion = [this.selectedPromotionId]; // Ajouter l'ID de la promotion à la propriété 'promotion' de course
+            break;
+          case 'TP':
+            course.tp = [this.selectedTpId]; // Ajouter l'ID du TP à la propriété 'tp' de course
+            break;
+          default:
+            // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
+            break;
+        }
+
         console.log('Cours créé avec succès', response);
         // Gérer la réponse ou les actions de succès ici
+
+        console.log('course bonus', course);
         const calendarEvent = {
           title: resourceName, // Using 'name' from response for the title
           start: parseISO(`${this.date}T${this.startTime}`), // Ensure the date strings are converted to Date objects
@@ -215,9 +274,9 @@ export class CreateCourseComponent implements OnInit {
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
+            course: course,
             courseid: response.id,
             resourceName: resourceName,
-            groupName: 'promotion', // Assuming this is a static value
             teacherNames: teacherNames,
             classroomName: classroomNames,
           },
@@ -280,5 +339,17 @@ export class CreateCourseComponent implements OnInit {
     // Ajoutez ici d'autres vérifications si nécessaire
 
     return true;
+  }
+  getHeader(): string {
+    if (this.selectedTpId) {
+      return 'Créer un cours pour un TP';
+    } else if (this.selectedTdId) {
+      console.log('changement nom');
+      return 'Créer un cours pour un TD';
+    } else if (this.selectedTrainingId && this.tds && this.tds.length > 0) {
+      return 'Créer un cours pour un parcours';
+    } else {
+      return 'Créer un cours pour une promotion';
+    }
   }
 }
