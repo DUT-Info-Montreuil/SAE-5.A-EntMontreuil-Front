@@ -18,24 +18,35 @@
       ></p-dropdown>
     </div>
 
-    <p-multiSelect
-      [options]="teachersDropdownOptions"
-      [(ngModel)]="selectedTeacherIds"
-      (onChange)="onTeacherChange($event)"
-      optionLabel="label"
-      value="id"
-      placeholder="Sélectionnez des enseignants"
-      name="teachers"
-    ></p-multiSelect>
-    <p-multiSelect
-      [options]="classrooms"
-      [(ngModel)]="selectedClassroomIds"
-      (onChange)="onClassroomChange($event)"
-      optionLabel="label"
-      value="id"
-      placeholder="Sélectionnez des salles de classe"
-      name="classrooms"
-    ></p-multiSelect>
+    <div class="form-group">
+      <label for="teachers">Enseignants</label>
+      <p-multiSelect
+        id="teachers"
+        [options]="teachersDropdownOptions"
+        [(ngModel)]="selectedTeacherIds"
+        (onChange)="onTeacherChange($event)"
+        optionLabel="label"
+        value="id"
+        placeholder="Sélectionnez des enseignants"
+        name="teachers"
+      >
+      </p-multiSelect>
+    </div>
+
+    <div class="form-group">
+      <label for="classrooms">Salles de classe</label>
+      <p-multiSelect
+        id="classrooms"
+        [options]="classrooms"
+        [(ngModel)]="selectedClassroomIds"
+        (onChange)="onClassroomChange($event)"
+        optionLabel="label"
+        value="id"
+        placeholder="Sélectionnez des salles de classe"
+        name="classrooms"
+      >
+      </p-multiSelect>
+    </div>
 
     <div class="form-group">
       <label for="courseDate">Date du cours</label>
