@@ -26,7 +26,7 @@ import { TrainingService } from 'src/app/core/services/trainings.service';
 export class ManageCoursesComponent {
   selectedPromotionId: number | null = null;
   selectedTrainingId: number | null = null;
-  selectedCourseId: number | null = null;
+  selectedCourse: any;
   selectedTdId: number | null = null;
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
@@ -41,7 +41,7 @@ export class ManageCoursesComponent {
 
   handleEventClick(event: CalendarEvent): void {
     console.log(event);
-    this.selectedCourseId = event.meta.courseid;
+    this.selectedCourse = event.meta.course;
   }
 
   view: CalendarView = CalendarView.Week;
@@ -122,6 +122,7 @@ export class ManageCoursesComponent {
   onSemesterChange() {
     this.resources = [];
     this.events = [];
+    this.selectedTrainingId = null;
     this.tds = [];
     if (this.selectedSemester && this.selectedPromotionId) {
       this.getTrainingOfPromo(this.selectedPromotionId, this.selectedSemester);
@@ -167,6 +168,7 @@ export class ManageCoursesComponent {
   onTrainingChange() {
     console.log('onTrainingChange');
     this.tds = [];
+    this.events = [];
     this.selectedTdId = null;
     if (
       this.selectedTrainingId !== null &&
@@ -223,6 +225,7 @@ export class ManageCoursesComponent {
                   },
                   meta: {
                     // Informations supplémentaires
+                    course: courseData,
                     resourceName: course.resource.name,
                     teacherNames: course.teacher
                       .map((t) => `${t.initial}`)
@@ -235,6 +238,7 @@ export class ManageCoursesComponent {
                 };
               }),
             ];
+            this.changeDetectorRef.detectChanges();
             console.log(this.tds);
             console.log(this.selectedTdId);
             console.log(this.selectedTrainingId);
@@ -309,7 +313,7 @@ export class ManageCoursesComponent {
         },
         meta: {
           // Informations supplémentaires
-
+          course: courseData,
           courseid: courseData.courses.id,
           resourceName: course.resource.name,
           teacherNames: course.teacher.map((t) => `${t.initial}`).join(', '),
@@ -376,7 +380,7 @@ export class ManageCoursesComponent {
   }
 
   resetModal(): void {
-    this.selectedCourseId = null;
+    this.selectedCourse = null;
     this.changeDetectorRef.markForCheck(); // Trigger change detection manually
   }
 }

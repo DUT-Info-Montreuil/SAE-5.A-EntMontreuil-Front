@@ -119,8 +119,8 @@
   }}</span>
 </ng-template>
 <app-course-details-modal
-  *ngIf="selectedCourseId"
-  [selectedCourseId]="selectedCourseId"
+  *ngIf="selectedCourse"
+  [selectedCourse]="selectedCourse"
   (close)="resetModal()"
   (courseDeleted)="removeEvent($event)"
 ></app-course-details-modal>

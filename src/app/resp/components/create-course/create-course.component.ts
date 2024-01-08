@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { parseISO } from 'date-fns';
+import { th } from 'date-fns/locale';
 import { MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -96,6 +97,8 @@ export class CreateCourseComponent implements OnInit {
     this.startTime = '';
     this.endTime = '';
     this.selectedResourceId = null;
+    this.selectedTeacherIds = [];
+    this.selectedClassroomIds = [];
   }
 
   onPromotionChange(promotionId: number) {

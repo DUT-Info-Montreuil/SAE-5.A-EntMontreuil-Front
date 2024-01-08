@@ -21,9 +21,7 @@ import { Teacher } from 'src/app/core/models/teachers.model';
   // ... styles, etc.
 })
 export class CourseDetailsModalComponent implements OnInit {
-  isLoading: boolean = true;
-
-  @Input() selectedCourseId: number | null = null;
+  @Input() selectedCourse: any;
   display: boolean = true;
   course!: any;
   @Output() close = new EventEmitter<void>(); // Emit when the modal closes
@@ -63,95 +61,86 @@ export class CourseDetailsModalComponent implements OnInit {
   }
 
   loadCourseDetails(): void {
-    if (this.selectedCourseId) {
-      this.courseService.getCourseById(this.selectedCourseId).subscribe(
-        (course) => {
-          this.course = course.courses;
-          console.log('course', this.course);
+    if (this.selectedCourse) {
+      this.course = this.selectedCourse;
 
-          // Déterminer le type de groupe et son ID
-          let groupType = '';
-          let groupId = null;
-          if (this.course.promotion && this.course.promotion.length > 0) {
-            groupId = this.course.promotion[0];
-            groupType = 'promotion';
-          } else if (this.course.training && this.course.training.length > 0) {
-            groupId = this.course.training[0];
-            groupType = 'training';
-          } else if (this.course.td && this.course.td.length > 0) {
-            groupId = this.course.td[0];
-            groupType = 'td';
-          } else if (this.course.tp && this.course.tp.length > 0) {
-            groupId = this.course.tp[0];
-            groupType = 'tp';
-          }
+      console.log('course', this.course);
 
-          // Récupérer le nom du groupe
-          if (groupId != null && groupType !== '') {
-            this.courseService.getGroupName(groupId, groupType).subscribe(
-              (groupName: any) => {
-                this.course.groupName = groupName;
-                this.changeDetectorRef.detectChanges();
-              },
-              (error) =>
-                console.error(
-                  `Erreur lors de la récupération du nom de ${groupType}`,
-                  error
-                )
-            );
-          }
-          if (this.course.teacher && this.course.classroom) {
-            const teacherIds = this.course.teacher.map((t: any) => t.id);
-            const classroomIds = this.course.classroom.map((c: any) => c.id);
-            console.log('teacherIds', teacherIds);
-            console.log('classroomIds', classroomIds);
-            // Mettez à jour le formulaire avec les données chargées
-            this.editCourseForm.patchValue({
-              teachers: teacherIds,
-              classroom: classroomIds,
-              // Autres champs si nécessaire...
-            });
-            console.log('editCourseForm', this.editCourseForm);
-          }
+      // Déterminer le type de groupe et son ID
+      let groupType = '';
+      let groupId = null;
+      if (this.course.promotion && this.course.promotion.length > 0) {
+        groupId = this.course.promotion[0];
+        groupType = 'promotion';
+      } else if (this.course.training && this.course.training.length > 0) {
+        groupId = this.course.training[0];
+        groupType = 'training';
+      } else if (this.course.td && this.course.td.length > 0) {
+        groupId = this.course.td[0];
+        groupType = 'td';
+      } else if (this.course.tp && this.course.tp.length > 0) {
+        groupId = this.course.tp[0];
+        groupType = 'tp';
+      }
 
-          this.classroomsService.getClassrooms().subscribe(
-            (data: Classroom[]) => {
-              this.classrooms = data.map((classroom) => ({
-                label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
-                id: classroom.id,
-              }));
-            },
-            (error) => {
-              console.error('Error loading data:', error);
-            }
-          );
+      // Récupérer le nom du groupe
+      if (groupId != null && groupType !== '') {
+        this.courseService.getGroupName(groupId, groupType).subscribe(
+          (groupName: any) => {
+            this.course.groupName = groupName;
+            this.changeDetectorRef.detectChanges();
+          },
+          (error) =>
+            console.error(
+              `Erreur lors de la récupération du nom de ${groupType}`,
+              error
+            )
+        );
+      }
+      if (this.course.teacher && this.course.classroom) {
+        const teacherIds = this.course.teacher.map((t: any) => t.id);
+        const classroomIds = this.course.classroom.map((c: any) => c.id);
+        console.log('teacherIds', teacherIds);
+        console.log('classroomIds', classroomIds);
+        // Mettez à jour le formulaire avec les données chargées
+        this.editCourseForm.patchValue({
+          teachers: teacherIds,
+          classroom: classroomIds,
+          // Autres champs si nécessaire...
+        });
+        console.log('editCourseForm', this.editCourseForm);
+      }
 
-          // Après avoir récupéré les données des enseignants :
-          this.teachersService.getAllTeachers().subscribe((data: Teacher[]) => {
-            this.teachers = data.map((teacher: any) => ({
-              label: `${teacher.user.first_name} ${teacher.user.last_name}`,
-              value: teacher.personal_info.id,
-            }));
-
-            // Synchronisez les ID pré-sélectionnés avec les nouvelles options des enseignants
-            this.selectedTeacherIds = this.course.teacher.map((t: any) => t.id);
-
-            // Mettez à jour le formulaire avec les données chargées
-            this.editCourseForm.patchValue({
-              teachers: this.selectedTeacherIds,
-              // Autres champs si nécessaire...
-            });
-          });
-
-          console.log(this.editCourseForm);
-
-          this.isLoading = false;
+      this.classroomsService.getClassrooms().subscribe(
+        (data: Classroom[]) => {
+          this.classrooms = data.map((classroom) => ({
+            label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
+            id: classroom.id,
+          }));
         },
         (error) => {
-          console.error('Erreur lors de la récupération du cours', error);
-          this.isLoading = false;
+          console.error('Error loading data:', error);
         }
       );
+
+      // Après avoir récupéré les données des enseignants :
+      this.teachersService.getAllTeachers().subscribe((data: Teacher[]) => {
+        this.teachers = data.map((teacher: any) => ({
+          label: `${teacher.user.first_name} ${teacher.user.last_name}`,
+          value: teacher.personal_info.id,
+        }));
+
+        // Synchronisez les ID pré-sélectionnés avec les nouvelles options des enseignants
+        this.selectedTeacherIds = this.course.teacher.map((t: any) => t.id);
+
+        // Mettez à jour le formulaire avec les données chargées
+        this.editCourseForm.patchValue({
+          teachers: this.selectedTeacherIds,
+          // Autres champs si nécessaire...
+        });
+      });
+
+      console.log(this.editCourseForm);
     }
   }
 
