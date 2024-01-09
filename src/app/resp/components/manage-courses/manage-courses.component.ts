@@ -138,26 +138,33 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByPromotion(this.selectedPromotionId, this.selectedSemester)
         .subscribe((data: any) => {
-          const coursePromotionData = data.courses.courses_promotion;
-          const courseTrainingData = data.courses.courses_training;
-          const courseTDData = data.courses.courses_td;
-          const courseTPData = data.courses.courses_tp;
-          this.events = [];
-          for (let i = 0; i < courseTrainingData.length; i++) {
-            this.createEventsFromCourses(courseTrainingData[i]);
-          }
-          for (let i = 0; i < courseTDData.length; i++) {
-            this.createEventsFromCourses(courseTDData[i]);
-          }
-          for (let i = 0; i < courseTPData.length; i++) {
-            this.createEventsFromCourses(courseTPData[i]);
-          }
-          this.createEventsFromCourses(coursePromotionData);
-
+          this.processCourseData(data);
           this.events = this.removeDuplicateEvents(this.events);
-          this.changeDetectorRef.detectChanges();
         });
     }
+    this.changeDetectorRef.detectChanges();
+  }
+
+  processCourseData(data: any) {
+    // Initialisation de this.events
+    this.events = [];
+
+    // Vérifiez et traitez chaque type de données de cours
+    if (data.courses && data.courses.courses_promotion) {
+      this.createEventsFromCourses(data.courses.courses_promotion);
+    }
+    if (data.courses && data.courses.courses_training) {
+      this.createEventsFromCourses(data.courses.courses_training);
+    }
+    if (data.courses && data.courses.courses_td) {
+      this.createEventsFromCourses(data.courses.courses_td);
+    }
+    if (data.courses && data.courses.courses_tp) {
+      this.createEventsFromCourses(data.courses.courses_tp);
+    }
+
+    // Déclencher la détection de changements
+    this.events = this.removeDuplicateEvents(this.events);
     this.changeDetectorRef.detectChanges();
   }
 
@@ -198,68 +205,6 @@ export class ManageCoursesComponent {
             console.error('Error loading resources:', error);
           }
         );
-
-      this.courseService
-        .getCourseByTraining(this.selectedTrainingId)
-        .subscribe((data: any) => {
-          const coursesData = data.courses;
-
-          if (Array.isArray(coursesData)) {
-            this.events = [
-              ...coursesData.map((courseData: any) => {
-                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-                course.dateCourse = courseData.courses.dateCourse;
-                course.startTime = courseData.courses.startTime;
-                course.endTime = courseData.courses.endTime;
-                // Construction des chaînes de date et d'heure
-                const startDateTime = `${course.dateCourse}T${course.startTime}`;
-                const endDateTime = `${course.dateCourse}T${course.endTime}`;
-                // Conversion en objets Date
-                const startDate = parse(
-                  startDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                const endDate = parse(
-                  endDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                // Création de l'événement de calendrier
-                return {
-                  title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
-                  start: startDate,
-                  end: endDate,
-                  color: {
-                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
-                    secondary: course.resource.color || '#ffcc00',
-                  },
-                  meta: {
-                    // Informations supplémentaires
-                    course: courseData,
-                    resourceName: course.resource.name,
-                    teacherNames: course.teacher
-                      .map((t) => `${t.initial}`)
-                      .join(', '),
-                    classroomName: course.classroom
-                      .map((c) => c.name)
-                      .join(', '),
-                    courseid: courseData.courses.id,
-                  },
-                };
-              }),
-            ];
-            this.changeDetectorRef.detectChanges();
-            console.log(this.tds);
-            console.log(this.selectedTdId);
-            console.log(this.selectedTrainingId);
-          } else {
-            console.error(
-              'Les données de cours ne sont pas un tableau valide:',
-              coursesData
-            );
-          }
-        });
     }
   }
 
@@ -299,7 +244,7 @@ export class ManageCoursesComponent {
   createEventsFromCourses(coursesData: any) {
     let newEvents = coursesData.map((courseData: any) => {
       const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-      console.log(courseData);
+
       course.dateCourse = courseData.courses.dateCourse;
       course.startTime = courseData.courses.startTime;
       course.endTime = courseData.courses.endTime;
@@ -371,6 +316,29 @@ export class ManageCoursesComponent {
         this.tds = data;
         this.changeDetectorRef.detectChanges(); // Since using OnPush change detection
         console.log(this.tds);
+        if (
+          this.selectedTrainingId &&
+          this.selectedSemester &&
+          this.selectedPromotionId
+        ) {
+          if (this.tds.length > 0) {
+            this.courseService
+              .getCourseByTraining(this.selectedTrainingId)
+              .subscribe((data: any) => {
+                this.processCourseData(data);
+              });
+          } else {
+            this.courseService
+              .getCourseByPromotion(
+                this.selectedPromotionId,
+                this.selectedSemester
+              )
+              .subscribe((data: any) => {
+                this.processCourseData(data);
+                this.events = this.removeDuplicateEvents(this.events);
+              });
+          }
+        }
       },
       (error) => {
         console.error('Error fetching TDs:', error);
@@ -402,63 +370,7 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByTD(this.selectedTdId)
         .subscribe((data: any) => {
-          const coursesData = data.courses;
-
-          if (Array.isArray(coursesData)) {
-            this.events = [
-              ...coursesData.map((courseData: any) => {
-                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-                course.dateCourse = courseData.courses.dateCourse;
-                course.startTime = courseData.courses.startTime;
-                course.endTime = courseData.courses.endTime;
-                // Construction des chaînes de date et d'heure
-                const startDateTime = `${course.dateCourse}T${course.startTime}`;
-                const endDateTime = `${course.dateCourse}T${course.endTime}`;
-                // Conversion en objets Date
-                const startDate = parse(
-                  startDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                const endDate = parse(
-                  endDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                // Création de l'événement de calendrier
-                return {
-                  title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
-                  start: startDate,
-                  end: endDate,
-                  color: {
-                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
-                    secondary: course.resource.color || '#ffcc00',
-                  },
-                  meta: {
-                    // Informations supplémentaires
-                    course: courseData,
-                    resourceName: course.resource.name,
-                    teacherNames: course.teacher
-                      .map((t) => `${t.initial}`)
-                      .join(', '),
-                    classroomName: course.classroom
-                      .map((c) => c.name)
-                      .join(', '),
-                    courseid: courseData.courses.id,
-                  },
-                };
-              }),
-            ];
-            this.changeDetectorRef.detectChanges();
-            console.log(this.tds);
-            console.log(this.selectedTdId);
-            console.log(this.selectedTrainingId);
-          } else {
-            console.error(
-              'Les données de cours ne sont pas un tableau valide:',
-              coursesData
-            );
-          }
+          this.processCourseData(data);
         });
     }
   }
@@ -470,63 +382,8 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByTp(this.selectedTpId)
         .subscribe((data: any) => {
-          const coursesData = data.courses;
-
-          if (Array.isArray(coursesData)) {
-            this.events = [
-              ...coursesData.map((courseData: any) => {
-                const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-                course.dateCourse = courseData.courses.dateCourse;
-                course.startTime = courseData.courses.startTime;
-                course.endTime = courseData.courses.endTime;
-                // Construction des chaînes de date et d'heure
-                const startDateTime = `${course.dateCourse}T${course.startTime}`;
-                const endDateTime = `${course.dateCourse}T${course.endTime}`;
-                // Conversion en objets Date
-                const startDate = parse(
-                  startDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                const endDate = parse(
-                  endDateTime,
-                  "yyyy-MM-dd'T'HH:mm:ss",
-                  new Date()
-                );
-                // Création de l'événement de calendrier
-                return {
-                  title: 'Parcours' + course.resource.name, // Nom de la ressource pour le titre
-                  start: startDate,
-                  end: endDate,
-                  color: {
-                    primary: '#000000', // Utilisez une couleur par défaut si nécessaire
-                    secondary: course.resource.color || '#ffcc00',
-                  },
-                  meta: {
-                    // Informations supplémentaires
-                    course: courseData,
-                    resourceName: course.resource.name,
-                    teacherNames: course.teacher
-                      .map((t) => `${t.initial}`)
-                      .join(', '),
-                    classroomName: course.classroom
-                      .map((c) => c.name)
-                      .join(', '),
-                    courseid: courseData.courses.id,
-                  },
-                };
-              }),
-            ];
-            this.changeDetectorRef.detectChanges();
-            console.log(this.tds);
-            console.log(this.selectedTdId);
-            console.log(this.selectedTrainingId);
-          } else {
-            console.error(
-              'Les données de cours ne sont pas un tableau valide:',
-              coursesData
-            );
-          }
+          console.log(data);
+          this.processCourseData(data);
         });
     }
   }
