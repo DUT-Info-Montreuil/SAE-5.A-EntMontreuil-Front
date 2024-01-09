@@ -145,26 +145,28 @@ export class ManageCoursesComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  processCourseData(data: any) {
+  async processCourseData(data: any) {
     // Initialisation de this.events
     this.events = [];
 
-    // Vérifiez et traitez chaque type de données de cours
+    // Traitez chaque type de données de cours
     if (data.courses && data.courses.courses_promotion) {
-      this.createEventsFromCourses(data.courses.courses_promotion);
+      await this.createEventsFromCourses(data.courses.courses_promotion);
     }
     if (data.courses && data.courses.courses_training) {
-      this.createEventsFromCourses(data.courses.courses_training);
+      await this.createEventsFromCourses(data.courses.courses_training);
     }
     if (data.courses && data.courses.courses_td) {
-      this.createEventsFromCourses(data.courses.courses_td);
+      await this.createEventsFromCourses(data.courses.courses_td);
     }
     if (data.courses && data.courses.courses_tp) {
-      this.createEventsFromCourses(data.courses.courses_tp);
+      await this.createEventsFromCourses(data.courses.courses_tp);
     }
 
-    // Déclencher la détection de changements
+    // Éliminer les doublons
     this.events = this.removeDuplicateEvents(this.events);
+
+    // Déclencher la détection de changements
     this.changeDetectorRef.detectChanges();
   }
 
@@ -241,45 +243,74 @@ export class ManageCoursesComponent {
     );
   }
 
-  createEventsFromCourses(coursesData: any) {
-    let newEvents = coursesData.map((courseData: any) => {
-      const course = new Course(courseData); // Utilisation de la classe Course pour construire l'objet
-
+  async createEventsFromCourses(coursesData: any) {
+    let newEventsPromises = coursesData.map(async (courseData: any) => {
+      const course: any = new Course(courseData); // Supposons que Course est une classe définie ailleurs
       course.dateCourse = courseData.courses.dateCourse;
       course.startTime = courseData.courses.startTime;
       course.endTime = courseData.courses.endTime;
 
-      // Construction des chaînes de date et d'heure
+      let groupName = '';
+      let groupId = null;
+      let groupType = '';
+      if (course.promotion && course.promotion.length > 0) {
+        groupId = course.promotion[0];
+        groupType = 'promotion';
+      } else if (course.training && course.training.length > 0) {
+        groupId = course.training[0];
+        groupType = 'training';
+      } else if (course.td && course.td.length > 0) {
+        groupId = course.td[0];
+        groupType = 'td';
+      } else if (course.tp && course.tp.length > 0) {
+        groupId = course.tp[0];
+        groupType = 'tp';
+      }
+
+      if (groupId != null && groupType !== '') {
+        try {
+          groupName = await this.courseService
+            .getGroupName(groupId, groupType)
+            .toPromise();
+        } catch (error) {
+          console.error(
+            `Erreur lors de la récupération du nom de ${groupType}`,
+            error
+          );
+        }
+      }
+
       const startDateTime = `${course.dateCourse}T${course.startTime}`;
       const endDateTime = `${course.dateCourse}T${course.endTime}`;
-      //const idCourse = coursesData.courses.id;
-      // Conversion en objets Date
       const startDate = parse(
         startDateTime,
         "yyyy-MM-dd'T'HH:mm:ss",
         new Date()
       );
       const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
-      // Création de l'événement de calendrier
+
       return {
-        title: course.resource.name, // Nom de la ressource pour le titre
+        title: course.resource.name,
         start: startDate,
         end: endDate,
         color: {
-          primary: '#000000', // Utilisez une couleur par défaut si nécessaire
+          primary: '#000000', // couleur par défaut
           secondary: course.resource.color || '#ffcc00',
         },
         meta: {
-          // Informations supplémentaires
           course: courseData,
           courseid: courseData.courses.id,
           resourceName: course.resource.name,
-          teacherNames: course.teacher.map((t) => `${t.initial}`).join(', '),
-          classroomName: course.classroom.map((c) => c.name).join(', '),
+          teacherNames: course.teacher
+            .map((t: any) => `${t.initial}`)
+            .join(', '),
+          classroomName: course.classroom.map((c: any) => c.name).join(', '),
+          groupName: groupName,
         },
       };
     });
 
+    const newEvents = await Promise.all(newEventsPromises);
     this.events.push(...newEvents);
   }
 

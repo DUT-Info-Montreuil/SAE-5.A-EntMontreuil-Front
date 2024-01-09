@@ -129,7 +129,10 @@
   <span class="custom-event-title__classroom">{{
     event.meta.classroomName
   }}</span>
+  <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+  <!-- Ajout du groupName -->
 </ng-template>
+
 <app-course-details-modal
   *ngIf="selectedCourse"
   [selectedCourse]="selectedCourse"

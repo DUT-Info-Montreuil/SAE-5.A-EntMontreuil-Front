@@ -127,7 +127,7 @@ export class CreateCourseComponent implements OnInit {
     this.selectedResourceId = resourceId;
   }
 
-  CreateCourse() {
+  async CreateCourse() {
     if (!this.isValidCourseData()) {
       return;
     }
@@ -214,6 +214,7 @@ export class CreateCourseComponent implements OnInit {
         // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
         break;
     }
+    const groupName = await this.getGroupNameBasedOnSelection();
 
     this.courseService.addCourse(newCourse).subscribe(
       (response: any) => {
@@ -228,6 +229,7 @@ export class CreateCourseComponent implements OnInit {
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
+            groupName: groupName,
             course: response.course[0].courses,
             courseid: response.id,
             resourceName: resourceName,
@@ -265,6 +267,37 @@ export class CreateCourseComponent implements OnInit {
         });
       }
     );
+  }
+
+  // Méthode pour obtenir le nom du groupe basé sur la sélection actuelle
+  // Méthode pour obtenir le nom du groupe basé sur la sélection actuelle
+  async getGroupNameBasedOnSelection() {
+    let groupName = '';
+    let groupType = '';
+
+    if (this.selectedTpId) {
+      groupType = 'tp';
+      groupName = await this.courseService
+        .getGroupName(this.selectedTpId, groupType)
+        .toPromise();
+    } else if (this.selectedTdId) {
+      groupType = 'td';
+      groupName = await this.courseService
+        .getGroupName(this.selectedTdId, groupType)
+        .toPromise();
+    } else if (this.selectedTrainingId && this.tds.length > 0) {
+      groupType = 'training';
+      groupName = await this.courseService
+        .getGroupName(this.selectedTrainingId, groupType)
+        .toPromise();
+    } else if (this.selectedPromotionId) {
+      groupType = 'promotion';
+      groupName = await this.courseService
+        .getGroupName(this.selectedPromotionId, groupType)
+        .toPromise();
+    }
+
+    return groupName;
   }
 
   isValidCourseData(): boolean {
