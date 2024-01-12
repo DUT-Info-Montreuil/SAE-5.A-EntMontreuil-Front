@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CohortPromoStudent } from 'src/app/core/models/cohort-promo-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
 
@@ -23,7 +24,11 @@ export class TpComponent implements OnInit {
 
   TPInfo!: TP;
 
-  isAddStudentsDialogVisible: boolean = false;
+  private _isAddStudentsDialogVisible = false;
+
+  selectedStudents!: CohortPromoStudent;
+  promoStudents: CohortPromoStudent[] = [];
+  metaKeySelection: boolean = true;
 
   selectedMenu: string = 'promo';
 
@@ -55,6 +60,34 @@ export class TpComponent implements OnInit {
 
   selectMenu(menu: string) {
     this.selectedMenu = menu;
+  }
+
+  get isAddStudentsDialogVisible(): boolean {
+    return this._isAddStudentsDialogVisible;
+  }
+
+  set isAddStudentsDialogVisible(value: boolean) {
+    this._isAddStudentsDialogVisible = value;
+    if (value) {
+      this.loadStudents(); // Charger les étudiants lorsque le dialogue est ouvert
+    }
+  }
+
+  loadStudents() {
+    const promoId = this.TPInfo ? this.TPInfo.promotion.id : null;
+    if (promoId) {
+      this.cohortService.getStudentsInPromo(promoId).subscribe(
+        (data) => {
+          this.promoStudents = data;
+        },
+        (error) => {
+          console.error(
+            'Erreur lors de la récupération des étudiants dans la promotion:',
+            error
+          );
+        }
+      );
+    }
   }
 
   // Méthode pour ajouter un TP

@@ -76,4 +76,11 @@ export class CohortService {
   getFiles(): Observable<TreeNode[]> {
     return this.http.get<TreeNode[]>(this.apiURL + `/cohort`, this.httpOptions);
   }
+
+  getStudentsInPromo(promo_id: number) {
+    return this.http.get<any[]>(
+      this.apiURL + `/students/promotion/${promo_id}`,
+      this.httpOptions
+    );
+  }
 }
