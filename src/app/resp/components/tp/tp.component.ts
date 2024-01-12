@@ -23,6 +23,8 @@ export class TpComponent implements OnInit {
 
   TPInfo!: TP;
 
+  isAddStudentsDialogVisible: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService
@@ -47,5 +49,10 @@ export class TpComponent implements OnInit {
         );
       }
     });
+  }
+
+  // Méthode pour ajouter un TP
+  addStudents() {
+
   }
 }

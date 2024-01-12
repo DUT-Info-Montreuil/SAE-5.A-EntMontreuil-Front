@@ -32,6 +32,11 @@
                 </div>
             </ng-template>
 
+            <div class="flex justify-content-end mb-1">
+                <p-button (click)="isAddStudentsDialogVisible = true" icon="pi pi-plus" [outlined]="true"
+                    label="Ajouter des étudiants"></p-button>
+            </div>
+
             <p-table [value]="TPInfo.students" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
                 [showCurrentPageReport]="true"
                 currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
@@ -70,5 +75,62 @@
         </p-tabPanel>
     </p-tabView>
 </div>
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog header="Ajouter des étudiants" [(visible)]="isAddStudentsDialogVisible" [modal]="true" [responsive]="true"
+    [style]="{ width: '50vw', height: '70vh' }">
+    <ng-template pTemplate="content">
+        <div class="flex gap-4">
+            <div style="height: auto; margin-top: -12px">
+                <nav class="menuStudentGroup">
+                    <ul>
+                        <li class="flex gap-2"><i class="pi pi-users"></i> Étudiants de la promotion</li>
+                        <li class="flex gap-2"><i class="pi pi-users"></i> Tous les étudiants</li>
+                    </ul>
+                </nav>
+            </div>
+            <div>
+                <p-tabView>
+                    <p-tabPanel header="Header I">
+                        <p>
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo
+                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+                            fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
+                            officia deserunt mollit anim id est laborum.
+                        </p>
+                    </p-tabPanel>
+                    <p-tabPanel header="Header II">
+                        <p>
+                            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+                            architecto beatae vitae dicta sunt explicabo. Nemo enim
+                            ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
+                            magni dolores eos qui ratione voluptatem sequi nesciunt. Consectetur, adipisci velit, sed
+                            quia non numquam eius modi.
+                        </p>
+                    </p-tabPanel>
+                    <p-tabPanel header="Header III">
+                        <p>
+                            At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
+                            voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
+                            cupiditate non provident, similique sunt in culpa
+                            qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum
+                            facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
+                            cumque nihil impedit quo minus.
+                        </p>
+                    </p-tabPanel>
+                </p-tabView>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+            (click)="isAddStudentsDialogVisible = false"></p-button>
+        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addStudents()"></p-button>
+    </ng-template>
+</p-dialog>
 
 <p-toast></p-toast>

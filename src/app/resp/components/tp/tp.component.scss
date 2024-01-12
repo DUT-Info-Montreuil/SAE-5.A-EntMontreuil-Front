@@ -12,3 +12,26 @@
     color: #3b82f6;
   }
   
+
+.menuStudentGroup {
+  ul {
+    list-style-type: none;
+    padding: 0;
+    
+    li {
+      width: 180px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      padding-top: .45rem;
+      padding-bottom: .45rem;
+      padding-left: .5rem;
+      padding-right: .5rem;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover {
+        background-color: #e5e7eb;
+      }
+    }
+  }
+}
