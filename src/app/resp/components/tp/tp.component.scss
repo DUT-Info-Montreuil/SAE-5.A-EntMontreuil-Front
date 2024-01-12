@@ -19,7 +19,7 @@
     padding: 0;
     
     li {
-      width: 180px;
+      width: 200px;
       font-size: 14px;
       font-weight: 500;
       margin-bottom: 10px;
@@ -32,6 +32,16 @@
       &:hover {
         background-color: #e5e7eb;
       }
+
+      &.active {
+        background-color: #e5e7eb;
+      }
     }
   }
+}
+
+:host ::ng-deep .p-tabview-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #495057;
 }

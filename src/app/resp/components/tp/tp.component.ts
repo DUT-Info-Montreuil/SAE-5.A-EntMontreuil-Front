@@ -25,6 +25,8 @@ export class TpComponent implements OnInit {
 
   isAddStudentsDialogVisible: boolean = false;
 
+  selectedMenu: string = 'promo';
+
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService
@@ -49,6 +51,10 @@ export class TpComponent implements OnInit {
         );
       }
     });
+  }
+
+  selectMenu(menu: string) {
+    this.selectedMenu = menu;
   }
 
   // Méthode pour ajouter un TP
