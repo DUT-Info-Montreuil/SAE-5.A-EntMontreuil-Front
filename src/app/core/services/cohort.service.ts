@@ -84,6 +84,13 @@ export class CohortService {
     );
   }
 
+  getStudentsAll() {
+    return this.http.get<any[]>(
+      this.apiURL + `/students/all`,
+      this.httpOptions
+    );
+  }
+
   addStudentsToTP(tp_id: number, student_ids: number[]) {
     return this.http.post<any>(
       this.apiURL + `/tp/${tp_id}/add-students`,
