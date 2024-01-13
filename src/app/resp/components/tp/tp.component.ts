@@ -154,6 +154,7 @@ export class TpComponent implements OnInit {
         this.selectedStudentIds = [];
         this.selectedStudents = [];
         this.displayedStudents = [];
+        this.selectedMenu = 'promo';
         this.refreshTPData();
 
         // Afficher un toast de succès
