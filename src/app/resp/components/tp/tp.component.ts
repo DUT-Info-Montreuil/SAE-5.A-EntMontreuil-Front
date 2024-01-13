@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { Message, MessageService } from 'primeng/api';
 import { CohortStudent } from 'src/app/core/models/cohort-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
@@ -52,6 +52,7 @@ export class TpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
     // Récupérer les informations de la formation (degree) depuis l'API
 
     this.route.paramMap.subscribe((params) => {
@@ -74,6 +75,11 @@ export class TpComponent implements OnInit {
 
   selectMenu(menu: string) {
     this.selectedMenu = menu;
+    if (menu === 'all') {
+      this.loadAllStudents();
+    } else if (menu === 'promo') {
+      this.loadStudents();
+    }
   }
 
   get isAddStudentsDialogVisible(): boolean {
@@ -87,19 +93,41 @@ export class TpComponent implements OnInit {
     }
   }
 
+  loadAllStudents() {
+    this.cohortService.getStudentsAll().subscribe(
+      data => {
+        this.students = data;
+        this.filterStudents(); // Appliquez les filtres actuels aux nouvelles données
+      },
+      error => {
+        console.error("Erreur lors de la récupération de tous les étudiants: ", error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Impossible de charger tous les étudiants."
+        });
+      }
+    );
+  }
+
   loadStudents() {
     const promoId = this.TPInfo ? this.TPInfo.promotion.id : null;
     if (promoId) {
       this.cohortService.getStudentsInPromo(promoId).subscribe(
-        (data) => {
+        data => {
           this.students = data;
-          this.displayedStudents = [...this.students];
+          this.filterStudents(); // Appliquez les filtres actuels aux nouvelles données
         },
-        (error) => {
+        error => {
           console.error(
             'Erreur lors de la récupération des étudiants dans la promotion:',
             error
           );
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Erreur',
+            detail: "Impossible de charger les étudiants de la promotion."
+          });
         }
       );
     }
