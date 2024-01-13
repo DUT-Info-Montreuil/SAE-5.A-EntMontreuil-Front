@@ -67,37 +67,6 @@ export class CourseDetailsModalComponent implements OnInit {
 
       console.log('course', this.course);
 
-      // Déterminer le type de groupe et son ID
-      let groupType = '';
-      let groupId = null;
-      if (this.course.promotion && this.course.promotion.length > 0) {
-        groupId = this.course.promotion[0];
-        groupType = 'promotion';
-      } else if (this.course.training && this.course.training.length > 0) {
-        groupId = this.course.training[0];
-        groupType = 'training';
-      } else if (this.course.td && this.course.td.length > 0) {
-        groupId = this.course.td[0];
-        groupType = 'td';
-      } else if (this.course.tp && this.course.tp.length > 0) {
-        groupId = this.course.tp[0];
-        groupType = 'tp';
-      }
-
-      // Récupérer le nom du groupe
-      if (groupId != null && groupType !== '') {
-        this.courseService.getGroupName(groupId, groupType).subscribe(
-          (groupName: any) => {
-            this.course.groupName = groupName;
-            this.changeDetectorRef.detectChanges();
-          },
-          (error) =>
-            console.error(
-              `Erreur lors de la récupération du nom de ${groupType}`,
-              error
-            )
-        );
-      }
       if (this.course.teacher && this.course.classroom) {
         const teacherIds = this.course.teacher.map((t: any) => t.id);
         const classroomIds = this.course.classroom.map((c: any) => c.id);

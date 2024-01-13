@@ -46,6 +46,12 @@ export class ManageCoursesComponent {
   handleEventClick(event: CalendarEvent): void {
     console.log(event);
     this.selectedCourse = event.meta.course;
+
+    // Assurez-vous que groupName existe dans event.meta
+    if (event.meta && event.meta.groupName) {
+      // Ajoutez groupName à selectedCourse
+      this.selectedCourse.groupName = event.meta.groupName;
+    }
   }
 
   view: CalendarView = CalendarView.Week;
