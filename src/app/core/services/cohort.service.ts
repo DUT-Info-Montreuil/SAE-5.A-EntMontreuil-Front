@@ -112,4 +112,11 @@ export class CohortService {
       this.httpOptions
     );
   }
+
+  deleteTD(td_id: number) {
+    return this.http.delete<any>(
+      this.apiURL + `/td/${td_id}`,
+      this.httpOptions
+    );
+  }
 }
