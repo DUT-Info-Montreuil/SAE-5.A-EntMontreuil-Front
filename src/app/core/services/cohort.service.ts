@@ -100,7 +100,7 @@ export class CohortService {
   }
 
   removeStudentFromDegree(student_id: number) {
-    return this.http.delete<any>(
+    return this.http.get<any>(
       this.apiURL + `/tp/remove_student/${student_id}`,
       this.httpOptions
     );

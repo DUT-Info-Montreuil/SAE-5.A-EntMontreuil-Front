@@ -66,17 +66,7 @@ export class DegreeComponent implements OnInit {
         label: 'Retirer de la formation',
         icon: 'pi pi-times',
         command: () => {
-          this.cohortService.removeStudentFromDegree(1).subscribe(
-            (data) => {
-              console.log(data);
-            },
-            (error) => {
-              console.error(
-                'Erreur lors de la suppression de l\'étudiant de la formation:',
-                error
-              );
-            }
-          );
+
         },
       },
     ];

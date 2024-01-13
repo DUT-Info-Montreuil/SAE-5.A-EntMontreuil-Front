@@ -45,6 +45,8 @@ export class TpComponent implements OnInit {
 
   menuItemsStudents: MenuItem[] | undefined; // Menu des actions pour les étudiants
 
+  menuSelectedStudentId: number | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService,
@@ -85,11 +87,40 @@ export class TpComponent implements OnInit {
       {
         label: 'Retirer de la formation',
         icon: 'pi pi-times',
-        command: () => { },
+        command: () => {
+          this.cohortService.removeStudentFromDegree(this.menuSelectedStudentId!).subscribe(
+            (data) => {
+              console.log(data);
+              this.refreshTPData();
+
+              // Afficher un toast de succès
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Cet étudiant a été retiré de la formation.'
+              });
+            },
+            (error) => {
+              console.error(
+                'Erreur lors de la suppression de l\'étudiant de la formation:',
+                error
+              );
+
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Une erreur s\'est produite.'
+              });
+            }
+          );
+        },
       },
     ];
   }
 
+  selectMenuStudent(studentId: number) {
+    this.menuSelectedStudentId = studentId;
+  }
 
   selectMenu(menu: string) {
     this.selectedMenu = menu;
