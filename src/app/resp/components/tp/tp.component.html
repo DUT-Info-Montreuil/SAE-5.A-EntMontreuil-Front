@@ -98,12 +98,12 @@
                     <input type="text" pInputText name="search-query" class="search-query" class="w-full mb-2"
                         placeholder="Rechercher un étudiant...">
 
-                    <p-table [value]="promoStudents" selectionMode="multiple" [(selection)]="selectedStudents"
-                        [metaKeySelection]="metaKeySelection" dataKey="code" [paginator]="true" [rows]="5"
+                    <p-table [value]="students" [(selection)]="selectedStudents" [paginator]="true" [rows]="5"
                         paginatorDropdownAppendTo="body" [showCurrentPageReport]="true"
                         [tableStyle]="{ 'min-width': '50rem' }"
                         currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
-                        [rowsPerPageOptions]="[5, 10, 20]">
+                        [rowsPerPageOptions]="[5, 10, 20]" (onRowSelect)="onRowSelect($event)"
+                        (onRowUnselect)="onRowUnselect($event)">
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 4rem">
@@ -133,11 +133,6 @@
                             </tr>
                         </ng-template>
                     </p-table>
-                </div>
-
-                <div class="allStudents" *ngIf="selectedMenu === 'all'">
-                    <input type="text" pInputText name="search-query" class="search-query" class="w-full"
-                        placeholder="Rechercher un étudiant...">
                 </div>
             </div>
         </div>

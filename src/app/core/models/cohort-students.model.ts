@@ -1,4 +1,4 @@
-export interface CohortPromoStudent {
+export interface CohortStudent {
     apprentice: boolean;
     degree_name: string;
     email: string;

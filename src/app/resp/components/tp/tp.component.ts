@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CohortPromoStudent } from 'src/app/core/models/cohort-promo-students.model';
+import { CohortStudent } from 'src/app/core/models/cohort-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
 
@@ -26,9 +26,11 @@ export class TpComponent implements OnInit {
 
   private _isAddStudentsDialogVisible = false;
 
-  selectedStudents!: CohortPromoStudent;
-  promoStudents: CohortPromoStudent[] = [];
+  selectedStudents: CohortStudent[] = [];
+  students!: CohortStudent[];
   metaKeySelection: boolean = true;
+
+  selectedStudentIds: number[] = [];
 
   selectedMenu: string = 'promo';
 
@@ -78,7 +80,7 @@ export class TpComponent implements OnInit {
     if (promoId) {
       this.cohortService.getStudentsInPromo(promoId).subscribe(
         (data) => {
-          this.promoStudents = data;
+          this.students = data;
         },
         (error) => {
           console.error(
@@ -90,8 +92,47 @@ export class TpComponent implements OnInit {
     }
   }
 
+  onRowSelect(event: any) {
+    this.selectedStudentIds.push(event.data.student_id);
+    console.log('Selected IDs:', this.selectedStudentIds);
+  }
+
+  onRowUnselect(event: any) {
+    this.selectedStudentIds = this.selectedStudentIds.filter(id => id !== event.data.student_id);
+    console.log('Selected IDs:', this.selectedStudentIds);
+  }
+
   // Méthode pour ajouter un TP
   addStudents() {
+    // Appeler l'API pour ajouter le nouveau TP
+    this.cohortService.addStudentsToTP(this.TPInfo.id, this.selectedStudentIds).subscribe(
+      response => {
+        // Gérer l'ajout réussi
+        this.isAddStudentsDialogVisible = false; // Fermer le dialogue
+        this.selectedStudentIds = []; // Réinitialiser les étudiants sélectionnés
+        this.selectedStudents = []; // Réinitialiser les étudiants sélectionnés
 
+        // Rappeler getPromotionInfo pour actualiser les données
+        this.refreshTPData();
+      },
+      error => {
+        // Gérer l'erreur
+        console.error("Erreur lors de l'ajout des étudiants au TP: ", error);
+      }
+    );
+  }
+
+  refreshTPData() {
+    const tpId = this.route.snapshot.paramMap.get('id');
+    if (tpId) {
+      this.cohortService.getTPInfo(tpId).subscribe(
+        data => {
+          this.TPInfo = data;
+        },
+        error => {
+          console.error('Erreur lors de la récupération des informations du TP:', error);
+        }
+      );
+    }
   }
 }
