@@ -14,6 +14,7 @@ import { TeachersService } from 'src/app/core/services/teachers.service';
 import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { Classroom } from 'src/app/core/models/classroom.model';
 import { Teacher } from 'src/app/core/models/teachers.model';
+import { RessourceService } from 'src/app/core/services/ressources.service';
 
 @Component({
   selector: 'app-course-details-modal',
@@ -34,10 +35,11 @@ export class CourseDetailsModalComponent implements OnInit {
   teachers: any[] = [];
   selectedTeacherIds: number[] = [];
   selectedClassroomIds: number[] = [];
-
+  resources: any[] = [];
   constructor(
     private courseService: CourseService,
     private confirmationService: ConfirmationService,
+    private resourceService: RessourceService,
     private messageService: MessageService,
     private changeDetectorRef: ChangeDetectorRef,
     private formBuilder: FormBuilder,
@@ -67,18 +69,30 @@ export class CourseDetailsModalComponent implements OnInit {
 
       console.log('course', this.course);
 
-      if (this.course.teacher && this.course.classroom) {
+      this.resourceService
+        .getRessourceByRessourceTraining(this.course.resource.id)
+        .subscribe(
+          (data: any) => {
+            this.resources = data;
+            this.updateFormWithPreselectedValues();
+            this.changeDetectorRef.detectChanges();
+          },
+          (error: any) => {
+            console.error('Error loading resources:', error);
+          }
+        );
+
+      if (this.course.teacher) {
         const teacherIds = this.course.teacher.map((t: any) => t.id);
-        const classroomIds = this.course.classroom.map((c: any) => c.id);
         console.log('teacherIds', teacherIds);
+        this.updateFormWithPreselectedValues();
+        this.changeDetectorRef.detectChanges();
+      }
+      if (this.course.classroom) {
+        const classroomIds = this.course.classroom.map((c: any) => c.id);
         console.log('classroomIds', classroomIds);
-        // Mettez à jour le formulaire avec les données chargées
-        this.editCourseForm.patchValue({
-          teachers: teacherIds,
-          classroom: classroomIds,
-          // Autres champs si nécessaire...
-        });
-        console.log('editCourseForm', this.editCourseForm);
+        this.updateFormWithPreselectedValues();
+        this.changeDetectorRef.detectChanges();
       }
 
       this.classroomsService.getClassrooms().subscribe(
@@ -87,6 +101,9 @@ export class CourseDetailsModalComponent implements OnInit {
             label: `${classroom.name} - (Capacité: ${classroom.capacity})`,
             id: classroom.id,
           }));
+          this.selectedClassroomIds = this.course.classroom.map(
+            (c: any) => c.id
+          );
         },
         (error) => {
           console.error('Error loading data:', error);
@@ -102,18 +119,59 @@ export class CourseDetailsModalComponent implements OnInit {
 
         // Synchronisez les ID pré-sélectionnés avec les nouvelles options des enseignants
         this.selectedTeacherIds = this.course.teacher.map((t: any) => t.id);
-
-        // Mettez à jour le formulaire avec les données chargées
-        this.editCourseForm.patchValue({
-          teachers: this.selectedTeacherIds,
-          // Autres champs si nécessaire...
-        });
       });
 
       console.log(this.editCourseForm);
     }
   }
 
+  mapSelectedTeachersToOptions(selectedTeacherIds: number[]): any[] {
+    return selectedTeacherIds.map((teacherId) => {
+      const teacherOption = this.teachers.find(
+        (teacher) => teacher.value === teacherId
+      );
+      if (teacherOption) {
+        return teacherOption;
+      }
+      return null; // Gérer le cas où l'enseignant n'est pas trouvé (éventuellement)
+    });
+  }
+
+  mapSelectedClassroomsToOptions(selectedClassroomIds: number[]): any[] {
+    return selectedClassroomIds.map((classroomId) => {
+      const classroomOption = this.classrooms.find(
+        (classroom) => classroom.id === classroomId
+      );
+      if (classroomOption) {
+        return classroomOption;
+      }
+      return null; // Gérer le cas où la salle de classe n'est pas trouvée (éventuellement)
+    });
+  }
+
+  updateFormWithPreselectedValues() {
+    // Vérifiez si les données du cours sont disponibles et si les options sont chargées
+    if (
+      this.course &&
+      this.resources.length &&
+      this.teachers.length &&
+      this.classrooms.length
+    ) {
+      const selectedTeachersOptions = this.mapSelectedTeachersToOptions(
+        this.selectedTeacherIds
+      );
+      const selectedClassroomsOptions = this.mapSelectedClassroomsToOptions(
+        this.selectedClassroomIds
+      );
+
+      this.editCourseForm.patchValue({
+        resource: this.course.resource.id,
+        teachers: selectedTeachersOptions,
+        classroom: selectedClassroomsOptions,
+        // ... autres champs
+      });
+    }
+  }
   onClose(): void {
     this.display = false; // Close the modal
     this.close.emit(); // Notify the parent component
@@ -169,6 +227,10 @@ export class CourseDetailsModalComponent implements OnInit {
   onSave(): void {
     if (this.editCourseForm.valid) {
       const updatedCourse = this.editCourseForm.value;
+      console.log('updatedCourse', updatedCourse);
+      console.log(this.course.classroom);
+      console.log(this.selectedClassroomIds);
+      console.log(this.teachers);
       // Appeler le service pour mettre à jour le cours
       // ...
     }

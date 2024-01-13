@@ -135,10 +135,12 @@
       <div class="form-group">
         <label>Ressource</label>
         <p-dropdown
+          [options]="resources"
           formControlName="resource"
           optionLabel="name"
-          placeholder="Sélectionnez une ressource"
+          optionValue="id"
         >
+          placeholder="Sélectionnez une ressource" >
         </p-dropdown>
       </div>
 
@@ -163,18 +165,20 @@
           formControlName="classroom"
           [options]="classrooms"
           optionLabel="label"
-          d
-          ²splay="chip"
+          display="chip"
           appendTo="body"
-          placeholder="Sélectionnez une salle de classe"
+          placeholder="Sélectionnez des salles de classe"
         >
         </p-multiSelect>
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="save-button" (click)="onSave()">
-          Enregistrer
-        </button>
+        <p-button
+          label="Enregistrer"
+          type="submit"
+          class="save-button"
+          (onClick)="onSave()"
+        ></p-button>
       </div>
     </form>
   </div>
