@@ -95,10 +95,17 @@
             </div>
             <div class="w-full">
                 <div class="promoStudents" *ngIf="selectedMenu === 'promo'">
-                    <input type="text" pInputText name="search-query" class="search-query" class="w-full mb-2"
-                        placeholder="Rechercher un étudiant...">
+                    <input type="text" pInputText [(ngModel)]="searchQuery" (ngModelChange)="filterStudents()"
+                        name="search-query" class="search-query w-full mb-2" placeholder="Rechercher un étudiant...">
 
-                    <p-table [value]="students" [(selection)]="selectedStudents" [paginator]="true" [rows]="5"
+
+                    <div
+                        class="flex align-items-center justify-content-start w-full hidden sm:hidden lg:flex md:flex onlyNoSubGroupSwitch mt-2 mb-2">
+                        <p-inputSwitch [(ngModel)]="onlyNoSubGroup" (onChange)="filterNoSubGroup()"></p-inputSwitch>
+                        <label for="onlyNoSubGroup" class="ml-2 pb-1">Voir uniquement ceux sans sous-groupe</label>
+                    </div>
+
+                    <p-table [value]="displayedStudents" [(selection)]="selectedStudents" [paginator]="true" [rows]="5"
                         paginatorDropdownAppendTo="body" [showCurrentPageReport]="true"
                         [tableStyle]="{ 'min-width': '50rem' }"
                         currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
@@ -123,7 +130,12 @@
                                 </td>
                                 <td>{{student.last_name}}</td>
                                 <td>{{student.first_name}}</td>
-                                <td>{{student.apprentice}}</td>
+                                <td>
+                                    <i class="pi" [ngClass]="{
+                          'pi-check-circle text-green-300': student.apprentice,
+                          'pi-times-circle text-red-300': !student.apprentice
+                        }"></i>
+                                </td>
                                 <td>
                                     <div *ngIf="student.td_name; else notSet">{{student.td_name}}</div>
                                 </td>

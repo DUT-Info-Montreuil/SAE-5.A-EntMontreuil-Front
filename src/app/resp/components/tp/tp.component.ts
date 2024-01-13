@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { CohortStudent } from 'src/app/core/models/cohort-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
@@ -19,6 +20,7 @@ import { CohortService } from 'src/app/core/services/cohort.service';
       }
     `,
   ],
+  providers: [MessageService],
 })
 export class TpComponent implements OnInit {
 
@@ -32,11 +34,19 @@ export class TpComponent implements OnInit {
 
   selectedStudentIds: number[] = [];
 
+  onlyNoSubGroup: boolean = false;
+  displayedStudents: CohortStudent[] = [];
+
+  searchQuery: string = '';
+
   selectedMenu: string = 'promo';
+
+
 
   constructor(
     private route: ActivatedRoute,
-    private cohortService: CohortService
+    private cohortService: CohortService,
+    private messageService: MessageService,
   ) { }
 
   ngOnInit() {
@@ -81,6 +91,7 @@ export class TpComponent implements OnInit {
       this.cohortService.getStudentsInPromo(promoId).subscribe(
         (data) => {
           this.students = data;
+          this.displayedStudents = [...this.students];
         },
         (error) => {
           console.error(
@@ -104,23 +115,33 @@ export class TpComponent implements OnInit {
 
   // Méthode pour ajouter un TP
   addStudents() {
-    // Appeler l'API pour ajouter le nouveau TP
     this.cohortService.addStudentsToTP(this.TPInfo.id, this.selectedStudentIds).subscribe(
       response => {
-        // Gérer l'ajout réussi
-        this.isAddStudentsDialogVisible = false; // Fermer le dialogue
-        this.selectedStudentIds = []; // Réinitialiser les étudiants sélectionnés
-        this.selectedStudents = []; // Réinitialiser les étudiants sélectionnés
-
-        // Rappeler getPromotionInfo pour actualiser les données
+        this.isAddStudentsDialogVisible = false;
+        this.selectedStudentIds = [];
+        this.selectedStudents = [];
         this.refreshTPData();
+
+        // Afficher un toast de succès
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Les étudiants ont été ajoutés avec succès.'
+        });
       },
       error => {
-        // Gérer l'erreur
         console.error("Erreur lors de l'ajout des étudiants au TP: ", error);
+
+        // Afficher un toast d'erreur
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Une erreur est survenue lors de l'ajout des étudiants."
+        });
       }
     );
   }
+
 
   refreshTPData() {
     const tpId = this.route.snapshot.paramMap.get('id');
@@ -132,6 +153,26 @@ export class TpComponent implements OnInit {
         error => {
           console.error('Erreur lors de la récupération des informations du TP:', error);
         }
+      );
+    }
+  }
+
+  filterNoSubGroup() {
+    if (this.onlyNoSubGroup) {
+      this.displayedStudents = this.students.filter(student =>
+        student.td_name === null || student.tp_name === null);
+    } else {
+      this.displayedStudents = this.students;
+    }
+  }
+
+  filterStudents() {
+    if (!this.searchQuery) {
+      this.displayedStudents = this.students;
+    } else {
+      this.displayedStudents = this.students.filter(student =>
+        student.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        student.last_name.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     }
   }

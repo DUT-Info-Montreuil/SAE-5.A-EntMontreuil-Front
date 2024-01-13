@@ -22,6 +22,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
     DialogModule,
     FormsModule,
     InputTextModule,
-    InputNumberModule
+    InputNumberModule,
+    InputSwitchModule
   ],
   providers: [
     CohortService,
