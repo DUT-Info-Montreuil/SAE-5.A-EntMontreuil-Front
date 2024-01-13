@@ -30,6 +30,14 @@ export class TrainingService implements OnInit {
     );
   }
 
+  // Get all trainings
+  getAllTrainingsGroupBy(): Observable<Training[]> {
+    return this.http.get<Training[]>(
+      this.apiURL + '/trainings_gb',
+      this.httpOptions
+    );
+  }
+
   // Get a specific training by ID
   getTraining(id: number): Observable<Training> {
     return this.http.get<Training>(

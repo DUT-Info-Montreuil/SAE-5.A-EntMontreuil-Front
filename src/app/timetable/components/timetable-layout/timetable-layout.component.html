@@ -1,1 +1,42 @@
-<p>timetable-layout works!</p>
+<div class="app-layout">
+    <div class="calendar-section">
+      <div class="dropdown-section">
+      <p-dropdown [options]="promotions" (onChange)="onPromotionChange()" [(ngModel)]="selectedPromotionId" optionLabel="uniqueLabel"  placeholder="Sélectionnez une promotion"></p-dropdown>
+      <p-dropdown [options]="teachers" (onChange)="onTeacherChange()" [(ngModel)]="selectedTeacherUsername" optionLabel="uniqueLabel2"  placeholder="Sélectionnez une professeur"></p-dropdown>
+      <p-dropdown [options]="classrooms" (onChange)="onClasseroomChange()" [(ngModel)]="selectedClassroomName" optionLabel="uniqueLabel3"  placeholder="Sélectionnez une salle de classe"></p-dropdown>
+      </div>
+      <div class="flex justify-content-between align-items-center mt-2 mb-2">
+        <div>
+          <span>{{ getWeekPeriod() }}</span>
+        </div>
+        <div>
+          <p-button
+            [rounded]="true"
+            [text]="true"
+            (click)="previousWeek()"
+            icon="pi pi-chevron-left"
+          ></p-button>
+          <p-button
+            [rounded]="true"
+            [text]="true"
+            (click)="nextWeek()"
+            icon="pi pi-chevron-right"
+          ></p-button>
+        </div>
+      </div>
+  
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        [excludeDays]="excludeDays"
+        [events]="events"
+        [dayStartHour]="dayStartHour"
+        [dayEndHour]="dayEndHour"
+        [hourSegments]="hourSegments"
+        [weekStartsOn]="1"
+        [eventTitleTemplate]="customEventTitleTemplate"
+        (eventClicked)="handleEventClick($event.event)"
+      >
+      </mwl-calendar-week-view>
+    
+    </div>
+  </div>
