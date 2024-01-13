@@ -60,6 +60,12 @@ const routes: Routes = [
           import('./reminders/reminders.module').then((m) => m.RemindersModule),
         data: { title: 'Reminders' },
       },
+      {
+        path: 'statistics',
+        loadChildren: () =>
+          import('./statistics/statistics.module').then((m) => m.StatisticsModule),
+        data: { title: 'Statistiques' },
+      },
     ],
   },
 ];

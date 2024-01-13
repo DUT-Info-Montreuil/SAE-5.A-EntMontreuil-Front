@@ -1,0 +1,41 @@
+<h2 class="p-text-center">Statistiques globales :</h2>
+
+<div class="p-flex">
+    <p-card class="card-item" header="Total des heures">
+        <p class="m-0">{{ totalHours }}</p>
+    </p-card>
+
+    <p-divider layout="vertical"></p-divider>
+
+    <p-card class="card-item" header="Heures effectuées">
+        <p class="m-0">{{ hoursPassed }}</p>
+    </p-card>
+
+    <p-divider layout="vertical"></p-divider>
+
+    <p-card class="card-item" header="Heures restantes">
+        <p class="m-0">{{ hoursLeft }}</p>
+    </p-card>
+</div>
+
+<p-divider></p-divider>
+
+<h2 class="p-text-center">Statistiques avancées :</h2>
+
+<div class="card">
+    <p-tabMenu [model]="items" [activeItem]="activeItem" (activeItemChange)="onActiveItemChange($event)"></p-tabMenu>
+
+    <div *ngIf="activeItem && activeItem.label === 'Par Mois'">
+        <app-hours-by-month [year]="selectedYear" [month]="selectedMonth" ></app-hours-by-month>
+    </div>
+
+    <div *ngIf="activeItem && activeItem.label === 'Par Ressources'">
+        <app-hours-by-resource [resource]="selectedYear"></app-hours-by-resource>
+    </div>
+
+    <div *ngIf="activeItem && activeItem.label === 'Par Promotions'">
+        <app-hours-by-promotion [resource]="selectedPromotion"></app-hours-by-promotion>
+    </div>
+
+
+</div>

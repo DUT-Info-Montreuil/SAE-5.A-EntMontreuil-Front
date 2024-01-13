@@ -1,0 +1,12 @@
+.p-flex {
+    display: flex;
+    flex-wrap: nowrap; /* Empêche le retour à la ligne */
+    justify-content: space-between; /* Répartit l'espace entre les éléments */
+    margin: 10px;
+    margin-bottom: 10px;
+}
+
+.card-item {
+    flex: 1; /* Donne la même largeur à chaque carte */
+    margin: 0 10px; /* Marge entre les cartes */
+}
