@@ -98,10 +98,9 @@
                     <input type="text" pInputText [(ngModel)]="searchQuery" (ngModelChange)="filterStudents()"
                         name="search-query" class="search-query w-full mb-2" placeholder="Rechercher un étudiant...">
 
-
                     <div
                         class="flex align-items-center justify-content-start w-full hidden sm:hidden lg:flex md:flex onlyNoSubGroupSwitch mt-2 mb-2">
-                        <p-inputSwitch [(ngModel)]="onlyNoSubGroup" (onChange)="filterNoSubGroup()"></p-inputSwitch>
+                        <p-inputSwitch [(ngModel)]="onlyNoSubGroup" (onChange)="filterStudents()"></p-inputSwitch>
                         <label for="onlyNoSubGroup" class="ml-2 pb-1">Voir uniquement ceux sans sous-groupe</label>
                     </div>
 

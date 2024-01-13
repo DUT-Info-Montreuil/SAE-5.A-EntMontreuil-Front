@@ -167,13 +167,22 @@ export class TpComponent implements OnInit {
   }
 
   filterStudents() {
-    if (!this.searchQuery) {
-      this.displayedStudents = this.students;
-    } else {
-      this.displayedStudents = this.students.filter(student =>
-        student.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        student.last_name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+    let filteredStudents = this.students;
+
+    // Filtrer par onlyNoSubGroup si activé
+    if (this.onlyNoSubGroup) {
+      filteredStudents = filteredStudents.filter(student =>
+        student.td_name === null || student.tp_name === null);
     }
+
+    // Filtrer par recherche si nécessaire
+    if (this.searchQuery) {
+      filteredStudents = filteredStudents.filter(student =>
+        student.first_name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        student.last_name.toLowerCase().includes(this.searchQuery.toLowerCase()));
+    }
+
+    this.displayedStudents = filteredStudents;
   }
+
 }
