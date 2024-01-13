@@ -66,8 +66,8 @@
                 }"></i>
                         </td>
                         <td>
-                            <p-button icon="pi pi-ellipsis-v" [rounded]="true" [text]="true"
-                                severity="secondary"></p-button>
+                            <p-button (click)="menuStudents.toggle($event)" icon="pi pi-ellipsis-v" [rounded]="true"
+                                [text]="true" severity="secondary"></p-button>
                         </td>
                     </tr>
                 </ng-template>
@@ -141,7 +141,9 @@
                           'pi-times-circle text-red-300': !student.apprentice
                         }"></i>
                                 </td>
-                                <td>BUT {{student.promotion_level}} {{student.degree_name}} {{student.promotion_year}}
+                                <td>
+                                    <div *ngIf="student.degree_name; else notSet">BUT {{student.promotion_level}}
+                                        {{student.degree_name}} {{student.promotion_year}}</div>
                                 </td>
                                 <td>
                                     <div *ngIf="student.td_name; else notSet">{{student.td_name}}</div>
@@ -174,3 +176,4 @@
 <ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
 
 <p-toast></p-toast>
+<p-menu #menuStudents [model]="menuItemsStudents" [popup]="true" appendTo="body"></p-menu>

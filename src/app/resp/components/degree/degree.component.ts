@@ -28,7 +28,7 @@ export class DegreeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Récupérer les informations de la formation (degree) depuis l'API
@@ -55,17 +55,29 @@ export class DegreeComponent implements OnInit {
       {
         label: 'Voir',
         icon: 'pi pi-eye',
-        command: () => {},
+        command: () => { },
       },
       {
         label: 'Éditer',
         icon: 'pi pi-pencil',
-        command: () => {},
+        command: () => { },
       },
       {
         label: 'Retirer de la formation',
         icon: 'pi pi-times',
-        command: () => {},
+        command: () => {
+          this.cohortService.removeStudentFromDegree(1).subscribe(
+            (data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.error(
+                'Erreur lors de la suppression de l\'étudiant de la formation:',
+                error
+              );
+            }
+          );
+        },
       },
     ];
   }

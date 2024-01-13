@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Message, MessageService } from 'primeng/api';
+import { MenuItem, Message, MessageService } from 'primeng/api';
 import { CohortStudent } from 'src/app/core/models/cohort-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
@@ -43,7 +43,7 @@ export class TpComponent implements OnInit {
 
   selectedMenu: string = 'promo';
 
-
+  menuItemsStudents: MenuItem[] | undefined; // Menu des actions pour les étudiants
 
   constructor(
     private route: ActivatedRoute,
@@ -52,9 +52,7 @@ export class TpComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     // Récupérer les informations de la formation (degree) depuis l'API
-
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
@@ -71,7 +69,27 @@ export class TpComponent implements OnInit {
         );
       }
     });
+
+    // Créer le menu des actions pour les étudiants
+    this.menuItemsStudents = [
+      {
+        label: 'Voir',
+        icon: 'pi pi-eye',
+        command: () => { },
+      },
+      {
+        label: 'Éditer',
+        icon: 'pi pi-pencil',
+        command: () => { },
+      },
+      {
+        label: 'Retirer de la formation',
+        icon: 'pi pi-times',
+        command: () => { },
+      },
+    ];
   }
+
 
   selectMenu(menu: string) {
     this.selectedMenu = menu;
