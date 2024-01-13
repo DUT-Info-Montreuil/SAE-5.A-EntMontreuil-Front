@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { MenuItem, Message, MessageService } from 'primeng/api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MenuItem, Message, MessageService } from 'primeng/api';
 import { CohortStudent } from 'src/app/core/models/cohort-students.model';
 import { TP } from 'src/app/core/models/cohort-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
+import { CohortSharedService } from 'src/app/shared/services/cohort-shared.service';
 
 @Component({
   selector: 'app-tp',
@@ -51,6 +52,9 @@ export class TpComponent implements OnInit {
     private route: ActivatedRoute,
     private cohortService: CohortService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private router: Router,
+    private cohortSharedService: CohortSharedService
   ) { }
 
   ngOnInit() {
@@ -271,6 +275,39 @@ export class TpComponent implements OnInit {
     }
 
     this.displayedStudents = filteredStudents;
+  }
+
+  confirmDeleteTP() {
+    this.confirmationService.confirm({
+      message: 'L\'action de suppression du TP entraînera le retrait des étudiants qui y sont actuellement affectés. Voulez-vous vraiment supprimer ce TP ?',
+      accept: () => {
+        this.deleteTP(this.TPInfo.id);
+      }
+    });
+  }
+
+  deleteTP(tpId: number) {
+    this.cohortService.deleteTP(tpId).subscribe(
+      response => {
+        // Gestion de la réponse, par exemple, afficher un message de succès
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Suppression réussie',
+          detail: 'Le TP a été supprimé avec succès.'
+        });
+
+        this.cohortSharedService.triggerRefresh();
+        this.router.navigate(['/resp/cohort/td/', this.TPInfo.td.id]);
+      },
+      error => {
+        // Gestion de l'erreur
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Une erreur est survenue lors de la suppression du TP.'
+        });
+      }
+    );
   }
 
 }

@@ -105,4 +105,11 @@ export class CohortService {
       this.httpOptions
     );
   }
+
+  deleteTP(tp_id: number) {
+    return this.http.delete<any>(
+      this.apiURL + `/tp/${tp_id}`,
+      this.httpOptions
+    );
+  }
 }

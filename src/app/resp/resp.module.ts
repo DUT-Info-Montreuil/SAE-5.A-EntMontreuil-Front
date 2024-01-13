@@ -4,7 +4,7 @@ import { CohortComponent } from './components/cohort/cohort.component';
 import { RespRoutingModule } from './resp-routing.module';
 import { TreeModule } from 'primeng/tree';
 import { ToastModule } from 'primeng/toast';
-import { ContextMenuService, MessageService } from 'primeng/api';
+import { ConfirmationService, ContextMenuService, MessageService } from 'primeng/api';
 import { CohortService } from '../core/services/cohort.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { DegreeComponent } from './components/degree/degree.component';
@@ -24,6 +24,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MessageModule } from 'primeng/message';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @NgModule({
   declarations: [
@@ -51,12 +52,14 @@ import { MessageModule } from 'primeng/message';
     InputTextModule,
     InputNumberModule,
     InputSwitchModule,
-    MessageModule
+    MessageModule,
+    ConfirmDialogModule
   ],
   providers: [
     CohortService,
     MessageService,
-    ContextMenuService
+    ContextMenuService,
+    ConfirmationService
   ]
 })
 export class RespModule { }

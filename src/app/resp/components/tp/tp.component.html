@@ -78,6 +78,31 @@
                 </ng-template>
             </p-table>
         </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>Paramètres</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="w-full">
+                <div class="flex" style="flex-direction: column;">
+                    <label for="group_name" class="pb-2" style="font-weight: 500;">Nom du TP</label>
+                    <input pInputText type="text" name="group_name" id="group_name" class="w-full"
+                        value="{{ TPInfo.name }}" [(ngModel)]="TPInfo.name" />
+                </div>
+
+                <div class="flex" style="flex-direction: column; margin-top: 30px;">
+                    <label for="delGroupBtn" style="font-weight: 500;" class="mb-2">Supprimer ce TP</label>
+                    <p-button (click)="confirmDeleteTP()" name="delGroupBtn" id="delGroupBtn" icon="pi pi-trash"
+                        severity="danger" label="Supprimer"></p-button>
+
+                </div>
+
+            </div>
+        </p-tabPanel>
     </p-tabView>
 </div>
 
@@ -177,3 +202,4 @@
 
 <p-toast></p-toast>
 <p-menu #menuStudents [model]="menuItemsStudents" [popup]="true" appendTo="body"></p-menu>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
