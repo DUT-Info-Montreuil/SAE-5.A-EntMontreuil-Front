@@ -71,6 +71,11 @@
                         </td>
                     </tr>
                 </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Aucun étudiant.</td>
+                    </tr>
+                </ng-template>
             </p-table>
         </p-tabPanel>
     </p-tabView>
@@ -143,6 +148,11 @@
                                 </td>
                             </tr>
                         </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="7">Aucun étudiant.</td>
+                            </tr>
+                        </ng-template>
                     </p-table>
                 </div>
             </div>
@@ -152,7 +162,8 @@
     <ng-template pTemplate="footer">
         <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
             (click)="isAddStudentsDialogVisible = false"></p-button>
-        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addStudents()"></p-button>
+        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addStudents()"
+            [loading]="loading"></p-button>
     </ng-template>
 </p-dialog>
 

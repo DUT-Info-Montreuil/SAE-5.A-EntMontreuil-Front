@@ -28,6 +28,8 @@ export class TpComponent implements OnInit {
 
   private _isAddStudentsDialogVisible = false;
 
+  loading: boolean = false;
+
   selectedStudents: CohortStudent[] = [];
   students!: CohortStudent[];
   metaKeySelection: boolean = true;
@@ -115,11 +117,15 @@ export class TpComponent implements OnInit {
 
   // Méthode pour ajouter un TP
   addStudents() {
+
+    this.loading = true;
+
     this.cohortService.addStudentsToTP(this.TPInfo.id, this.selectedStudentIds).subscribe(
       response => {
         this.isAddStudentsDialogVisible = false;
         this.selectedStudentIds = [];
         this.selectedStudents = [];
+        this.displayedStudents = [];
         this.refreshTPData();
 
         // Afficher un toast de succès
@@ -128,6 +134,8 @@ export class TpComponent implements OnInit {
           summary: 'Succès',
           detail: 'Les étudiants ont été ajoutés avec succès.'
         });
+
+        this.loading = false
       },
       error => {
         console.error("Erreur lors de l'ajout des étudiants au TP: ", error);
@@ -138,6 +146,8 @@ export class TpComponent implements OnInit {
           summary: 'Erreur',
           detail: "Une erreur est survenue lors de l'ajout des étudiants."
         });
+
+        this.loading = false
       }
     );
   }
