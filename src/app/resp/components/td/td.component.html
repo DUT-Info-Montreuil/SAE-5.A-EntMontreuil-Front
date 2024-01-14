@@ -1,0 +1,181 @@
+<div *ngIf="TDInfo" class="p-2 pl-5 pr-5 content">
+    <div class="flex align-items-center border-round p-4 relative mb-6" style="background-color: rgb(255, 247, 234)">
+        <div>
+            <p class="text-900 font-medium">
+                Cohorte > {{ TDInfo.degree.name }} > BUT {{ TDInfo.promotion.level }} {{
+                TDInfo.degree.name }} {{ TDInfo.promotion.year }} > {{ TDInfo.training.name}} >
+            </p>
+            <h1 class="text-2xl font-semibold">
+                {{ TDInfo.name }}
+            </h1>
+        </div>
+        <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px">
+            <img src="/assets/images/3dicons/at.png" alt="cube" width="180px" />
+        </div>
+    </div>
+
+    <div class="-ml-3 mb-3">
+        <p-button label="Retour" [text]="true" icon="pi pi-arrow-left"
+            routerLink="/resp/cohort/training/{{ TDInfo.training.id }}"></p-button>
+    </div>
+
+    <p-tabView>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>TPs</span>
+                    </div>
+                    <div>
+                        <span class="badge">{{ TDInfo.tps.length }}</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="flex justify-content-end mb-1">
+                <p-button (click)="isAddTPDialogVisible = true" icon="pi pi-plus" [outlined]="true"
+                    label="Ajouter un TP"></p-button>
+            </div>
+
+            <p-table [value]="TDInfo.tps" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} TPs"
+                [rowsPerPageOptions]="[5, 10, 20, 50]">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="name">
+                            Nom<p-sortIcon field="name"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="student_count">
+                            Étudiants inscrits <p-sortIcon field="student_count"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-tp>
+                    <tr>
+                        <td>
+                            <div class="cursor-pointer" routerLink="/resp/cohort/tp/{{ tp.id_tp }}">
+                                <span class="font-semibold hover:text-blue-500">{{ tp.name }}</span>
+                            </div>
+                        </td>
+                        <td>{{ tp.student_count }}</td>
+                        <td>
+                            <p-button icon="pi pi-ellipsis-v" [rounded]="true" [text]="true"
+                                severity="secondary "></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Aucun TP.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>Étudiants</span>
+                    </div>
+                    <div>
+                        <span class="badge">{{ TDInfo.students.length }}</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <p-table [value]="TDInfo.students" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
+                [rowsPerPageOptions]="[5, 10, 20, 50]">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="firstname">
+                            Nom <p-sortIcon field="firstname"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="lastname">
+                            Prénom <p-sortIcon field="lastname"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="tp">
+                            TP <p-sortIcon field="tp"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="apprentice">
+                            Apprenti <p-sortIcon field="apprentice"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-student>
+                    <tr>
+                        <td>{{ student.first_name }}</td>
+                        <td>{{ student.last_name }}</td>
+                        <td>{{ student.tp[0].name }}</td>
+                        <td>
+                            <i class="pi" [ngClass]="{
+                  'pi-check-circle text-green-300': student.isApprentice,
+                  'pi-times-circle text-red-300': !student.isApprentice
+                }"></i>
+                        </td>
+                        <td>
+                            <p-button icon="pi pi-ellipsis-v" [rounded]="true" [text]="true"
+                                severity="secondary"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Aucun étudiant.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>Paramètres</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="w-full">
+                <div class="flex" style="flex-direction: column;">
+                    <label for="group_name" class="pb-2" style="font-weight: 500;">Nom du TD</label>
+                    <input pInputText type="text" name="group_name" id="group_name" class="w-full"
+                        value="{{ TDInfo.name }}" [(ngModel)]="TDInfo.name" />
+                </div>
+
+                <div class="flex" style="flex-direction: column; margin-top: 30px;">
+                    <label for="delGroupBtn" style="font-weight: 500;" class="mb-2">Supprimer ce TD</label>
+                    <p-button (click)="confirmDeleteTD()" name="delGroupBtn" id="delGroupBtn" icon="pi pi-trash"
+                        severity="danger" label="Supprimer"></p-button>
+
+                </div>
+
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<p-toast></p-toast>
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog header="Ajouter un TP" [(visible)]="isAddTPDialogVisible" [modal]="true" [responsive]="true">
+    <ng-template pTemplate="content">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="newTPName" class="font-medium text-900">Nom du TP</label>
+                <input pInputText class="mt-1" type="text" id="newTPName" [(ngModel)]="newTPName" name="newTPName"
+                    required />
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+            (click)="isAddTPDialogVisible = false"></p-button>
+        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addTP()"></p-button>
+    </ng-template>
+</p-dialog>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

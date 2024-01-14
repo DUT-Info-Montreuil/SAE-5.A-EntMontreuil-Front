@@ -5,6 +5,10 @@ import { CohortComponent } from './components/cohort/cohort.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
 import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
+import { DegreeComponent } from './components/degree/degree.component';
+import { TrainingComponent } from './components/training/training.component';
+import { TdComponent } from './components/td/td.component';
+import { TpComponent } from './components/tp/tp.component';
 
 const routes: Routes = [
   {
@@ -22,6 +26,26 @@ const routes: Routes = [
         component: PromotionComponent,
         data: { title: 'Promotion' },
       },
+      {
+        path: 'degree/:id',
+        component: DegreeComponent,
+        data: { title: 'Degree' },
+      },
+      {
+        path: 'training/:id',
+        component: TrainingComponent,
+        data: { title: 'Training' },
+      },
+      {
+        path: 'td/:id',
+        component: TdComponent,
+        data: { title: 'TD' },
+      },
+      {
+        path: 'tp/:id',
+        component: TpComponent,
+        data: { title: 'TP' },
+      },
     ],
   },
   {
@@ -35,4 +59,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class RespRoutingModule {}
+export class RespRoutingModule { }
