@@ -76,4 +76,47 @@ export class CohortService {
   getFiles(): Observable<TreeNode[]> {
     return this.http.get<TreeNode[]>(this.apiURL + `/cohort`, this.httpOptions);
   }
+
+  getStudentsInPromo(promo_id: number) {
+    return this.http.get<any[]>(
+      this.apiURL + `/students/promotion/${promo_id}`,
+      this.httpOptions
+    );
+  }
+
+  getStudentsAll() {
+    return this.http.get<any[]>(
+      this.apiURL + `/students/all`,
+      this.httpOptions
+    );
+  }
+
+  addStudentsToTP(tp_id: number, student_ids: number[]) {
+    return this.http.post<any>(
+      this.apiURL + `/tp/${tp_id}/add-students`,
+      JSON.stringify({ student_ids }),
+      this.httpOptions
+    );
+  }
+
+  removeStudentFromDegree(student_id: number) {
+    return this.http.get<any>(
+      this.apiURL + `/tp/remove_student/${student_id}`,
+      this.httpOptions
+    );
+  }
+
+  deleteTP(tp_id: number) {
+    return this.http.delete<any>(
+      this.apiURL + `/tp/${tp_id}`,
+      this.httpOptions
+    );
+  }
+
+  deleteTD(td_id: number) {
+    return this.http.delete<any>(
+      this.apiURL + `/td/${td_id}`,
+      this.httpOptions
+    );
+  }
 }

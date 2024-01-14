@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { TD } from 'src/app/core/models/cohort-td.model';
 import { SingleTP } from 'src/app/core/models/single-tp.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
@@ -20,6 +21,7 @@ import { CohortSharedService } from 'src/app/shared/services/cohort-shared.servi
       }
     `,
   ],
+  providers: [MessageService],
 })
 export class TdComponent implements OnInit {
   TDInfo!: TD;
@@ -30,7 +32,10 @@ export class TdComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cohortService: CohortService,
-    private cohortSharedService: CohortSharedService
+    private cohortSharedService: CohortSharedService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -94,6 +99,39 @@ export class TdComponent implements OnInit {
         }
       );
     }
+  }
+
+  confirmDeleteTD() {
+    this.confirmationService.confirm({
+      message: 'L\'action de suppression du TD entraînera également la suppression des TP associés et le retrait des étudiants qui y sont actuellement affectés. Voulez-vous vraiment supprimer ce TD ?',
+      accept: () => {
+        this.deleteTD(this.TDInfo.id);
+      }
+    });
+  }
+
+  deleteTD(tdId: number) {
+    this.cohortService.deleteTD(tdId).subscribe(
+      response => {
+        // Gestion de la réponse, par exemple, afficher un message de succès
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Suppression réussie',
+          detail: 'Le TD a été supprimé avec succès.'
+        });
+
+        this.cohortSharedService.triggerRefresh();
+        this.router.navigate(['/resp/cohort/training/', this.TDInfo.training.id]);
+      },
+      error => {
+        // Gestion de l'erreur
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: 'Une erreur est survenue lors de la suppression du TD.'
+        });
+      }
+    );
   }
 }
 

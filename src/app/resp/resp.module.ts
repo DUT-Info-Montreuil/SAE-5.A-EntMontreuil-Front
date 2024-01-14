@@ -4,7 +4,7 @@ import { CohortComponent } from './components/cohort/cohort.component';
 import { RespRoutingModule } from './resp-routing.module';
 import { TreeModule } from 'primeng/tree';
 import { ToastModule } from 'primeng/toast';
-import { ContextMenuService, MessageService } from 'primeng/api';
+import { ConfirmationService, ContextMenuService, MessageService } from 'primeng/api';
 import { CohortService } from '../core/services/cohort.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
@@ -31,6 +31,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { MessageModule } from 'primeng/message';
 
 @NgModule({
   declarations: [
@@ -72,7 +75,10 @@ import { ButtonModule } from 'primeng/button';
     }),
     TooltipModule,
     ButtonModule,
+    InputSwitchModule,
+    MessageModule,
+    ConfirmDialogModule
   ],
-  providers: [CohortService, MessageService, ContextMenuService],
+  providers: [CohortService, MessageService, ContextMenuService, ConfirmationService],
 })
-export class RespModule {}
+export class RespModule { }
