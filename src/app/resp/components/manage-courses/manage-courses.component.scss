@@ -107,26 +107,51 @@
   width: 100%;
 }
 
+.custom-event-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.event-top,
+.event-middle,
+.event-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.event-top {
+  justify-content: flex-start; /* Salles en haut à gauche */
+}
+
+.event-middle {
+  flex-grow: 1; /* Ressource au centre horizontalement et verticalement */
+}
+
+.event-bottom {
+  justify-content: space-between; /* Nom du prof à gauche et nom du groupe à droite */
+}
+
 .custom-event-title__classroom {
-  order: 1; /* En haut */
-  padding: 2px;
   text-align: left;
+  padding: 2px;
 }
 
 .custom-event-title__resource {
-  order: 2; /* Au milieu */
-  padding: 2px;
   text-align: center;
+  padding: 2px;
 }
 
 .custom-event-title__teachers {
-  order: 3; /* En bas */
-  padding: 2px;
   text-align: left;
+  padding: 2px;
+  flex: 1; /* Permet au nom du prof de prendre de l'espace si nécessaire */
 }
 
 .custom-event-title__groupname {
-  order: 4; /* Ajouté */
-  padding: 2px;
   text-align: right;
+  padding: 2px;
+  flex: 1; /* Permet au nom du groupe de prendre de l'espace si nécessaire */
 }

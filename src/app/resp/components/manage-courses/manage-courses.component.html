@@ -120,17 +120,24 @@
   #customEventTitleTemplate
   let-event="event"
 >
-  <span class="custom-event-title__resource">{{
-    event.meta.resourceName
-  }}</span>
-  <span class="custom-event-title__teachers">{{
-    event.meta.teacherNames
-  }}</span>
-  <span class="custom-event-title__classroom">{{
-    event.meta.classroomName
-  }}</span>
-  <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
-  <!-- Ajout du groupName -->
+  <div class="event-top">
+    <span class="custom-event-title__classroom">{{
+      event.meta.classroomName
+    }}</span>
+  </div>
+  <div class="event-middle">
+    <span class="custom-event-title__resource">{{
+      event.meta.resourceName
+    }}</span>
+  </div>
+  <div class="event-bottom">
+    <span class="custom-event-title__teachers">{{
+      event.meta.teacherNames
+    }}</span>
+    <span class="custom-event-title__groupname">{{
+      event.meta.groupName
+    }}</span>
+  </div>
 </ng-template>
 
 <app-course-details-modal
