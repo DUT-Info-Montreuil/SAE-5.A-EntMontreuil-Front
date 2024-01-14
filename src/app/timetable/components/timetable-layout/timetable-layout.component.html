@@ -1,1 +1,27 @@
-<p>timetable-layout works!</p>
+<div class="flex justify-content-between align-items-center mt-2 mb-2">
+    <div>
+        <span>{{ getWeekPeriod() }}</span>
+    </div>
+    <div>
+        <p-button [rounded]="true" [text]="true" (click)="previousWeek()" icon="pi pi-chevron-left"></p-button>
+        <p-button [rounded]="true" [text]="true" (click)="nextWeek()" icon="pi pi-chevron-right"></p-button>
+    </div>
+</div>
+
+<mwl-calendar-week-view [viewDate]="viewDate" [excludeDays]="excludeDays" [events]="events"
+    [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [weekStartsOn]="1"
+    [eventTitleTemplate]="customEventTitleTemplate">
+</mwl-calendar-week-view>
+
+<ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
+    <span class="custom-event-title__resource">{{
+        event.meta.resourceName
+        }}</span>
+    <span class="custom-event-title__teachers">{{
+        event.meta.teacherNames
+        }}</span>
+    <span class="custom-event-title__classroom">{{
+        event.meta.classroomName
+        }}</span>
+    <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+</ng-template>
