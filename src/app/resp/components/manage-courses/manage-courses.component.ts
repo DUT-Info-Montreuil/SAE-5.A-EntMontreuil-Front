@@ -51,6 +51,7 @@ export class ManageCoursesComponent {
     if (event.meta && event.meta.groupName) {
       // Ajoutez groupName à selectedCourse
       this.selectedCourse.groupName = event.meta.groupName;
+      this.selectedCourse.groupType = event.meta.groupType;
     }
   }
 
@@ -144,6 +145,7 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByPromotion(this.selectedPromotionId, this.selectedSemester)
         .subscribe((data: any) => {
+          this.events = [];
           this.processCourseData(data);
           this.events = this.removeDuplicateEvents(this.events);
         });
@@ -153,9 +155,9 @@ export class ManageCoursesComponent {
 
   async processCourseData(data: any) {
     // Initialisation de this.events
-    this.events = [];
 
     // Traitez chaque type de données de cours
+    console.log('processCourseData');
     if (data.courses && data.courses.courses_promotion) {
       await this.createEventsFromCourses(data.courses.courses_promotion);
     }
@@ -249,6 +251,43 @@ export class ManageCoursesComponent {
     );
   }
 
+  async handleCourseUpdated(eventData: {
+    updatedCourse: any;
+    groupType: string;
+  }) {
+    const { updatedCourse, groupType } = eventData;
+
+    console.log(updatedCourse);
+    this.events = this.events.filter(
+      (event) => event.meta.courseid !== updatedCourse.courses.courses.id
+    );
+
+    console.log('Événements avant suppression :', this.events);
+    // Supprimer l'ancien événement
+
+    let coursesData: any = {
+      courses: {
+        courses_promotion: [],
+        courses_training: [],
+        courses_td: [],
+        courses_tp: [],
+      },
+    };
+
+    console.log(groupType);
+    if (groupType === 'promotion') {
+      coursesData.courses.courses_promotion.push(updatedCourse.courses);
+    } else if (groupType === 'training') {
+      coursesData.courses.courses_training.push(updatedCourse.courses);
+    } else if (groupType === 'td') {
+      coursesData.courses.courses_td.push(updatedCourse.courses);
+    } else if (groupType === 'tp') {
+      coursesData.courses.courses_tp.push(updatedCourse.courses);
+    }
+
+    await this.processCourseData(coursesData);
+  }
+
   async createEventsFromCourses(coursesData: any) {
     let newEventsPromises = coursesData.map(async (courseData: any) => {
       const course: any = new Course(courseData); // Supposons que Course est une classe définie ailleurs
@@ -312,12 +351,14 @@ export class ManageCoursesComponent {
             .join(', '),
           classroomName: course.classroom.map((c: any) => c.name).join(', '),
           groupName: groupName,
+          groupType: groupType,
         },
       };
     });
 
     const newEvents = await Promise.all(newEventsPromises);
     this.events.push(...newEvents);
+    this.changeDetectorRef.detectChanges();
   }
 
   previousWeek(): void {
@@ -362,6 +403,7 @@ export class ManageCoursesComponent {
             this.courseService
               .getCourseByTraining(this.selectedTrainingId)
               .subscribe((data: any) => {
+                this.events = [];
                 this.processCourseData(data);
               });
           } else {
@@ -371,6 +413,7 @@ export class ManageCoursesComponent {
                 this.selectedSemester
               )
               .subscribe((data: any) => {
+                this.events = [];
                 this.processCourseData(data);
                 this.events = this.removeDuplicateEvents(this.events);
               });
@@ -407,6 +450,7 @@ export class ManageCoursesComponent {
       this.courseService
         .getCourseByTD(this.selectedTdId)
         .subscribe((data: any) => {
+          this.events = [];
           this.processCourseData(data);
         });
     }
@@ -420,6 +464,7 @@ export class ManageCoursesComponent {
         .getCourseByTp(this.selectedTpId)
         .subscribe((data: any) => {
           console.log(data);
+          this.events = [];
           this.processCourseData(data);
         });
     }

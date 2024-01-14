@@ -230,6 +230,7 @@ export class CreateCourseComponent implements OnInit {
           },
           meta: {
             groupName: groupName,
+            groupType: selectionType,
             course: response.course[0].courses,
             courseid: response.id,
             resourceName: resourceName,

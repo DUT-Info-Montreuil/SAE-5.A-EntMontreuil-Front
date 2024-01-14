@@ -119,17 +119,36 @@
       <span class="info-value">{{ course?.groupName }}</span>
       <div class="form-group">
         <label for="dateCourse">Date du cours</label>
-        <input id="dateCourse" type="date" formControlName="dateCourse" />
+        <p-calendar
+          id="dateCourse"
+          formControlName="dateCourse"
+          [showIcon]="true"
+          [readonlyInput]="true"
+          dateFormat="yy-mm-dd"
+        >
+        </p-calendar>
       </div>
 
       <div class="form-group">
         <label for="startTime">Heure de début</label>
-        <input id="startTime" type="time" formControlName="startTime" />
+        <p-inputMask
+          id="startTime"
+          formControlName="startTime"
+          mask="99:99"
+          placeholder="HH:MM"
+        >
+        </p-inputMask>
       </div>
 
       <div class="form-group">
         <label for="endTime">Heure de fin</label>
-        <input id="endTime" type="time" formControlName="endTime" />
+        <p-inputMask
+          id="endTime"
+          formControlName="endTime"
+          mask="99:99"
+          placeholder="HH:MM"
+        >
+        </p-inputMask>
       </div>
 
       <div class="form-group">
@@ -139,8 +158,8 @@
           formControlName="resource"
           optionLabel="name"
           optionValue="id"
+          placeholder="Sélectionnez une ressource"
         >
-          placeholder="Sélectionnez une ressource" >
         </p-dropdown>
       </div>
 
@@ -160,7 +179,6 @@
 
       <div class="form-group">
         <label>Salle de classe</label>
-
         <p-multiSelect
           formControlName="classroom"
           [options]="classrooms"

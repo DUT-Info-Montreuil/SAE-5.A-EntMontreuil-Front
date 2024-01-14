@@ -136,6 +136,7 @@
 <app-course-details-modal
   *ngIf="selectedCourse"
   [selectedCourse]="selectedCourse"
+  (courseUpdated)="handleCourseUpdated($event)"
   (close)="resetModal()"
   (courseDeleted)="removeEvent($event)"
 ></app-course-details-modal>
