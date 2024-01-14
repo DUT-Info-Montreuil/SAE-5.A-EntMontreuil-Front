@@ -10,9 +10,10 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ButtonModule } from 'primeng/button';
 
 
+
 @NgModule({
   declarations: [
-    TimetableLayoutComponent
+    TimetableLayoutComponent,
   ],
   imports: [
     CommonModule,

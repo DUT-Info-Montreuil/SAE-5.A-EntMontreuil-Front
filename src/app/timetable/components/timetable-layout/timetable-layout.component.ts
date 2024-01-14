@@ -32,7 +32,6 @@ export class TimetableLayoutComponent {
   dayStartHour: number = 8;
   dayEndHour: number = 20;
   hourSegments: number = 2; // Pour avoir des incréments de 30 minutes
-  customEventTitleTemplate: any;
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Semaine commence le lundi
 
   //promotion
@@ -69,7 +68,6 @@ export class TimetableLayoutComponent {
 
 
     this.teachersService.getAllTeachers().subscribe((data) => {
-      console.log(data)
       this.teachers = data.map((teacher) => ({
         ...teacher,
         uniqueLabel2: `${teacher.user.username}`,
@@ -77,7 +75,6 @@ export class TimetableLayoutComponent {
     });
 
     this.classroomsService.getClassrooms().subscribe((data) => {
-      console.log(data)
       this.classrooms = data.map((classroom) => ({
         ...classroom,
         uniqueLabel3: `${classroom.name}`,
@@ -95,6 +92,7 @@ export class TimetableLayoutComponent {
       this.coursesService.getCourseByPromotion(this.selectedPromotionId.id_promotion, this.selectedPromotionId.semester)
         .subscribe((data: any) => {
           this.processCourseData(data);
+          console.log(data)
         });
     }
     this.changeDetectorRef.detectChanges();
@@ -256,4 +254,6 @@ export class TimetableLayoutComponent {
     console.log(event);
     this.selectedCourse = event.meta.course;
   }
+
+  
 }

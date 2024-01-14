@@ -30,7 +30,6 @@ export class ManageCoursesComponent {
   selectedCourse: any;
   selectedTdId: number | null = null;
   selectedTpId: number | null = null;
-
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
   resources: any[] = [];

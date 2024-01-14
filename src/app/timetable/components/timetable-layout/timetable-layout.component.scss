@@ -79,10 +79,7 @@
   ::ng-deep .cal-week-view {
     border: none !important;
   }
-  
-  ::ng-deep .cal-week-view .cal-day-headers .cal-header:last-child {
-    // border-top-right-radius: 5px !important;
-  }
+
   
   ::ng-deep .cal-week-view .cal-time-events {
     border: none;
@@ -130,4 +127,6 @@
     padding: 2px;
     text-align: right;
   }
+  
+
   

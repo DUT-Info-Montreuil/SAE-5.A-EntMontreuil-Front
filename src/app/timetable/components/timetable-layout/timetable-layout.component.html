@@ -37,6 +37,24 @@
         (eventClicked)="handleEventClick($event.event)"
       >
       </mwl-calendar-week-view>
+
+      <ng-template
+        class="custom-event-title"
+        #customEventTitleTemplate
+        let-event="event"
+      >
+        <span class="custom-event-title__resource">{{
+          event.meta.resourceName
+        }}</span>
+        <span class="custom-event-title__teachers">{{
+          event.meta.teacherNames
+        }}</span>
+        <span class="custom-event-title__classroom">{{
+          event.meta.classroomName
+        }}</span>
+        <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+        <!-- Ajout du groupName -->
+      </ng-template>
     
     </div>
   </div>
