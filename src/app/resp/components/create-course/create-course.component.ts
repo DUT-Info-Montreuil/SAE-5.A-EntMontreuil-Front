@@ -244,7 +244,7 @@ export class CreateCourseComponent implements OnInit {
         };
 
         this.eventCreated.emit(calendarEvent);
-
+        this.resetForm();
         this.messageService.add({
           severity: 'success',
           summary: 'Succès',

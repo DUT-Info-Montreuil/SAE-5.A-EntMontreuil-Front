@@ -3,8 +3,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { CourseService } from 'src/app/core/services/courses.service';
 import { Course } from 'src/app/core/models/course.model';
@@ -21,7 +23,7 @@ import { RessourceService } from 'src/app/core/services/ressources.service';
   templateUrl: './course-details-modal.component.html',
   // ... styles, etc.
 })
-export class CourseDetailsModalComponent implements OnInit {
+export class CourseDetailsModalComponent implements OnInit, OnChanges {
   @Input() selectedCourse: any;
   @Output() courseUpdated = new EventEmitter<{
     updatedCourse: any;
@@ -55,6 +57,12 @@ export class CourseDetailsModalComponent implements OnInit {
     this.initializeForm();
     this.loadCourseDetails();
   }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['selectedCourse'] && changes['selectedCourse'].currentValue) {
+      this.course = changes['selectedCourse'].currentValue;
+      this.initializeForm();
+    }
+  }
 
   initializeForm(): void {
     this.editCourseForm = this.formBuilder.group({
@@ -64,6 +72,14 @@ export class CourseDetailsModalComponent implements OnInit {
       resource: ['', Validators.required],
       teachers: [[]], // Pour la pré-sélection, nous utilisons un tableau d'ID.
       classroom: [[]], // Pareil pour les salles de classe.
+    });
+    this.editCourseForm.patchValue({
+      dateCourse: this.course?.courses?.dateCourse,
+      startTime: this.course?.courses?.startTime,
+      endTime: this.course?.courses?.endTime,
+      resource: this.course?.resource?.id,
+      teachers: this.course?.teacher.map((t: any) => t.id), // Assumant un tableau d'IDs
+      classroom: this.course?.classroom?.id,
     });
   }
 
@@ -218,14 +234,6 @@ export class CourseDetailsModalComponent implements OnInit {
   }
   onEdit(): void {
     this.editMode = true;
-    this.editCourseForm.patchValue({
-      dateCourse: this.course?.courses?.dateCourse,
-      startTime: this.course?.courses?.startTime,
-      endTime: this.course?.courses?.endTime,
-      resource: this.course?.resource?.id,
-      teachers: this.course?.teacher.map((t: any) => t.id), // Assumant un tableau d'IDs
-      classroom: this.course?.classroom?.id,
-    });
   }
 
   onSave(): void {
