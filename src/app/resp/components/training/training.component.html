@@ -114,7 +114,9 @@
                     <tr>
                         <td>{{ student.first_name }}</td>
                         <td>{{ student.last_name }}</td>
-                        <td>{{ student.td[0].name }}</td>
+                        <td>
+                            <div *ngIf="student.td[0]; else notSet">{{ student.td[0].name }}</div>
+                        </td>
                         <td>
                             <i class="pi" [ngClass]="{
                   'pi-check-circle text-green-300': student.isApprentice,
@@ -157,3 +159,5 @@
         <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addTD()"></p-button>
     </ng-template>
 </p-dialog>
+
+<ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
