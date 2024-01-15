@@ -52,13 +52,48 @@
   /* manage-courses.component.scss */
   
   .custom-event-title {
-    display: block; /* Make each span a block element to appear on a new line */
-  
-    &__resource,
-    &__teachers,
-    &__classroom {
-      font-size: 10px;
-    }
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+  }
+
+  .custom-event-title__resource {
+    font-weight: bold;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .custom-event-title__teachers,
+  .custom-event-title__classroom,
+  .custom-event-title__groupname {
+    font-size: 14px;
+  }
+
+  .custom-event-title__classroom {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .custom-event-title__teachers {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .custom-event-title__groupname {
+    position: absolute;
+    bottom: 0;
+    right: 0;
   }
   
   ::ng-deep .cal-week-view .cal-time {
