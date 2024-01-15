@@ -92,7 +92,7 @@
 
 <!--MODAL MODIFIER UN UTILISATEUR-->
 <div *ngIf="userModal" >
-    <p-dialog header="Modifier cette utilisateur" [(visible)]="displayModalUpdate" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+    <p-dialog header="Modifier cet utilisateur" [(visible)]="displayModalUpdate" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
         <form  [formGroup]="userUpdateForm" (ngSubmit)="onSubmit()">
             <div >
                 <div class="card p-fluid">
@@ -145,7 +145,7 @@
                     <div class="field">
                     </div>
                 </div>
-                <button type="submit" pButton pRipple label="Modifier cette utilisateur" class="w-full p-3"></button>
+                <button type="submit" pButton pRipple label="Modifier cet utilisateur" class="w-full p-3"></button>
 
                 <div class="card p-fluid">
                     <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
