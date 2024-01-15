@@ -1,3 +1,64 @@
-<div class="dashboard-home">
-    <h1>Tableau de Bord</h1>
+<h1>Bonjour {{name}} 👋</h1>
+
+<div class="dashboard-home p-flex">
+
+    <div class="dashboard">
+
+        <div class="dashboard-values p-flex">
+            <p-card class="card-item" header="Absences">
+                <p class="m-0 ">Injustifiées: {{nbAbsences}} </p>
+            </p-card>
+    
+            <p-card class="card-item" header="Rappels">
+                <p class="m-0">En cours : {{nbReminders}} </p>
+            </p-card>
+
+            <p-card class="card-item" header="Cours">
+                <p class="m-0">Cette semaine : X </p>
+            </p-card>
+        </div>
+
+        <div class="dashboard-values p-flex">
+            <p-panel>
+                <p-header>
+                    <i class="pi pi-user-minus" style="color: red"></i>
+                    Absences ({{nbAbsences}})
+                </p-header>
+                <div class="grid-container">
+                    <div class="grid-item red-500" *ngFor="let abs of absences; let i = index">
+                        <div *ngIf="i < 3"> 
+                            <span class="resource-name">{{ abs.resource_name }} : </span>
+                            <span class="course-date">{{ abs.course_date }}</span>                           
+                            <p-divider></p-divider>
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+        
+            <p-panel>
+                <p-header>
+                    <i class="pi pi-bell" style="color: blue"></i>
+                    Rappels
+                </p-header>
+                <div class="grid-container">
+                    <div class="grid-item  blue-500" *ngFor="let remind of reminders; let i = index">
+                        <div *ngIf="i < 3"> 
+                            {{ remind.title }}
+                            <p-divider></p-divider>
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+        
+        
+        
+    </div>
+
+    
+    <p-panel header="Journée EDT">
+        
+    </p-panel>    
+    
+    
 </div>

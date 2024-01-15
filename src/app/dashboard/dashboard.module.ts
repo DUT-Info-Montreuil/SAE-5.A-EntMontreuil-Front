@@ -11,6 +11,12 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { MenuModule } from 'primeng/menu';
+import { CardModule } from 'primeng/card';
+import { PanelModule } from 'primeng/panel';
+import { TableModule } from 'primeng/table';
+import { DividerModule } from 'primeng/divider';
+
+
 
 @NgModule({
   declarations: [
@@ -27,7 +33,11 @@ import { MenuModule } from 'primeng/menu';
     ConfirmPopupModule,
     CalendarModule,
     FormsModule,
-    MenuModule
+    MenuModule,
+    CardModule,
+    PanelModule,
+    TableModule,
+    DividerModule,
   ]
 })
 export class DashboardModule { }
