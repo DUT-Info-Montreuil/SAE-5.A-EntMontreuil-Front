@@ -13,6 +13,7 @@ import {
   subDays,
   subWeeks,
 } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import parse from 'date-fns/parse';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -502,7 +503,19 @@ export class ManageCoursesComponent {
       weekStartsOn: this.weekStartsOn,
     });
     const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
-    return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
+
+    // Obtenir le mois et l'année de la date de début
+    const startMonth = format(start, 'MMMM', { locale: fr }); // 'fr' est la locale française, assurez-vous d'utiliser la locale appropriée
+    const startYear = format(start, 'yyyy');
+
+    // Vérifier si la semaine commence et se termine dans le même mois
+    if (start.getMonth() === end.getMonth()) {
+      return `Semaine du ${start.getDate()} ${startMonth} ${startYear}`;
+    } else {
+      // Si la semaine se termine dans un mois différent, affichez également la date de fin
+      const endMonth = format(end, 'MMMM', { locale: fr });
+      return `Semaine du ${start.getDate()} ${startMonth} - ${end.getDate()} ${endMonth} ${startYear}`;
+    }
   }
 
   resetModal(): void {

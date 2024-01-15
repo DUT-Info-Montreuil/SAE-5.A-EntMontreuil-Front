@@ -124,6 +124,11 @@
     >
     </mwl-calendar-week-view>
   </div>
+  <ng-template #customDayHeaderTemplate let-day="day">
+    <div class="custom-day-header">
+      {{ day.date | date : "EEEE d MMMM" }}
+    </div>
+  </ng-template>
 
   <div class="menu-section">
     <app-create-course
