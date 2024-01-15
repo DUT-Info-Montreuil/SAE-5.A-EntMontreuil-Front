@@ -27,15 +27,6 @@
   height: 30px; // Hauteur pour un segment de 30 minutes
 }
 
-.custom-event {
-  padding: 5px;
-  color: black; /* Changer la couleur de texte si nécessaire */
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 ::ng-deep .cal-week-view .cal-time-events .cal-event {
   display: flex;
   flex-direction: column;
@@ -108,50 +99,115 @@
 }
 
 .custom-event-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
-}
-
-.event-top,
-.event-middle,
-.event-bottom {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.event-top {
-  justify-content: flex-start; /* Salles en haut à gauche */
-}
-
-.event-middle {
-  flex-grow: 1; /* Ressource au centre horizontalement et verticalement */
-}
-
-.event-bottom {
-  justify-content: space-between; /* Nom du prof à gauche et nom du groupe à droite */
-}
-
-.custom-event-title__classroom {
-  text-align: left;
-  padding: 2px;
+  padding: 5px;
 }
 
 .custom-event-title__resource {
-  text-align: center;
-  padding: 2px;
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-event-title__teachers,
+.custom-event-title__classroom,
+.custom-event-title__groupname {
+  font-size: 14px;
+}
+
+.custom-event-title__classroom {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .custom-event-title__teachers {
-  text-align: left;
-  padding: 2px;
-  flex: 1; /* Permet au nom du prof de prendre de l'espace si nécessaire */
+  position: absolute;
+  bottom: 0;
+  left: 0;
 }
 
 .custom-event-title__groupname {
-  text-align: right;
-  padding: 2px;
-  flex: 1; /* Permet au nom du groupe de prendre de l'espace si nécessaire */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+/* Style pour le conteneur principal */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Style pour les boutons Précédent et Suivant */
+.header-container .button-container {
+  display: flex;
+  align-items: center;
+}
+
+.header-container .button-container p-button {
+  margin: 0 10px;
+}
+
+/* Style pour le texte de la période de la semaine ou de l'en-tête du jour */
+.header-container .period-text {
+  flex-grow: 1; /* Pour occuper tout l'espace restant */
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+/* Style de base pour le dayHeader */
+.day-header {
+  cursor: pointer; /* Définissez le curseur sur pointer pour montrer qu'il est cliquable */
+  transition: background-color 0.3s ease; /* Ajoutez une transition pour l'effet de survol */
+  padding: 10px;
+  background-color: #f0f0f0; /* Couleur de fond de base */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Style au survol de la souris */
+.day-header:hover {
+  background-color: #e0e0e0; /* Changez la couleur d'arrière-plan au survol */
+}
+
+/* Style au survol de la souris */
+.day-header:hover span {
+  color: #ff5733; /* Changez la couleur du texte au survol */
+}
+
+/* Style pour les boutons Précédent et Suivant */
+.day-header .button-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.day-header .button-container p-button {
+  margin: 0 5px;
+}
+
+/* Style pour le texte de la période de la journée */
+.day-header .period-text {
+  flex-grow: 1; /* Pour occuper tout l'espace restant */
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }

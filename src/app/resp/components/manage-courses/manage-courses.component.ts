@@ -4,7 +4,15 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
-import { addWeeks, endOfWeek, format, startOfWeek, subWeeks } from 'date-fns';
+import {
+  addDays,
+  addWeeks,
+  endOfWeek,
+  format,
+  startOfWeek,
+  subDays,
+  subWeeks,
+} from 'date-fns';
 import parse from 'date-fns/parse';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
@@ -105,6 +113,17 @@ export class ManageCoursesComponent {
         this.updateSemesterOptions(selectedPromotion.level);
       }
     }
+  }
+
+  handleDayClick(dayDate: Date): void {
+    this.viewDate = dayDate;
+    this.view = CalendarView.Day;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  switchToWeekView(): void {
+    this.view = CalendarView.Week;
+    this.changeDetectorRef.detectChanges();
   }
 
   updateSemesterOptions(level: number): void {
@@ -361,12 +380,20 @@ export class ManageCoursesComponent {
     this.changeDetectorRef.detectChanges();
   }
 
-  previousWeek(): void {
-    this.viewDate = subWeeks(this.viewDate, 1);
+  previous(): void {
+    if (this.view === 'day') {
+      this.viewDate = subDays(this.viewDate, 1);
+    } else if (this.view === 'week') {
+      this.viewDate = subWeeks(this.viewDate, 1);
+    }
   }
 
-  nextWeek(): void {
-    this.viewDate = addWeeks(this.viewDate, 1);
+  next(): void {
+    if (this.view === 'day') {
+      this.viewDate = addDays(this.viewDate, 1);
+    } else if (this.view === 'week') {
+      this.viewDate = addWeeks(this.viewDate, 1);
+    }
   }
 
   addEvent(event: any) {

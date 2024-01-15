@@ -66,27 +66,51 @@
       </div>
     </div>
 
-    <div class="flex justify-content-between align-items-center mt-2 mb-2">
-      <div>
-        <span>{{ getWeekPeriod() }}</span>
-      </div>
-      <div>
+    <div class="header-container">
+      <div class="button-container">
         <p-button
           [rounded]="true"
           [text]="true"
-          (click)="previousWeek()"
+          (click)="previous()"
           icon="pi pi-chevron-left"
         ></p-button>
+      </div>
+      <div class="period-text">
+        <ng-container *ngIf="view === 'week'; else dayHeader">
+          <span>{{ getWeekPeriod() }}</span>
+        </ng-container>
+        <ng-template #dayHeader>
+          <!-- Ajoutez ici le contenu de l'en-tête du jour -->
+          <div class="day-header" (click)="switchToWeekView()">
+            <span>{{ viewDate | date : "EEEE d  MMMM  y" }}</span>
+          </div>
+        </ng-template>
+      </div>
+      <div class="button-container">
         <p-button
           [rounded]="true"
           [text]="true"
-          (click)="nextWeek()"
+          (click)="next()"
           icon="pi pi-chevron-right"
         ></p-button>
       </div>
     </div>
 
+    <mwl-calendar-day-view
+      *ngIf="view === 'day'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)"
+    >
+      <!-- Utilisez le template 'mwl-calendar-header' pour personnaliser l'en-tête -->
+    </mwl-calendar-day-view>
+
     <mwl-calendar-week-view
+      *ngIf="view === 'week'"
       [viewDate]="viewDate"
       [excludeDays]="excludeDays"
       [events]="events"
@@ -96,6 +120,7 @@
       [weekStartsOn]="1"
       [eventTitleTemplate]="customEventTitleTemplate"
       (eventClicked)="handleEventClick($event.event)"
+      (dayHeaderClicked)="handleDayClick($event.day.date)"
     >
     </mwl-calendar-week-view>
   </div>
@@ -120,24 +145,17 @@
   #customEventTitleTemplate
   let-event="event"
 >
-  <div class="event-top">
-    <span class="custom-event-title__classroom">{{
-      event.meta.classroomName
-    }}</span>
-  </div>
-  <div class="event-middle">
-    <span class="custom-event-title__resource">{{
-      event.meta.resourceName
-    }}</span>
-  </div>
-  <div class="event-bottom">
-    <span class="custom-event-title__teachers">{{
-      event.meta.teacherNames
-    }}</span>
-    <span class="custom-event-title__groupname">{{
-      event.meta.groupName
-    }}</span>
-  </div>
+  <span class="custom-event-title__resource">{{
+    event.meta.resourceName
+  }}</span>
+  <span class="custom-event-title__teachers">{{
+    event.meta.teacherNames
+  }}</span>
+  <span class="custom-event-title__classroom">{{
+    event.meta.classroomName
+  }}</span>
+  <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+  <!-- Ajout du groupName -->
 </ng-template>
 
 <app-course-details-modal

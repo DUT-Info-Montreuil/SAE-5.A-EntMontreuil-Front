@@ -75,8 +75,8 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
     });
     this.editCourseForm.patchValue({
       dateCourse: this.course?.courses?.dateCourse,
-      startTime: this.course?.courses?.startTime,
-      endTime: this.course?.courses?.endTime,
+      startTime: this.formatTime(this.course.courses.startTime),
+      endTime: this.formatTime(this.course.courses.endTime),
       resource: this.course?.resource?.id,
       teachers: this.course?.teacher.map((t: any) => t.id), // Assumant un tableau d'IDs
       classroom: this.course?.classroom?.id,
@@ -325,11 +325,14 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
           );
         },
         (error) => {
-          console.error('Erreur lors de la mise à jour du cours:', error);
+          console.log(
+            'Erreur lors de la mise à jour du cours:',
+            error.error.error
+          );
           this.messageService.add({
             severity: 'error',
             summary: 'Erreur',
-            detail: 'Erreur lors de la mise à jour du cours.',
+            detail: error.error.error || 'Une erreur est survenue.',
           });
         }
       );
@@ -345,5 +348,10 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
 
   cancelEdit(): void {
     this.editMode = false;
+  }
+
+  formatTime(time: string): string {
+    const timeParts = time.split(':');
+    return timeParts.length >= 2 ? `${timeParts[0]}:${timeParts[1]}` : time;
   }
 }
