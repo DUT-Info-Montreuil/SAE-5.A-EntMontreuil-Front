@@ -9,6 +9,7 @@ import { TeachersService } from 'src/app/core/services/teachers.service';
 import { ClassroomService } from 'src/app/core/services/classroom.service';
 import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { Classroom } from 'src/app/core/models/classroom.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 interface EventExtendedProps {
   professor: string;
@@ -49,16 +50,31 @@ export class TimetableLayoutComponent {
   classrooms: Classroom[] = [];
   classroomCourses!: any[]
 
+  //user
+  role : any;
+  user : any;
+  selectedUser : boolean =false;
+
   constructor(private trainingService: TrainingService,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
     private coursesService: CourseService,
     private teachersService : TeachersService,
-    private classroomsService : ClassroomsService){
+    private classroomsService : ClassroomsService,
+    private authService : AuthService){
   }
 
 
   ngOnInit() {
+
+    this.role = this.authService.getRole()
+
+    this.authService.getUserInfo().subscribe((data)=>{
+      if (this.role ==="enseignant"){
+        this.user = data.user.username
+      }
+    })
+
     this.trainingService.getAllTrainingsGroupBy().subscribe((data) => {
       this.promotions = data.map((promo) => ({
         ...promo,
@@ -82,23 +98,41 @@ export class TimetableLayoutComponent {
     });
 
     
+    
   }
 
 
-  onPromotionChange() {
+  getTeacherCourses() {
+    this.selectedUser = true
     this.selectedTeacherUsername = null
     this.selectedClassroomName = null
-    if (this.selectedPromotionId !== null) {
-      this.coursesService.getCourseByPromotion(this.selectedPromotionId.id_promotion, this.selectedPromotionId.semester)
+    this.selectedPromotionId = null
+    if (this.user !== null) {
+      this.coursesService.getCourseByTeacher(this.user)
         .subscribe((data: any) => {
-          this.processCourseData(data);
+          this.processCourseDataTeachers(data);
           console.log(data)
         });
     }
     this.changeDetectorRef.detectChanges();
   }
 
+
+  onPromotionChange() {
+    this.selectedUser = false
+    this.selectedTeacherUsername = null
+    this.selectedClassroomName = null
+    if (this.selectedPromotionId !== null) {
+      this.coursesService.getCourseByPromotion(this.selectedPromotionId.id_promotion, this.selectedPromotionId.semester)
+        .subscribe((data: any) => {
+          this.processCourseData(data);
+        });
+    }
+    this.changeDetectorRef.detectChanges();
+  }
+
   onTeacherChange() {
+    this.selectedUser = false
     this.selectedPromotionId = null
     this.selectedClassroomName = null
     if (this.selectedTeacherUsername!== null) {
@@ -111,6 +145,7 @@ export class TimetableLayoutComponent {
   }
 
   onClasseroomChange() {
+    this.selectedUser = false
     this.selectedPromotionId = null
     this.selectedTeacherUsername = null
     if (this.selectedClassroomName!== null) {

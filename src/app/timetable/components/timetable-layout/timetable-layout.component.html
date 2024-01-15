@@ -4,11 +4,13 @@
       <p-dropdown [options]="promotions" (onChange)="onPromotionChange()" [(ngModel)]="selectedPromotionId" optionLabel="uniqueLabel"  placeholder="Sélectionnez une promotion"></p-dropdown>
       <p-dropdown [options]="teachers" (onChange)="onTeacherChange()" [(ngModel)]="selectedTeacherUsername" optionLabel="uniqueLabel2"  placeholder="Sélectionnez une professeur"></p-dropdown>
       <p-dropdown [options]="classrooms" (onChange)="onClasseroomChange()" [(ngModel)]="selectedClassroomName" optionLabel="uniqueLabel3"  placeholder="Sélectionnez une salle de classe"></p-dropdown>
-      <p-button label="MOI"></p-button>
+      <p-button *ngIf="role=='enseignant' && !selectedUser" label="Mon emploi du temps" (onClick)="getTeacherCourses()"></p-button>
+      <p-button *ngIf="role=='étudiant'" label="Mon emploi du temps"></p-button>
       </div>
       <div class="flex justify-content-between align-items-center mt-2 mb-2">
         <div>
-          <span>{{ getWeekPeriod() }}</span>
+          <span>{{ getWeekPeriod() }} </span>
+          <span *ngIf="selectedUser" style="font-weight: bold;"> Emploi du temps de {{ user }}</span>
         </div>
         <div>
           <p-button
