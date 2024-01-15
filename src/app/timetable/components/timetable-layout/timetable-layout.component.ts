@@ -212,6 +212,7 @@ export class TimetableLayoutComponent {
         new Date()
       );
       const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
+      
 
       return {
         title: course.resource.name,
