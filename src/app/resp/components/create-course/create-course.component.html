@@ -5,7 +5,7 @@
     class="create-course-form"
   >
     <div class="form-group">
-      <label for="resource">Ressource</label>
+      <label for="resource">Ressource*</label>
       <p-dropdown
         id="resource"
         [options]="resources"
@@ -49,7 +49,7 @@
     </div>
 
     <div class="form-group">
-      <label for="courseDate">Date du cours</label>
+      <label for="courseDate">Date du cours*</label>
       <p-calendar
         id="courseDate"
         [(ngModel)]="date"
@@ -62,7 +62,7 @@
     </div>
 
     <div class="form-group">
-      <label for="startTime">Heure de début</label>
+      <label for="startTime">Heure de début*</label>
       <p-inputMask
         id="startTime"
         [(ngModel)]="startTime"
@@ -74,7 +74,7 @@
     </div>
 
     <div class="form-group">
-      <label for="endTime">Heure de fin</label>
+      <label for="endTime">Heure de fin*</label>
       <p-inputMask
         id="endTime"
         [(ngModel)]="endTime"
