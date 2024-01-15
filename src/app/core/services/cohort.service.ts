@@ -91,6 +91,13 @@ export class CohortService {
     );
   }
 
+  getStudentsNoPromo() {
+    return this.http.get<any[]>(
+      this.apiURL + `/students/no-promotion`,
+      this.httpOptions
+    );
+  }
+
   addStudentsToTP(tp_id: number, student_ids: number[]) {
     return this.http.post<any>(
       this.apiURL + `/tp/${tp_id}/add-students`,
@@ -116,6 +123,14 @@ export class CohortService {
   deleteTD(td_id: number) {
     return this.http.delete<any>(
       this.apiURL + `/td/${td_id}`,
+      this.httpOptions
+    );
+  }
+
+  addStudentsToPromotion(promotion_id: number, student_ids: number[]) {
+    return this.http.post<any>(
+      this.apiURL + `/students/set-promotion`,
+      JSON.stringify({ promotion_id, student_ids }),
       this.httpOptions
     );
   }

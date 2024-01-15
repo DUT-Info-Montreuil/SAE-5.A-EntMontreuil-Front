@@ -33,6 +33,7 @@ export class DegreeComponent implements OnInit {
   menuItemsPromotions: MenuItem[] | undefined;
   selectedMenu: string = 'nopromotion';
   menuSelectedPromo: Promotion | null = null;
+  menuSelectedStudentId: number | null = null;
 
   searchQuery: string = '';
 
@@ -88,7 +89,31 @@ export class DegreeComponent implements OnInit {
         label: 'Retirer de la formation',
         icon: 'pi pi-times',
         command: () => {
+          this.cohortService.removeStudentFromDegree(this.menuSelectedStudentId!).subscribe(
+            (data) => {
+              console.log(data);
+              this.refreshDegreeData();
 
+              // Afficher un toast de succès
+              this.messageService.add({
+                severity: 'success',
+                summary: 'Succès',
+                detail: 'Cet étudiant a été retiré de la formation.'
+              });
+            },
+            (error) => {
+              console.error(
+                'Erreur lors de la suppression de l\'étudiant de la formation:',
+                error
+              );
+
+              this.messageService.add({
+                severity: 'error',
+                summary: 'Erreur',
+                detail: 'Une erreur s\'est produite.'
+              });
+            }
+          );
         },
       },
     ];
@@ -128,6 +153,10 @@ export class DegreeComponent implements OnInit {
     }
   }
 
+  selectMenuStudent(studentId: number) {
+    this.menuSelectedStudentId = studentId;
+  }
+
   get isAddStudentsDialogVisible(): boolean {
     return this._isAddStudentsDialogVisible;
   }
@@ -157,7 +186,7 @@ export class DegreeComponent implements OnInit {
   }
 
   loadNoPromoStudents() {
-    this.cohortService.getStudentsAll().subscribe(
+    this.cohortService.getStudentsNoPromo().subscribe(
       data => {
         this.studentsList = data;
         this.filterStudents(); // Appliquez les filtres actuels aux nouvelles données
@@ -173,8 +202,42 @@ export class DegreeComponent implements OnInit {
     );
   }
 
+  // Méthode pour ajouter des étudiants dans une promotion
   addStudents() {
+    this.loading = true;
 
+    this.cohortService.addStudentsToPromotion(this.menuSelectedPromo!.id, this.selectedStudentIds).subscribe(
+      response => {
+        this.isAddStudentsDialogVisible = false;
+        this.selectedStudentIds = [];
+        this.selectedStudents = [];
+        this.displayedStudents = [];
+        this.selectedMenu = 'nopromotion';
+        this.studentsList = [];
+        this.refreshDegreeData();
+
+        // Afficher un toast de succès
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Succès',
+          detail: 'Les étudiants ont été ajoutés avec succès.'
+        });
+
+        this.loading = false
+      },
+      error => {
+        console.error("Erreur lors de l'ajout des étudiants à la promotion: ", error);
+
+        // Afficher un toast d'erreur
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Erreur',
+          detail: "Une erreur est survenue lors de l'ajout des étudiants."
+        });
+
+        this.loading = false
+      }
+    );
   }
 
   onRowSelect(event: any) {
@@ -213,5 +276,19 @@ export class DegreeComponent implements OnInit {
 
   get students() {
     return this.degreeInfo?.students;
+  }
+
+  refreshDegreeData() {
+    const degreeId = this.route.snapshot.paramMap.get('id');
+    if (degreeId) {
+      this.cohortService.getDegreeInfo(degreeId).subscribe(
+        data => {
+          this.degreeInfo = data;
+        },
+        error => {
+          console.error('Erreur lors de la récupération des informations du Degree:', error);
+        }
+      );
+    }
   }
 }
