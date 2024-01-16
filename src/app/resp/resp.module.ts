@@ -12,7 +12,6 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
-import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
 import { DegreeComponent } from './components/degree/degree.component';
@@ -40,7 +39,6 @@ import { MessageModule } from 'primeng/message';
     CohortComponent,
     PromotionComponent,
     ManageCoursesComponent,
-    SimpleCalendarComponent,
     CreateCourseComponent,
     DegreeComponent,
     TrainingComponent,

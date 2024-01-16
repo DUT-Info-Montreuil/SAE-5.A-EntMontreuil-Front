@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Course } from '../models/course.model';
 
@@ -32,10 +32,35 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  getCourseByPromotion(promotionId: number): Observable<Course[]> {
+  getCourseByPromotion(
+    promotionId: number,
+    semester: number
+  ): Observable<Course[]> {
     return this.http
       .get<Course[]>(
-        `${this.apiURL}/courses/promotion/${promotionId}`,
+        `${this.apiURL}/courses/promotion/${promotionId}/${semester}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getCourseByTeacher(
+    username: string
+  ): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(
+        `${this.apiURL}/courses/teacher/${username}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getCourseByClassroom(
+    name: string
+  ): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(
+        `${this.apiURL}/courses/classroom/${name}`,
         this.httpOptions
       )
       .pipe(catchError(this.handleError));
@@ -47,6 +72,18 @@ export class CourseService {
         `${this.apiURL}/courses/training/${trainingID}`,
         this.httpOptions
       )
+      .pipe(catchError(this.handleError));
+  }
+
+  getCourseByTD(IDtd: number): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(`${this.apiURL}/courses/td/${IDtd}`, this.httpOptions)
+      .pipe(catchError(this.handleError));
+  }
+
+  getCourseByTp(IDtp: number): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(`${this.apiURL}/courses/tp/${IDtp}`, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
@@ -92,7 +129,17 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  getGroupName(id_group: number, groupType: string): Observable<any[]> {
+  getTrainingByPromotionAndSemester(
+    idPromotion: number,
+    semester: number
+  ): Observable<any> {
+    return this.http.get<any[]>(
+      `${this.apiURL}/trainings/${idPromotion}/${semester}`,
+      this.httpOptions
+    );
+  }
+
+  getGroupName(id_group: number, groupType: string): Observable<any> {
     let endpoint: string;
     switch (groupType) {
       case 'promotion':
@@ -107,14 +154,30 @@ export class CourseService {
       case 'tp':
         endpoint = `${this.apiURL}/tp/${id_group}`;
         break;
-      // Ajoutez d'autres cas si nécessaire
       default:
         throw new Error(`Type de groupe non pris en charge: ${groupType}`);
     }
 
     return this.http.get<any>(endpoint, this.httpOptions).pipe(
       catchError(this.handleError),
-      map((response: any) => response.name) // Supposons que la réponse contient un champ 'name'
+      switchMap((promotionResponse) => {
+        if (groupType === 'promotion' && promotionResponse.id_Degree) {
+          // Requête supplémentaire pour obtenir le nom du diplôme
+          return this.http
+            .get<any>(
+              `${this.apiURL}/degrees/${promotionResponse.id_Degree}`,
+              this.httpOptions
+            )
+            .pipe(
+              map((degreeResponse) => {
+                return `BUT ${promotionResponse.level} : ${promotionResponse.year} : ${degreeResponse.name}`;
+              }),
+              catchError(this.handleError)
+            );
+        } else {
+          return of(promotionResponse.name);
+        }
+      })
     );
   }
 }

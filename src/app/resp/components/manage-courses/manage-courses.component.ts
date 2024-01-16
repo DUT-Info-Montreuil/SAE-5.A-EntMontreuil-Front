@@ -20,7 +20,7 @@ import { DegreeService } from 'src/app/core/services/degrees.service';
   styleUrls: ['./manage-courses.component.scss'],
 })
 export class ManageCoursesComponent {
-  selectedPromotionId: number | null = null;
+/*   selectedPromotionId: number | null = null;
   selectedTrainingId: number | null = null;
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
@@ -55,8 +55,8 @@ export class ManageCoursesComponent {
         uniqueLabel: `BUT${promo.level}:${promo.year} ${promo.degree_name}`,
       }));
     });
-  }
-
+  } */
+/* 
   ngOnInit() {
     this.getDegrees();
   }
@@ -263,5 +263,7 @@ export class ManageCoursesComponent {
     });
     const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
     return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
-  }
+  } */
+  
+  
 }
