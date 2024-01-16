@@ -78,7 +78,13 @@ export class TimetableLayoutComponent {
         this.tdService.getTdInfo(this.user.academic_info.td.id).subscribe((data) => {
           console.log(data.training.semester)
           this.semester = data.training.semester
+          
         })
+
+        this.getStudentCourses()
+      }
+      if(this.role == "enseignant"){
+        this.getTeacherCourses()
       }
     })
 
@@ -112,7 +118,7 @@ export class TimetableLayoutComponent {
     this.selectedClassroomName = null
     this.selectedPromotionId = null
     if (this.user !== null) {
-      this.coursesService.getCourseByTeacher(this.user)
+      this.coursesService.getCourseByTeacher(this.user.user.username)
         .subscribe((data: any) => {
           this.processCourseDataTeachers(data);
           console.log(data)
