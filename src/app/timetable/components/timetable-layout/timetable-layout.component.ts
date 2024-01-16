@@ -10,6 +10,7 @@ import { ClassroomService } from 'src/app/core/services/classroom.service';
 import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { Classroom } from 'src/app/core/models/classroom.model';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { TdService } from 'src/app/core/services/td.services';
 
 interface EventExtendedProps {
   professor: string;
@@ -54,6 +55,7 @@ export class TimetableLayoutComponent {
   role : any;
   user : any;
   selectedUser : boolean =false;
+  semester : any;
 
   constructor(private trainingService: TrainingService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -61,7 +63,8 @@ export class TimetableLayoutComponent {
     private coursesService: CourseService,
     private teachersService : TeachersService,
     private classroomsService : ClassroomsService,
-    private authService : AuthService){
+    private authService : AuthService,
+    private tdService : TdService){
   }
 
 
@@ -70,8 +73,13 @@ export class TimetableLayoutComponent {
     this.role = this.authService.getRole()
 
     this.authService.getUserInfo().subscribe((data)=>{
-      if (this.role ==="enseignant"){
-        this.user = data.user.username
+      console.log(data)
+      this.user = data
+      if(this.role == "étudiant"){
+        this.tdService.getTdInfo(this.user.academic_info.td.id).subscribe((data) => {
+          console.log(data.training.semester)
+          this.semester = data.training.semester
+        })
       }
     })
 
@@ -96,9 +104,6 @@ export class TimetableLayoutComponent {
         uniqueLabel3: `${classroom.name}`,
       }));
     });
-
-    
-    
   }
 
 
@@ -111,6 +116,22 @@ export class TimetableLayoutComponent {
       this.coursesService.getCourseByTeacher(this.user)
         .subscribe((data: any) => {
           this.processCourseDataTeachers(data);
+          console.log(data)
+        });
+    }
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getStudentCourses() {
+    this.selectedUser = true
+    
+    this.selectedTeacherUsername = null
+    this.selectedClassroomName = null
+    this.selectedPromotionId = null
+    if (this.user !== null) {
+      this.coursesService.getCourseByPromotion(this.user.academic_info.promotion.id, this.semester)
+        .subscribe((data: any) => {
+          this.processCourseData(data);
           console.log(data)
         });
     }
