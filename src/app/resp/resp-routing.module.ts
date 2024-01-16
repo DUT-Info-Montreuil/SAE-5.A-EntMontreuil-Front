@@ -16,6 +16,11 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
+    path: 'courses',
+    component: ManageCoursesComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'cohort',
     component: CohortComponent,
     canActivate: [AuthGuard],
@@ -47,11 +52,10 @@ const routes: Routes = [
       },
     ],
   },
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class RespRoutingModule { }
+export class RespRoutingModule {}

@@ -21,7 +21,6 @@ import { RessourceService } from 'src/app/core/services/ressources.service';
 @Component({
   selector: 'app-course-details-modal',
   templateUrl: './course-details-modal.component.html',
-  // ... styles, etc.
 })
 export class CourseDetailsModalComponent implements OnInit, OnChanges {
   @Input() selectedCourse: any;

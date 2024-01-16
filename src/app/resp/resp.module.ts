@@ -3,8 +3,12 @@ import { CommonModule } from '@angular/common';
 import { CohortComponent } from './components/cohort/cohort.component';
 import { RespRoutingModule } from './resp-routing.module';
 import { TreeModule } from 'primeng/tree';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmationService, ContextMenuService, MessageService } from 'primeng/api';
+import { Toast, ToastModule } from 'primeng/toast';
+import {
+  ConfirmationService,
+  ContextMenuService,
+  MessageService,
+} from 'primeng/api';
 import { CohortService } from '../core/services/cohort.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
@@ -32,7 +36,12 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { MessageModule } from 'primeng/message';
-
+import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
+import { CourseDetailsModalComponent } from './components/course-details-modal/course-details-modal.component';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule as PrimeNgCalendarModule } from 'primeng/calendar';
+import { InputMaskModule } from 'primeng/inputmask';
+import { ReactiveFormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -42,30 +51,31 @@ import { MessageModule } from 'primeng/message';
     TrainingComponent,
     TdComponent,
     TpComponent,
+    ManageCoursesComponent,
+    CourseDetailsModalComponent,
   ],
 
   imports: [
     CommonModule,
+    MultiSelectModule,
     RespRoutingModule,
     TreeModule,
     FormsModule,
-    ToastModule,
+    PrimeNgCalendarModule,
+    ReactiveFormsModule,
     CardModule,
-    DropdownModule,
     ToastModule,
     HttpClientModule,
     TableModule,
-    ButtonModule,
     MenuModule,
     TabViewModule,
     BadgeModule,
     ContextMenuModule,
     DialogModule,
-    FormsModule,
     InputTextModule,
     InputNumberModule,
-    FullCalendarModule,
-    DialogModule,
+    InputMaskModule,
+    DropdownModule,
     TabViewModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -75,8 +85,13 @@ import { MessageModule } from 'primeng/message';
     ButtonModule,
     InputSwitchModule,
     MessageModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
   ],
-  providers: [CohortService, MessageService, ContextMenuService, ConfirmationService],
+  providers: [
+    CohortService,
+    MessageService,
+    ContextMenuService,
+    ConfirmationService,
+  ],
 })
-export class RespModule { }
+export class RespModule {}
