@@ -17,6 +17,7 @@ import { ClassroomsService } from 'src/app/core/services/classrooms.service';
 import { Classroom } from 'src/app/core/models/classroom.model';
 import { Teacher } from 'src/app/core/models/teachers.model';
 import { RessourceService } from 'src/app/core/services/ressources.service';
+import { Checkbox } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-course-details-modal',
@@ -36,6 +37,7 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
   editMode: boolean = false;
   editCourseForm!: FormGroup;
 
+  control: boolean = false;
   classrooms: any[] = [];
   teachers: any[] = [];
   selectedTeacherIds: number[] = [];
@@ -69,17 +71,20 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       resource: ['', Validators.required],
-      teachers: [[]], // Pour la pré-sélection, nous utilisons un tableau d'ID.
-      classroom: [[]], // Pareil pour les salles de classe.
+      teachers: [[]],
+      classroom: [[]],
+      control: [this.course?.courses?.control || false], // Mettez à jour la valeur en fonction de course.control
     });
     this.editCourseForm.patchValue({
       dateCourse: this.course?.courses?.dateCourse,
+      control: this.course?.courses?.control,
       startTime: this.formatTime(this.course.courses.startTime),
       endTime: this.formatTime(this.course.courses.endTime),
       resource: this.course?.resource?.id,
       teachers: this.course?.teacher.map((t: any) => t.id), // Assumant un tableau d'IDs
       classroom: this.course?.classroom?.id,
     });
+    console.log('controm', this.course?.courses?.control);
   }
 
   loadCourseDetails(): void {
@@ -274,8 +279,6 @@ export class CourseDetailsModalComponent implements OnInit, OnChanges {
         teachers: formValue.teachers.map((t: any) => t.value), // Extract teacher IDs
         classrooms: formValue.classroom.map((c: any) => c.id), // Extract classroom IDs
 
-        // Set additional fields if required
-        control: false, // Example, set control to true
         id_td,
         id_tp,
         id_training,

@@ -17,6 +17,17 @@
               <span class="info-value">{{ course?.courses?.id }}</span>
             </div>
 
+            <div class="info-item">
+              <i class="pi pi-fw pi-check-circle info-icon"></i>
+              <span class="info-label">Contrôle:</span>
+              <span class="info-value" *ngIf="course?.courses?.control"
+                >Oui</span
+              >
+              <span class="info-value" *ngIf="!course?.courses?.control"
+                >Non</span
+              >
+            </div>
+
             <div class="p-col-12">
               <div class="info-item">
                 <i class="pi pi-fw pi-tag info-icon"></i>
@@ -161,6 +172,14 @@
           placeholder="Sélectionnez une ressource"
         >
         </p-dropdown>
+      </div>
+      <div class="form-group">
+        <p-checkbox
+          id="controlCheckbox"
+          formControlName="control"
+          label="Contrôle"
+          [binary]="true"
+        ></p-checkbox>
       </div>
 
       <div class="form-group">

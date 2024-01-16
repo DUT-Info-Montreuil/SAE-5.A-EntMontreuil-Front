@@ -19,7 +19,7 @@ interface EventExtendedProps {
 @Component({
   selector: 'app-timetable-layout',
   templateUrl: './timetable-layout.component.html',
-  styleUrls: ['./timetable-layout.component.scss']
+  styleUrls: ['./timetable-layout.component.scss'],
 })
 export class TimetableLayoutComponent {
   //calendrier
@@ -39,54 +39,54 @@ export class TimetableLayoutComponent {
   //promotion
   selectedPromotionId: any | null = null;
   promotions: any[] = [];
-  promotionCourses!: any[]
+  promotionCourses!: any[];
 
   //teacher
   selectedTeacherUsername: any | null = null;
   teachers: any[] = [];
-  teacherCourses!: any[]
+  teacherCourses!: any[];
 
   //classroom
   selectedClassroomName: any | null = null;
   classrooms: Classroom[] = [];
-  classroomCourses!: any[]
+  classroomCourses!: any[];
 
   //user
-  role : any;
-  user : any;
-  selectedUser : boolean =false;
-  semester : any;
+  role: any;
+  user: any;
+  selectedUser: boolean = false;
+  semester: any;
 
-  constructor(private trainingService: TrainingService,
+  constructor(
+    private trainingService: TrainingService,
     private changeDetectorRef: ChangeDetectorRef,
     private zone: NgZone,
     private coursesService: CourseService,
-    private teachersService : TeachersService,
-    private classroomsService : ClassroomsService,
-    private authService : AuthService,
-    private tdService : TdService){
-  }
-
+    private teachersService: TeachersService,
+    private classroomsService: ClassroomsService,
+    private authService: AuthService,
+    private tdService: TdService
+  ) {}
 
   ngOnInit() {
+    this.role = this.authService.getRole();
 
-    this.role = this.authService.getRole()
+    this.authService.getUserInfo().subscribe((data) => {
+      this.user = data;
+      if (this.role == 'étudiant') {
+        this.tdService
+          .getTdInfo(this.user.academic_info.td.id)
+          .subscribe((data) => {
+            console.log(data.training.semester);
+            this.semester = data.training.semester;
+          });
 
-    this.authService.getUserInfo().subscribe((data)=>{
-      this.user = data
-      if(this.role == "étudiant"){
-        this.tdService.getTdInfo(this.user.academic_info.td.id).subscribe((data) => {
-          console.log(data.training.semester)
-          this.semester = data.training.semester
-          
-        })
-
-        this.getStudentCourses()
+        this.getStudentCourses();
       }
-      if(this.role == "enseignant"){
-        this.getTeacherCourses()
+      if (this.role == 'enseignant') {
+        this.getTeacherCourses();
       }
-    })
+    });
 
     this.trainingService.getAllTrainingsGroupBy().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -94,7 +94,6 @@ export class TimetableLayoutComponent {
         uniqueLabel: `BUT ${promo.degree_name} S${promo.semester}`,
       }));
     });
-
 
     this.teachersService.getAllTeachers().subscribe((data) => {
       this.teachers = data.map((teacher) => ({
@@ -111,45 +110,52 @@ export class TimetableLayoutComponent {
     });
   }
 
-
   getTeacherCourses() {
-    this.selectedUser = true
-    this.selectedTeacherUsername = null
-    this.selectedClassroomName = null
-    this.selectedPromotionId = null
+    this.selectedUser = true;
+    this.selectedTeacherUsername = null;
+    this.selectedClassroomName = null;
+    this.selectedPromotionId = null;
     if (this.user !== null) {
-      this.coursesService.getCourseByTeacher(this.user.user.username)
+      this.coursesService
+        .getCourseByTeacher(this.user.user.username)
         .subscribe((data: any) => {
           this.processCourseDataTeachers(data);
-          console.log(data)
+          console.log(data);
         });
     }
     this.changeDetectorRef.detectChanges();
   }
 
   getStudentCourses() {
-    this.selectedUser = true
-    
-    this.selectedTeacherUsername = null
-    this.selectedClassroomName = null
-    this.selectedPromotionId = null
+    this.selectedUser = true;
+
+    this.selectedTeacherUsername = null;
+    this.selectedClassroomName = null;
+    this.selectedPromotionId = null;
     if (this.user !== null) {
-      this.coursesService.getCourseByPromotion(this.user.academic_info.promotion.id, this.semester)
+      this.coursesService
+        .getCourseByPromotion(
+          this.user.academic_info.promotion.id,
+          this.semester
+        )
         .subscribe((data: any) => {
           this.processCourseData(data);
-          console.log(data)
+          console.log(data);
         });
     }
     this.changeDetectorRef.detectChanges();
   }
 
-
   onPromotionChange() {
-    this.selectedUser = false
-    this.selectedTeacherUsername = null
-    this.selectedClassroomName = null
+    this.selectedUser = false;
+    this.selectedTeacherUsername = null;
+    this.selectedClassroomName = null;
     if (this.selectedPromotionId !== null) {
-      this.coursesService.getCourseByPromotion(this.selectedPromotionId.id_promotion, this.selectedPromotionId.semester)
+      this.coursesService
+        .getCourseByPromotion(
+          this.selectedPromotionId.id_promotion,
+          this.selectedPromotionId.semester
+        )
         .subscribe((data: any) => {
           this.processCourseData(data);
         });
@@ -158,11 +164,12 @@ export class TimetableLayoutComponent {
   }
 
   onTeacherChange() {
-    this.selectedUser = false
-    this.selectedPromotionId = null
-    this.selectedClassroomName = null
-    if (this.selectedTeacherUsername!== null) {
-      this.coursesService.getCourseByTeacher(this.selectedTeacherUsername.user.username)
+    this.selectedUser = false;
+    this.selectedPromotionId = null;
+    this.selectedClassroomName = null;
+    if (this.selectedTeacherUsername !== null) {
+      this.coursesService
+        .getCourseByTeacher(this.selectedTeacherUsername.user.username)
         .subscribe((data: any) => {
           this.processCourseDataTeachers(data);
         });
@@ -171,11 +178,12 @@ export class TimetableLayoutComponent {
   }
 
   onClasseroomChange() {
-    this.selectedUser = false
-    this.selectedPromotionId = null
-    this.selectedTeacherUsername = null
-    if (this.selectedClassroomName!== null) {
-      this.coursesService.getCourseByClassroom(this.selectedClassroomName.name)
+    this.selectedUser = false;
+    this.selectedPromotionId = null;
+    this.selectedTeacherUsername = null;
+    if (this.selectedClassroomName !== null) {
+      this.coursesService
+        .getCourseByClassroom(this.selectedClassroomName.name)
         .subscribe((data: any) => {
           this.processCourseDataTeachers(data);
         });
@@ -218,7 +226,7 @@ export class TimetableLayoutComponent {
       this.changeDetectorRef.detectChanges();
     });
   }
-  
+
   getWeekPeriod(): string {
     const start = startOfWeek(this.viewDate, {
       weekStartsOn: this.weekStartsOn,
@@ -226,7 +234,6 @@ export class TimetableLayoutComponent {
     const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
     return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
   }
-  
 
   async createEventsFromCourses(coursesData: any) {
     let newEventsPromises = coursesData.map(async (courseData: any) => {
@@ -273,7 +280,6 @@ export class TimetableLayoutComponent {
         new Date()
       );
       const endDate = parse(endDateTime, "yyyy-MM-dd'T'HH:mm:ss", new Date());
-      
 
       return {
         title: course.resource.name,
@@ -284,6 +290,7 @@ export class TimetableLayoutComponent {
           secondary: course.resource.color || '#ffcc00',
         },
         meta: {
+          control: courseData.courses.control,
           course: courseData,
           courseid: courseData.courses.id,
           resourceName: course.resource.name,
@@ -298,7 +305,7 @@ export class TimetableLayoutComponent {
 
     const newEvents = await Promise.all(newEventsPromises);
     this.events = [...this.events, newEventsPromises]; // Ajoutez la copie de l'événement à la liste des événements
-    
+
     this.events.push(...newEvents);
     this.changeDetectorRef.detectChanges();
   }
@@ -310,11 +317,9 @@ export class TimetableLayoutComponent {
   nextWeek(): void {
     this.viewDate = addWeeks(this.viewDate, 1);
   }
-    
+
   handleEventClick(event: CalendarEvent): void {
     console.log(event);
     this.selectedCourse = event.meta.course;
   }
-
-  
 }

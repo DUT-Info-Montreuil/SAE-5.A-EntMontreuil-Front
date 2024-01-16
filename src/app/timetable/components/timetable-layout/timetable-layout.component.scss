@@ -1,167 +1,180 @@
 /* Dans votre fichier de style, par exemple: manage-courses.component.css */
 .app-layout {
-    display: flex;
-  }
-  
-  .calendar-section {
-    flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
-  }
-  
-  .menu-section {
-    flex: 1;
-    padding-left: 20px; /* Espace entre le calendrier et le menu */
-  }
-  
-  .cal-day-view {
-    width: 100%;
-    height: 100vh;
-  }
-  
-  /* Ajoutez ici des styles personnalisés pour le calendrier */
-  /* manage-courses.component.scss */
-  .cal-time-events {
-    min-height: 1000px; // Réglable en fonction de vos besoins
-  }
-  
-  .cal-hour-segment {
-    height: 30px; // Hauteur pour un segment de 30 minutes
-  }
-  
-  .custom-event {
-    padding: 5px;
-    color: black; /* Changer la couleur de texte si nécessaire */
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  ::ng-deep .cal-week-view .cal-time-events .cal-event {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .custom-event-title {
-    font-weight: bold;
-  }
-  
-  .custom-event-time {
-    display: block; /* ou 'inline' selon la disposition souhaitée */
-  }  
-  /* manage-courses.component.scss */
-  
-  .custom-event-title {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 5px;
-  }
-  
+  display: flex;
+}
 
-  .custom-event-title__resource {
-    font-weight: bold;
-    font-size: 16px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+.calendar-section {
+  flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
+}
 
-  .custom-event-title__teachers,
-  .custom-event-title__classroom,
-  .custom-event-title__groupname {
-    font-size: 14px;
-  }
+.menu-section {
+  flex: 1;
+  padding-left: 20px; /* Espace entre le calendrier et le menu */
+}
 
-  .custom-event-title__classroom {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
+.cal-day-view {
+  width: 100%;
+  height: 100vh;
+}
 
-  .custom-event-title__teachers {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-  }
+/* Ajoutez ici des styles personnalisés pour le calendrier */
+/* manage-courses.component.scss */
+.cal-time-events {
+  min-height: 1000px; // Réglable en fonction de vos besoins
+}
 
-  .custom-event-title__groupname {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-  }
-  
-  ::ng-deep .cal-week-view .cal-time {
-    font-weight: 100 !important;
-  }
-  
-  ::ng-deep .cal-week-view {
-    background: rgb(255, 255, 255) !important;
-  }
-  
-  ::ng-deep .cal-week-view .cal-day-headers {
-    border-top-left-radius: 5px !important;
-    // border-top-right-radius: 5px !important;
-    border: none !important;
-    border-bottom: 1px solid rgb(221, 221, 221) !important;
-  }
-  
-  ::ng-deep .cal-week-view {
-    border: none !important;
-  }
+.cal-hour-segment {
+  height: 30px; // Hauteur pour un segment de 30 minutes
+}
 
-  
-  ::ng-deep .cal-week-view .cal-time-events {
-    border: none;
-  }
-  
-  ::ng-deep .cal-week-view .cal-header.cal-today {
-    background-color: rgb(239, 244, 255);
-  }
-  
-  ::ng-deep .cal-week-view .cal-hour:not(:last-child) .cal-hour-segment,
-  .cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
-    border-bottom: none;
-  }
-  
-  ::ng-deep mwl-calendar-event-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    color: black; /* Texte en noir */
-    padding: 4px; /* Espacement autour du contenu */
-    width: 100%;
-  }
-  
-  .custom-event-title__classroom {
-    order: 1; /* En haut */
-    padding: 2px;
-    text-align: left;
-  }
-  
-  .custom-event-title__resource {
-    order: 2; /* Au milieu */
-    padding: 2px;
-    text-align: center;
-  }
-  
-  .custom-event-title__teachers {
-    order: 3; /* En bas */
-    padding: 2px;
-    text-align: left;
-  }
-  
-  .custom-event-title__groupname {
-    order: 4; /* Ajouté */
-    padding: 2px;
-    text-align: right;
-  }
-  
+.custom-event {
+  padding: 5px;
+  color: black; /* Changer la couleur de texte si nécessaire */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
-  
+::ng-deep .cal-week-view .cal-time-events .cal-event {
+  display: flex;
+  flex-direction: column;
+}
+
+::ng-deep mwl-calendar-event-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  color: black; /* Texte en noir */
+  padding: 4px; /* Espacement autour du contenu */
+  width: 100%;
+}
+
+/* Style pour l'élément .custom-event-title__control */
+.custom-event-title__control {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
+  border: 2px solid black; /* Bordure noire */
+  padding: 2px 6px; /* Espacement autour du texte */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+/* Style pour l'élément .custom-event-title__resource */
+.custom-event-title__resource {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 60%; /* Ajustez la position verticale si nécessaire */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Place "Ressource Name" sous "Contrôle" */
+}
+
+/* Reste du CSS inchangé */
+.custom-event-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.custom-event-title__teachers,
+.custom-event-title__classroom,
+.custom-event-title__groupname {
+  font-size: 14px;
+}
+
+.custom-event-title__classroom {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.custom-event-title__teachers {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.custom-event-title__groupname {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+::ng-deep .cal-week-view .cal-time {
+  font-weight: 100 !important;
+}
+
+::ng-deep .cal-week-view {
+  background: rgb(255, 255, 255) !important;
+}
+
+::ng-deep .cal-week-view .cal-day-headers {
+  border-top-left-radius: 5px !important;
+  // border-top-right-radius: 5px !important;
+  border: none !important;
+  border-bottom: 1px solid rgb(221, 221, 221) !important;
+}
+
+::ng-deep .cal-week-view {
+  border: none !important;
+}
+
+::ng-deep .cal-week-view .cal-time-events {
+  border: none;
+}
+
+::ng-deep .cal-week-view .cal-header.cal-today {
+  background-color: rgb(239, 244, 255);
+}
+
+::ng-deep .cal-week-view .cal-hour:not(:last-child) .cal-hour-segment,
+.cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+  border-bottom: none;
+}
+
+::ng-deep mwl-calendar-event-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  color: black; /* Texte en noir */
+  padding: 4px; /* Espacement autour du contenu */
+  width: 100%;
+}
+
+.custom-event-title__classroom {
+  order: 1; /* En haut */
+  padding: 2px;
+  text-align: left;
+}
+
+.custom-event-title__resource {
+  order: 2; /* Au milieu */
+  padding: 2px;
+  text-align: center;
+}
+
+.custom-event-title__teachers {
+  order: 3; /* En bas */
+  padding: 2px;
+  text-align: left;
+}
+
+.custom-event-title__groupname {
+  order: 4; /* Ajouté */
+  padding: 2px;
+  text-align: right;
+}

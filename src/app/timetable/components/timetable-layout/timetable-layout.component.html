@@ -1,63 +1,94 @@
 <div class="app-layout">
-    <div class="calendar-section">
-      <div class="dropdown-section">
-      <p-dropdown [options]="promotions" (onChange)="onPromotionChange()" [(ngModel)]="selectedPromotionId" optionLabel="uniqueLabel"  placeholder="Sélectionnez une promotion"></p-dropdown>
-      <p-dropdown [options]="teachers" (onChange)="onTeacherChange()" [(ngModel)]="selectedTeacherUsername" optionLabel="uniqueLabel2"  placeholder="Sélectionnez une professeur"></p-dropdown>
-      <p-dropdown [options]="classrooms" (onChange)="onClasseroomChange()" [(ngModel)]="selectedClassroomName" optionLabel="uniqueLabel3"  placeholder="Sélectionnez une salle de classe"></p-dropdown>
-      <p-button *ngIf="role=='enseignant' && !selectedUser" label="Mon emploi du temps" (onClick)="getTeacherCourses()"></p-button>
-      <p-button *ngIf="role=='étudiant' && !selectedUser" label="Mon emploi du temps" (onClick)="getStudentCourses()"></p-button>
-      </div>
-      <div class="flex justify-content-between align-items-center mt-2 mb-2">
-        <div>
-          <span>{{ getWeekPeriod() }} </span>
-          <span *ngIf="selectedUser" style="font-weight: bold;"> Emploi du temps de {{ user.user.username }}</span>
-        </div>
-        <div>
-          <p-button
-            [rounded]="true"
-            [text]="true"
-            (click)="previousWeek()"
-            icon="pi pi-chevron-left"
-          ></p-button>
-          <p-button
-            [rounded]="true"
-            [text]="true"
-            (click)="nextWeek()"
-            icon="pi pi-chevron-right"
-          ></p-button>
-        </div>
-      </div>
-  
-      <mwl-calendar-week-view
-        [viewDate]="viewDate"
-        [excludeDays]="excludeDays"
-        [events]="events"
-        [dayStartHour]="dayStartHour"
-        [dayEndHour]="dayEndHour"
-        [hourSegments]="hourSegments"
-        [weekStartsOn]="1"
-        [eventTitleTemplate]="customEventTitleTemplate"
-        (eventClicked)="handleEventClick($event.event)"
-      >
-      </mwl-calendar-week-view>
-
-      <ng-template
-        class="custom-event-title"
-        #customEventTitleTemplate
-        let-event="event"
-      >
-        <span class="custom-event-title__resource">{{
-          event.meta.resourceName
-        }}</span>
-        <span class="custom-event-title__teachers">{{
-          event.meta.teacherNames
-        }}</span>
-        <span class="custom-event-title__classroom">{{
-          event.meta.classroomName
-        }}</span>
-        <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
-        <!-- Ajout du groupName -->
-      </ng-template>
-    
+  <div class="calendar-section">
+    <div class="dropdown-section">
+      <p-dropdown
+        [options]="promotions"
+        (onChange)="onPromotionChange()"
+        [(ngModel)]="selectedPromotionId"
+        optionLabel="uniqueLabel"
+        placeholder="Sélectionnez une promotion"
+      ></p-dropdown>
+      <p-dropdown
+        [options]="teachers"
+        (onChange)="onTeacherChange()"
+        [(ngModel)]="selectedTeacherUsername"
+        optionLabel="uniqueLabel2"
+        placeholder="Sélectionnez une professeur"
+      ></p-dropdown>
+      <p-dropdown
+        [options]="classrooms"
+        (onChange)="onClasseroomChange()"
+        [(ngModel)]="selectedClassroomName"
+        optionLabel="uniqueLabel3"
+        placeholder="Sélectionnez une salle de classe"
+      ></p-dropdown>
+      <p-button
+        *ngIf="role == 'enseignant' && !selectedUser"
+        label="Mon emploi du temps"
+        (onClick)="getTeacherCourses()"
+      ></p-button>
+      <p-button
+        *ngIf="role == 'étudiant' && !selectedUser"
+        label="Mon emploi du temps"
+        (onClick)="getStudentCourses()"
+      ></p-button>
     </div>
+    <div class="flex justify-content-between align-items-center mt-2 mb-2">
+      <div>
+        <span>{{ getWeekPeriod() }} </span>
+        <span *ngIf="selectedUser" style="font-weight: bold">
+          Emploi du temps de {{ user.user.username }}</span
+        >
+      </div>
+      <div>
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="previousWeek()"
+          icon="pi pi-chevron-left"
+        ></p-button>
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="nextWeek()"
+          icon="pi pi-chevron-right"
+        ></p-button>
+      </div>
+    </div>
+
+    <mwl-calendar-week-view
+      [viewDate]="viewDate"
+      [excludeDays]="excludeDays"
+      [events]="events"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [weekStartsOn]="1"
+      [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)"
+    >
+    </mwl-calendar-week-view>
+
+    <ng-template
+      class="custom-event-title"
+      #customEventTitleTemplate
+      let-event="event"
+    >
+      <span class="custom-event-title__control" *ngIf="event.meta.control"
+        >Contrôle</span
+      >
+      <span class="custom-event-title__resource">{{
+        event.meta.resourceName
+      }}</span>
+      <span class="custom-event-title__teachers">{{
+        event.meta.teacherNames
+      }}</span>
+      <span class="custom-event-title__classroom">{{
+        event.meta.classroomName
+      }}</span>
+      <span class="custom-event-title__groupname">{{
+        event.meta.groupName
+      }}</span>
+    </ng-template>
   </div>
+</div>
