@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
-import { parse } from 'date-fns';
+import { addDays, parse, subDays } from 'date-fns';
 import { Course } from 'src/app/core/models/course.model';
 import { CourseService } from 'src/app/core/services/courses.service';
 
@@ -124,4 +124,11 @@ export class CallrollComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
+  previous(): void {
+    this.viewDate = subDays(this.viewDate, 1);
+  }
+
+  next(): void {
+    this.viewDate = addDays(this.viewDate, 1);
+  }
 }

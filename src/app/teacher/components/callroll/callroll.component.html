@@ -1,12 +1,28 @@
 <div class="flex gap-5">
-    <div style="width:20%">
+    <div style="width:30%">
+        <div class="cal-header flex align-items-center justify-content-between">
+            <div>
+                <p-button [rounded]=" true" [text]="true" (click)="previous()" icon="pi pi-chevron-left"
+                    [outlined]="true"></p-button>
+            </div>
+            <div class="period-text">
+                <span>{{ viewDate | date : "EEEE d MMMM y" }}</span>
+            </div>
+            <div>
+                <p-button [rounded]="true" [text]="true" (click)="next()" icon="pi pi-chevron-right"
+                    [outlined]="true"></p-button>
+            </div>
+        </div>
+
         <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [dayStartHour]="dayStartHour"
             [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [eventTitleTemplate]="customEventTitleTemplate"
             (eventClicked)="handleEventClick($event.event)">
         </mwl-calendar-day-view>
     </div>
 
-    <div style="background-color: lightgray; width: 1000px"></div>
+    <div style="width: 100%">
+
+    </div>
 </div>
 
 <ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
