@@ -9,12 +9,14 @@ import {
   addWeeks,
   endOfWeek,
   format,
+  parseISO,
   startOfWeek,
   subDays,
   subWeeks,
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import parse from 'date-fns/parse';
+import { MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Ressource } from 'src/app/admin/models/ressource.model';
@@ -67,6 +69,8 @@ export class ManageCoursesComponent {
   view: CalendarView = CalendarView.Week;
   viewDate: Date = new Date();
   events: CalendarEvent[] = [];
+  copiedEvents: CalendarEvent[] = [];
+
   excludeDays: number[] = [0, 6]; // Exclure dimanche (0) et samedi (6)
   dayStartHour: number = 8;
   dayEndHour: number = 20;
@@ -78,7 +82,8 @@ export class ManageCoursesComponent {
     private changeDetectorRef: ChangeDetectorRef,
     private deegreeService: DegreeService,
     private ressourceService: RessourceService,
-    private trainingService: TrainingService
+    private trainingService: TrainingService,
+    private messageService: MessageService
   ) {
     this.courseService.getAllPromotions().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -372,6 +377,7 @@ export class ManageCoursesComponent {
           classroomName: course.classroom.map((c: any) => c.name).join(', '),
           groupName: groupName,
           groupType: groupType,
+          groupId: groupId,
         },
       };
     });
@@ -498,6 +504,168 @@ export class ManageCoursesComponent {
     }
   }
 
+  copyEventsToCurrentWeek(): void {
+    const currentStart = startOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+    const currentEnd = endOfWeek(this.viewDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+
+    this.copiedEvents = this.events.filter((event) => {
+      const eventStart = new Date(event.start);
+      const eventDay = eventStart.getDay();
+      return (
+        eventStart >= currentStart &&
+        eventStart <= currentEnd &&
+        !this.excludeDays.includes(eventDay)
+      );
+    });
+    const formattedWeek = `Semaine du ${format(currentStart, 'dd MMMM', {
+      locale: fr,
+    })}`;
+    console.log(`Événements copiés : ${formattedWeek}`);
+
+    // Affichez le message avec la semaine spécifique
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Succès',
+      detail: `Les cours de la ${formattedWeek} ont été copiés`,
+    });
+  }
+
+  async pasteEventsFromClipboard() {
+    if (!this.copiedEvents || this.copiedEvents.length === 0) {
+      // Il n'y a pas d'événements copiés, ne rien faire
+      return;
+    }
+
+    const currentDate = this.viewDate; // Date de la semaine actuellement affichée
+    const targetWeekStart = startOfWeek(currentDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+    const targetWeekEnd = endOfWeek(currentDate, {
+      weekStartsOn: this.weekStartsOn,
+    });
+
+    const copiedEventsToPaste = this.copiedEvents.map((copiedEvent) => {
+      const eventCopy = { ...copiedEvent };
+      const eventStart = eventCopy.start;
+      const eventEnd = eventCopy.end;
+
+      // Vérifier si 'end' est défini, sinon, utilisez la date de début
+      if (eventEnd) {
+        // Ajouter la différence entre la date cible et la date source aux événements copiés
+        const timeDifference =
+          targetWeekStart.getTime() -
+          startOfWeek(eventStart, {
+            weekStartsOn: this.weekStartsOn,
+          }).getTime();
+        eventCopy.start = new Date(eventStart.getTime() + timeDifference);
+        eventCopy.end = new Date(eventEnd.getTime() + timeDifference);
+      } else {
+        // Si 'end' n'est pas défini, utilisez la date de début pour la date de début et la fin
+        eventCopy.start = targetWeekStart;
+        eventCopy.end = new Date(
+          targetWeekStart.getTime() +
+            (eventStart.getTime() -
+              startOfWeek(eventStart, {
+                weekStartsOn: this.weekStartsOn,
+              }).getTime())
+        );
+      }
+
+      // Mise à jour de la dateCourse dans meta.course.course.dateCourse
+      eventCopy.meta.course.courses.dateCourse = format(
+        eventCopy.start,
+        'yyyy-MM-dd'
+      );
+
+      return eventCopy;
+    });
+
+    // Ajouter les événements collés à la base de données
+    for (const copiedEvent of copiedEventsToPaste) {
+      await this.addEventToDatabase(copiedEvent);
+    }
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  async addEventToDatabase(copiedEvent: any): Promise<any> {
+    try {
+      if (!copiedEvent || !copiedEvent.meta) {
+        // Vérifiez si 'copiedEvent' ou 'copiedEvent.meta' sont définis, sinon, ne rien faire
+        return null;
+      }
+
+      const meta = copiedEvent.meta;
+
+      // Utilisez parseISO pour analyser la date au format ISO8601
+      const parsedDate = parseISO(meta.course.courses.dateCourse);
+
+      const formattedDate = format(parsedDate, 'yyyy-MM-dd');
+      const teacherIds = meta.course.teacher.map((teacher: any) => teacher.id);
+      const classroomIds = meta.course.classroom.map(
+        (classroom: any) => classroom.id
+      );
+      const resourceId = meta.course.resource.id;
+      const startTime = meta.course.courses.startTime.slice(0, 5); // Supprimez les secondes
+      const endTime = meta.course.courses.endTime.slice(0, 5); // Supprimez les secondes
+
+      // Remplacez les propriétés suivantes par les données pertinentes de 'copiedEvent.meta'
+      var courseData: any = {
+        startTime: startTime,
+        endTime: endTime,
+        dateCourse: formattedDate,
+        control: meta.course.courses.control,
+        id_resource: resourceId,
+        teachers_id: teacherIds,
+        classrooms_id: classroomIds,
+      };
+
+      if (meta.groupType === 'promotion') {
+        courseData.id_promotion = meta.groupId;
+      } else if (meta.groupType === 'training') {
+        courseData.id_training = meta.groupId;
+      } else if (meta.groupType === 'td') {
+        courseData.id_td = meta.groupId;
+      } else if (meta.groupType === 'tp') {
+        courseData.id_tp = meta.groupId;
+      }
+
+      console.log(courseData);
+      this.courseService.addCourse(courseData).subscribe(
+        (response: any) => {
+          console.log(response);
+          const newEvent = { ...copiedEvent }; // Créez une copie de l'événement
+          newEvent.meta.courseid = response.id; // Mettez à jour l'ID du cours dans la copie de l'événement
+          newEvent.meta.course.courses.id = response.id; // Mettez à jour meta.course.courses.id dans la copie de l'événement
+          this.events = [...this.events, newEvent]; // Ajoutez la copie de l'événement à la liste des événements
+          this.changeDetectorRef.detectChanges();
+          console.log(this.events);
+        },
+        (error) => {
+          console.error('Erreur lors de la création du cours', error);
+          let errorMessage =
+            'Une erreur s’est produite lors de la création du cours.';
+          // Gérez les erreurs de création du cours ici
+          // Vous pouvez afficher un message d'erreur à l'utilisateur ou effectuer d'autres actions nécessaires
+          // En cas d'erreur, vous pouvez retourner null ou gérer l'erreur différemment selon vos besoins
+        }
+      );
+    } catch (error) {
+      console.error('Erreur lors de la création du cours', error);
+      let errorMessage =
+        'Une erreur s’est produite lors de la création du cours.';
+
+      // Gérez les erreurs de création du cours ici
+      // Vous pouvez afficher un message d'erreur à l'utilisateur ou effectuer d'autres actions nécessaires
+      // En cas d'erreur, vous pouvez retourner null ou gérer l'erreur différemment selon vos besoins
+      return null;
+    }
+  }
+
   getWeekPeriod(): string {
     const start = startOfWeek(this.viewDate, {
       weekStartsOn: this.weekStartsOn,
@@ -521,5 +689,15 @@ export class ManageCoursesComponent {
   resetModal(): void {
     this.selectedCourse = null;
     this.changeDetectorRef.markForCheck(); // Trigger change detection manually
+  }
+  clearCopiedEvents(): void {
+    this.copiedEvents = []; // Vide copiedEvents
+
+    // Affichez un toast pour indiquer que copiedEvents a été vidé avec succès
+    this.messageService.add({
+      severity: 'success', // Utilisez 'success' pour un message de succès
+      summary: 'Copie Vidée', // Titre du toast
+      detail: 'La copie des cours a été vidée avec succès.', // Message détaillé
+    });
   }
 }

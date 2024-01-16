@@ -68,6 +68,30 @@
 
     <div class="header-container">
       <div class="button-container">
+        <ng-container *ngIf="!copiedEvents.length; else copyAndClearButtons">
+          <p-button
+            [icon]="'pi pi-copy'"
+            (click)="copyEventsToCurrentWeek()"
+            label="Copier les cours"
+            class="copy-button"
+          ></p-button>
+        </ng-container>
+        <ng-template #copyAndClearButtons>
+          <p-button
+            [icon]="'pi pi-trash'"
+            (click)="clearCopiedEvents()"
+            label="Vider la copie"
+            class="clear-button"
+          ></p-button>
+          <p-button
+            [icon]="'pi pi-paste'"
+            (click)="pasteEventsFromClipboard()"
+            label="Coller les cours"
+            class="paste-button"
+          ></p-button>
+        </ng-template>
+      </div>
+      <div class="button-container">
         <p-button
           [rounded]="true"
           [text]="true"
@@ -170,3 +194,4 @@
   (close)="resetModal()"
   (courseDeleted)="removeEvent($event)"
 ></app-course-details-modal>
+<p-toast></p-toast>

@@ -211,3 +211,37 @@
   font-size: 18px;
   font-weight: bold;
 }
+
+/* CSS pour les boutons Copier et Coller */
+.button-container {
+  display: inline-block;
+  margin-right: 10px; /* Espacement entre les boutons */
+}
+
+/* CSS pour le bouton Copier */
+.copy-button {
+  background-color: #007bff; /* Couleur de fond */
+  color: #fff; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  padding: 8px 16px; /* Espacement interne */
+  cursor: pointer;
+  border-radius: 5px; /* Coins arrondis */
+}
+
+.copy-button:hover {
+  background-color: #0056b3; /* Couleur de fond au survol */
+}
+
+/* CSS pour le bouton Vider Copie */
+.clear-button {
+  background-color: #ff0000; /* Couleur de fond */
+  color: #fff; /* Couleur du texte */
+  border: none; /* Pas de bordure */
+  padding: 8px 16px; /* Espacement interne */
+  cursor: pointer;
+  border-radius: 5px; /* Coins arrondis */
+}
+
+.clear-button:hover {
+  background-color: #cc0000; /* Couleur de fond au survol */
+}
