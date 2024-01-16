@@ -22,8 +22,8 @@ export class TeachersService implements OnInit {
 
     }
 
-    getAllTeachers(): Observable<Teacher[]> {
-        return this.http.get<Teacher[]>(this.apiURL + '/teachers?output_format=model', this.httpOptions)
+    getAllTeachers(): Observable<any[]> {
+        return this.http.get<any[]>(this.apiURL + '/teachers?output_format=model', this.httpOptions)
     }
 
     errorHandler(error: any) {

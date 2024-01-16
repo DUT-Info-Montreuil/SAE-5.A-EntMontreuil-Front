@@ -30,6 +30,14 @@ export class TrainingService implements OnInit {
     );
   }
 
+  // Get all trainings
+  getAllTrainingsGroupBy(): Observable<Training[]> {
+    return this.http.get<Training[]>(
+      this.apiURL + '/trainings_gb',
+      this.httpOptions
+    );
+  }
+
   // Get a specific training by ID
   getTraining(id: number): Observable<Training> {
     return this.http.get<Training>(
@@ -85,5 +93,15 @@ export class TrainingService implements OnInit {
       `${this.apiURL}/promotions`,
       this.httpOptions
     );
+  }
+
+  getTDsByTrainingId(idTraining: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiURL}/td/training/${idTraining}`,
+      this.httpOptions
+    );
+  }
+  getTpsByTDID(idTD: number): Observable<any> {
+    return this.http.get<any>(`${this.apiURL}/td/tp/${idTD}`, this.httpOptions);
   }
 }

@@ -33,6 +33,7 @@
           <p-dropdown
             [options]="promotions"
             [(ngModel)]="selectedPromotionId"
+            (onChange)="onPromotionChange()"
             optionLabel="uniqueLabel"
             optionValue="id"
             placeholder="Sélectionner une promotion"
@@ -47,13 +48,19 @@
         <label for="selectedSemester" class="font-medium text-900"
           >Semestre</label
         >
-        <input
-          pInputText
-          type="number"
-          id="selectedSemester"
-          [(ngModel)]="selectedSemester"
-          name="selectedSemester"
-        />
+        <div class="mt-1">
+          <p-dropdown
+            ngif="selectedPromotionId"
+            [options]="semesterOptions"
+            [(ngModel)]="selectedSemester"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Sélectionner un semestre"
+            name="selectedSemester"
+            appendTo="body"
+          >
+          </p-dropdown>
+        </div>
       </div>
 
       <!-- ...reste du template... -->

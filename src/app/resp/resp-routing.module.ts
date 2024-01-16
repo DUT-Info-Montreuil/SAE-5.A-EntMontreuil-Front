@@ -4,7 +4,6 @@ import { AuthGuard } from '../core/guards/auth.guard';
 import { CohortComponent } from './components/cohort/cohort.component';
 import { PromotionComponent } from './components/promotion/promotion.component';
 import { ManageCoursesComponent } from './components/manage-courses/manage-courses.component';
-import { SimpleCalendarComponent } from './components/simple-calendar/simple-calendar.component';
 import { DegreeComponent } from './components/degree/degree.component';
 import { TrainingComponent } from './components/training/training.component';
 import { TdComponent } from './components/td/td.component';
@@ -48,11 +47,7 @@ const routes: Routes = [
       },
     ],
   },
-  {
-    path: 'courses',
-    component: ManageCoursesComponent,
-    canActivate: [AuthGuard],
-  },
+
 ];
 
 @NgModule({
