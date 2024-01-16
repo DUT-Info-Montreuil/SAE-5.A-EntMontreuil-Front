@@ -22,13 +22,14 @@
             <p-panel>
                 <p-header>
                     <i class="pi pi-user-minus" style="color: red"></i>
-                    Absences ({{nbAbsences}})
+                    Absences Injustifiées ({{nbAbsences}})
                 </p-header>
                 <div class="grid-container">
                     <div class="grid-item red-500" *ngFor="let abs of absences; let i = index">
-                        <div *ngIf="i < 3"> 
-                            <span class="resource-name">{{ abs.resource_name }} : </span>
-                            <span class="course-date">{{ abs.course_date }}</span>                           
+                        <div *ngIf="i < 3" routerLink="/absences" style="cursor: pointer;"> 
+                            <p class="red-absence">
+                                <span class="resource-name">{{ abs.resource_name }} : </span>
+                                <span class="course-date">{{ abs.course_date }}</span> </p>                          
                             <p-divider></p-divider>
                         </div>
                     </div>
@@ -41,9 +42,9 @@
                     Rappels
                 </p-header>
                 <div class="grid-container">
-                    <div class="grid-item  blue-500" *ngFor="let remind of reminders; let i = index">
-                        <div *ngIf="i < 3"> 
-                            {{ remind.title }}
+                    <div class="grid-item blue-500" *ngFor="let remind of reminders; let i = index">
+                        <div *ngIf="i < 3" routerLink="/reminders" style="cursor: pointer;"> 
+                            <p class="blue-reminder">{{ remind.title }}</p> 
                             <p-divider></p-divider>
                         </div>
                     </div>
@@ -53,11 +54,12 @@
         
         
         
+        
     </div>
 
     
     <p-panel header="Journée EDT">
-        
+        <p>Ici sera affichée la journée de cours de l'user</p>
     </p-panel>    
     
     
