@@ -1,0 +1,198 @@
+<div class="app-layout">
+  <div class="calendar-section">
+    <div class="dropdown-section">
+      <div class="flex gap-3">
+        <p-dropdown
+          [options]="degrees"
+          (onChange)="onDegreeChange($event.value)"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionnez une formation"
+          name="degreeDropdown"
+        ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="filteredPromotions && filteredPromotions.length > 0"
+          [options]="filteredPromotions"
+          [(ngModel)]="selectedPromotionId"
+          (onChange)="onPromotionChange()"
+          optionLabel="uniqueLabel"
+          optionValue="id"
+          placeholder="Sélectionnez une promotion"
+          name="promotionDropdown"
+        ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="selectedPromotionId"
+          [options]="semesterOptions"
+          [(ngModel)]="selectedSemester"
+          placeholder="Sélectionnez un semestre"
+          (onChange)="onSemesterChange()"
+          name="semesterDropdown"
+        ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="trainings && trainings.length > 0"
+          [options]="trainings"
+          [(ngModel)]="selectedTrainingId"
+          (onChange)="onTrainingChange()"
+          optionLabel="name"
+          optionValue="id"
+          placeholder="Sélectionnez un parcours"
+          name="trainingDropdown"
+        ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="tds && tds.length > 0"
+          id="tdDropdown"
+          [options]="tds"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="selectedTdId"
+          placeholder="Sélectionnez un TD"
+          (onChange)="onTdChange()"
+        ></p-dropdown>
+
+        <p-dropdown
+          *ngIf="tps && tps.length > 0"
+          id="tdDropdown"
+          [options]="tps"
+          optionLabel="name"
+          optionValue="id"
+          [(ngModel)]="selectedTpId"
+          placeholder="Sélectionnez un TP"
+          (onChange)="onTpChange()"
+        ></p-dropdown>
+      </div>
+    </div>
+
+    <div class="header-container">
+      <div class="button-container">
+        <ng-container *ngIf="!copiedEvents.length; else copyAndClearButtons">
+          <p-button
+            [icon]="'pi pi-copy'"
+            (click)="copyEventsToCurrentWeek()"
+            label="Copier les cours"
+            class="copy-button"
+          ></p-button>
+        </ng-container>
+        <ng-template #copyAndClearButtons>
+          <p-button
+            [icon]="'pi pi-trash'"
+            (click)="clearCopiedEvents()"
+            label="Vider la copie"
+            class="clear-button"
+            severity="danger"
+          ></p-button>
+          <p-button
+            [icon]="'pi pi-file'"
+            (click)="pasteEventsFromClipboard()"
+            label="Coller les cours"
+            class="paste-button"
+          ></p-button>
+        </ng-template>
+      </div>
+      <div class="button-container">
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="previous()"
+          icon="pi pi-chevron-left"
+        ></p-button>
+      </div>
+      <div class="period-text">
+        <ng-container *ngIf="view === 'week'; else dayHeader">
+          <span>{{ getWeekPeriod() }}</span>
+        </ng-container>
+        <ng-template #dayHeader>
+          <!-- Ajoutez ici le contenu de l'en-tête du jour -->
+          <div class="day-header" (click)="switchToWeekView()">
+            <span>{{ viewDate | date : "EEEE d  MMMM  y" }}</span>
+          </div>
+        </ng-template>
+      </div>
+      <div class="button-container">
+        <p-button
+          [rounded]="true"
+          [text]="true"
+          (click)="next()"
+          icon="pi pi-chevron-right"
+        ></p-button>
+      </div>
+    </div>
+
+    <mwl-calendar-day-view
+      *ngIf="view === 'day'"
+      [viewDate]="viewDate"
+      [events]="events"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)"
+    >
+      <!-- Utilisez le template 'mwl-calendar-header' pour personnaliser l'en-tête -->
+    </mwl-calendar-day-view>
+
+    <mwl-calendar-week-view
+      *ngIf="view === 'week'"
+      [viewDate]="viewDate"
+      [excludeDays]="excludeDays"
+      [events]="events"
+      [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour"
+      [hourSegments]="hourSegments"
+      [weekStartsOn]="1"
+      [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)"
+      (dayHeaderClicked)="handleDayClick($event.day.date)"
+    >
+    </mwl-calendar-week-view>
+  </div>
+  <ng-template #customDayHeaderTemplate let-day="day">
+    <div class="custom-day-header">
+      {{ day.date | date : "EEEE d MMMM" }}
+    </div>
+  </ng-template>
+
+  <div class="menu-section">
+    <app-create-course
+      (eventCreated)="addEvent($event)"
+      [degrees]="degrees"
+      [promotions]="promotions"
+      [selectedPromotionId]="selectedPromotionId"
+      [selectedTrainingId]="selectedTrainingId"
+      [selectedTdId]="selectedTdId"
+      [selectedTpId]="selectedTpId"
+      [resources]="resources"
+      [tds]="tds"
+    ></app-create-course>
+  </div>
+</div>
+
+<ng-template
+  class="custom-event-title"
+  #customEventTitleTemplate
+  let-event="event"
+>
+  <span class="custom-event-title__resource">{{
+    event.meta.resourceName
+  }}</span>
+  <span class="custom-event-title__teachers">{{
+    event.meta.teacherNames
+  }}</span>
+  <span class="custom-event-title__classroom">{{
+    event.meta.classroomName
+  }}</span>
+  <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+  <!-- Ajout du groupName -->
+</ng-template>
+
+<app-course-details-modal
+  *ngIf="selectedCourse"
+  [selectedCourse]="selectedCourse"
+  (courseUpdated)="handleCourseUpdated($event)"
+  (close)="resetModal()"
+  (courseDeleted)="removeEvent($event)"
+></app-course-details-modal>
+<p-toast></p-toast>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { Ressource } from 'src/app/admin/models/ressource.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -56,5 +56,20 @@ export class RessourceService {
       resourceData,
       this.httpOptions
     );
+  }
+
+  getRessourceByRessourceTraining(
+    idRessource: number
+  ): Observable<Ressource[]> {
+    return this.http
+      .get<Ressource>(
+        `${this.apiUrl}/resources/${idRessource}`,
+        this.httpOptions
+      )
+      .pipe(
+        switchMap((ressource) => {
+          return this.getRessourceByIdTraining(ressource.id_Training);
+        })
+      );
   }
 }

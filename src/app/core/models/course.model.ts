@@ -10,6 +10,7 @@ export class Course {
     color: string;
   };
   td: number[];
+  training: number[];
   tp: number[];
   promotion: number[];
   teacher: {
@@ -41,5 +42,6 @@ export class Course {
     this.promotion = data.promotion;
     this.teacher = data.teacher;
     this.classroom = data.classroom;
+    this.training = data.training;
   }
 }
