@@ -35,6 +35,7 @@ import { TrainingService } from 'src/app/core/services/trainings.service';
   templateUrl: './manage-courses.component.html',
   styleUrls: ['./manage-courses.component.scss'],
 })
+
 export class ManageCoursesComponent {
   selectedPromotionId: number | null = null;
   selectedTrainingId: number | null = null;
@@ -568,10 +569,10 @@ export class ManageCoursesComponent {
         eventCopy.start = targetWeekStart;
         eventCopy.end = new Date(
           targetWeekStart.getTime() +
-            (eventStart.getTime() -
-              startOfWeek(eventStart, {
-                weekStartsOn: this.weekStartsOn,
-              }).getTime())
+          (eventStart.getTime() -
+            startOfWeek(eventStart, {
+              weekStartsOn: this.weekStartsOn,
+            }).getTime())
         );
       }
 

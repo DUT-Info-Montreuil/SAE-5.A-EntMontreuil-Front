@@ -54,6 +54,12 @@ const routes: Routes = [
           import('./settings/settings.module').then((m) => m.SettingsModule),
         data: { title: 'Paramètres' },
       },
+      {
+        path: 'teacher/callroll',
+        loadChildren: () =>
+          import('./teacher/teacher.module').then((m) => m.TeacherModule),
+        data: { title: 'Teacher' },
+      },
     ],
   },
 ];
