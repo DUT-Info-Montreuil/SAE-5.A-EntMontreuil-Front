@@ -20,12 +20,16 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { TreeModule } from 'primeng/tree';
 import { CohortService } from '../core/services/cohort.service';
+import { TableModule } from 'primeng/table';
+import { CheckboxModule } from 'primeng/checkbox';
+import { FormatHourPipe } from './pipe/formatHour.pipe';
 
 
 
 @NgModule({
   declarations: [
-    CallrollComponent
+    CallrollComponent,
+    FormatHourPipe
   ],
   imports: [
     CommonModule,
@@ -50,6 +54,8 @@ import { CohortService } from '../core/services/cohort.service';
     TooltipModule,
     ButtonModule,
     ConfirmDialogModule,
+    TableModule,
+    CheckboxModule
   ],
   providers: [
     CohortService,

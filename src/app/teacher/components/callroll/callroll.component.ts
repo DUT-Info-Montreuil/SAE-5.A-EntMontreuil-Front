@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { addDays, parse, subDays } from 'date-fns';
 import { Course } from 'src/app/core/models/course.model';
+import { Student } from 'src/app/core/models/students-abs.model';
+import { CohortService } from 'src/app/core/services/cohort.service';
 import { CourseService } from 'src/app/core/services/courses.service';
+import { StudentsService } from 'src/app/core/services/students.service';
 
 @Component({
   selector: 'app-callroll',
@@ -17,8 +20,20 @@ export class CallrollComponent implements OnInit {
   dayEndHour: number = 20;
   hourSegments: number = 2;
 
+  selectedEventDetails: any = null;
+
+  students: Student[] = [];
+  selectedStudents: Student[] = [];
+  selectedStudentIds: number[] = [];
+
+  endCallChecked: boolean = false;
+
   handleEventClick(event: CalendarEvent): void {
-    console.log(event);
+    console.log('Event clicked', event);
+    this.selectedEventDetails = event.meta;
+    this.getStudentsForSelectedGroup(event.meta.groupType, event.meta.groupId, event.meta.courseid);
+    this.endCallChecked = false;
+    this.changeDetectorRef.detectChanges(); // Assurez-vous que la vue est mise à jour
   }
 
   ngOnInit(): void {
@@ -26,8 +41,22 @@ export class CallrollComponent implements OnInit {
     console.log(localStorage)
   }
 
-  constructor(private coursesService: CourseService, private router: Router, private changeDetectorRef: ChangeDetectorRef) {
+  constructor(private coursesService: CourseService, private router: Router, private changeDetectorRef: ChangeDetectorRef, private studentsService: StudentsService) {
 
+  }
+
+  async getStudentsForSelectedGroup(groupType: string, groupId: number, courseId: number): Promise<void> {
+
+    this.students = []; // Réinitialiser la liste des étudiants
+    this.selectedStudentIds = []; // Réinitialiser la liste des étudiants sélectionnés
+    this.selectedStudents = []; // Réinitialiser la liste des étudiants sélectionnés
+
+    try {
+      const studentsData = await this.studentsService.getStudentsByGroupType(groupType, groupId, courseId).toPromise();
+      this.students = studentsData!.students; // Stocker les étudiants dans une variable du composant
+    } catch (error) {
+      console.error('Erreur lors de la récupération des étudiants', error);
+    }
   }
 
   async createEventsFromCourses(coursesData: any) {
@@ -95,6 +124,8 @@ export class CallrollComponent implements OnInit {
             .join(', '),
           classroomName: course.classroom.map((c: any) => c.name).join(', '),
           groupName: groupName,
+          groupType: groupType,
+          groupId: groupId,
         },
       };
     });
@@ -131,5 +162,15 @@ export class CallrollComponent implements OnInit {
 
   next(): void {
     this.viewDate = addDays(this.viewDate, 1);
+  }
+
+  onRowSelect(event: any) {
+    this.selectedStudentIds.push(event.data.student_id);
+    console.log('Selected IDs:', this.selectedStudentIds);
+  }
+
+  onRowUnselect(event: any) {
+    this.selectedStudentIds = this.selectedStudentIds.filter(id => id !== event.data.student_id);
+    console.log('Selected IDs:', this.selectedStudentIds);
   }
 }

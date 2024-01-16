@@ -218,3 +218,11 @@
     margin-right: 10px; /* Espacement entre les boutons */
   }
   
+
+  .studentTable {
+    tr:last-child {
+      td {
+        border-radius: 50% !important;
+      }
+    }
+  }

@@ -61,4 +61,8 @@ export class CohortService {
         return Promise.resolve(this.getTreeNodesData());
     }
 
+    getStudentsByGroupType(group_type: string, group_id: number) {
+
+    }
+
 };
