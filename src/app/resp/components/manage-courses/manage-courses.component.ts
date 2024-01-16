@@ -108,6 +108,8 @@ export class ManageCoursesComponent {
     this.resources = [];
     this.events = [];
     this.tds = [];
+    this.tps = [];
+    this.copiedEvents = [];
 
     if (this.selectedPromotionId !== null) {
       this.selectedTrainingId = null;
@@ -165,6 +167,7 @@ export class ManageCoursesComponent {
     this.selectedTpId = null;
     this.tds = [];
     this.tps = [];
+    this.copiedEvents = [];
     if (this.selectedSemester && this.selectedPromotionId) {
       this.getTrainingOfPromo(this.selectedPromotionId, this.selectedSemester);
       this.courseService
@@ -221,6 +224,7 @@ export class ManageCoursesComponent {
     this.tds = [];
     this.tps = [];
     this.events = [];
+    this.copiedEvents = [];
     this.selectedTdId = null;
     this.selectedTpId = null;
     if (
@@ -246,6 +250,7 @@ export class ManageCoursesComponent {
   getTrainingOfPromo(promotionId: number, idSemester: number) {
     console.log('getTrainingOfPromo');
     this.trainings = [];
+    this.copiedEvents = [];
     this.courseService
       .getTrainingByPromotionAndSemester(promotionId, idSemester)
       .subscribe((data) => {
@@ -266,6 +271,7 @@ export class ManageCoursesComponent {
     this.trainings = [];
     this.tds = [];
     this.tps = [];
+    this.copiedEvents = [];
     this.selectedSemester = null;
     this.selectedTdId = null;
     this.selectedTrainingId = null;
@@ -480,6 +486,7 @@ export class ManageCoursesComponent {
     this.selectedTpId = null;
     if (this.selectedTdId !== null) {
       this.events = [];
+      this.copiedEvents = [];
       this.fetchTpsByTDId(this.selectedTdId);
       this.courseService
         .getCourseByTD(this.selectedTdId)
@@ -494,6 +501,7 @@ export class ManageCoursesComponent {
     console.log('onTpChange - TP selected:', this.selectedTpId);
     if (this.selectedTpId) {
       this.events = [];
+      this.copiedEvents = [];
       this.courseService
         .getCourseByTp(this.selectedTpId)
         .subscribe((data: any) => {
