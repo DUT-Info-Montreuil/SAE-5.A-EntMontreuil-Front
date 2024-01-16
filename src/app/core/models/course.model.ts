@@ -25,6 +25,8 @@ export class Course {
     capacity: number;
   }[];
 
+  training: number[];
+
   constructor(data: any) {
     this.id = data.id;
     this.startTime = data.startTime;
@@ -41,5 +43,6 @@ export class Course {
     this.promotion = data.promotion;
     this.teacher = data.teacher;
     this.classroom = data.classroom;
+    this.training = data.training;
   }
 }

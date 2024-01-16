@@ -31,6 +31,7 @@ export class CallrollComponent implements OnInit {
   }
 
   async createEventsFromCourses(coursesData: any) {
+    console.log(coursesData)
     let newEventsPromises = coursesData.map(async (courseData: any) => {
       const course: any = new Course(courseData); // Supposons que Course est une classe définie ailleurs
       course.dateCourse = courseData.courses.dateCourse;

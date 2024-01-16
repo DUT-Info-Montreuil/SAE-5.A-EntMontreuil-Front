@@ -130,6 +130,7 @@ export class CourseService {
   }
 
   getGroupName(id_group: number, groupType: string): Observable<any> {
+    console.log('getGroupName', id_group, groupType);
     let endpoint: string;
     switch (groupType) {
       case 'promotion':
