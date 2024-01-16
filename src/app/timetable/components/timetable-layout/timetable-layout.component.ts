@@ -3,8 +3,16 @@ import { CourseService } from 'src/app/core/services/courses.service';
 import { TrainingService } from 'src/app/core/services/trainings.service';
 import { Course } from 'src/app/core/models/course.model';
 import parse from 'date-fns/parse';
-import { CalendarEvent } from 'angular-calendar';
-import { addWeeks, endOfWeek, format, startOfWeek, subWeeks } from 'date-fns';
+import { CalendarEvent, CalendarView } from 'angular-calendar';
+import {
+  addDays,
+  addWeeks,
+  endOfWeek,
+  format,
+  startOfWeek,
+  subDays,
+  subWeeks,
+} from 'date-fns';
 import { TeachersService } from 'src/app/core/services/teachers.service';
 import { ClassroomService } from 'src/app/core/services/classroom.service';
 import { ClassroomsService } from 'src/app/core/services/classrooms.service';
@@ -35,7 +43,7 @@ export class TimetableLayoutComponent {
   dayEndHour: number = 20;
   hourSegments: number = 2; // Pour avoir des incréments de 30 minutes
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Semaine commence le lundi
-
+  view: CalendarView = CalendarView.Week;
   //promotion
   selectedPromotionId: any | null = null;
   promotions: any[] = [];
@@ -110,6 +118,16 @@ export class TimetableLayoutComponent {
     });
   }
 
+  handleDayClick(dayDate: Date): void {
+    this.viewDate = dayDate;
+    this.view = CalendarView.Day;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  switchToWeekView(): void {
+    this.view = CalendarView.Week;
+    this.changeDetectorRef.detectChanges();
+  }
   getTeacherCourses() {
     this.selectedUser = true;
     this.selectedTeacherUsername = null;
@@ -309,15 +327,21 @@ export class TimetableLayoutComponent {
     this.events.push(...newEvents);
     this.changeDetectorRef.detectChanges();
   }
-
-  previousWeek(): void {
-    this.viewDate = subWeeks(this.viewDate, 1);
+  previous(): void {
+    if (this.view === 'day') {
+      this.viewDate = subDays(this.viewDate, 1);
+    } else if (this.view === 'week') {
+      this.viewDate = subWeeks(this.viewDate, 1);
+    }
   }
 
-  nextWeek(): void {
-    this.viewDate = addWeeks(this.viewDate, 1);
+  next(): void {
+    if (this.view === 'day') {
+      this.viewDate = addDays(this.viewDate, 1);
+    } else if (this.view === 'week') {
+      this.viewDate = addWeeks(this.viewDate, 1);
+    }
   }
-
   handleEventClick(event: CalendarEvent): void {
     console.log(event);
     this.selectedCourse = event.meta.course;

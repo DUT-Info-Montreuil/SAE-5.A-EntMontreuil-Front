@@ -131,7 +131,6 @@
       [eventTitleTemplate]="customEventTitleTemplate"
       (eventClicked)="handleEventClick($event.event)"
     >
-      <!-- Utilisez le template 'mwl-calendar-header' pour personnaliser l'en-tête -->
     </mwl-calendar-day-view>
 
     <mwl-calendar-week-view
@@ -149,11 +148,6 @@
     >
     </mwl-calendar-week-view>
   </div>
-  <ng-template #customDayHeaderTemplate let-day="day">
-    <div class="custom-day-header">
-      {{ day.date | date : "EEEE d MMMM" }}
-    </div>
-  </ng-template>
 
   <div class="menu-section">
     <app-create-course
