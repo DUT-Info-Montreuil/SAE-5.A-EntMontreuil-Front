@@ -73,7 +73,6 @@ export class TimetableLayoutComponent {
     this.role = this.authService.getRole()
 
     this.authService.getUserInfo().subscribe((data)=>{
-      console.log(data)
       this.user = data
       if(this.role == "étudiant"){
         this.tdService.getTdInfo(this.user.academic_info.td.id).subscribe((data) => {
@@ -292,11 +291,10 @@ export class TimetableLayoutComponent {
     });
 
     const newEvents = await Promise.all(newEventsPromises);
-    this.events.push(...newEvents);
-    this.zone.run(() => {
-      this.changeDetectorRef.detectChanges();
-    });
+    this.events = [...this.events, newEventsPromises]; // Ajoutez la copie de l'événement à la liste des événements
     
+    this.events.push(...newEvents);
+    this.changeDetectorRef.detectChanges();
   }
 
   previousWeek(): void {
