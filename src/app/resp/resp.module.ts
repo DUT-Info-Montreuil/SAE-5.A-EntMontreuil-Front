@@ -42,6 +42,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { CalendarModule as PrimeNgCalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CheckboxModule } from 'primeng/checkbox';
 @NgModule({
   declarations: [
     CohortComponent,
@@ -58,6 +59,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MultiSelectModule,
+    CheckboxModule,
     RespRoutingModule,
     TreeModule,
     FormsModule,

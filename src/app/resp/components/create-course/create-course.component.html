@@ -19,6 +19,17 @@
     </div>
 
     <div class="form-group">
+      <label for="isControl">Contrôle</label>
+      <p-checkbox
+        id="isControl"
+        [binary]="true"
+        [value]="control"
+        (onChange)="onControlChange($event)"
+        name="isControl"
+      ></p-checkbox>
+    </div>
+
+    <div class="form-group">
       <label for="teachers">Enseignants</label>
       <p-multiSelect
         id="teachers"

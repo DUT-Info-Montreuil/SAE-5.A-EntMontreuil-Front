@@ -175,6 +175,9 @@
   #customEventTitleTemplate
   let-event="event"
 >
+  <span class="custom-event-title__control" *ngIf="event.meta.control"
+    >Contrôle</span
+  >
   <span class="custom-event-title__resource">{{
     event.meta.resourceName
   }}</span>
@@ -185,7 +188,6 @@
     event.meta.classroomName
   }}</span>
   <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
-  <!-- Ajout du groupName -->
 </ng-template>
 
 <app-course-details-modal

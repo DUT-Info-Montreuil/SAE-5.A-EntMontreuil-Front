@@ -95,6 +95,10 @@ export class CreateCourseComponent implements OnInit {
     );
   }
 
+  onControlChange(event: any) {
+    this.control = event.checked;
+  }
+
   resetForm() {
     this.date = new Date();
     this.startTime = '';
@@ -229,6 +233,7 @@ export class CreateCourseComponent implements OnInit {
             secondary: resourceColor, // You might want to set a secondary color as well
           },
           meta: {
+            control: this.control,
             groupName: groupName,
             groupType: selectionType,
             course: response.course[0].courses,

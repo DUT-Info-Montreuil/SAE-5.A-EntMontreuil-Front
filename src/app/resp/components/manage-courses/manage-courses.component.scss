@@ -98,6 +98,32 @@
   width: 100%;
 }
 
+/* Style pour l'élément .custom-event-title__control */
+.custom-event-title__control {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
+  border: 2px solid black; /* Bordure noire */
+  padding: 2px 6px; /* Espacement autour du texte */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+/* Style pour l'élément .custom-event-title__resource */
+.custom-event-title__resource {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 60%; /* Ajustez la position verticale si nécessaire */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; /* Place "Ressource Name" sous "Contrôle" */
+}
+
+/* Reste du CSS inchangé */
 .custom-event-title {
   position: absolute;
   top: 0;
@@ -108,15 +134,6 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 5px;
-}
-
-.custom-event-title__resource {
-  font-weight: bold;
-  font-size: 16px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .custom-event-title__teachers,
