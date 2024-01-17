@@ -66,6 +66,12 @@ const routes: Routes = [
           import('./statistics/statistics.module').then((m) => m.StatisticsModule),
         data: { title: 'Statistiques' },
       },
+      {
+        path: 'teacher/callroll',
+        loadChildren: () =>
+          import('./teacher/teacher.module').then((m) => m.TeacherModule),
+        data: { title: 'Teacher' },
+      }
     ],
   },
 ];

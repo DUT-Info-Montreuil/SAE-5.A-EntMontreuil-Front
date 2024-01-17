@@ -26,6 +26,8 @@ export class Course {
     capacity: number;
   }[];
 
+  training: number[];
+
   constructor(data: any) {
     this.id = data.id;
     this.startTime = data.startTime;

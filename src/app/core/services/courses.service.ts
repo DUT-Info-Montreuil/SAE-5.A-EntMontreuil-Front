@@ -17,7 +17,7 @@ export class CourseService {
     }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllPromotions(): Observable<Promotion[]> {
     return this.http.get<Promotion[]>(
@@ -74,6 +74,18 @@ export class CourseService {
       )
       .pipe(catchError(this.handleError));
   }
+
+  getCourseByTeacher(
+    username: string
+  ): Observable<Course[]> {
+    return this.http
+      .get<Course[]>(
+        `${this.apiURL}/courses/teacher/${username}`,
+        this.httpOptions
+      )
+      .pipe(catchError(this.handleError));
+  }
+
 
   getCourseByTD(IDtd: number): Observable<Course[]> {
     return this.http
@@ -140,6 +152,7 @@ export class CourseService {
   }
 
   getGroupName(id_group: number, groupType: string): Observable<any> {
+    console.log('getGroupName', id_group, groupType);
     let endpoint: string;
     switch (groupType) {
       case 'promotion':

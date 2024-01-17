@@ -1,0 +1,88 @@
+<div class="flex gap-5">
+    <div style="width:30%; min-width: 300px; padding-bottom: 10px; padding-right: 10px; padding-left: 10px; padding-top: 10px;"
+        class="border-round shadow-1">
+        <div class="cal-header flex align-items-center justify-content-between">
+            <div>
+                <p-button [rounded]=" true" [text]="true" (click)="previous()" icon="pi pi-chevron-left"
+                    [outlined]="true"></p-button>
+            </div>
+            <div class="period-text">
+                <span>{{ viewDate | date : "EEEE d MMMM y" }}</span>
+            </div>
+            <div>
+                <p-button [rounded]="true" [text]="true" (click)="next()" icon="pi pi-chevron-right"
+                    [outlined]="true"></p-button>
+            </div>
+        </div>
+
+        <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [dayStartHour]="dayStartHour"
+            [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [eventTitleTemplate]="customEventTitleTemplate"
+            (eventClicked)="handleEventClick($event.event)">
+        </mwl-calendar-day-view>
+    </div>
+
+    <div style="width: 100%" class="callView">
+        <div *ngIf="selectedEventDetails">
+            <!--<h3>Détails de l'Événement :</h3>
+            <p>ID du Groupe : {{ selectedEventDetails.groupId }}</p>
+            <p>Type de Groupe : {{ selectedEventDetails.groupType }}</p>
+            <p>Nom du Groupe : {{ selectedEventDetails.groupName }}</p>
+            <p>Nom de la Ressource : {{ selectedEventDetails.resourceName }}</p>-->
+
+            <h3 class="mb-5">Appel du {{ viewDate | date: "EEEE d MMMM y" }} pour le cours de
+                {{ selectedEventDetails.course.courses.startTime | formatHour }} à
+                {{ selectedEventDetails.course.courses.endTime | formatHour }}
+            </h3>
+
+            <div class="border-round shadow-1">
+                <p-table class="studentTable" [(selection)]="selectedStudents" [value]="students"
+                    [tableStyle]="{ 'min-width': '50rem' }" (onRowSelect)="onRowSelect($event)"
+                    (onRowUnselect)="onRowUnselect($event)" [(selection)]="selectedStudents">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>{{ students.length }} étudiants</th>
+                            <th>Absence</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-student>
+                        <tr>
+                            <td>{{student.first_name}} {{student.last_name}}</td>
+                            <td>
+                                <p-tableCheckbox [disabled]="endCallChecked" [value]="student"></p-tableCheckbox>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="7">Aucun étudiant.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
+            <div style="width: 100%; background-color: #f8f9fa; padding: 10px" class="mt-5 border-round shadow-1">
+                <div class="flex gap-5 align-items-center">
+                    <p-checkbox [binary]="true" class="endCallCheckbox" label="Appel terminé"
+                        [(ngModel)]="endCallChecked" (onChange)="onEndCallChange()"></p-checkbox>
+                    <span>{{ students.length - selectedStudentIds.length }} étudiants présents dans la salle</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
+    <span class="custom-event-title__resource">{{
+        event.meta.resourceName
+        }}</span>
+    <span class="custom-event-title__teachers">{{
+        event.meta.teacherNames
+        }}</span>
+    <span class="custom-event-title__classroom">{{
+        event.meta.classroomName
+        }}</span>
+    <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+    <!-- Ajout du groupName -->
+</ng-template>
+
+<p-toast></p-toast>
