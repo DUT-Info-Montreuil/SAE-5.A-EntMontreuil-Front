@@ -27,90 +27,29 @@
   height: 30px; // Hauteur pour un segment de 30 minutes
 }
 
-.custom-event {
-  padding: 5px;
-  color: black; /* Changer la couleur de texte si nécessaire */
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
 ::ng-deep .cal-week-view .cal-time-events .cal-event {
   display: flex;
   flex-direction: column;
 }
 
-::ng-deep mwl-calendar-event-title {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  color: black; /* Texte en noir */
-  padding: 4px; /* Espacement autour du contenu */
-  width: 100%;
-}
-
-/* Style pour l'élément .custom-event-title__control */
-.custom-event-title__control {
-  font-weight: bold;
-  font-size: 16px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
-  border: 2px solid black; /* Bordure noire */
-  padding: 2px 6px; /* Espacement autour du texte */
-  border-radius: 4px; /* Coins arrondis */
-}
-
-/* Style pour l'élément .custom-event-title__resource */
-.custom-event-title__resource {
-  font-weight: bold;
-  font-size: 16px;
-  position: absolute;
-  top: 60%; /* Ajustez la position verticale si nécessaire */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1; /* Place "Ressource Name" sous "Contrôle" */
-}
-
-/* Reste du CSS inchangé */
 .custom-event-title {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 5px;
+  font-weight: bold;
 }
 
-.custom-event-title__teachers,
-.custom-event-title__classroom,
-.custom-event-title__groupname {
-  font-size: 14px;
+.custom-event-time {
+  display: block; /* ou 'inline' selon la disposition souhaitée */
 }
 
-.custom-event-title__classroom {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
+/* manage-courses.component.scss */
 
-.custom-event-title__teachers {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
+.custom-event-title {
+  display: block; /* Make each span a block element to appear on a new line */
 
-.custom-event-title__groupname {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  &__resource,
+  &__teachers,
+  &__classroom {
+    font-size: 10px;
+  }
 }
 
 ::ng-deep .cal-week-view .cal-time {
@@ -130,6 +69,10 @@
 
 ::ng-deep .cal-week-view {
   border: none !important;
+}
+
+::ng-deep .cal-week-view .cal-day-headers .cal-header:last-child {
+  // border-top-right-radius: 5px !important;
 }
 
 ::ng-deep .cal-week-view .cal-time-events {
@@ -155,28 +98,76 @@
   width: 100%;
 }
 
-.custom-event-title__classroom {
-  order: 1; /* En haut */
-  padding: 2px;
-  text-align: left;
+::ng-deep .cal-event {
+  border: none !important;
+  opacity: 0.8 !important;
+  transition: 0.2s;
+  margin: 0 !important;
+  line-height: 20px !important;
+}
+
+::ng-deep .cal-event:hover {
+  opacity: 1 !important;
+}
+
+::ng-deep .cal-week-view .cal-time-events .cal-event {
+  width: calc(100% - 10px) !important;
+}
+
+.custom-event-title {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px;
 }
 
 .custom-event-title__resource {
-  order: 2; /* Au milieu */
-  padding: 2px;
-  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-event-title__teachers,
+.custom-event-title__classroom,
+.custom-event-title__groupname {
+  font-size: 14px;
+}
+
+.custom-event-title__classroom {
+  position: absolute;
+  top: 5px;
+  left: 5px;
 }
 
 .custom-event-title__teachers {
-  order: 3; /* En bas */
-  padding: 2px;
-  text-align: left;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
 }
 
 .custom-event-title__groupname {
-  order: 4; /* Ajouté */
-  padding: 2px;
-  text-align: right;
+  position: absolute;
+  bottom: 5px;
+  right: 16px;
+}
+
+.custom-event-title__control {
+  font-weight: bold;
+  position: absolute;
+  top: 13px;
+  right: -21px;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
+  padding: 2px 6px; /* Espacement autour du texte */
+  border-radius: 4px; /* Coins arrondis */
 }
 
 /* Style pour le conteneur principal */
@@ -246,10 +237,4 @@
   text-align: center;
   font-size: 18px;
   font-weight: bold;
-}
-
-/* CSS pour les boutons Copier et Coller */
-.button-container {
-  display: inline-block;
-  margin-right: 10px; /* Espacement entre les boutons */
 }

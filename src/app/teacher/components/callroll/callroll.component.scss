@@ -97,7 +97,7 @@
     padding: 4px; /* Espacement autour du contenu */
     width: 100%;
   }
-
+  
   ::ng-deep .cal-event {
     border: none !important;
     opacity: 0.8 !important;
@@ -105,9 +105,13 @@
     margin: 0 !important;
     line-height: 20px !important;
   }
-
+  
   ::ng-deep .cal-event:hover {
     opacity: 1 !important;
+  }
+  
+  ::ng-deep .cal-week-view .cal-time-events .cal-event {
+    width: calc(100% - 10px) !important;
   }
   
   .custom-event-title {
@@ -152,7 +156,18 @@
   .custom-event-title__groupname {
     position: absolute;
     bottom: 5px;
-    right: 5px;
+    right: 16px;
+  }
+  
+  .custom-event-title__control {
+    font-weight: bold;
+    position: absolute;
+    top: 13px;
+    right: -21px;
+    transform: translate(-50%, -50%);
+    z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
+    padding: 2px 6px; /* Espacement autour du texte */
+    border-radius: 4px; /* Coins arrondis */
   }
   
   /* Style pour le conteneur principal */
