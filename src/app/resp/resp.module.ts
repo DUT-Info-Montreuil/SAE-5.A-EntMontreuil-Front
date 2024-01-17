@@ -11,7 +11,7 @@ import {
 } from 'primeng/api';
 import { CohortService } from '../core/services/cohort.service';
 import { PromotionComponent } from './components/promotion/promotion.component';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
@@ -43,6 +43,20 @@ import { CalendarModule as PrimeNgCalendarModule } from 'primeng/calendar';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CheckboxModule } from 'primeng/checkbox';
+
+class CustomDateFormatter extends CalendarDateFormatter {
+  public override dayViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(date);
+  }
+
+  public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+  }
+}
+
 @NgModule({
   declarations: [
     CohortComponent,
@@ -94,9 +108,10 @@ import { CheckboxModule } from 'primeng/checkbox';
     MessageService,
     ContextMenuService,
     ConfirmationService,
+    { provide: CalendarDateFormatter, useClass: CustomDateFormatter }
   ],
 })
-export class RespModule {}
+export class RespModule { }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
     Copyright (C) 2024  Steven CHING, Emilio CYRIAQUE-SOURISSEAU ALVARO-SEMEDO, Ismail GADA, Yanis HAMANI, Priyank SOLANKI
 

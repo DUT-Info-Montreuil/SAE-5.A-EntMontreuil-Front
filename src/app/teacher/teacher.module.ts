@@ -4,7 +4,7 @@ import { CallrollComponent } from './components/callroll/callroll.component';
 import { TeacherRoutingModule } from './teacher-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -24,7 +24,18 @@ import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormatHourPipe } from './pipe/formatHour.pipe';
 
+class CustomDateFormatter extends CalendarDateFormatter {
+  public override dayViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(date);
+  }
 
+  public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -62,6 +73,7 @@ import { FormatHourPipe } from './pipe/formatHour.pipe';
     MessageService,
     ConfirmationService,
     MessageService,
+    { provide: CalendarDateFormatter, useClass: CustomDateFormatter }
   ],
 })
 export class TeacherModule { }
