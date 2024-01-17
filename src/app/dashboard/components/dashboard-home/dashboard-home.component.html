@@ -74,26 +74,27 @@
             <div class="panel-item shadow-1 border-round border-300 w-full" *ngIf="role == 'étudiant'">
                 <div class="panel-header p-3 border-round">
                     <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-clock" style="margin-right: 7px"></i>
-                        Absences
+                        Absences injustifiées ({{nbAbsences}})
                     </h1>
                 </div>
 
                 <div class="panel-content p-3" style="padding-top: 10px !important">
-                    <p-table [value]="absences" [rows]="3">
+                    <p-table [value]="absences.slice(0, 3)" [rows]="2">
                         <ng-template pTemplate="header">
                         </ng-template>
                         <ng-template pTemplate="body" let-absence>
                             <tr routerLink="/absences">
                                 <td style="width: 10px">
-                                    <ng-container *ngIf="absence.justify; else notJustified">
-                                        <div class="text-green-500">
+                                    <ng-container *ngIf="absence.justify; else notJustified" >
+                                        <div style="color: #FA896B">
                                             <svg xmlns="http://www.w3.org/2000/svg"
-                                                class="icon icon-tabler icon-tabler-circle-check" width="32" height="32"
-                                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                                stroke-linecap="round" stroke-linejoin="round">
+                                                class="icon icon-tabler icon-tabler-exclamation-circle" width="32"
+                                                height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
                                                 <path stroke="none" d="M0 0h24v24H0z" fill="none" />
                                                 <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-                                                <path d="M9 12l2 2l4 -4" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 16v.01" />
                                             </svg>
                                         </div>
                                     </ng-container>
@@ -142,12 +143,12 @@
             <div class="panel-item shadow-1 border-round border-300 w-full">
                 <div class="panel-header p-3 border-round">
                     <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-bolt" style="margin-right: 7px"></i>
-                        Rappels
+                        Rappels ({{nbReminders}})
                     </h1>
                 </div>
 
                 <div class="panel-content p-3" style="padding-top: 10px !important">
-                    <p-table [value]="reminders" [rows]="3">
+                    <p-table [value]="reminders.slice(0, 3)" [rows]="2">
                         <ng-template pTemplate="header">
                         </ng-template>
                         <ng-template pTemplate="body" let-reminder>
