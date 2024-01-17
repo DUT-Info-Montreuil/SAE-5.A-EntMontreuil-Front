@@ -75,17 +75,6 @@ export class CourseService {
       .pipe(catchError(this.handleError));
   }
 
-  getCourseByTeacher(
-    username: string
-  ): Observable<Course[]> {
-    return this.http
-      .get<Course[]>(
-        `${this.apiURL}/courses/teacher/${username}`,
-        this.httpOptions
-      )
-      .pipe(catchError(this.handleError));
-  }
-
 
   getCourseByTD(IDtd: number): Observable<Course[]> {
     return this.http
