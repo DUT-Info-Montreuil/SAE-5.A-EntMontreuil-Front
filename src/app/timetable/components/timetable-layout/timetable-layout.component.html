@@ -2,48 +2,32 @@
   <div class="calendar-section">
     <div class="dropdown-section">
       <div class="flex gap-3">
-        <p-dropdown
-          [options]="promotions"
-          (onChange)="onPromotionChange()"
-          [(ngModel)]="selectedPromotionId"
-          optionLabel="uniqueLabel"
-          placeholder="Sélectionnez une promotion"
-        ></p-dropdown>
-        <p-dropdown
-          [options]="teachers"
-          (onChange)="onTeacherChange()"
-          [(ngModel)]="selectedTeacherUsername"
-          optionLabel="uniqueLabel2"
-          placeholder="Sélectionnez un professeur"
-        ></p-dropdown>
-        <p-dropdown
-          [options]="classrooms"
-          (onChange)="onClasseroomChange()"
-          [(ngModel)]="selectedClassroomName"
-          optionLabel="uniqueLabel3"
-          placeholder="Sélectionnez une salle de classe"
-        ></p-dropdown>
-        <p-button
-          *ngIf="role == 'enseignant' && !selectedUser"
-          label="Mon emploi du temps"
-          (onClick)="getTeacherCourses()"
-        ></p-button>
-        <p-button
-          *ngIf="role == 'étudiant' && !selectedUser"
-          label="Mon emploi du temps"
-          (onClick)="getStudentCourses()"
-        ></p-button>
+        <span class="p-float-label">
+          <p-dropdown [options]="promotions" (onChange)="onPromotionChange()" [(ngModel)]="selectedPromotionId"
+            optionLabel="uniqueLabel" placeholder="Promotion" inputId="promotion"></p-dropdown>
+          <label for="promotion">Promotion</label>
+        </span>
+        <span class="p-float-label">
+          <p-dropdown [options]="teachers" (onChange)="onTeacherChange()" [(ngModel)]="selectedTeacherUsername"
+            optionLabel="uniqueLabel2" placeholder="Professeur" inputId="teacher"></p-dropdown>
+          <label for="teacher">Professeur</label>
+        </span>
+        <span class="p-float-label">
+          <p-dropdown [options]="classrooms" (onChange)="onClasseroomChange()" [(ngModel)]="selectedClassroomName"
+            optionLabel="uniqueLabel3" placeholder="Sélectionner une salle de classe" inputId="classroom"></p-dropdown>
+          <label for="classroom">Salle de classe</label>
+        </span>
+
+        <p-button *ngIf="role == 'enseignant' && !selectedUser" label="Mon emploi du temps"
+          (onClick)="getTeacherCourses()"></p-button>
+        <p-button *ngIf="role == 'étudiant' && !selectedUser" label="Mon emploi du temps"
+          (onClick)="getStudentCourses()"></p-button>
       </div>
     </div>
 
     <div class="header-container">
       <div class="button-container">
-        <p-button
-          [rounded]="true"
-          [text]="true"
-          (click)="previous()"
-          icon="pi pi-chevron-left"
-        ></p-button>
+        <p-button [rounded]="true" [text]="true" (click)="previous()" icon="pi pi-chevron-left"></p-button>
       </div>
       <div class="period-text">
         <ng-container *ngIf="view === 'week'; else dayHeader">
@@ -52,67 +36,40 @@
         <ng-template #dayHeader>
           <!-- Ajoutez ici le contenu de l'en-tête du jour -->
           <div class="day-header" (click)="switchToWeekView()">
-            <span>{{ viewDate | date : "EEEE d  MMMM  y" }}</span>
+            <span>{{ viewDate | date : "EEEE d MMMM y" }}</span>
           </div>
         </ng-template>
       </div>
       <div class="button-container">
-        <p-button
-          [rounded]="true"
-          [text]="true"
-          (click)="next()"
-          icon="pi pi-chevron-right"
-        ></p-button>
+        <p-button [rounded]="true" [text]="true" (click)="next()" icon="pi pi-chevron-right"></p-button>
       </div>
     </div>
 
-    <mwl-calendar-day-view
-      *ngIf="view === 'day'"
-      [viewDate]="viewDate"
-      [events]="events"
-      [dayStartHour]="dayStartHour"
-      [dayEndHour]="dayEndHour"
-      [hourSegments]="hourSegments"
-      [eventTitleTemplate]="customEventTitleTemplate"
-      (eventClicked)="handleEventClick($event.event)"
-    >
+    <mwl-calendar-day-view *ngIf="view === 'day'" [viewDate]="viewDate" [events]="events" [dayStartHour]="dayStartHour"
+      [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [eventTitleTemplate]="customEventTitleTemplate"
+      (eventClicked)="handleEventClick($event.event)">
       <!-- Utilisez le template 'mwl-calendar-header' pour personnaliser l'en-tête -->
     </mwl-calendar-day-view>
 
-    <mwl-calendar-week-view
-      *ngIf="view === 'week'"
-      [viewDate]="viewDate"
-      [excludeDays]="excludeDays"
-      [events]="events"
-      [dayStartHour]="dayStartHour"
-      [dayEndHour]="dayEndHour"
-      [hourSegments]="hourSegments"
-      [weekStartsOn]="1"
-      [eventTitleTemplate]="customEventTitleTemplate"
-      (eventClicked)="handleEventClick($event.event)"
-      (dayHeaderClicked)="handleDayClick($event.day.date)"
-    >
+    <mwl-calendar-week-view *ngIf="view === 'week'" [viewDate]="viewDate" [excludeDays]="excludeDays" [events]="events"
+      [dayStartHour]="dayStartHour" [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [weekStartsOn]="1"
+      [eventTitleTemplate]="customEventTitleTemplate" (eventClicked)="handleEventClick($event.event)"
+      (dayHeaderClicked)="handleDayClick($event.day.date)">
     </mwl-calendar-week-view>
   </div>
 </div>
 
-<ng-template
-  class="custom-event-title"
-  #customEventTitleTemplate
-  let-event="event"
->
-  <span class="custom-event-title__control" *ngIf="event.meta.control"
-    >Contrôle</span
-  >
+<ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
+  <span class="custom-event-title__control" *ngIf="event.meta.control">Contrôle</span>
   <span class="custom-event-title__resource">{{
     event.meta.resourceName
-  }}</span>
+    }}</span>
   <span class="custom-event-title__teachers">{{
     event.meta.teacherNames
-  }}</span>
+    }}</span>
   <span class="custom-event-title__classroom">{{
     event.meta.classroomName
-  }}</span>
+    }}</span>
   <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
 </ng-template>
 <ng-template #customDayHeaderTemplate let-day="day">
