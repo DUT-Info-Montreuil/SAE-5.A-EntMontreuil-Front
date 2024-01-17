@@ -114,6 +114,10 @@
   width: calc(100% - 10px) !important;
 }
 
+::ng-deep .cal-week-view .cal-header {
+  cursor: pointer !important;
+}
+
 .custom-event-title {
   position: absolute;
   top: 0;
@@ -177,10 +181,9 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ddd;
+  background-color: #ffffff;
   border-radius: 5px;
 }
 
@@ -206,14 +209,13 @@
   cursor: pointer; /* Définissez le curseur sur pointer pour montrer qu'il est cliquable */
   transition: background-color 0.3s ease; /* Ajoutez une transition pour l'effet de survol */
   padding: 10px;
-  background-color: #f0f0f0; /* Couleur de fond de base */
-  border: 1px solid #ddd;
+  background-color: #ffffff; /* Couleur de fond de base */
   border-radius: 5px;
 }
 
 /* Style au survol de la souris */
 .day-header:hover {
-  background-color: #e0e0e0; /* Changez la couleur d'arrière-plan au survol */
+  background-color: #f3f3f3; /* Changez la couleur d'arrière-plan au survol */
 }
 
 /* Style au survol de la souris */
