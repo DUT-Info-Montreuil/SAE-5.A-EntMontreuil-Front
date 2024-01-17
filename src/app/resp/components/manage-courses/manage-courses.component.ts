@@ -692,6 +692,8 @@ export class ManageCoursesComponent {
         classrooms_id: classroomIds,
       };
 
+      console.log(meta);
+
       if (meta.groupType === 'promotion') {
         courseData.id_promotion = meta.groupId;
       } else if (meta.groupType === 'training') {
