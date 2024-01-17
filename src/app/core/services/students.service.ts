@@ -70,4 +70,14 @@ export class StudentsService implements OnInit {
     getStudentsByGroupType(group_type: string, group_id: number, course_id: number) {
         return this.http.get<StudentABS>(this.apiURL + "/students/group?groupType=" + group_type + "&id=" + group_id + "&courseId=" + course_id, this.httpOptions);
     }
+
+    createAbsences(course_id: number, student_ids: number[]) {
+
+        const body = {
+            course_id: course_id,
+            student_ids: student_ids
+        };
+
+        return this.http.post<any>(this.apiURL + '/absences/create-absences', body, this.httpOptions)
+    }
 }

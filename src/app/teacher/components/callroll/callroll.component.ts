@@ -58,6 +58,9 @@ export class CallrollComponent implements OnInit {
       this.selectedStudentIds = this.students
         .filter(student => student.is_absent)
         .map(student => student.student_id);
+
+      const isAnyAbsent = this.students.some(student => student.is_absent);
+      this.endCallChecked = isAnyAbsent;
     } catch (error) {
       console.error('Erreur lors de la récupération des étudiants', error);
     }
@@ -176,5 +179,21 @@ export class CallrollComponent implements OnInit {
   onRowUnselect(event: any) {
     this.selectedStudentIds = this.selectedStudentIds.filter(id => id !== event.data.student_id);
     console.log('Selected IDs:', this.selectedStudentIds);
+  }
+
+  onEndCallChange() {
+    if (this.endCallChecked) {
+      // Appeler l'API
+      this.createAbsences(this.selectedEventDetails.courseid, this.selectedStudentIds);
+    }
+  }
+
+  async createAbsences(course_id: number, student_ids: number[]) {
+    try {
+      const response = await this.studentsService.createAbsences(course_id, student_ids).toPromise();
+      console.log(response);
+    } catch (error) {
+      console.error('Erreur lors de la création des absences', error);
+    }
   }
 }

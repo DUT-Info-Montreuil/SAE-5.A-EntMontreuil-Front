@@ -63,7 +63,7 @@
             <div style="width: 100%; background-color: #f8f9fa; padding: 10px" class="mt-5 border-round shadow-1">
                 <div class="flex gap-5 align-items-center">
                     <p-checkbox [binary]="true" class="endCallCheckbox" label="Appel terminé"
-                        [(ngModel)]="endCallChecked"></p-checkbox>
+                        [(ngModel)]="endCallChecked" (onChange)="onEndCallChange()"></p-checkbox>
                     <span>{{ students.length - selectedStudentIds.length }} étudiants présents dans la salle</span>
                 </div>
             </div>
