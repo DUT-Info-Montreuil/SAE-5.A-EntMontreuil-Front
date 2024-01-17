@@ -597,7 +597,11 @@ export class ManageCoursesComponent {
 
     const copiedEventsToPaste = this.copiedEvents.map((copiedEvent) => {
       const eventCopy = JSON.parse(JSON.stringify(copiedEvent));
-      console.log(eventCopy);
+
+      // Réaffecter les objets Date
+      eventCopy.start = new Date(eventCopy.start);
+      eventCopy.end = new Date(eventCopy.end || eventCopy.start);
+
       const eventStart = eventCopy.start;
       const eventEnd = eventCopy.end || eventStart; // Si 'eventEnd' n'est pas défini, utiliser 'eventStart'
 
