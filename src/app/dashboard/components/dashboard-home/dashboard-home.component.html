@@ -16,7 +16,7 @@
         </div>
 
         <div class="stats-container grid mt-4">
-            <div class="col-12 md:col-6 lg:col-4">
+            <div class="col-12 md:col-6 lg:col-4" *ngIf="role == 'étudiant'">
                 <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
                     style="background-color: #FDEDE8; padding-bottom: -20px">
                     <div>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="panel-container mt-4 flex gap-3">
-            <div class="panel-item shadow-1 border-round border-300 w-full">
+            <div class="panel-item shadow-1 border-round border-300 w-full" *ngIf="role == 'étudiant'">
                 <div class="panel-header p-3 border-round">
                     <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-clock" style="margin-right: 7px"></i>
                         Absences
