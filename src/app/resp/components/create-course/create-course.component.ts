@@ -323,12 +323,18 @@ export class CreateCourseComponent implements OnInit {
 
     const startHour = parseInt(this.startTime.split(':')[0]);
     const endHour = parseInt(this.endTime.split(':')[0]);
+    if (startHour < 8 || endHour > 20 || endHour <= startHour) {
+      let detailMessage =
+        'Le cours doit commencer après 8h et finir avant 20h.';
+      if (endHour <= startHour) {
+        detailMessage =
+          "L'heure de fin doit être supérieure à l'heure de début.";
+      }
 
-    if (startHour < 8 || endHour > 20) {
       this.messageService.add({
         severity: 'error',
         summary: "Erreur d'horaire",
-        detail: 'Le cours doit commencer après 8h et finir avant 20h.',
+        detail: detailMessage,
       });
       return false;
     }
