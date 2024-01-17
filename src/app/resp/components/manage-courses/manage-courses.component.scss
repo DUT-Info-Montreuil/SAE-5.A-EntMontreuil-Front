@@ -98,6 +98,18 @@
   width: 100%;
 }
 
+::ng-deep .cal-event {
+  border: none !important;
+  opacity: 0.8 !important;
+  transition: 0.2s;
+  margin: 0 !important;
+  line-height: 20px !important;
+}
+
+::ng-deep .cal-event:hover {
+  opacity: 1 !important;
+}
+
 .custom-event-title {
   position: absolute;
   top: 0;
@@ -127,20 +139,20 @@
 
 .custom-event-title__classroom {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 5px;
 }
 
 .custom-event-title__teachers {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 5px;
+  left: 5px;
 }
 
 .custom-event-title__groupname {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 5px;
+  right: 5px;
 }
 
 /* Style pour le conteneur principal */

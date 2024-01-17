@@ -202,4 +202,6 @@ export class CallrollComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Erreur', detail: "Erreur lors de la validation de l'appel. Veuillez réessayer." });
     }
   }
+
+
 }
