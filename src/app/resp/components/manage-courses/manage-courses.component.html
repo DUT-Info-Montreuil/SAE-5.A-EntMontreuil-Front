@@ -71,7 +71,7 @@
         <ng-container *ngIf="!copiedEvents.length; else copyAndClearButtons">
           <p-button
             [icon]="'pi pi-copy'"
-            (click)="copyEventsToCurrentWeek()"
+            (click)="copyEventsToClipboard()"
             label="Copier les cours"
             class="copy-button"
           ></p-button>
