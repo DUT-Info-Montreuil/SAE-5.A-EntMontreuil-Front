@@ -18,7 +18,7 @@ import {
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import parse from 'date-fns/parse';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Ressource } from 'src/app/admin/models/ressource.model';
@@ -85,7 +85,8 @@ export class ManageCoursesComponent {
     private deegreeService: DegreeService,
     private ressourceService: RessourceService,
     private trainingService: TrainingService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.courseService.getAllPromotions().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -577,6 +578,15 @@ export class ManageCoursesComponent {
     }
   }
 
+  confirmCopyEvents(): void {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir coller les cours copiés ?',
+      accept: () => {
+        this.pasteEventsFromClipboard();
+      },
+    });
+  }
+
   async pasteEventsFromClipboard() {
     if (!this.copiedEvents || this.copiedEvents.length === 0) {
       // Il n'y a pas d'événements copiés, ne rien faire
@@ -624,8 +634,23 @@ export class ManageCoursesComponent {
     for (const eventToPaste of copiedEventsToPaste) {
       await this.addEventToDatabase(eventToPaste);
     }
-
+    this.copiedEvents = []; // Vide copiedEvents
     this.changeDetectorRef.detectChanges();
+    this.showSuccessToast();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  showSuccessToast() {
+    const viewType = this.view === CalendarView.Week ? 'Semaine' : 'Journée';
+    const viewDateFormatted = format(this.viewDate, 'dd MMMM yyyy', {
+      locale: fr,
+    });
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Cours Dupliqués',
+      detail: `Les cours ont été dupliqués avec succès pour la ${viewType} du ${viewDateFormatted}.`,
+    });
   }
 
   // Fonction d'assistance pour obtenir le début de la vue actuelle (jour ou semaine)
