@@ -1,27 +1,49 @@
-# ENT
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.7.
+# ENT Montreuil
 
-## Development server
+Un nouvel ENT pour l'IUT de Montreuil.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Partie FRONT de l'application. Pour utiliser le site, il est nécessaire d'avoir également  la partie BACK, qui est à retrouver ici : 
+[SAE-5.A-EntMontreuil-Back](https://github.com/DUT-Info-Montreuil/SAE-5.A-EntMontreuil-Back)
 
-## Code scaffolding
+## Lancer l'application
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Pour utiliser ces commandes il faut avoir les installations de Docker et Docker Compose liées.
 
-## Build
+Se placer aux même niveaux que les DockerFile pour pouvoir exécuter ces commandes
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+DockerFile Back : 
+```bash
+  Docker run -d ismailskr/sae-back:latest
+```
 
-## Running unit tests
+DockerFile Front : 
+```bash
+  Docker run -d ismailskr/sae-front:latest
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Docker Compose: 
+```bash
+  Docker compose up –build
+```
 
-## Running end-to-end tests
+## Utiliser l'application
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+[Documentation ENT Montreuil](https://docs.google.com/document/d/1-bF4c_pGzhYbhibzKBfT6DdOkeBLlL2o3GCdnnRTY64/edit?usp=sharing)
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Auteurs
+
+- [Emilio CYRIAQUE](https://github.com/ecyriaque)
+- [Ismail GADA](https://github.com/IsmailSKR)
+- [Priyank SOLANKI](https://github.com/PriyankSolanki)
+- [Steven CHING](https://github.com/stvenchg)
+- [Yanis HAMANI](https://github.com/YanisTTC)
+
+
+## Licence
+
+
+[![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://www.gnu.org/licenses/gpl-3.0.txt)
+
+
