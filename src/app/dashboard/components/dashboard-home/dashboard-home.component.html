@@ -83,18 +83,29 @@
         </div>
     </p-panel>
    
-    <ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
+    <ng-template
+    class="custom-event-title"
+    #customEventTitleTemplate
+    let-event="event"
+    >
+        <span class="custom-event-title__control" *ngIf="event.meta.control"
+            >Contrôle</span
+        >
         <span class="custom-event-title__resource">{{
             event.meta.resourceName
-            }}</span>
+        }}</span>
         <span class="custom-event-title__teachers">{{
             event.meta.teacherNames
-            }}</span>
+        }}</span>
         <span class="custom-event-title__classroom">{{
             event.meta.classroomName
-            }}</span>
+        }}</span>
         <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
-        <!-- Ajout du groupName -->
+        </ng-template>
+        <ng-template #customDayHeaderTemplate let-day="day">
+        <div class="custom-day-header">
+            {{ day.date | date : "EEEE d MMMM" }}
+        </div>
     </ng-template>
 
 

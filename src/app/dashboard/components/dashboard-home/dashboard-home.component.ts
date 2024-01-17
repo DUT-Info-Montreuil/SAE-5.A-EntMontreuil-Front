@@ -234,6 +234,7 @@ export class DashboardHomeComponent implements OnInit {
           secondary: course.resource.color || '#ffcc00',
         },
         meta: {
+          control: courseData.courses.control,
           course: courseData,
           courseid: courseData.courses.id,
           resourceName: course.resource.name,
