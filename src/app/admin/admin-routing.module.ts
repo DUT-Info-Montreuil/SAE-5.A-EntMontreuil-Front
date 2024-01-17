@@ -15,6 +15,7 @@ import { ClassroomsComponent } from './components/classrooms/classrooms.componen
 import { SingleClassroomComponent } from './components/single-classroom/single-classroom.component';
 import { DegreeListComponent } from './components/degree-list/degree-list.component';
 import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
+import { PromotionListComponent } from './components/promotion-list/promotion-list.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,11 @@ const routes: Routes = [
   {
     path: 'ressources',
     component: RessourceListComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'promotions',
+    component: PromotionListComponent,
     canActivate: [AuthGuard],
   },
 ];

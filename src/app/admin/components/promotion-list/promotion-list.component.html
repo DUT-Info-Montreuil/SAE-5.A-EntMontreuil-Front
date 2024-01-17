@@ -1,0 +1,133 @@
+<div class="container">
+    <app-create-promotion
+      *ngIf="displayCreatePromotionDialog"
+      [degrees] = "degrees"
+    ></app-create-promotion>
+  
+    <div
+      class="flex align-item-center border-round p-4 relative"
+      style="background-color: rgb(239, 244, 255)"
+    >
+      <div>
+        <h1 class="text-2xl font-semibold">Gestion des promotions</h1>
+        <p class="text-900 -mt-2">Créer, modifier ou supprimer des promotions.</p>
+      </div>
+      <div
+        class="absolute hidden sm:hidden md:block"
+        style="top: -10px; right: 50px"
+      >
+        <img src="/assets/images/3dicons/rocket.png" alt="cube" width="180px" />
+      </div>
+    </div>
+  
+    <!-- Search and Add Section -->
+    <div class="shadow-1 border-round mt-7 p-4 pt-2">
+      <h1 class="text-lg font-medium">Promotions</h1>
+  
+      <div class="flex justify-content-between mt-5 mb-4">
+        <p-button
+          icon="pi pi-plus"
+          label="Créer une promotion"
+          class="custom-button"
+          (click)="showCreatePromotionDialog()"
+        ></p-button>
+      </div>
+      <!--(click)="showCreateTrainingDialog()"-->
+      <!-- Training Table with PrimeNG -->
+      <p-table
+        *ngIf="!isLoading; else tableSkeleton"
+        [value]="filteredPromotions"
+        [paginator]="true"
+        [rows]="10"
+        [responsiveLayout]="scroll"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} promotions"
+        [rowsPerPageOptions]="[5, 10, 20, 50]"
+        >>
+        <ng-template pTemplate="header">
+          <tr>
+            <th>ID de la promotion</th>
+            <th>Année de la promotion</th>
+            <th>Niveau de la promotion</th>
+  
+            <th>
+              <p-dropdown
+                class="ml-2"
+                [options]="degrees"
+                (onChange)="onDegreeFilter($event)"
+                [placeholder]="'Toutes'"
+                optionLabel="name"
+                optionValue="id"
+                appendTo="body"
+                [showClear]="true"
+              >
+              </p-dropdown>
+            </th>
+            <th>Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-promotion>
+          <tr>
+            <td>#{{ promotion.id }}</td>
+            <td *ngIf="!promotion.isEditing">
+              <ng-container *ngIf="!promotion.isLoading; else singleSkeleton">
+                {{ promotion.year }}
+              </ng-container>
+            </td>
+            <td *ngIf="promotion.isEditing">
+              <input pInputText type="text" [(ngModel)]="promotion.updatedName" />
+            </td>
+            <td *ngIf="!promotion.isEditing">BUT {{ promotion.level }}</td>
+            <td *ngIf="!promotion.isEditing">{{ promotion.degree_name }}</td>
+            <td class="flex justify-content-evenly">
+              <div
+                *ngIf="!promotion.isEditing"
+                class="flex align-items-center justify-content-center"
+              >
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Modifier"
+                  tooltipPosition="top"
+                  type="button"
+                  icon="pi pi-pencil"
+                  class="p-button-rounded p-button-text"
+                  (click)="startEditing(promotion)"
+                ></button>
+                <button
+                  pButton
+                  pRipple
+                  pTooltip="Supprimer"
+                  tooltipPosition="top"
+                  icon="pi pi-trash"
+                  class="p-button-rounded p-button-text p-button-danger"
+                  (click)="confirmDelete(promotion)"
+                ></button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="5">Aucune promotion.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  
+  <!-- Confirmation Dialog and Toast Messages -->
+  <p-confirmDialog
+    header="Supprimer"
+    icon="pi pi-exclamation-triangle"
+  ></p-confirmDialog>
+  <p-toast></p-toast>
+  
+  <ng-template #singleSkeleton>
+    <p-skeleton width="30%" height="22px"></p-skeleton>
+  </ng-template>
+  
+  <ng-template #tableSkeleton>
+    <p-skeleton width="100%" height="600px"></p-skeleton>
+  </ng-template>
+  

@@ -23,6 +23,10 @@ export class DegreeService {
     return this.http.get<Degree[]>(this.apiURL + '/degrees', this.httpOptions);
   }
 
+  getAllDegrees_any(): Observable<any[]> {
+    return this.http.get<any[]>(this.apiURL + '/degrees', this.httpOptions);
+  }
+
   // Get a specific degree by ID
   getDegree(id: number): Observable<Degree> {
     return this.http.get<Degree>(

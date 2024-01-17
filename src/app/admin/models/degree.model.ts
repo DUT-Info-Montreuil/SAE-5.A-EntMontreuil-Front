@@ -3,6 +3,14 @@ export class Degree {
   name!: string; // Name of the degree
   isEditing: boolean = false; // Whether the degree is being edited
   updatedName: string = ''; // Updated name of the degree
+
+  constructor(
+    id: number,
+    name: string,
+  ) {
+    this.id = id;
+    this.name = name;
+  }
 }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
     Copyright (C) 2024  Steven CHING, Emilio CYRIAQUE-SOURISSEAU ALVARO-SEMEDO, Ismail GADA, Yanis HAMANI, Priyank SOLANKI
