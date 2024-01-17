@@ -1,3 +1,113 @@
-<div class="dashboard-home">
-    <h1>Tableau de Bord</h1>
-</div>
+<h1>Bonjour {{username}} 👋</h1>
+
+<div class="dashboard-home p-flex">
+
+    <div class="dashboard">
+
+        <div class="dashboard-values p-flex">
+
+            <p-card class="card-item" header="Absences" *ngIf="role==='étudiant'">
+                <p class="m-0 ">Injustifiées: {{nbAbsences}} </p>
+            </p-card>
+    
+            <p-card class="card-item" header="Rappels">
+                <p class="m-0">En cours : {{nbReminders}} </p>
+            </p-card>
+
+            <p-card class="card-item" header="Cours">
+                <p class="m-0">Cette semaine : {{nbCoursesThisWeek}} </p>
+            </p-card>
+        </div>
+
+        <div class="dashboard-values p-flex">
+            <p-panel *ngIf="role==='étudiant'">
+                <p-header>
+                    <i class="pi pi-user-minus" style="color: red"></i>
+                    Absences Injustifiées ({{nbAbsences}})
+                </p-header>
+                <div class="grid-container">
+                    <div class="grid-item red-500" *ngFor="let abs of absences; let i = index">
+                        <div *ngIf="i < 3" routerLink="/absences" style="cursor: pointer;"> 
+                            <p class="red-absence">
+                                <span class="resource-name">{{ abs.resource_name }} : </span>
+                                <span class="course-date">{{ abs.course_date }}</span> </p>                          
+                            <p-divider></p-divider>
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+        
+            <p-panel>
+                <p-header>
+                    <i class="pi pi-bell" style="color: blue"></i>
+                    Rappels
+                </p-header>
+                <div class="grid-container">
+                    <div class="grid-item blue-500" *ngFor="let remind of reminders; let i = index">
+                        <div *ngIf="i < 3" routerLink="/reminders" style="cursor: pointer;"> 
+                            <p class="blue-reminder">{{ remind.title }}</p> 
+                            <p-divider></p-divider>
+                        </div>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+        
+        
+        
+        
+    </div> 
+    
+    <p-panel header="Emploi du temps">
+        <div >
+
+            <div class="cal-header flex align-items-center justify-content-between">
+                <div>
+                    <p-button [rounded]=" true" [text]="true" (click)="previous()" icon="pi pi-chevron-left"
+                        [outlined]="true"></p-button>
+                </div>
+                <div class="period-text">
+                    <span>{{ viewDate | date : "EEEE d MMMM y" }}</span>
+                </div>
+                <div>
+                    <p-button [rounded]="true" [text]="true" (click)="next()" icon="pi pi-chevron-right"
+                        [outlined]="true"></p-button>
+                </div>
+            </div>
+    
+
+            <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [dayStartHour]="dayStartHour"
+                [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [eventTitleTemplate]="customEventTitleTemplate"
+                (eventClicked)="handleEventClick($event.event)">
+            </mwl-calendar-day-view>
+        </div>
+    </p-panel>
+   
+    <ng-template
+    class="custom-event-title"
+    #customEventTitleTemplate
+    let-event="event"
+    >
+        <span class="custom-event-title__control" *ngIf="event.meta.control"
+            >Contrôle</span
+        >
+        <span class="custom-event-title__resource">{{
+            event.meta.resourceName
+        }}</span>
+        <span class="custom-event-title__teachers">{{
+            event.meta.teacherNames
+        }}</span>
+        <span class="custom-event-title__classroom">{{
+            event.meta.classroomName
+        }}</span>
+        <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+        </ng-template>
+        <ng-template #customDayHeaderTemplate let-day="day">
+        <div class="custom-day-header">
+            {{ day.date | date : "EEEE d MMMM" }}
+        </div>
+    </ng-template>
+
+
+    
+</div> 

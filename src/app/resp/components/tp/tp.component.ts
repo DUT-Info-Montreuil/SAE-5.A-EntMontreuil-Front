@@ -198,7 +198,6 @@ export class TpComponent implements OnInit {
 
   // Méthode pour ajouter un TP
   addStudents() {
-
     this.loading = true;
 
     this.cohortService.addStudentsToTP(this.TPInfo.id, this.selectedStudentIds).subscribe(

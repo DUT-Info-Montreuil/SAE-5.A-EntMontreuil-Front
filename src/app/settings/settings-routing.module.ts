@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SettingsLayoutComponent } from './components/settings-layout/settings-layout.component';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
   {
     path: 'settings',
     component: SettingsLayoutComponent,
+    canActivate: [AuthGuard] 
   },
 ];
 

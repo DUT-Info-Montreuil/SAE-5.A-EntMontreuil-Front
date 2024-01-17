@@ -1,101 +1,9 @@
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-    flex: 1;
-    justify-content: space-between;
-}
-
-.dashboard-home {
+/* Dans votre fichier de style, par exemple: manage-courses.component.css */
+.app-layout {
     display: flex;
-}
-
-.dashboard {
-    display: flex;
-    flex-direction: column;
-    flex: 1; 
-    width: 100%;
-    height: 100%;
-}
-
-.dashboard-values:nth-child(1) {
-    display: flex;
-    flex-wrap: wrap; 
-}
-
-.dashboard-values:nth-child(2) {
-    display: flex;
-    flex-direction: row;
-}
-
-.card-item, .dashboard-values p-panel {
-    flex: 1; 
-    margin: 8px;
-}
-
-
-p-panel:nth-child(2) {
-    width: 30%;
-}
-
-.dashboard-values {
-    flex: 1; 
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-.card-item, p-panel {
-    flex: 1; 
-    background-color: #ecf0f1;
-    border: 1px solid #bdc3c7;
-    border-radius: 5px;
-    padding: 10px;
-}
-
-p-header {
-    font-weight: bold;
-}
-
-.pi-user-minus {
-    padding: 5px;
-    background: #fdd0d0;
-    border-radius: 5px;
-}
-
-.pi-bell {
-    padding: 5px;
-    background: #d0d0ff;
-    border-radius: 5px;
-}
-
-.red-500 {
-    color: #ff0000; 
-}
-
-.red-absence:hover {
-    background: #fdd0d0;
-    border-radius: 5px;
-}
-
-.blue-500 {
-    color: #0000ff; 
-}
-
-.blue-reminder:hover {
-    background: #d0d0ff;
-    border-radius: 5px;
   }
-
-.resource-name {
-    font-weight: bold;
-}
-
-/*-----*/
-
-.calendar-section {
+  
+  .calendar-section {
     flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
   }
   
@@ -260,4 +168,88 @@ p-header {
     z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
     padding: 2px 6px; /* Espacement autour du texte */
     border-radius: 4px; /* Coins arrondis */
+  }
+  
+  /* Style pour le conteneur principal */
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Style pour les boutons Précédent et Suivant */
+  .header-container .button-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-container .button-container p-button {
+    margin: 0 10px;
+  }
+  
+  /* Style pour le texte de la période de la semaine ou de l'en-tête du jour */
+  .header-container .period-text {
+    flex-grow: 1; /* Pour occuper tout l'espace restant */
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  /* Style de base pour le dayHeader */
+  .day-header {
+    cursor: pointer; /* Définissez le curseur sur pointer pour montrer qu'il est cliquable */
+    transition: background-color 0.3s ease; /* Ajoutez une transition pour l'effet de survol */
+    padding: 10px;
+    background-color: #f0f0f0; /* Couleur de fond de base */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  /* Style au survol de la souris */
+  .day-header:hover {
+    background-color: #e0e0e0; /* Changez la couleur d'arrière-plan au survol */
+  }
+  
+  /* Style au survol de la souris */
+  .day-header:hover span {
+    color: rgba(15, 15, 186, 0.746); /* Changez la couleur du texte au survol */
+  }
+  
+  /* Style pour les boutons Précédent et Suivant */
+  .day-header .button-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .day-header .button-container p-button {
+    margin: 0 5px;
+  }
+  
+  /* Style pour le texte de la période de la journée */
+  .day-header .period-text {
+    flex-grow: 1; /* Pour occuper tout l'espace restant */
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* CSS pour les boutons Copier et Coller */
+  .button-container {
+    display: inline-block;
+    margin-right: 10px; /* Espacement entre les boutons */
+  }
+  
+
+  .studentTable {
+    tr:last-child {
+      td {
+        border-radius: 50% !important;
+      }
+    }
   }

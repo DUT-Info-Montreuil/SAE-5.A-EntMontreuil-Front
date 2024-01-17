@@ -7,16 +7,18 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 import {
   addDays,
   addWeeks,
+  endOfDay,
   endOfWeek,
   format,
   parseISO,
+  startOfDay,
   startOfWeek,
   subDays,
   subWeeks,
 } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import parse from 'date-fns/parse';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Degree } from 'src/app/admin/models/degree.model';
 import { Promotion } from 'src/app/admin/models/promotion.model';
 import { Ressource } from 'src/app/admin/models/ressource.model';
@@ -83,7 +85,8 @@ export class ManageCoursesComponent {
     private deegreeService: DegreeService,
     private ressourceService: RessourceService,
     private trainingService: TrainingService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.courseService.getAllPromotions().subscribe((data) => {
       this.promotions = data.map((promo) => ({
@@ -513,7 +516,15 @@ export class ManageCoursesComponent {
     }
   }
 
-  copyEventsToCurrentWeek(): void {
+  copyEventsToClipboard(): void {
+    if (this.view === CalendarView.Week) {
+      this.copyEventsFromWeek();
+    } else if (this.view === CalendarView.Day) {
+      this.copyEventsFromDay();
+    }
+  }
+
+  copyEventsFromWeek(): void {
     const currentStart = startOfWeek(this.viewDate, {
       weekStartsOn: this.weekStartsOn,
     });
@@ -530,16 +541,49 @@ export class ManageCoursesComponent {
         !this.excludeDays.includes(eventDay)
       );
     });
-    const formattedWeek = `Semaine du ${format(currentStart, 'dd MMMM', {
-      locale: fr,
-    })}`;
-    console.log(`Événements copiés : ${formattedWeek}`);
 
-    // Affichez le message avec la semaine spécifique
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Succès',
-      detail: `Les cours de la ${formattedWeek} ont été copiés`,
+    this.showMessage('week', currentStart);
+  }
+
+  copyEventsFromDay(): void {
+    const dayStart = startOfDay(this.viewDate);
+    const dayEnd = endOfDay(this.viewDate);
+
+    this.copiedEvents = this.events.filter((event) => {
+      const eventStart = new Date(event.start);
+      return eventStart >= dayStart && eventStart <= dayEnd;
+    });
+
+    this.showMessage('day', dayStart);
+  }
+
+  showMessage(viewType: 'day' | 'week', date: Date): void {
+    const formattedDate =
+      viewType === 'day'
+        ? format(date, 'dd MMMM', { locale: fr })
+        : `Semaine du ${format(date, 'dd MMMM', { locale: fr })}`;
+    console.log(`Événements copiés : ${formattedDate}`);
+    if (viewType === 'day')
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: `Les cours du ${formattedDate} ont été copiés`,
+      });
+    else {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Succès',
+        detail: `Les cours de la ${formattedDate} ont été copiés`,
+      });
+    }
+  }
+
+  confirmCopyEvents(): void {
+    this.confirmationService.confirm({
+      message: 'Êtes-vous sûr de vouloir coller les cours copiés ?',
+      accept: () => {
+        this.pasteEventsFromClipboard();
+      },
     });
   }
 
@@ -549,42 +593,35 @@ export class ManageCoursesComponent {
       return;
     }
 
-    const currentDate = this.viewDate; // Date de la semaine actuellement affichée
-    const targetWeekStart = startOfWeek(currentDate, {
-      weekStartsOn: this.weekStartsOn,
-    });
-    const targetWeekEnd = endOfWeek(currentDate, {
-      weekStartsOn: this.weekStartsOn,
-    });
+    let targetStart: Date;
+    if (this.view === CalendarView.Week) {
+      targetStart = startOfWeek(this.viewDate, {
+        weekStartsOn: this.weekStartsOn,
+      });
+    } else if (this.view === CalendarView.Day) {
+      targetStart = startOfDay(this.viewDate); // Utiliser startOfDay pour la vue Jour
+    } else {
+      // Si la vue n'est ni semaine ni jour, ne rien faire
+      return;
+    }
 
     const copiedEventsToPaste = this.copiedEvents.map((copiedEvent) => {
-      const eventCopy = { ...copiedEvent };
+      const eventCopy = JSON.parse(JSON.stringify(copiedEvent));
+
+      // Réaffecter les objets Date
+      eventCopy.start = new Date(eventCopy.start);
+      eventCopy.end = new Date(eventCopy.end || eventCopy.start);
+
       const eventStart = eventCopy.start;
-      const eventEnd = eventCopy.end;
+      const eventEnd = eventCopy.end || eventStart; // Si 'eventEnd' n'est pas défini, utiliser 'eventStart'
 
-      // Vérifier si 'end' est défini, sinon, utilisez la date de début
-      if (eventEnd) {
-        // Ajouter la différence entre la date cible et la date source aux événements copiés
-        const timeDifference =
-          targetWeekStart.getTime() -
-          startOfWeek(eventStart, {
-            weekStartsOn: this.weekStartsOn,
-          }).getTime();
-        eventCopy.start = new Date(eventStart.getTime() + timeDifference);
-        eventCopy.end = new Date(eventEnd.getTime() + timeDifference);
-      } else {
-        // Si 'end' n'est pas défini, utilisez la date de début pour la date de début et la fin
-        eventCopy.start = targetWeekStart;
-        eventCopy.end = new Date(
-          targetWeekStart.getTime() +
-            (eventStart.getTime() -
-              startOfWeek(eventStart, {
-                weekStartsOn: this.weekStartsOn,
-              }).getTime())
-        );
-      }
+      // Calculer la différence de temps et ajuster les dates de début et de fin
+      const timeDifference =
+        targetStart.getTime() - this.startOfView(eventStart).getTime();
+      eventCopy.start = new Date(eventStart.getTime() + timeDifference);
+      eventCopy.end = new Date(eventEnd.getTime() + timeDifference);
 
-      // Mise à jour de la dateCourse dans meta.course.course.dateCourse
+      // Mettre à jour la dateCourse dans meta.course.courses.dateCourse
       eventCopy.meta.course.courses.dateCourse = format(
         eventCopy.start,
         'yyyy-MM-dd'
@@ -593,12 +630,34 @@ export class ManageCoursesComponent {
       return eventCopy;
     });
 
-    // Ajouter les événements collés à la base de données
-    for (const copiedEvent of copiedEventsToPaste) {
-      await this.addEventToDatabase(copiedEvent);
+    // Coller les événements dans la base de données
+    for (const eventToPaste of copiedEventsToPaste) {
+      await this.addEventToDatabase(eventToPaste);
     }
-
+    this.copiedEvents = []; // Vide copiedEvents
     this.changeDetectorRef.detectChanges();
+    this.showSuccessToast();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  showSuccessToast() {
+    const viewType = this.view === CalendarView.Week ? 'Semaine' : 'Journée';
+    const viewDateFormatted = format(this.viewDate, 'dd MMMM yyyy', {
+      locale: fr,
+    });
+
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Cours Dupliqués',
+      detail: `Les cours ont été dupliqués avec succès pour la ${viewType} du ${viewDateFormatted}.`,
+    });
+  }
+
+  // Fonction d'assistance pour obtenir le début de la vue actuelle (jour ou semaine)
+  startOfView(date: Date) {
+    return this.view === CalendarView.Week
+      ? startOfWeek(date, { weekStartsOn: this.weekStartsOn })
+      : startOfDay(date);
   }
 
   async addEventToDatabase(copiedEvent: any): Promise<any> {
@@ -633,6 +692,8 @@ export class ManageCoursesComponent {
         classrooms_id: classroomIds,
       };
 
+      console.log(meta);
+
       if (meta.groupType === 'promotion') {
         courseData.id_promotion = meta.groupId;
       } else if (meta.groupType === 'training') {
@@ -643,7 +704,6 @@ export class ManageCoursesComponent {
         courseData.id_tp = meta.groupId;
       }
 
-      console.log(courseData);
       this.courseService.addCourse(courseData).subscribe(
         (response: any) => {
           console.log(response);

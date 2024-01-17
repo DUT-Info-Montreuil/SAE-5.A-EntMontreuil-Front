@@ -18,11 +18,11 @@ export class TdService implements OnInit {
     }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
- 
+
   getTdInfo(idTD: number): Observable<any> {
     return this.http.get<any>(`${this.apiURL}/td/${idTD}`, this.httpOptions);
   }

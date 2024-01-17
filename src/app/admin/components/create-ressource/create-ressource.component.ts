@@ -63,7 +63,7 @@ export class CreateRessourceComponent implements OnInit {
 
     let ressource = new Ressource(
       0, // ID temporaire
-      this.newRessourceName.trim().toLowerCase(),
+      this.newRessourceName.trim(),
       this.selectedTrainingId,
       this.ressourceColor.trim(),
       false, // is_editing

@@ -17,7 +17,7 @@ export class CourseService {
     }),
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllPromotions(): Observable<Promotion[]> {
     return this.http.get<Promotion[]>(
@@ -74,6 +74,7 @@ export class CourseService {
       )
       .pipe(catchError(this.handleError));
   }
+
 
   getCourseByTD(IDtd: number): Observable<Course[]> {
     return this.http
@@ -140,6 +141,7 @@ export class CourseService {
   }
 
   getGroupName(id_group: number, groupType: string): Observable<any> {
+    console.log('getGroupName', id_group, groupType);
     let endpoint: string;
     switch (groupType) {
       case 'promotion':
@@ -180,7 +182,6 @@ export class CourseService {
       })
     );
   }
-}
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
     Copyright (C) 2024  Steven CHING, Emilio CYRIAQUE-SOURISSEAU ALVARO-SEMEDO, Ismail GADA, Yanis HAMANI, Priyank SOLANKI
 
@@ -193,3 +194,4 @@ export class CourseService {
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.*/
+}

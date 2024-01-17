@@ -87,7 +87,7 @@ export class LoginComponent {
               localStorage.setItem('username', userInfoResponse.username);
               localStorage.setItem('firstname', userInfoResponse.user.first_name);
               localStorage.setItem('lastname', userInfoResponse.user.last_name);
-              localStorage.setItem('username', userInfoResponse.username);
+              localStorage.setItem('username', userInfoResponse.user.username);
               localStorage.setItem('isadmin', userInfoResponse.user.isAdmin.toString());
               localStorage.setItem('refreshToken', loginResponse.refresh_token);
               console.log(localStorage.getItem('isadmin'));

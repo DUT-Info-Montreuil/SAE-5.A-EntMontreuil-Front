@@ -98,32 +98,22 @@
   width: 100%;
 }
 
-/* Style pour l'élément .custom-event-title__control */
-.custom-event-title__control {
-  font-weight: bold;
-  font-size: 16px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
-  border: 2px solid black; /* Bordure noire */
-  padding: 2px 6px; /* Espacement autour du texte */
-  border-radius: 4px; /* Coins arrondis */
+::ng-deep .cal-event {
+  border: none !important;
+  opacity: 0.8 !important;
+  transition: 0.2s;
+  margin: 0 !important;
+  line-height: 20px !important;
 }
 
-/* Style pour l'élément .custom-event-title__resource */
-.custom-event-title__resource {
-  font-weight: bold;
-  font-size: 16px;
-  position: absolute;
-  top: 60%; /* Ajustez la position verticale si nécessaire */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1; /* Place "Ressource Name" sous "Contrôle" */
+::ng-deep .cal-event:hover {
+  opacity: 1 !important;
 }
 
-/* Reste du CSS inchangé */
+::ng-deep .cal-week-view .cal-time-events .cal-event {
+  width: calc(100% - 10px) !important;
+}
+
 .custom-event-title {
   position: absolute;
   top: 0;
@@ -136,6 +126,15 @@
   padding: 5px;
 }
 
+.custom-event-title__resource {
+  font-weight: bold;
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .custom-event-title__teachers,
 .custom-event-title__classroom,
 .custom-event-title__groupname {
@@ -144,20 +143,31 @@
 
 .custom-event-title__classroom {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 5px;
+  left: 5px;
 }
 
 .custom-event-title__teachers {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 5px;
+  left: 5px;
 }
 
 .custom-event-title__groupname {
   position: absolute;
-  bottom: 0;
-  right: 0;
+  bottom: 5px;
+  right: 16px;
+}
+
+.custom-event-title__control {
+  font-weight: bold;
+  position: absolute;
+  top: 13px;
+  right: -21px;
+  transform: translate(-50%, -50%);
+  z-index: 2; /* Place "Contrôle" au-dessus de "Ressource Name" */
+  padding: 2px 6px; /* Espacement autour du texte */
+  border-radius: 4px; /* Coins arrondis */
 }
 
 /* Style pour le conteneur principal */
