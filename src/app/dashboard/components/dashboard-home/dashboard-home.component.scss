@@ -59,17 +59,6 @@ p-header {
     font-weight: bold;
 }
 
-.pi-user-minus {
-    padding: 5px;
-    background: #fdd0d0;
-    border-radius: 5px;
-}
-
-.pi-bell {
-    padding: 5px;
-    background: #d0d0ff;
-    border-radius: 5px;
-}
 
 .red-500 {
     color: #ff0000; 
@@ -261,4 +250,8 @@ p-header {
     padding: 2px 6px;
     border-radius: 4px;
     border: 1px solid black;
+  }
+
+  ::ng-deep table {
+    border-color: white !important;
   }

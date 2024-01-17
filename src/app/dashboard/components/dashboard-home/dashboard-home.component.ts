@@ -26,6 +26,9 @@ import { Subject } from 'rxjs';
 })
 
 export class DashboardHomeComponent implements OnInit {
+
+  today: Date = new Date();
+
   username!: string;
   absences!: any;
   nbAbsences!: number;
@@ -38,7 +41,7 @@ export class DashboardHomeComponent implements OnInit {
   coursesProcessed$ = this.coursesProcessedSubject.asObservable();
 
   //calendrier
-  view: CalendarView = CalendarView.Day; 
+  view: CalendarView = CalendarView.Day;
   name: any;
   date: any;
   startTime: any;
@@ -53,60 +56,60 @@ export class DashboardHomeComponent implements OnInit {
   weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6 = 1; // Semaine commence le lundi
 
   //user
-  role : any;
-  user : any;
-  selectedUser : boolean =false;
-  semester : any;
+  role: any;
+  user: any;
+  selectedUser: boolean = false;
+  semester: any;
 
-  constructor(private confirmationService: ConfirmationService, 
-              private messageService: MessageService, 
-              private authService: AuthService, 
-              private absenceService: AbsencesService,
-              private reminderService: ReminderService,
-              private tdService : TdService,
-              private trainingService: TrainingService,
-              private changeDetectorRef: ChangeDetectorRef,
-              private zone: NgZone,
-              private coursesService: CourseService,
-              private teachersService : TeachersService,
-              private classroomsService : ClassroomsService,
-              ) {
+  constructor(private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private authService: AuthService,
+    private absenceService: AbsencesService,
+    private reminderService: ReminderService,
+    private tdService: TdService,
+    private trainingService: TrainingService,
+    private changeDetectorRef: ChangeDetectorRef,
+    private zone: NgZone,
+    private coursesService: CourseService,
+    private teachersService: TeachersService,
+    private classroomsService: ClassroomsService,
+  ) {
 
     this.username = this.authService.getFirstname();
-   }
+  }
 
   ngOnInit(): void {
 
     this.role = this.authService.getRole()
 
-    if(this.role == "étudiant"){
-      this.absenceService.getStudentUnjustifiedAbsences(this.authService.getUserId()).subscribe( data => {
+    if (this.role == "étudiant") {
+      this.absenceService.getStudentUnjustifiedAbsences(this.authService.getUserId()).subscribe(data => {
         this.absences = data;
         this.nbAbsences = data.length;
       });
     }
 
-    this.reminderService.getReminderById(this.authService.getUserId()).subscribe( data => {
+    this.reminderService.getReminderById(this.authService.getUserId()).subscribe(data => {
       this.reminders = data;
       this.nbReminders = data.length;
-     });
+    });
 
-    this.authService.getUserInfo().subscribe((data)=>{
+    this.authService.getUserInfo().subscribe((data) => {
       console.log(data)
       this.user = data
-      if(this.role == "étudiant"){
+      if (this.role == "étudiant") {
         console.log(this.user)
         this.tdService.getTdInfo(this.user.academic_info.td.id).subscribe((data) => {
           console.log(data);
           this.semester = data.training.semester
           this.getStudentCourses();
         })
-      } else if(this.role == "enseignant"){
+      } else if (this.role == "enseignant") {
         this.getTeacherCourses();
       }
     });
 
-    
+
   }
 
   getStudentCourses() {
@@ -115,7 +118,7 @@ export class DashboardHomeComponent implements OnInit {
       this.coursesService.getCourseByPromotion(this.user.academic_info.promotion.id, this.semester)
         .subscribe((data: any) => {
           this.processCourseData(data);
-          console.log(this.events);       
+          console.log(this.events);
         });
     }
     this.changeDetectorRef.detectChanges();
@@ -176,7 +179,7 @@ export class DashboardHomeComponent implements OnInit {
     const end = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
     return `${format(start, 'dd MMM')} - ${format(end, 'dd MMM')}`;
   }
-  
+
 
   async createEventsFromCourses(coursesData: any) {
     let newEventsPromises = coursesData.map(async (courseData: any) => {
@@ -259,7 +262,7 @@ export class DashboardHomeComponent implements OnInit {
   nextWeek(): void {
     this.viewDate = addWeeks(this.viewDate, 1);
   }
-    
+
   handleEventClick(event: CalendarEvent): void {
     console.log(event);
     this.selectedCourse = event.meta.course;
@@ -276,17 +279,17 @@ export class DashboardHomeComponent implements OnInit {
   countEventsForCurrentWeek(): number {
     const startOfWeekDate = startOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
     const endOfWeekDate = endOfWeek(this.viewDate, { weekStartsOn: this.weekStartsOn });
-  
+
     console.log('startOfWeekDate:', startOfWeekDate);
     console.log('endOfWeekDate:', endOfWeekDate);
-  
+
     const eventsInCurrentWeek = this.events.filter(event => {
       console.log('event:', event);
-    
+
       if (event.start && event.end) {
         const startDate = isDate(event.start) ? event.start : new Date(event.start);
         const endDate = isDate(event.end) ? event.end : new Date(event.end);
-    
+
         if (isDate(startDate) && isDate(endDate)) {
           return isWithinInterval(startDate, { start: startOfWeekDate, end: endOfWeekDate }) &&
             isWithinInterval(endDate, { start: startOfWeekDate, end: endOfWeekDate });
@@ -294,15 +297,34 @@ export class DashboardHomeComponent implements OnInit {
       }
       return false;
     });
-    
+
     console.log('eventsInCurrentWeek:', eventsInCurrentWeek);
-    
-  
+
+
     return eventsInCurrentWeek.length;
   }
-  
-  
-  
+
+
+  convertirEtFormaterHeure(heureChaine: string): string {
+    if (!heureChaine) return '';
+
+    // Créer une date fictive, car seule l'heure nous intéresse
+    const dateFictive = new Date(`1970-01-01T${heureChaine}`);
+
+    return dateFictive.getHours().toString().padStart(2, '0') + 'h' + dateFictive.getMinutes().toString().padStart(2, '0');
+  }
+
+  calculateTimeDifference(start: string, end: string): string {
+    const startDate = new Date(`1970-01-01T${start}`);
+    const endDate = new Date(`1970-01-01T${end}`);
+
+    const differenceInMs = endDate.getTime() - startDate.getTime();
+    const hours = Math.floor(differenceInMs / (1000 * 60 * 60));
+    const minutes = Math.floor((differenceInMs % (1000 * 60 * 60)) / (1000 * 60));
+
+    return `${hours}h${minutes.toString().padStart(2, '0')}`;
+  }
+
 
 }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil

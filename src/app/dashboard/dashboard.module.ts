@@ -16,6 +16,7 @@ import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { BadgeModule } from 'primeng/badge';
 
 
 
@@ -42,6 +43,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
+    BadgeModule
   ]
 })
 export class DashboardModule { }
