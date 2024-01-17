@@ -90,9 +90,12 @@ export class TimetableLayoutComponent {
           });
 
         this.getStudentCourses();
+        this.removeDuplicateEvents(this.events);
+
       }
       if (this.role == 'enseignant') {
         this.getTeacherCourses();
+        this.removeDuplicateEvents(this.events);
       }
     });
 
@@ -116,6 +119,19 @@ export class TimetableLayoutComponent {
         uniqueLabel3: `${classroom.name}`,
       }));
     });
+  }
+
+  removeDuplicateEvents(events: CalendarEvent[]): CalendarEvent[] {
+    const uniqueEventIds = new Set();
+    const uniqueEvents = events.filter((event) => {
+      const courseid = event.meta.courseid;
+      if (!uniqueEventIds.has(courseid)) {
+        uniqueEventIds.add(courseid);
+        return true;
+      }
+      return false;
+    });
+    return uniqueEvents;
   }
 
   handleDayClick(dayDate: Date): void {
@@ -226,6 +242,9 @@ export class TimetableLayoutComponent {
     if (data.courses && data.courses.courses_tp) {
       await this.createEventsFromCourses(data.courses.courses_tp);
     }
+
+    this.removeDuplicateEvents(this.events);
+
     // Déclencher la détection de changements
     this.zone.run(() => {
       this.changeDetectorRef.detectChanges();
