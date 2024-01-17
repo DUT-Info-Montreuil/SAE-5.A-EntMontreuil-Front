@@ -1,11 +1,9 @@
-FROM node:latest AS builder
+FROM node:20.9-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install -g @angular/cli
-RUN npm install -legacy-peer-deps
+RUN npm install --force
 COPY . .
-RUN npm run build
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 4200
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT [ "ng" ]
+CMD ["serve", "--host", "0.0.0.0", "--port", "4200"]
