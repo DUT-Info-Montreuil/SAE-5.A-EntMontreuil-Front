@@ -252,6 +252,13 @@ p-header {
     border: 1px solid black;
   }
 
-  ::ng-deep table {
-    border-color: white !important;
+ table {
+    border-bottom: none !important;
+  }
+
+  tr:hover {
+    cursor: pointer !important;
+    border: none !important;
+    background-color: #f5f5f5;
+    border-radius: 5px;
   }

@@ -5,7 +5,7 @@
             <p class="text-500">{{ today | date: 'fullDate' : 'fr' }}</p>
         </div>
 
-        <div class="w-full p-5 border-round mt-5 relative" style="background-color: rgb(239, 244, 255);">
+        <div class="w-full p-5 border-round mt-5 relative shadow-1" style="background-color: rgb(239, 244, 255);">
             <div>
                 <h1 class="text-2xl text-800">Bonjour {{ username }}!</h1>
                 <p>Bienvenue sur votre nouvel espace numérique de travail.</p>
@@ -17,7 +17,7 @@
 
         <div class="stats-container grid mt-4">
             <div class="col-12 md:col-6 lg:col-4">
-                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5"
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
                     style="background-color: #FDEDE8; padding-bottom: -20px">
                     <div>
                         <i class="pi pi-clock" style="font-size: 32px; color: #FA896B; font-weight: bold;"></i>
@@ -34,7 +34,7 @@
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-4">
-                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5"
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
                     style="background-color: #E6FFFA; padding-bottom: -20px">
                     <div>
                         <i class="pi pi-bolt" style="font-size: 32px; color: #40E5C7; font-weight: bold;"></i>
@@ -51,7 +51,7 @@
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-4">
-                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5"
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
                     style="background-color: #ECF2FF; padding-bottom: -20px">
                     <div>
                         <i class="pi pi-calendar" style="font-size: 32px; color: #648CFF; font-weight: bold;"></i>
@@ -71,7 +71,7 @@
         </div>
 
         <div class="panel-container mt-4 flex gap-3">
-            <div class="panel-item border-1 border-round border-300 w-full">
+            <div class="panel-item shadow-1 border-round border-300 w-full">
                 <div class="panel-header p-3 border-round">
                     <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-clock" style="margin-right: 7px"></i>
                         Absences
@@ -83,7 +83,7 @@
                         <ng-template pTemplate="header">
                         </ng-template>
                         <ng-template pTemplate="body" let-absence>
-                            <tr>
+                            <tr routerLink="/absences">
                                 <td style="width: 10px">
                                     <ng-container *ngIf="absence.justify; else notJustified">
                                         <div class="text-green-500">
@@ -139,7 +139,7 @@
                 </div>
             </div>
 
-            <div class="panel-item border-1 border-round border-300 w-full">
+            <div class="panel-item shadow-1 border-round border-300 w-full">
                 <div class="panel-header p-3 border-round">
                     <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-bolt" style="margin-right: 7px"></i>
                         Rappels
@@ -151,7 +151,7 @@
                         <ng-template pTemplate="header">
                         </ng-template>
                         <ng-template pTemplate="body" let-reminder>
-                            <tr>
+                            <tr routerLink="/reminders">
                                 <td style="width: 10px">
                                     <i class="pi pi-bolt"
                                         style="color: #4FE5C7; font-weight: bold; font-size: 24px"></i>
@@ -161,7 +161,9 @@
                                         {{ reminder.title }}
                                     </div>
                                     <div class="text-900 text-sm">
-                                        {{ reminder.reminder_text }}
+                                        {{ reminder.reminder_text }}<br>
+                                        <span class="text-500 text-sm">{{ reminder.reminder_date | date:'E d MMM yyyy'
+                                            }}</span>
                                     </div>
                                 </td>
                             </tr>
