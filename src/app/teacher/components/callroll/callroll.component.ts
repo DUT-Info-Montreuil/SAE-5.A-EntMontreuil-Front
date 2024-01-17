@@ -54,6 +54,10 @@ export class CallrollComponent implements OnInit {
     try {
       const studentsData = await this.studentsService.getStudentsByGroupType(groupType, groupId, courseId).toPromise();
       this.students = studentsData!.students; // Stocker les étudiants dans une variable du composant
+      this.selectedStudents = this.students.filter(student => student.is_absent);
+      this.selectedStudentIds = this.students
+        .filter(student => student.is_absent)
+        .map(student => student.student_id);
     } catch (error) {
       console.error('Erreur lors de la récupération des étudiants', error);
     }

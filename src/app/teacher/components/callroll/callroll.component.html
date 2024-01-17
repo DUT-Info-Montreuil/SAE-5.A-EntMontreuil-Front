@@ -35,9 +35,9 @@
             </h3>
 
             <div class="border-round shadow-1">
-                <p-table class="studentTable" [value]="students" [tableStyle]="{ 'min-width': '50rem' }"
-                    (onRowSelect)="onRowSelect($event)" (onRowUnselect)="onRowUnselect($event)"
-                    [(selection)]="selectedStudents">
+                <p-table class="studentTable" [(selection)]="selectedStudents" [value]="students"
+                    [tableStyle]="{ 'min-width': '50rem' }" (onRowSelect)="onRowSelect($event)"
+                    (onRowUnselect)="onRowUnselect($event)" [(selection)]="selectedStudents">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>{{ students.length }} étudiants</th>
