@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CalendarEvent } from 'angular-calendar';
 import { addDays, parse, subDays } from 'date-fns';
+import { MessageService } from 'primeng/api';
 import { Course } from 'src/app/core/models/course.model';
 import { Student } from 'src/app/core/models/students-abs.model';
 import { CohortService } from 'src/app/core/services/cohort.service';
@@ -11,7 +12,8 @@ import { StudentsService } from 'src/app/core/services/students.service';
 @Component({
   selector: 'app-callroll',
   templateUrl: './callroll.component.html',
-  styleUrls: ['./callroll.component.scss']
+  styleUrls: ['./callroll.component.scss'],
+  providers: [MessageService]
 })
 export class CallrollComponent implements OnInit {
   viewDate: Date = new Date();
@@ -41,7 +43,7 @@ export class CallrollComponent implements OnInit {
     console.log(localStorage)
   }
 
-  constructor(private coursesService: CourseService, private router: Router, private changeDetectorRef: ChangeDetectorRef, private studentsService: StudentsService) {
+  constructor(private coursesService: CourseService, private router: Router, private changeDetectorRef: ChangeDetectorRef, private studentsService: StudentsService, private messageService: MessageService) {
 
   }
 
@@ -192,8 +194,12 @@ export class CallrollComponent implements OnInit {
     try {
       const response = await this.studentsService.createAbsences(course_id, student_ids).toPromise();
       console.log(response);
+      // Afficher un toast de succès
+      this.messageService.add({ severity: 'success', summary: 'Succès', detail: "Vous avez bien confirmé l'appel." });
     } catch (error) {
       console.error('Erreur lors de la création des absences', error);
+      // Vous pouvez également afficher un toast en cas d'erreur si vous le souhaitez
+      this.messageService.add({ severity: 'error', summary: 'Erreur', detail: "Erreur lors de la validation de l'appel. Veuillez réessayer." });
     }
   }
 }

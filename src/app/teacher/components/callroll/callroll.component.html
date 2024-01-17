@@ -48,7 +48,7 @@
                         <tr>
                             <td>{{student.first_name}} {{student.last_name}}</td>
                             <td>
-                                <p-tableCheckbox [value]="student"></p-tableCheckbox>
+                                <p-tableCheckbox [disabled]="endCallChecked" [value]="student"></p-tableCheckbox>
                             </td>
                         </tr>
                     </ng-template>
@@ -84,3 +84,5 @@
     <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
     <!-- Ajout du groupName -->
 </ng-template>
+
+<p-toast></p-toast>
