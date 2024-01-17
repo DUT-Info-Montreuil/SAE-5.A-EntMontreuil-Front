@@ -150,15 +150,15 @@ export class CreateCourseComponent implements OnInit {
     console.log('classroom IDs:', classroomIds);
     console.log(this.classrooms);
     var selectionType = this.selectedTpId
-      ? 'TP'
+      ? 'tp'
       : this.selectedTdId
-      ? 'TD'
+      ? 'td'
       : this.selectedTrainingId && (!this.tds || this.tds.length === 0) // Vérifiez si tds est vide
-      ? 'Promotion'
+      ? 'promotion'
       : this.selectedTrainingId
-      ? 'Training'
+      ? 'training'
       : this.selectedPromotionId
-      ? 'Promotion'
+      ? 'promotion'
       : null;
 
     const formattedDate = format(this.date, 'yyyy-MM-dd');
@@ -199,18 +199,18 @@ export class CreateCourseComponent implements OnInit {
     console.log('newCourse', newCourse);
 
     switch (selectionType) {
-      case 'TD':
+      case 'td':
         newCourse['id_td'] = this.selectedTdId;
         break;
-      case 'Training':
+      case 'training':
         newCourse['id_training'] = this.selectedTrainingId;
 
         break;
-      case 'Promotion':
+      case 'promotion':
         newCourse['id_promotion'] = this.selectedPromotionId;
 
         break;
-      case 'TP':
+      case 'tp':
         newCourse['id_tp'] = this.selectedTpId;
 
         break;
@@ -218,7 +218,8 @@ export class CreateCourseComponent implements OnInit {
         // Gérer le cas où aucune sélection n'est faite ou une logique par défaut
         break;
     }
-    const groupName = await this.getGroupNameBasedOnSelection();
+    const { groupName, groupId } =
+      await this.getGroupNameAndIdBasedOnSelection();
 
     this.courseService.addCourse(newCourse).subscribe(
       (response: any) => {
@@ -235,6 +236,7 @@ export class CreateCourseComponent implements OnInit {
           meta: {
             control: this.control,
             groupName: groupName,
+            groupId: groupId,
             groupType: selectionType,
             course: response.course[0].courses,
             courseid: response.id,
@@ -277,8 +279,9 @@ export class CreateCourseComponent implements OnInit {
 
   // Méthode pour obtenir le nom du groupe basé sur la sélection actuelle
   // Méthode pour obtenir le nom du groupe basé sur la sélection actuelle
-  async getGroupNameBasedOnSelection() {
+  async getGroupNameAndIdBasedOnSelection() {
     let groupName = '';
+    let groupId = 0;
     let groupType = '';
 
     if (this.selectedTpId) {
@@ -286,24 +289,28 @@ export class CreateCourseComponent implements OnInit {
       groupName = await this.courseService
         .getGroupName(this.selectedTpId, groupType)
         .toPromise();
+      groupId = this.selectedTpId;
     } else if (this.selectedTdId) {
       groupType = 'td';
       groupName = await this.courseService
         .getGroupName(this.selectedTdId, groupType)
         .toPromise();
+      groupId = this.selectedTdId;
     } else if (this.selectedTrainingId && this.tds.length > 0) {
       groupType = 'training';
       groupName = await this.courseService
         .getGroupName(this.selectedTrainingId, groupType)
         .toPromise();
+      groupId = this.selectedTrainingId;
     } else if (this.selectedPromotionId) {
       groupType = 'promotion';
       groupName = await this.courseService
         .getGroupName(this.selectedPromotionId, groupType)
         .toPromise();
+      groupId = this.selectedPromotionId;
     }
 
-    return groupName;
+    return { groupName, groupId };
   }
 
   isValidCourseData(): boolean {
@@ -356,3 +363,15 @@ export class CreateCourseComponent implements OnInit {
     }
   }
 }
+/*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
+    Copyright (C) 2024  Steven CHING, Emilio CYRIAQUE-SOURISSEAU ALVARO-SEMEDO, Ismail GADA, Yanis HAMANI, Priyank SOLANKI
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.*/
