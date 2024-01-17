@@ -1,0 +1,131 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.dashboard-home {
+    display: flex;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    width: 100%;
+    height: 100%;
+}
+
+.dashboard-values:nth-child(1) {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.dashboard-values:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-item, .dashboard-values p-panel {
+    flex: 1; 
+    margin: 8px;
+}
+
+
+p-panel:nth-child(2) {
+    width: 30%;
+}
+
+.dashboard-values {
+    flex: 1; 
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.card-item, p-panel {
+    flex: 1; 
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+p-header {
+    font-weight: bold;
+}
+
+.pi-user-minus {
+    padding: 5px;
+    background: #fdd0d0;
+    border-radius: 5px;
+}
+
+.pi-bell {
+    padding: 5px;
+    background: #d0d0ff;
+    border-radius: 5px;
+}
+
+.red-500 {
+    color: #ff0000; 
+}
+
+.red-absence:hover {
+    background: #fdd0d0;
+    border-radius: 5px;
+}
+
+.blue-500 {
+    color: #0000ff; 
+}
+
+.blue-reminder:hover {
+    background: #d0d0ff;
+    border-radius: 5px;
+  }
+
+.resource-name {
+    font-weight: bold;
+}
+
+/*-----*/
+
+::ng-deep mwl-calendar-event-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: black; /* Texte en noir */
+    padding: 4px; /* Espacement autour du contenu */
+    width: 100%;
+  }
+  
+  .custom-event-title__classroom {
+    order: 1; /* En haut */
+    padding: 2px;
+    text-align: left;
+  }
+  
+  .custom-event-title__resource {
+    order: 2; /* Au milieu */
+    padding: 2px;
+    text-align: center;
+  }
+  
+  .custom-event-title__teachers {
+    order: 3; /* En bas */
+    padding: 2px;
+    text-align: left;
+  }
+  
+  .custom-event-title__groupname {
+    order: 4; /* Ajouté */
+    padding: 2px;
+    text-align: right;
+  }
+  

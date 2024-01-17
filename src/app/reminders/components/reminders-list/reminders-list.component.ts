@@ -27,7 +27,7 @@ export class RemindersListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.loadReminders();
+    this.loadReminderById();
   }
 
   ngOnDestroy(): void {
@@ -45,18 +45,21 @@ export class RemindersListComponent implements OnInit, OnDestroy {
     }
   }
 
-
-  loadReminders(): void {
-    this.reminderService.getAllReminders().subscribe(
-      (reminders) => {
-        this.rappels = reminders;
-        this.filteredRappels = [...this.rappels];
-        this.startInterval();
-      },
-      (error: any) => {
-        console.error('Error loading reminders:', error);
-      }
-    );
+  loadReminderById(): void {
+    const userId = this.authService.getUserId();
+    if (userId) {
+      this.reminderService.getReminderById(userId).subscribe(
+        (reminder: any) => {
+          this.rappels = reminder;
+          this.filteredRappels = [...this.rappels];
+          this.startInterval();
+          console.log(this.rappels);
+        },
+        (error: any) => {
+          console.error('Error loading reminder by id:', error);
+        }
+      );
+    }
   }
 
   selectRappel(rappel: ReminderModel): void {
@@ -73,7 +76,7 @@ export class RemindersListComponent implements OnInit, OnDestroy {
         this.reminderService.updateReminder(this.selectedRappel.id, this.selectedRappel).subscribe(
           () => {
             console.log('Reminder updated successfully.');
-            this.loadReminders();
+            this.loadReminderById();
           },
           (error: any) => {
             console.error('Error updating reminder:', error);
@@ -124,7 +127,7 @@ export class RemindersListComponent implements OnInit, OnDestroy {
         console.log('New reminder added successfully.');
         this.selectedRappel = newReminder;
         console.log(this.selectedRappel);
-        this.loadReminders();
+        this.loadReminderById();
       },
       (error: any) => {
         console.error('Error adding new reminder:', error);
@@ -163,7 +166,7 @@ export class RemindersListComponent implements OnInit, OnDestroy {
             detail: 'Le rappel a été supprimé avec succès.',
           });
           console.log('Reminder deleted successfully.');
-          this.loadReminders();
+          this.loadReminderById();
           this.selectedRappel = null;
         },
         (error: any) => {

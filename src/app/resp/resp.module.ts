@@ -96,4 +96,4 @@ import { CheckboxModule } from 'primeng/checkbox';
     ConfirmationService,
   ],
 })
-export class RespModule {}
+export class RespModule { }

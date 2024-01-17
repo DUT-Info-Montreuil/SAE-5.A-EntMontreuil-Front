@@ -25,11 +25,11 @@ export class ReminderService {
     });
   }
 
-  getReminderById(id: number): Observable<ReminderModel> {
+  getReminderById(id: number): Observable<any> {
     const httpOptions = {
       headers: this.createAuthHeaders(),
     };
-    return this.http.get<ReminderModel>(`${this.apiUrl}/users/reminders/${id}`, httpOptions);
+    return this.http.get<any>(`${this.apiUrl}/users/reminders/${id}`, httpOptions);
   }
 
   getAllReminders(): Observable<any[]> {
