@@ -11,8 +11,16 @@ import { PromotionsService } from 'src/app/core/services/promotions.service';
 @Component({
   selector: 'app-promotion-list',
   templateUrl: './promotion-list.component.html',
-  styleUrls: ['./promotion-list.component.scss']
+  styleUrls: ['./promotion-list.component.scss'],
+  styles: [
+    `
+        :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+            background-color: white;
+        }
+    `
+  ],
 })
+
 export class PromotionListComponent {
   promotions: Promotion[] = [];
   filteredPromotions: Promotion[] = [];
@@ -28,8 +36,8 @@ export class PromotionListComponent {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private dialogService: DialogService,
-    private promotionService : PromotionsService
-  ) {}
+    private promotionService: PromotionsService
+  ) { }
 
   ngOnInit(): void {
     this.refreshPromotions();
@@ -56,7 +64,7 @@ export class PromotionListComponent {
       this.filteredPromotions = this.promotions;
     } else {
       this.filteredPromotions = this.promotions.filter((promotion) =>
-      promotion.year
+        promotion.year
       );
     }
   }
@@ -67,7 +75,7 @@ export class PromotionListComponent {
     if (selectedDegreeId) {
       this.filteredPromotions = this.promotions.filter(
         (promotion) =>
-        promotion.id_Degree.toString() === selectedDegreeId.toString()
+          promotion.id_Degree.toString() === selectedDegreeId.toString()
       );
     } else {
       // Si aucune formation n'est sélectionnée, afficher tous les parcours
@@ -124,8 +132,8 @@ export class PromotionListComponent {
 
   showCreatePromotionDialog(): void {
     this.displayCreatePromotionDialog = false;
-     // Ajouter un délai de 1 seconde (vous pouvez ajuster la durée)
-     setTimeout(() => {
+    // Ajouter un délai de 1 seconde (vous pouvez ajuster la durée)
+    setTimeout(() => {
       // Définir displayCreateTrainingDialog sur true après le délai
       this.displayCreatePromotionDialog = true;
     }, 1);
