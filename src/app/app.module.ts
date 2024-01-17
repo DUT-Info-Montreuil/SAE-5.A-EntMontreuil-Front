@@ -10,6 +10,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
 import { ButtonModule } from 'primeng/button';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
+import { CalendarDateFormatter, DateFormatterParams } from 'angular-calendar';
 
 @NgModule({
   declarations: [AppComponent, NotificationsComponent],
@@ -24,10 +25,9 @@ import { ToastModule } from 'primeng/toast';
     ConfirmPopupModule,
     ToastModule,
   ],
-  providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
     Copyright (C) 2024  Steven CHING, Emilio CYRIAQUE-SOURISSEAU ALVARO-SEMEDO, Ismail GADA, Yanis HAMANI, Priyank SOLANKI
 

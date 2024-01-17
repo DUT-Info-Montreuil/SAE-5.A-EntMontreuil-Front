@@ -14,11 +14,22 @@ import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { DividerModule } from 'primeng/divider';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { BadgeModule } from 'primeng/badge';
 
+class CustomDateFormatter extends CalendarDateFormatter {
+  public override dayViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(date);
+  }
 
+  public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -44,7 +55,10 @@ import { BadgeModule } from 'primeng/badge';
       useFactory: adapterFactory,
     }),
     BadgeModule
-  ]
+  ],
+  providers: [
+    { provide: CalendarDateFormatter, useClass: CustomDateFormatter }
+  ],
 })
 export class DashboardModule { }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil

@@ -5,11 +5,22 @@ import { TimetableRoutingModule } from './timetable-routing.module';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
-import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ButtonModule } from 'primeng/button';
 
+class CustomDateFormatter extends CalendarDateFormatter {
+  public override dayViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, {
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(date);
+  }
 
+  public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    return new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: 'numeric' }).format(date);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -28,7 +39,9 @@ import { ButtonModule } from 'primeng/button';
     ButtonModule
 
   ],
-  providers: []
+  providers: [
+    { provide: CalendarDateFormatter, useClass: CustomDateFormatter }
+  ]
 })
 export class TimetableModule { }
 /*ENT Montreuil is a Desktop Working Environnement for the students of the IUT of Montreuil
