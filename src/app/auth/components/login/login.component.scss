@@ -1,0 +1,14 @@
+@media (prefers-color-scheme: dark) {
+    .logo {
+        content: url('/assets/images/logo-iut-white.png');
+    }
+}
+
+.bg-image-login {
+    background-image: url("/assets/images/fluid.svg");
+    background-position: center;
+}
+
+.dangerField {
+    @apply border-red-500 focus:border-red-500 focus:ring-red-500;
+}

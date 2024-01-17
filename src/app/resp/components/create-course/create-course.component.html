@@ -1,0 +1,109 @@
+<p-card [header]="getHeader()">
+  <form
+    *ngIf="resources && resources.length; else noData"
+    (submit)="CreateCourse()"
+    class="create-course-form"
+  >
+    <div class="form-group">
+      <label for="resource">Ressource*</label>
+      <p-dropdown
+        id="resource"
+        [options]="resources"
+        [(ngModel)]="selectedResourceId"
+        (onChange)="onResourceChange($event.value)"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Sélectionnez une ressource"
+        name="resource"
+      ></p-dropdown>
+    </div>
+
+    <div class="form-group">
+      <label for="isControl">Contrôle</label>
+      <p-checkbox
+        id="isControl"
+        [binary]="true"
+        [value]="control"
+        (onChange)="onControlChange($event)"
+        name="isControl"
+      ></p-checkbox>
+    </div>
+
+    <div class="form-group">
+      <label for="teachers">Enseignants</label>
+      <p-multiSelect
+        id="teachers"
+        [options]="teachersDropdownOptions"
+        [(ngModel)]="selectedTeacherIds"
+        (onChange)="onTeacherChange($event)"
+        optionLabel="label"
+        value="id"
+        placeholder="Sélectionnez des enseignants"
+        name="teachers"
+      >
+      </p-multiSelect>
+    </div>
+
+    <div class="form-group">
+      <label for="classrooms">Salles de classe</label>
+      <p-multiSelect
+        id="classrooms"
+        [options]="classrooms"
+        [(ngModel)]="selectedClassroomIds"
+        (onChange)="onClassroomChange($event)"
+        optionLabel="label"
+        value="id"
+        placeholder="Sélectionnez des salles de classe"
+        name="classrooms"
+      >
+      </p-multiSelect>
+    </div>
+
+    <div class="form-group">
+      <label for="courseDate">Date du cours*</label>
+      <p-calendar
+        id="courseDate"
+        [(ngModel)]="date"
+        inputId="courseDate"
+        dateFormat="yy-mm-dd"
+        [showIcon]="true"
+        name="date"
+      >
+      </p-calendar>
+    </div>
+
+    <div class="form-group">
+      <label for="startTime">Heure de début*</label>
+      <p-inputMask
+        id="startTime"
+        [(ngModel)]="startTime"
+        mask="99:99"
+        placeholder="HH:MM"
+        name="startTime"
+      >
+      </p-inputMask>
+    </div>
+
+    <div class="form-group">
+      <label for="endTime">Heure de fin*</label>
+      <p-inputMask
+        id="endTime"
+        [(ngModel)]="endTime"
+        mask="99:99"
+        placeholder="HH:MM"
+        name="endTime"
+      >
+      </p-inputMask>
+    </div>
+
+    <button class="submit-button">Créer le cours</button>
+  </form>
+</p-card>
+
+<p-toast></p-toast>
+
+<ng-template #noData>
+  <p class="no-data-message">
+    Veuillez sélectionner une promotion, un parcours, un TD ou un TP.
+  </p>
+</ng-template>

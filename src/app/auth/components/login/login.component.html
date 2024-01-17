@@ -1,0 +1,41 @@
+<main>
+  <div class="flex h-screen">
+    <div class="surface-section w-full md:w-5 p-6 md:p-7">
+      <div class="mb-5">
+        <img class="logo" src="assets/images/logo-iut-black.png" alt="Image" width="130" class="mb-3">
+        <div class="text-900 text-2xl font-semibold mb-2 mt-3">{{ greeting }}</div>
+        <span class="text-600 text-sm font-medium mr-2">Connectez-vous pour accéder à ce service.</span>
+      </div>
+
+      <div *ngIf="loginStatusMessage" class="login-status mb-5 w-full">
+        <p class="text-sm text-red-500 font-semibold">{{ loginStatusMessage }}</p>
+      </div>
+
+      <div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <label for="username" class="block text-900 text-sm font-medium mb-2">Identifiant</label>
+          <input id="username" type="text" pInputText class="w-full mb-4 p-3" formControlName="username"
+            [ngClass]="{'ng-invalid ng-dirty': loginStatusMessage }">
+
+          <label for="password" class="block text-900 text-sm font-medium mb-2">Mot de passe</label>
+          <p-password id="password" [toggleMask]="true" [feedback]="false" class="w-full" formControlName="password"
+            [ngClass]="{'ng-invalid ng-dirty': loginStatusMessage }"></p-password>
+
+
+          <div class="flex align-items-center justify-content-between mb-6 mt-2">
+            <div class="flex align-items-center">
+              <p-checkbox id="rememberme" [binary]="true" styleClass="mr-2"></p-checkbox>
+              <label for="rememberme" class="text-sm">Mémoriser cet appareil</label>
+            </div>
+            <a class="font-medium no-underline ml-2 text-blue-500 text-sm text-right cursor-pointer"
+              routerLink="/auth/reset-password">Mot de passe oublié ?</a>
+          </div>
+
+          <button type="submit" [loading]="loading" pButton pRipple label="Se connecter" class="w-full p-3"></button>
+        </form>
+      </div>
+    </div>
+    <div class="hidden md:block w-6 bg-no-repeat bg-cover bg-image-login w-8">
+    </div>
+  </div>
+</main>

@@ -1,0 +1,224 @@
+<div style="margin-top: -20px" class="flex gap-5">
+    <div style="height: 50px; width: 70%">
+        <div class="flex justify-content-between align-items-center">
+            <h1 class="text-xl text-800">Tableau de bord</h1>
+            <p class="text-500">{{ today | date: 'fullDate' : 'fr' }}</p>
+        </div>
+
+        <div class="w-full p-5 border-round mt-5 relative shadow-1" style="background-color: rgb(239, 244, 255);">
+            <div>
+                <h1 class="text-2xl text-800">Bonjour {{ username }}!</h1>
+                <p>Bienvenue sur votre nouvel espace numérique de travail.</p>
+            </div>
+            <div class="absolute" style="top: -30px; right: 50px">
+                <img src="assets/images/undraw_learning_sketching.svg" width="230px">
+            </div>
+        </div>
+
+        <div class="stats-container grid mt-4">
+            <div class="col-12 md:col-6 lg:col-4" *ngIf="role == 'étudiant'">
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
+                    style="background-color: #FDEDE8; padding-bottom: -20px">
+                    <div>
+                        <i class="pi pi-clock" style="font-size: 32px; color: #FA896B; font-weight: bold;"></i>
+                    </div>
+                    <div>
+                        <div>
+                            <h2 style="color: #FA896B; font-size: 16px; height: 5px">Absences injustifiées</h2>
+                        </div>
+                        <div>
+                            <p class="text-2xl" style="color: #FA896B; font-weight: bold; height: 14px">{{nbAbsences}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4">
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
+                    style="background-color: #E6FFFA; padding-bottom: -20px">
+                    <div>
+                        <i class="pi pi-bolt" style="font-size: 32px; color: #40E5C7; font-weight: bold;"></i>
+                    </div>
+                    <div>
+                        <div>
+                            <h2 style="color: #40E5C7; font-size: 16px; height: 5px">Rappels</h2>
+                        </div>
+                        <div>
+                            <p class="text-2xl" style="color: #40E5C7; font-weight: bold; height: 14px">{{nbReminders}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 md:col-6 lg:col-4">
+                <div class="p-3 border-round overflow-hidden flex align-items-center gap-5 shadow-1"
+                    style="background-color: #ECF2FF; padding-bottom: -20px">
+                    <div>
+                        <i class="pi pi-calendar" style="font-size: 32px; color: #648CFF; font-weight: bold;"></i>
+                    </div>
+                    <div>
+                        <div>
+                            <h2 style="color: #648CFF; font-size: 16px; height: 5px">Cours cette semaine</h2>
+                        </div>
+                        <div>
+                            <p class="text-2xl" style="color: #648CFF; font-weight: bold; height: 14px">
+                                {{nbCoursesThisWeek}}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-container mt-4 flex gap-3">
+            <div class="panel-item shadow-1 border-round border-300 w-full" *ngIf="role == 'étudiant'">
+                <div class="panel-header p-3 border-round">
+                    <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-clock" style="margin-right: 7px"></i>
+                        Absences injustifiées ({{nbAbsences}})
+                    </h1>
+                </div>
+
+                <div class="panel-content p-3" style="padding-top: 10px !important">
+                    <p-table [value]="absences.slice(0, 3)" [rows]="2">
+                        <ng-template pTemplate="header">
+                        </ng-template>
+                        <ng-template pTemplate="body" let-absence>
+                            <tr routerLink="/absences">
+                                <td style="width: 10px">
+                                    <ng-container *ngIf="absence.justify; else notJustified" >
+                                        <div style="color: #FA896B">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-exclamation-circle" width="32"
+                                                height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 16v.01" />
+                                            </svg>
+                                        </div>
+                                    </ng-container>
+                                    <ng-template #notJustified>
+                                        <div style="color: #FA896B">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="icon icon-tabler icon-tabler-exclamation-circle" width="32"
+                                                height="32" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                                <path d="M12 9v4" />
+                                                <path d="M12 16v.01" />
+                                            </svg>
+                                        </div>
+                                    </ng-template>
+                                </td>
+                                <td>
+                                    <div class="font-semibold mb-2">
+                                        {{ absence.resource_name }}
+                                    </div>
+                                    <div class="text-900 text-sm">
+                                        Le {{ absence.course_date | date:'E d MMM yyyy' }} de {{
+                                        convertirEtFormaterHeure(absence.course_start_time) }} à {{
+                                        convertirEtFormaterHeure(absence.course_end_time) }}
+                                    </div>
+                                    <div>
+                                        <span class="text-500 text-sm">
+                                            {{ calculateTimeDifference(absence.course_start_time,
+                                            absence.course_end_time) }}
+                                            de cours manquées
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="7">Aucune absence enregistrée.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+
+            <div class="panel-item shadow-1 border-round border-300 w-full">
+                <div class="panel-header p-3 border-round">
+                    <h1 style="font-size: 16px;" class="text-800"><i class="pi pi-bolt" style="margin-right: 7px"></i>
+                        Rappels ({{nbReminders}})
+                    </h1>
+                </div>
+
+                <div class="panel-content p-3" style="padding-top: 10px !important">
+                    <p-table [value]="reminders.slice(0, 3)" [rows]="2">
+                        <ng-template pTemplate="header">
+                        </ng-template>
+                        <ng-template pTemplate="body" let-reminder>
+                            <tr routerLink="/reminders">
+                                <td style="width: 10px">
+                                    <i class="pi pi-bolt"
+                                        style="color: #4FE5C7; font-weight: bold; font-size: 24px"></i>
+                                </td>
+                                <td>
+                                    <div class="font-semibold mb-2">
+                                        {{ reminder.title }}
+                                    </div>
+                                    <div class="text-900 text-sm">
+                                        {{ reminder.reminder_text }}<br>
+                                        <span class="text-500 text-sm">{{ reminder.reminder_date | date:'E d MMM yyyy'
+                                            }}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="7">Aucune rappel.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width: 30%">
+        <div class="shadow-1 border-round" style="padding-bottom: 10px">
+            <div class="cal-header flex align-items-center justify-content-between">
+                <div>
+                    <p-button [rounded]=" true" [text]="true" (click)="previous()" icon="pi pi-chevron-left"
+                        [outlined]="true"></p-button>
+                </div>
+                <div class="period-text">
+                    <span>{{ viewDate | date : "EEEE d MMMM y" }}</span>
+                </div>
+                <div>
+                    <p-button [rounded]="true" [text]="true" (click)="next()" icon="pi pi-chevron-right"
+                        [outlined]="true"></p-button>
+                </div>
+            </div>
+
+            <mwl-calendar-day-view [viewDate]="viewDate" [events]="events" [dayStartHour]="dayStartHour"
+                [dayEndHour]="dayEndHour" [hourSegments]="hourSegments" [eventTitleTemplate]="customEventTitleTemplate"
+                (eventClicked)="handleEventClick($event.event)">
+            </mwl-calendar-day-view>
+        </div>
+    </div>
+</div>
+
+<ng-template class="custom-event-title" #customEventTitleTemplate let-event="event">
+    <span class="custom-event-title__control" *ngIf="event.meta.control">Contrôle</span>
+    <span class="custom-event-title__resource">{{
+        event.meta.resourceName
+        }}</span>
+    <span class="custom-event-title__teachers">{{
+        event.meta.teacherNames
+        }}</span>
+    <span class="custom-event-title__classroom">{{
+        event.meta.classroomName
+        }}</span>
+    <span class="custom-event-title__groupname">{{ event.meta.groupName }}</span>
+</ng-template>
+<ng-template #customDayHeaderTemplate let-day="day">
+    <div class="custom-day-header">
+        {{ day.date | date : "EEEE d MMMM" }}
+    </div>
+</ng-template>

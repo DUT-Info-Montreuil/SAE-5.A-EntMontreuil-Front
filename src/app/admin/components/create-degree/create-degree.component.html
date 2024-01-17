@@ -1,0 +1,38 @@
+<!-- create-degree.component.html -->
+<p-dialog
+  header="Créer une formation"
+  [(visible)]="display"
+  [modal]="true"
+  [responsive]="true"
+>
+  <ng-template pTemplate="content">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="degreeName">Nom de la formation</label>
+        <input
+          type="text"
+          id="degreeName"
+          pInputText
+          [(ngModel)]="newDegreeName"
+        />
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Annuler"
+      (click)="hideDialog()"
+      class="p-button-secondary"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Créer"
+      (click)="createDegree(newDegreeName)"
+      class="p-button-primary"
+    ></button>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>

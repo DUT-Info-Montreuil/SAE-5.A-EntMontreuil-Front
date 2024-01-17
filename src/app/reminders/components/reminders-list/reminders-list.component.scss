@@ -1,0 +1,12 @@
+
+
+.rappelItem {
+    background-color: rgb(239, 244, 255);
+}
+
+.rappelItem:hover {
+    cursor: pointer;
+    background-color: rgb(220, 230, 252);
+    transform: scale(1.03);
+    transition: all 0.2s ease-in-out;
+}

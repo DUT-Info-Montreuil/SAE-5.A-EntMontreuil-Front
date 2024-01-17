@@ -1,0 +1,75 @@
+.classroom-details {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.classroom-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.classroom-info {
+  font-size: 18px;
+  color: #666;
+}
+
+.classroom-capacity {
+  margin-bottom: 5px;
+}
+
+.equipment-button {
+  margin-top: 20px;
+  background-color: #007bff;
+  color: white;
+}
+.custom-form {
+  .p-field {
+    margin-bottom: 1.5rem; /* Espacement entre les champs */
+    label {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    input,
+    p-inputNumber {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+  }
+
+  .p-field-checkbox {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5rem;
+
+    .p-checkbox {
+      margin-right: 0.5rem;
+    }
+
+    .p-checkbox .p-checkbox-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 3px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .p-checkbox .p-checkbox-box .p-checkbox-icon {
+      font-size: 1.2rem;
+    }
+
+    .p-checkbox-label {
+      font-size: 1rem;
+      color: #333;
+      user-select: none;
+    }
+  }
+}

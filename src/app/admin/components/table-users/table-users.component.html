@@ -1,0 +1,12 @@
+<div >
+    <p-dropdown [options]="field" [(ngModel)]="selected" placeholder="Utilisateurs"></p-dropdown>
+    <div *ngIf="selected=='Utilisateurs'">
+        <app-users></app-users>
+    </div>
+    <div *ngIf="selected=='Enseignants'">
+        <app-teachers></app-teachers>
+    </div>
+    <div *ngIf="selected=='Étudiants'">
+        <app-students></app-students>
+    </div>
+</div>

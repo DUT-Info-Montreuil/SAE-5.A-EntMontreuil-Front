@@ -1,0 +1,29 @@
+<div *ngIf="availableEquipments.length === 0" class="equipment-selection">
+  <p>Aucun autre équipement à ajouter.</p>
+
+</div>
+
+<div *ngIf="availableEquipments.length > 0" class="equipment-selection">
+
+  <!-- Champ de recherche -->
+  <input pInputText type="text" placeholder="Rechercher un équipement" [(ngModel)]="searchTerm"
+    (input)="filterEquipments()" class="w-full mt-2" />
+
+  <ul class="equipment-list">
+    <li *ngFor="let equipment of filteredEquipments">
+      <label>
+        <input type="radio" name="equipment" (click)="selectedEquipment = equipment" />
+        {{ equipment.equipment }}
+      </label>
+    </li>
+  </ul>
+  <div class="quantity-input">
+    <label for="quantity" class="font-medium text-900">Quantité</label>
+    <input pInputText id="quantity" type="number" [(ngModel)]="selectedQuantity" min="1" />
+  </div>
+
+  <div class="flex justify-content-end gap-2">
+    <p-button label="Annuler" [outlined]="true" severity="secondary"></p-button>
+    <p-button type="button" label="Ajouter" (click)="chooseEquipment()" class="p-button-primary"></p-button>
+  </div>
+</div>

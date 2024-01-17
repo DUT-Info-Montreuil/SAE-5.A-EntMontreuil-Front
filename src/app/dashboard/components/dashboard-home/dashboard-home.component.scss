@@ -1,0 +1,264 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.dashboard-home {
+    display: flex;
+}
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    flex: 1; 
+    width: 100%;
+    height: 100%;
+}
+
+.dashboard-values:nth-child(1) {
+    display: flex;
+    flex-wrap: wrap; 
+}
+
+.dashboard-values:nth-child(2) {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-item, .dashboard-values p-panel {
+    flex: 1; 
+    margin: 8px;
+}
+
+
+p-panel:nth-child(2) {
+    width: 30%;
+}
+
+.dashboard-values {
+    flex: 1; 
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.card-item, p-panel {
+    flex: 1; 
+    background-color: #ecf0f1;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+p-header {
+    font-weight: bold;
+}
+
+
+.red-500 {
+    color: #ff0000; 
+}
+
+.red-absence:hover {
+    background: #fdd0d0;
+    border-radius: 5px;
+}
+
+.blue-500 {
+    color: #0000ff; 
+}
+
+.blue-reminder:hover {
+    background: #d0d0ff;
+    border-radius: 5px;
+  }
+
+.resource-name {
+    font-weight: bold;
+}
+
+/*-----*/
+
+.calendar-section {
+    flex: 3; /* ou utilisez flex: 3 pour donner plus d'espace au calendrier */
+  }
+  
+  .menu-section {
+    flex: 1;
+    padding-left: 20px; /* Espace entre le calendrier et le menu */
+  }
+  
+  .cal-day-view {
+    width: 100%;
+    height: 100vh;
+  }
+  
+  /* Ajoutez ici des styles personnalisés pour le calendrier */
+  /* manage-courses.component.scss */
+  .cal-time-events {
+    min-height: 1000px; // Réglable en fonction de vos besoins
+  }
+  
+  .cal-hour-segment {
+    height: 30px; // Hauteur pour un segment de 30 minutes
+  }
+  
+  ::ng-deep .cal-week-view .cal-time-events .cal-event {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .custom-event-title {
+    font-weight: bold;
+  }
+  
+  .custom-event-time {
+    display: block; /* ou 'inline' selon la disposition souhaitée */
+  }
+  
+  /* manage-courses.component.scss */
+  
+  .custom-event-title {
+    display: block; /* Make each span a block element to appear on a new line */
+  
+    &__resource,
+    &__teachers,
+    &__classroom {
+      font-size: 10px;
+    }
+  }
+  
+  ::ng-deep .cal-week-view .cal-time {
+    font-weight: 100 !important;
+  }
+  
+  ::ng-deep .cal-week-view {
+    background: rgb(255, 255, 255) !important;
+  }
+  
+  ::ng-deep .cal-week-view .cal-day-headers {
+    border-top-left-radius: 5px !important;
+    // border-top-right-radius: 5px !important;
+    border: none !important;
+    border-bottom: 1px solid rgb(221, 221, 221) !important;
+  }
+  
+  ::ng-deep .cal-week-view {
+    border: none !important;
+  }
+  
+  ::ng-deep .cal-week-view .cal-day-headers .cal-header:last-child {
+    // border-top-right-radius: 5px !important;
+  }
+  
+  ::ng-deep .cal-week-view .cal-time-events {
+    border: none;
+  }
+  
+  ::ng-deep .cal-week-view .cal-header.cal-today {
+    background-color: rgb(239, 244, 255);
+  }
+  
+  ::ng-deep .cal-week-view .cal-hour:not(:last-child) .cal-hour-segment,
+  .cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+    border-bottom: none;
+  }
+  
+  ::ng-deep mwl-calendar-event-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    color: black; /* Texte en noir */
+    padding: 4px; /* Espacement autour du contenu */
+    width: 100%;
+  }
+  
+  ::ng-deep .cal-event {
+    border: none !important;
+    opacity: 0.8 !important;
+    transition: 0.2s;
+    margin: 0 !important;
+    line-height: 20px !important;
+  }
+  
+  ::ng-deep .cal-event:hover {
+    opacity: 1 !important;
+  }
+  
+  ::ng-deep .cal-week-view .cal-time-events .cal-event {
+    width: calc(100% - 10px) !important;
+  }
+  
+  .custom-event-title {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+  }
+  
+  .custom-event-title__resource {
+    font-weight: bold;
+    font-size: 16px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .custom-event-title__teachers,
+  .custom-event-title__classroom,
+  .custom-event-title__groupname {
+    font-size: 14px;
+  }
+  
+  .custom-event-title__classroom {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+  
+  .custom-event-title__teachers {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+  }
+  
+  .custom-event-title__groupname {
+    position: absolute;
+    bottom: 5px;
+    right: 16px;
+  }
+  
+  .custom-event-title__control {
+    font-weight: bold;
+    position: absolute;
+    top: 19px;
+    right: -14px;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    padding: 2px 6px;
+    border-radius: 4px;
+    border: 1px solid black;
+  }
+
+ table {
+    border-bottom: none !important;
+  }
+
+  tr:hover {
+    cursor: pointer !important;
+    border: none !important;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+  }

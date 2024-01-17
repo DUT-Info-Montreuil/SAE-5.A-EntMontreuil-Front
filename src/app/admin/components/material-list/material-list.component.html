@@ -1,0 +1,85 @@
+<div class="container">
+  <div class="flex align-items-center border-round p-4 relative" style="background-color: rgb(239, 244, 255);">
+    <div>
+      <h1 class="text-2xl font-semibold">Gestion des équipements</h1>
+      <p class="text-900 -mt-2">Créer, modifier ou supprimer des équipements.</p>
+    </div>
+    <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px;">
+      <img src="/assets/images/3dicons/computer.png" alt="cube" width="180px">
+    </div>
+  </div>
+
+  <div class="shadow-1 border-round mt-7 p-4 pt-2">
+    <h1 class="text-lg font-medium">Équipements</h1>
+
+    <div class="flex justify-content-between mt-5 mb-4">
+      <div>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search mb-3"></i>
+          <input type="text" pInputText [(ngModel)]="searchQuery" (input)="onSearch()"
+            placeholder="Rechercher un équipement" />
+        </span>
+      </div>
+
+      <p-button icon="pi pi-plus" label="Créer un équipement" class="custom-button"
+        (click)="showCreateMaterialDialog()"></p-button>
+    </div>
+
+    <!-- Tableau PrimeNG avec pagination et responsive layout -->
+    <p-table *ngIf="!isLoading; else tableSkeleton" [value]="filteredMaterials" [paginator]="true" [rows]="10"
+      [responsiveLayout]="scroll" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} équipements"
+      [rowsPerPageOptions]="[5, 10, 20, 50]">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Nom de l'équipement</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-material>
+        <tr>
+          <td>#{{ material.id }}</td>
+          <td *ngIf="!material.isEditing" (click)="startEditing(material)">
+            <ng-container *ngIf="!material.isLoading; else singleSkeleton">
+              {{ material.equipment }}
+            </ng-container>
+          </td>
+          <td *ngIf="material.isEditing">
+            <input pInputText type="text" [(ngModel)]="material.updatedEquipment" (blur)="stopEditing(material)" />
+          </td>
+          <td class="flex justify-content-evenly">
+            <!-- Boutons avec icônes et tooltips -->
+            <div>
+
+            </div>
+            <div class="flex align-items-center justify-content-center">
+              <button pButton pRipple pTooltip="Modifier" tooltipPosition="top" type="button" icon="pi pi-pencil"
+                class="p-button-rounded p-button-text" (click)="startEditing(material)"></button>
+              <button pButton pRipple pTooltip="Supprimer" tooltipPosition="top" icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger" (click)="confirmDelete(material)"></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">Aucun équipement.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<p-confirmDialog header="Supprimer" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>
+<app-create-material [display]="displayCreateMaterialDialog"
+  (equipmentCreated)="handleEquipmentCreated()"></app-create-material>
+
+<ng-template #singleSkeleton>
+  <p-skeleton width="30%" height="22px"></p-skeleton>
+</ng-template>
+
+<ng-template #tableSkeleton>
+  <p-skeleton width="100%" height="600px"></p-skeleton>
+</ng-template>

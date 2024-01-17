@@ -1,0 +1,205 @@
+<div *ngIf="TPInfo" class="p-2 pl-5 pr-5 content">
+    <div class="flex align-items-center border-round p-4 relative mb-6" style="background-color: rgb(255, 247, 234)">
+        <div>
+            <p class="text-900 font-medium">
+                Cohorte > {{ TPInfo.degree.name }} > BUT {{ TPInfo.promotion.level }} {{
+                TPInfo.degree.name }} {{ TPInfo.promotion.year }} > {{ TPInfo.training.name}} > {{ TPInfo.td.name }} >
+            </p>
+            <h1 class="text-2xl font-semibold">
+                {{ TPInfo.name }}
+            </h1>
+        </div>
+        <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px">
+            <img src="/assets/images/3dicons/at.png" alt="cube" width="180px" />
+        </div>
+    </div>
+
+    <div class="-ml-3 mb-3">
+        <p-button label="Retour" [text]="true" icon="pi pi-arrow-left"
+            routerLink="/resp/cohort/td/{{ TPInfo.td.id }}"></p-button>
+    </div>
+
+    <p-tabView>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>Étudiants</span>
+                    </div>
+                    <div>
+                        <span class="badge">{{ TPInfo.students.length }}</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="flex justify-content-end mb-1">
+                <p-button (click)="isAddStudentsDialogVisible = true" icon="pi pi-plus" [outlined]="true"
+                    label="Ajouter des étudiants"></p-button>
+            </div>
+
+            <p-table [value]="TPInfo.students" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
+                [showCurrentPageReport]="true"
+                currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
+                [rowsPerPageOptions]="[5, 10, 20, 50]">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th pSortableColumn="firstname">
+                            Nom <p-sortIcon field="firstname"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="lastname">
+                            Prénom <p-sortIcon field="lastname"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="apprentice">
+                            Apprenti <p-sortIcon field="apprentice"></p-sortIcon>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-student>
+                    <tr>
+                        <td>{{ student.first_name }}</td>
+                        <td>{{ student.last_name }}</td>
+                        <td>
+                            <i class="pi" [ngClass]="{
+                  'pi-check-circle text-green-300': student.isApprentice,
+                  'pi-times-circle text-red-300': !student.isApprentice
+                }"></i>
+                        </td>
+                        <td>
+                            <p-button (click)="selectMenuStudent(student.id); menuStudents.toggle($event)"
+                                icon="pi pi-ellipsis-v" [rounded]="true" [text]="true" severity="secondary"></p-button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="7">Aucun étudiant.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <p-tabPanel>
+            <ng-template pTemplate="header">
+                <div class="flex gap-2 align-items-center">
+                    <div>
+                        <span>Paramètres</span>
+                    </div>
+                </div>
+            </ng-template>
+
+            <div class="w-full">
+                <div class="flex" style="flex-direction: column;">
+                    <label for="group_name" class="pb-2" style="font-weight: 500;">Nom du TP</label>
+                    <input pInputText type="text" name="group_name" id="group_name" class="w-full"
+                        value="{{ TPInfo.name }}" [(ngModel)]="TPInfo.name" />
+                </div>
+
+                <div class="flex" style="flex-direction: column; margin-top: 30px;">
+                    <label for="delGroupBtn" style="font-weight: 500;" class="mb-2">Supprimer ce TP</label>
+                    <p-button (click)="confirmDeleteTP()" name="delGroupBtn" id="delGroupBtn" icon="pi pi-trash"
+                        severity="danger" label="Supprimer"></p-button>
+
+                </div>
+
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog header="Ajouter des étudiants" [(visible)]="isAddStudentsDialogVisible" [modal]="true" [responsive]="true"
+    [style]="{ width: '60vw', height: '70vh' }" [maximizable]="true">
+    <ng-template pTemplate="content">
+        <div class="flex gap-4">
+            <div style="height: auto; margin-top: -16px">
+                <nav class="menuStudentGroup">
+                    <ul>
+                        <li class="flex gap-2 active" [class.active]="selectedMenu === 'promo'"
+                            (click)="selectMenu('promo')"><i class="pi pi-users"></i> Étudiants en BUT {{
+                            TPInfo.promotion.level }} {{
+                            TPInfo.degree.name }} {{ TPInfo.promotion.year }}</li>
+                        <li class="flex gap-2" [class.active]="selectedMenu === 'all'" (click)="selectMenu('all')"><i
+                                class="pi pi-users"></i> Tous les étudiants</li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="w-full">
+                <div class="studentsList">
+                    <input type="text" pInputText [(ngModel)]="searchQuery" (ngModelChange)="filterStudents()"
+                        name="search-query" class="search-query w-full mb-2" placeholder="Rechercher un étudiant...">
+
+                    <div
+                        class="flex align-items-center justify-content-start w-full hidden sm:hidden lg:flex md:flex onlyNoSubGroupSwitch mt-2 mb-2">
+                        <p-inputSwitch [(ngModel)]="onlyNoSubGroup" (onChange)="filterStudents()"></p-inputSwitch>
+                        <label for="onlyNoSubGroup" class="ml-2 pb-1">Voir uniquement ceux sans sous-groupe</label>
+                    </div>
+
+                    <p-table [value]="displayedStudents" [(selection)]="selectedStudents" [paginator]="true" [rows]="5"
+                        paginatorDropdownAppendTo="body" [showCurrentPageReport]="true"
+                        [tableStyle]="{ 'min-width': '50rem' }"
+                        currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
+                        [rowsPerPageOptions]="[5, 10, 20]" (onRowSelect)="onRowSelect($event)"
+                        (onRowUnselect)="onRowUnselect($event)">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 4rem">
+                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                </th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Apprenti</th>
+                                <th>Promotion</th>
+                                <th>TD</th>
+                                <th>TP</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-student>
+                            <tr>
+                                <td>
+                                    <p-tableCheckbox [value]="student"></p-tableCheckbox>
+                                </td>
+                                <td>{{student.last_name}}</td>
+                                <td>{{student.first_name}}</td>
+                                <td>
+                                    <i class="pi" [ngClass]="{
+                          'pi-check-circle text-green-300': student.apprentice,
+                          'pi-times-circle text-red-300': !student.apprentice
+                        }"></i>
+                                </td>
+                                <td>
+                                    <div *ngIf="student.degree_name; else notSet">BUT {{student.promotion_level}}
+                                        {{student.degree_name}} {{student.promotion_year}}</div>
+                                </td>
+                                <td>
+                                    <div *ngIf="student.td_name; else notSet">{{student.td_name}}</div>
+                                </td>
+                                <td>
+                                    <div *ngIf="student.tp_name; else notSet">{{student.tp_name}}</div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="7">Aucun étudiant.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+
+        <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+            (click)="isAddStudentsDialogVisible = false"></p-button>
+        <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addStudents()"
+            [loading]="loading"></p-button>
+    </ng-template>
+</p-dialog>
+
+<ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
+
+<p-toast></p-toast>
+<p-menu #menuStudents [model]="menuItemsStudents" [popup]="true" appendTo="body"></p-menu>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -1,0 +1,229 @@
+<div *ngIf="degreeInfo" class="p-2 pl-5 pr-5 content">
+  <div class="flex align-items-center border-round p-4 relative mb-6" style="background-color: rgb(255, 247, 234)">
+    <div>
+      <p class="text-900 font-medium">Cohorte ></p>
+      <h1 class="text-2xl font-semibold">BUT {{ degreeInfo.name }}</h1>
+    </div>
+    <div class="absolute hidden sm:hidden md:block" style="top: -14px; right: 50px">
+      <img src="/assets/images/3dicons/location.png" alt="cube" width="180px" />
+    </div>
+  </div>
+
+  <p-tabView>
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="flex gap-2 align-items-center">
+          <div>
+            <span>Promotions</span>
+          </div>
+          <div>
+            <span class="badge">{{ promotions.length }}</span>
+          </div>
+        </div>
+      </ng-template>
+      <p-table [value]="promotions" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} promotions"
+        [rowsPerPageOptions]="[5, 10, 20, 50]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name">
+              Nom<p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="student_count">
+              Étudiants inscrits <p-sortIcon field="student_count"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-promotion>
+          <tr>
+            <td>
+              <div class="cursor-pointer" routerLink="/resp/cohort/promotion/{{ promotion.id }}">
+                <span class="font-semibold hover:text-blue-500">BUT {{ promotion.level }} {{ degreeInfo.name }}
+                  {{ promotion.year }}</span>
+              </div>
+            </td>
+            <td>{{ getStudentCountByPromotion(promotion.id) }}</td>
+            <td>
+              <p-button (click)="selectMenuPromotion(promotion); menuPromotions.toggle($event)" icon="pi pi-ellipsis-v"
+                [rounded]="true" [text]="true" severity="secondary "></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Aucune promotion.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+    <p-tabPanel>
+      <ng-template pTemplate="header">
+        <div class="flex gap-2 align-items-center">
+          <div>
+            <span>Étudiants</span>
+          </div>
+          <div>
+            <span class="badge">{{ students.length }}</span>
+          </div>
+        </div>
+      </ng-template>
+      <p-table [value]="students" [tableStyle]="{ 'min-width': '60rem' }" [paginator]="true" [rows]="5"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
+        [rowsPerPageOptions]="[5, 10, 20, 50]">
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="firstname">
+              Nom <p-sortIcon field="firstname"></p-sortIcon>
+            </th>
+            <th pSortableColumn="lastname">
+              Prénom <p-sortIcon field="lastname"></p-sortIcon>
+            </th>
+            <th pSortableColumn="td">
+              Apprenti <p-sortIcon field="td"></p-sortIcon>
+            </th>
+            <th pSortableColumn="promotion">
+              Promotion <p-sortIcon field="promotion"></p-sortIcon>
+            </th>
+            <th pSortableColumn="training">
+              Parcours <p-sortIcon field="training"></p-sortIcon>
+            </th>
+            <th pSortableColumn="td">
+              TD <p-sortIcon field="td"></p-sortIcon>
+            </th>
+            <th pSortableColumn="tp">
+              TP <p-sortIcon field="tp"></p-sortIcon>
+            </th>
+            <th></th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-student>
+          <tr>
+            <td>{{ student.first_name }}</td>
+            <td>{{ student.last_name }}</td>
+            <td>
+              <i class="pi" [ngClass]="{
+                  'pi-check-circle text-green-300': student.isApprentice,
+                  'pi-times-circle text-red-300': !student.isApprentice
+                }"></i>
+            </td>
+            <td>
+              BUT {{ student.promotion.level }} {{ degreeInfo.name }}
+              {{ student.promotion.year }}
+            </td>
+            <td>
+              <ng-container *ngIf="student.td[0]; else notSet">{{ student.td[0].training.name }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="student.td[0]; else notSet">{{ student.td[0].name }}</ng-container>
+            </td>
+            <td>
+              <ng-container *ngIf="student.tp[0]; else notSet">{{ student.tp[0].name }}</ng-container>
+            </td>
+            <td>
+              <p-button (click)="selectMenuStudent(student.id); menuStudents.toggle($event)" icon="pi pi-ellipsis-v"
+                [rounded]="true" [text]="true" severity="secondary"></p-button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td colspan="7">Aucun étudiant.</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-tabPanel>
+  </p-tabView>
+</div>
+
+<ng-template #notSet><span class="font-italic">Aucun</span></ng-template>
+<p-toast></p-toast>
+<p-menu #menuStudents [model]="menuItemsStudents" [popup]="true" appendTo="body"></p-menu>
+<p-menu #menuPromotions [model]="menuItemsPromotions" [popup]="true" appendTo="body"></p-menu>
+
+
+<!-- Ajout du Modal (Dialogue) -->
+<p-dialog
+  header="Ajouter des étudiants à BUT {{ menuSelectedPromo?.level }} {{ degreeInfo.name }} {{ menuSelectedPromo?.year }}"
+  [(visible)]="isAddStudentsDialogVisible" [modal]="true" [responsive]="true"
+  [style]="{ width: '60vw', height: '70vh' }" [maximizable]="true">
+  <ng-template pTemplate="content">
+    <div class="flex gap-4">
+      <div style="height: auto; margin-top: -16px">
+        <nav class="menuStudentGroup">
+          <ul>
+            <li class="flex gap-2 active" [class.active]="selectedMenu === 'nopromotion'"
+              (click)="selectMenu('nopromotion')"><i class="pi pi-users"></i> Étudiants sans promotion</li>
+            <li class="flex gap-2" [class.active]="selectedMenu === 'all'" (click)="selectMenu('all')"><i
+                class="pi pi-users"></i> Tous les étudiants</li>
+          </ul>
+        </nav>
+      </div>
+      <div class="w-full">
+        <div class="studentsList">
+          <input type="text" pInputText [(ngModel)]="searchQuery" (ngModelChange)="filterStudents()" name="search-query"
+            class="search-query w-full mb-2" placeholder="Rechercher un étudiant...">
+
+          <p-table [value]="displayedStudents" [(selection)]="selectedStudents" [paginator]="true" [rows]="5"
+            paginatorDropdownAppendTo="body" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} étudiants"
+            [rowsPerPageOptions]="[5, 10, 20]" (onRowSelect)="onRowSelect($event)"
+            (onRowUnselect)="onRowUnselect($event)">
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 4rem">
+                  <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Apprenti</th>
+                <th>Promotion</th>
+                <th>TD</th>
+                <th>TP</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-student>
+              <tr>
+                <td>
+                  <p-tableCheckbox [value]="student"></p-tableCheckbox>
+                </td>
+                <td>{{student.last_name}}</td>
+                <td>{{student.first_name}}</td>
+                <td>
+                  <i class="pi" [ngClass]="{
+                          'pi-check-circle text-green-300': student.apprentice,
+                          'pi-times-circle text-red-300': !student.apprentice
+                        }"></i>
+                </td>
+                <td>
+                  <div *ngIf="student.degree_name; else notSet">BUT {{student.promotion_level}}
+                    {{student.degree_name}} {{student.promotion_year}}</div>
+                </td>
+                <td>
+                  <div *ngIf="student.td_name; else notSet">{{student.td_name}}</div>
+                </td>
+                <td>
+                  <div *ngIf="student.tp_name; else notSet">{{student.tp_name}}</div>
+                </td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="7">Aucun étudiant.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button type="button" label="Annuler" [outlined]="true" severity="secondary" class="p-button-secondary"
+      (click)="isAddStudentsDialogVisible = false"></p-button>
+    <p-button type="button" label="Ajouter" class="p-button-primary" (click)="addStudents()"
+      [loading]="loading"></p-button>
+  </ng-template>
+</p-dialog>

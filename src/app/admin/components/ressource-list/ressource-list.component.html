@@ -1,0 +1,107 @@
+<div class="container">
+  <!-- Remplacer 'app-create-training' par votre composant de création de ressource -->
+  <app-create-ressource *ngIf="displayCreateRessources" [displayCreateRessourceDialog]="displayCreateRessources"
+    [trainings]="trainings" (ressourceCreated)="onRessourceCreated($event)"></app-create-ressource>
+  <div class="flex align-item-center border-round p-4 relative" style="background-color: rgb(239, 244, 255)">
+    <div>
+      <h1 class="text-2xl font-semibold">Gestion des ressources</h1>
+      <p class="text-900 -mt-2">Créer, modifier ou supprimer des ressources.</p>
+    </div>
+    <!-- Ajoutez une image ou une icône appropriée -->
+    <div class="absolute hidden sm:hidden md:block" style="top: -10px; right: 50px">
+      <img src="/assets/images/3dicons/travel.png" alt="icon" width="180px" />
+    </div>
+  </div>
+
+  <!-- Section Recherche et Ajout -->
+  <div class="shadow-1 border-round mt-7 p-4 pt-2">
+    <h1 class="text-lg font-medium">Ressources</h1>
+
+    <div class="flex justify-content-between mt-5 mb-4">
+      <div>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search mb-3"></i>
+          <input type="text" pInputText [(ngModel)]="searchQuery" (input)="onSearch()"
+            placeholder="Rechercher une ressource" />
+        </span>
+      </div>
+
+      <p-button icon="pi pi-plus" label="Créer une ressource" class="custom-button"
+        (click)="showCreateRessourceDialog()"></p-button>
+    </div>
+
+    <!-- Table des Ressources avec PrimeNG -->
+    <p-table *ngIf="!isLoading; else tableSkeleton" #dt [value]="filteredRessources" [paginator]="true" [rows]="10"
+      [responsiveLayout]="scroll" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Affichage des entrées {first} à {last} sur {totalRecords} ressources"
+      [rowsPerPageOptions]="[5, 10, 20, 50]">>
+      <ng-template pTemplate="header">
+        <tr>
+          <th>ID</th>
+          <th>Nom de la ressource</th>
+          <th>Couleur</th>
+          <th>
+            Parcours
+            <p-dropdown [options]="trainings" [(ngModel)]="selectedTrainingId" optionLabel="name" optionValue="id"
+              placeholder="Sélectionner un parcours" (onChange)="filterByTraining()" appendTo="body"></p-dropdown>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-ressource>
+        <tr>
+          <td>#{{ ressource.id }}</td>
+          <td>
+            <div *ngIf="!ressource.is_editing">{{ ressource.name }}</div>
+            <input *ngIf="ressource.is_editing" type="text" [(ngModel)]="ressource.name" />
+          </td>
+          <td>
+            <span *ngIf="!ressource.is_editing" class="color-indicator" [style.background]="ressource.color"></span>
+            <input *ngIf="ressource.is_editing" type="color" [(ngModel)]="ressource.color" />
+          </td>
+          <td>
+            <div *ngIf="!ressource.is_editing">
+              {{ ressource.training_name }}
+            </div>
+            <select *ngIf="ressource.is_editing" [(ngModel)]="ressource.id_Training">
+              <option *ngFor="let training of trainings" [value]="training.id">
+                {{ training.name }}
+              </option>
+            </select>
+          </td>
+
+          <td class="flex justify-content-evenly">
+            <div *ngIf="!ressource.is_editing" class="flex align-items-center justify-content-center">
+              <button pButton pRipple pTooltip="Modifier" tooltipPosition="top" type="button" icon="pi pi-pencil"
+                class="p-button-rounded p-button-text" (click)="startEditing(ressource)"></button>
+              <button pButton pRipple pTooltip="Supprimer" tooltipPosition="top" icon="pi pi-trash"
+                class="p-button-rounded p-button-text p-button-danger" (click)="confirmDelete(ressource)"></button>
+            </div>
+            <button *ngIf="ressource.is_editing" pButton pRipple type="button" label="Sauvegarder"
+              (click)="confirmChanges(ressource)"></button>
+            <button *ngIf="ressource.is_editing" pButton pRipple type="button" label="Annuler"
+              class="p-button-secondary" (click)="cancelEdit(ressource)"></button>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="4">Aucune ressource.</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Dialogues de Confirmation et Messages Toast -->
+<p-confirmDialog icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast></p-toast>
+
+<ng-template #singleSkeleton>
+  <p-skeleton width="30%" height="22px"></p-skeleton>
+</ng-template>
+
+<ng-template #tableSkeleton>
+  <p-skeleton width="100%" height="600px"></p-skeleton>
+</ng-template>

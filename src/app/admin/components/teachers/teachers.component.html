@@ -1,0 +1,178 @@
+<p-toast></p-toast>
+<p-table #dt2
+[value]="teachers"
+dataKey="id"
+[rows]="7"
+[paginator]="true"
+>
+    <!-- Votre en-tête de tableau -->
+    <ng-template pTemplate="header">
+        <tr>
+            <th>ID</th>
+            <th>Identifiant</th>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Initial</th>
+            <th>Bureau</th>
+            <th>Admin</th>
+            <th>Responsable EDT</th>
+            <th>Modifier</th>
+            <th>Supprimer</th>
+        </tr>
+
+        <tr>
+            <th></th>
+            <th>
+                <p-columnFilter type="text" field="user.username"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.first_name"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.last_name"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="user.email"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="personal_info.initial"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="text" field="personal_info.desktop"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="boolean" field="user.isAdmin"></p-columnFilter>
+            </th>
+            <th>
+                <p-columnFilter type="boolean" field="user.isTTManager"></p-columnFilter>
+            </th>
+            <th></th>
+            <th></th>
+            
+        </tr>
+    </ng-template>
+    <!-- Corps du tableau -->
+    <ng-template pTemplate="body" let-teacher>
+        <tr>
+            <td >{{ teacher.personal_info.id }}</td>
+            <td>{{ teacher.user.username}}</td>
+            <td>{{ teacher.user.first_name.length > 15 ?  (teacher.user.first_name.slice(0, 15)| titlecase) + '...' : teacher.user.first_name| titlecase}}</td>
+            <td>{{ teacher.user.last_name.length > 15 ?  (teacher.user.last_name.slice(0, 15)| titlecase) + '...' : teacher.user.last_name| titlecase }}</td>
+            <td>{{ teacher.user.email }}</td>
+            <td>{{ teacher.personal_info.initial.length > 6 ?  teacher.personal_info.initial.slice(0, 6) + '...' : teacher.personal_info.initial }}</td>
+            <td>{{ teacher.personal_info.desktop.length > 15 ?  teacher.personal_info.desktop.slice(0, 15) + '...' : teacher.personal_info.desktop  }}</td>
+            <td>
+                <i class="pi"
+                    [ngClass]="{ 'pi-check-circle': teacher.user.isAdmin, 'pi-times-circle': !teacher.user.isAdmin }"
+                    [ngStyle]="{ 'color': teacher.user.isAdmin ? 'green' : 'red' }"></i>
+            </td>
+            <td>
+                <i class="pi"
+                    [ngClass]="{ 'pi-check-circle': teacher.user.isTTManager, 'pi-times-circle': !teacher.user.isTTManager }"
+                    [ngStyle]="{ 'color': teacher.user.isTTManager ? 'green' : 'red' }"></i>
+            </td>
+            <td><p-button icon="pi pi-user-edit" [rounded]="true" [text]="true" severity="info" (click) ="openModal(teacher)"  ></p-button></td>
+            <td><p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger" (click) ="openModalDelete(teacher)"  ></p-button></td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="10">Aucun enseignant trouvé.</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<p-button routerLink="add_teacher" label="Ajouter un enseignant" [rounded]="true" ></p-button>
+
+<div *ngIf="teacherModal" >
+    <p-dialog header="Modifier cette enseignant" [(visible)]="displayModal" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
+
+
+        <!--------------------------------->
+        <form  [formGroup]="teacherUpdateForm" (ngSubmit)="onSubmit()">
+            <div >
+                <div class="card p-fluid">
+                    <div class="field">
+                        <label htmlfor="username">Identifiant</label>
+                        <input pinputtext="" id="username" type="text" class="p-inputtext p-component p-element" formControlName="username" >
+                    </div>
+
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="nom">Nom</label>
+                            <input pinputtext="" id="nom" type="text" class="p-inputtext p-component p-element" formControlName="last_name">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="prenom">Prénom</label>
+                            <input pinputtext="" id="prenom" type="text" class="p-inputtext p-component p-element" formControlName="first_name">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label htmlfor="email">Email</label>
+                        <input pinputtext="" id="email" type="text" class="p-inputtext p-component p-element" formControlName="email">
+                    </div>
+                    <div class="p-formgrid grid">
+                        <div class="field col">
+                            <label htmlfor="initial">Initial</label>
+                            <input pinputtext="" id="initial" type="text" class="p-inputtext p-component p-element" formControlName="initial">
+                        </div>
+                        <div class="field col">
+                            <label htmlfor="desktop">Bureau</label>
+                            <input pinputtext="" id="desktop" type="text" class="p-inputtext p-component p-element" formControlName="desktop">
+                        </div>
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="teacherUpdateForm && teacherUpdateForm.get('admin')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="admin" 
+                        formControlName="admin" 
+                        (onChange)="onAdminCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="admin">Attribuer les droits administrateurs</label>
+                    </div>
+                    <div class="flex align-items-center gap-3"  >
+                        <p-checkbox *ngIf="teacherUpdateForm && teacherUpdateForm.get('ttmanager')" 
+                        name="group1" 
+                        [binary]="true"
+                        value="true"
+                        inputId="ttmanager" 
+                        formControlName="ttmanager" 
+                        (onChange)="onTTManagerCheckboxChange($event)">
+                        </p-checkbox>
+                        <label for="ttmanager">Attribuer les droits d'un responsable de l'emploi du temps</label>
+                    </div>
+                    <div class="field">
+                    </div>
+                </div>
+                
+                <button type="submit" pButton pRipple label="Modifier cette enseignant" class="w-full p-3"></button>
+
+                <div class="card p-fluid">
+                    <div *ngIf="ErrorMessage" class="login-status mb-5 w-full">
+                        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+                    </div>
+        
+                </div>
+        
+            </div>
+        </form>
+
+
+
+    </p-dialog>
+</div>
+
+
+<p-dialog header="Supprimer un enseignant" [(visible)]="displayModalDelete" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false" [contentStyle]="{ 'text-align': 'center' }">
+    <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100%;">
+      <p>Supprimer l'enseignant <span [style.fontWeight]="'bold'">{{ username }}</span></p>
+      <div style="margin-top: 2%">
+        <p-button label="Annuler" [rounded]="true" severity="secondary" icon="pi pi-times" [style]="{ 'margin-right.px': 10 } " (click)="closeModalDelete()"></p-button>
+        <p-button label="Supprimer" [rounded]="true" severity="danger" icon="pi pi-trash" (click)="deleteTeacher()"></p-button>
+        <p class="text-sm text-red-500 font-semibold">{{ ErrorMessage }}</p>
+      </div>
+    </div>
+  </p-dialog>

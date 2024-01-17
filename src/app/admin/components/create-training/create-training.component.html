@@ -1,0 +1,88 @@
+<!-- Dialogue de création de parcours -->
+<p-dialog
+  [(visible)]="displayCreateTrainingDialog"
+  header="Créer un parcours"
+  [modal]="true"
+  [responsive]="true"
+  (onHide)="closeCreateTrainingDialog()"
+>
+  <ng-template pTemplate="content">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="newTrainingName" class="font-medium text-900"
+          >Nom du parcours</label
+        >
+        <input
+          pInputText
+          class="mt-1"
+          type="text"
+          id="newTrainingName"
+          [(ngModel)]="newTrainingName"
+          name="newTrainingName"
+          required
+        />
+      </div>
+
+      <!-- ...autres champs... -->
+
+      <div class="p-field mt-3">
+        <label for="selectedPromotionId" class="font-medium text-900"
+          >Promotion</label
+        >
+        <div class="mt-1">
+          <p-dropdown
+            [options]="promotions"
+            [(ngModel)]="selectedPromotionId"
+            (onChange)="onPromotionChange()"
+            optionLabel="uniqueLabel"
+            optionValue="id"
+            placeholder="Sélectionner une promotion"
+            name="selectedPromotionId"
+            appendTo="body"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <div class="p-field mt-3">
+        <label for="selectedSemester" class="font-medium text-900"
+          >Semestre</label
+        >
+        <div class="mt-1">
+          <p-dropdown
+            ngif="selectedPromotionId"
+            [options]="semesterOptions"
+            [(ngModel)]="selectedSemester"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Sélectionner un semestre"
+            name="selectedSemester"
+            appendTo="body"
+          >
+          </p-dropdown>
+        </div>
+      </div>
+
+      <!-- ...reste du template... -->
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      type="button"
+      label="Annuler"
+      [outlined]="true"
+      severity="secondary"
+      class="p-button-secondary"
+      (click)="closeCreateTrainingDialog()"
+    ></p-button>
+    <p-button
+      type="button"
+      label="Créer"
+      class="p-button-primary"
+      (click)="createTraining()"
+      [loading]="loading"
+    ></p-button>
+  </ng-template>
+</p-dialog>
+<p-toast></p-toast>

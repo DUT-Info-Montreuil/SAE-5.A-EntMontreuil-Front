@@ -1,0 +1,85 @@
+.h1-title {
+  font-size: 2em;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #333;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.header {
+  display: flex; /* Utilise la mise en page Flexbox */
+  align-items: center; /* Centre verticalement les éléments */
+
+  margin-bottom: 10px; /* Réduire l'espace en bas de l'en-tête */
+}
+
+@media (max-width: 768px) {
+  .h1-title {
+    font-size: 1.5em;
+    margin-top: 5px;
+    margin-bottom: 15px;
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* Style de la barre de recherche */
+.search-bar {
+  width: 100%;
+  padding: 0 15px;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.search-bar .p-input-icon-left {
+  width: 100%;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 10px 15px 10px 35px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.search-bar .pi-search {
+  position: absolute;
+  top: 50%;
+
+  color: #777;
+}
+
+/* Style du tableau */
+.table-container {
+  width: 100%;
+}
+
+.p-datatable {
+  width: 100%;
+}
+
+/* Responsive design pour les petits écrans */
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .search-bar {
+    padding: 0 10px;
+  }
+
+  .search-bar input {
+    padding-left: 30px;
+  }
+}
