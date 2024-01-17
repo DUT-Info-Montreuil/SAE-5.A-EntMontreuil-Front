@@ -5,7 +5,7 @@ export interface Student {
     last_name: string;
     student_id: number;
     username: string;
-    isAbsent: boolean;
+    is_absent: boolean;
 }
 
 export interface StudentABS {
