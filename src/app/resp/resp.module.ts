@@ -15,7 +15,6 @@ import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
-import { FullCalendarModule } from '@fullcalendar/angular';
 import { CreateCourseComponent } from './components/create-course/create-course.component';
 import { DegreeComponent } from './components/degree/degree.component';
 import { HttpClientModule } from '@angular/common/http';

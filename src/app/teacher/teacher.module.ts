@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { CallrollComponent } from './components/callroll/callroll.component';
 import { TeacherRoutingModule } from './teacher-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FullCalendarModule } from '@fullcalendar/angular';
 import { CalendarDateFormatter, CalendarModule, DateAdapter, DateFormatterParams } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -52,7 +51,6 @@ class CustomDateFormatter extends CalendarDateFormatter {
     CardModule,
     DropdownModule,
     ToastModule,
-    FullCalendarModule,
     DialogModule,
     SkeletonModule,
     TabViewModule,
