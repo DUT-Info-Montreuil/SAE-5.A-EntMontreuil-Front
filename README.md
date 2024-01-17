@@ -9,7 +9,7 @@ Partie FRONT de l'application. Pour utiliser le site, il est nécessaire d'avoir
 ## Lancer l'application
 
 Pour utiliser ces commandes il faut avoir les installations de Docker et Docker Compose liées.
-
+Le Docker Compose dans le back doit être à la racine des 3 projets.
 Se placer aux même niveaux que les DockerFile pour pouvoir exécuter ces commandes
 
 DockerFile Back : 
