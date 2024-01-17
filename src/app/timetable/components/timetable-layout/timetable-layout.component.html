@@ -4,17 +4,20 @@
       <div class="flex gap-3">
         <span class="p-float-label">
           <p-dropdown [options]="promotions" (onChange)="onPromotionChange()" [(ngModel)]="selectedPromotionId"
-            optionLabel="uniqueLabel" placeholder="Promotion" inputId="promotion"></p-dropdown>
+            [filter]="true" filterBy="name" optionLabel="uniqueLabel" placeholder="Promotion"
+            inputId="promotion"></p-dropdown>
           <label for="promotion">Promotion</label>
         </span>
         <span class="p-float-label">
           <p-dropdown [options]="teachers" (onChange)="onTeacherChange()" [(ngModel)]="selectedTeacherUsername"
-            optionLabel="uniqueLabel2" placeholder="Professeur" inputId="teacher"></p-dropdown>
+            [filter]="true" filterBy="name" optionLabel="uniqueLabel2" placeholder="Professeur"
+            inputId="teacher"></p-dropdown>
           <label for="teacher">Professeur</label>
         </span>
         <span class="p-float-label">
           <p-dropdown [options]="classrooms" (onChange)="onClasseroomChange()" [(ngModel)]="selectedClassroomName"
-            optionLabel="uniqueLabel3" placeholder="Sélectionner une salle de classe" inputId="classroom"></p-dropdown>
+            [filter]="true" filterBy="name" optionLabel="uniqueLabel3" placeholder="Sélectionner une salle de classe"
+            inputId="classroom"></p-dropdown>
           <label for="classroom">Salle de classe</label>
         </span>
 
