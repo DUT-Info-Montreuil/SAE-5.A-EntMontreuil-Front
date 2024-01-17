@@ -4,6 +4,8 @@ export class Promotion {
   level: number;
   id_Degree: number;
   degree_name: string;
+  isEditing: boolean = false;
+  isLoading: boolean = false;
 
   constructor(
     id: number,

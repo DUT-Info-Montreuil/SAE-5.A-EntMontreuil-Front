@@ -14,6 +14,7 @@ import { CreateMaterialComponent } from './components/create-material/create-mat
 import { DialogModule } from 'primeng/dialog';
 import { Ripple, RippleModule } from 'primeng/ripple';
 import { TooltipModule } from 'primeng/tooltip';
+import { CalendarModule } from 'primeng/calendar';
 import { TrainingListComponent } from './components/training-list/training-list.component';
 import { CreateTrainingComponent } from './components/create-training/create-training.component';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -43,6 +44,8 @@ import { CascadeSelectModule } from 'primeng/cascadeselect';
 import { RessourceListComponent } from './components/ressource-list/ressource-list.component';
 import { CreateRessourceComponent } from './components/create-ressource/create-ressource.component';
 import { RoleComponent } from './components/role/role.component';
+import { PromotionListComponent } from './components/promotion-list/promotion-list.component';
+import { CreatePromotionComponent } from './components/create-promotion/create-promotion.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +71,8 @@ import { RoleComponent } from './components/role/role.component';
     RessourceListComponent,
     CreateRessourceComponent,
     RoleComponent,
+    PromotionListComponent,
+    CreatePromotionComponent,
   ],
   imports: [
     CommonModule,
@@ -92,6 +97,7 @@ import { RoleComponent } from './components/role/role.component';
     InputNumberModule,
     FileUploadModule,
     CascadeSelectModule,
+    CalendarModule
   ],
   providers: [ConfirmationService, MessageService, DialogService],
 })
